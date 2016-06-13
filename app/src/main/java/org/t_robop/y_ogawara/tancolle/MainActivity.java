@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton add = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton add = (FloatingActionButton) findViewById(R.id.add);
         if (add != null) {
             add.setOnClickListener(new View.OnClickListener() {
                 @Override
