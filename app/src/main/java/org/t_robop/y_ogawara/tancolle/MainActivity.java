@@ -101,50 +101,51 @@ public class MainActivity extends AppCompatActivity {
                 testData1.setNotif_day(31);
                 testData1.setNotif_recy(31);
                 //dbに書き込み
+                //引数はData,場所(this)
                 dbAssist.insertData(testData1,this);
                 return true;
 
             case MENU_SELECT_B:
                 Log.d("Menu","DBをアップデートします");
-
-                testData = new Data();
-                testData.setName("aaaaa");
-                testData.setBirthday(19970714);
-                testData.setNotif_yest(1);
-                dbAssist.updateData(1,testData);
-                //ArrayList<Data> test=  dbAssist.openData(this);
+                Data updateData =new Data();
+                updateData.setName("aaaaa");
+                updateData.setBirthday(19970714);
+                updateData.setNotif_yest(1);
+                //引数はid,data,場所
+                dbAssist.updateData(1,updateData,this);
                 return true;
 
             case MENU_SELECT_C:
                 Log.d("Menu","全データ検索");
+                //引数は場所
+                //返り値は配列
                 ArrayList<Data> dataList=  dbAssist.allSelect(this);
                 Log.d("","");
                 return true;
 
             case MENU_SELECT_D:
                 Log.d("Menu","仮名検索");
-                ArrayList<Data> kanaList=  dbAssist.kanaSelect(this,"にしむら");
+                //引数はkana(String),場所
+                //返り値は配列
+                ArrayList<Data> kanaList=  dbAssist.kanaSelect("にしむら",this);
                 Log.d("","");
-                //idを指定して削除
-                //dbAssist.deleteData(1);
                 return true;
 
             case MENU_SELECT_E:
                 Log.d("Menu","id検索");
-                Data idList=  dbAssist.idSelect(this,1);
+                //引数はid(int),場所
+                //idは固有値なので、返り値はData型
+                Data idList=  dbAssist.idSelect(1,this);
                 Log.d("","");
-                //idを指定して削除
-                //dbAssist.deleteData(1);
                 return true;
 
             case MENU_SELECT_F:
                 Log.d("Menu","削除");
-                //idを指定して削除
-                dbAssist.deleteData(1);
+                //引数はid,場所
+                dbAssist.deleteData(1,this);
                 return true;
         }
         return false;
 
-        //return super.onOptionsItemSelected(item);
     }
 }

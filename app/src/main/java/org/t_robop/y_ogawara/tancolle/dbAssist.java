@@ -10,27 +10,27 @@ import java.util.ArrayList;
 /**
  * Created by yuusuke on 16/06/14.
  */
+//TODO このclassは極力弄らないこと、弄る必要がある場合はメソッドを作り、その中で完結させること
 public class dbAssist {
-    static SQLiteDatabase mydb; //MySQLiteOpenHelperの変数
-    static MySQLiteOpenHelper hlpr;
+    static SQLiteDatabase sqldb; //MySQLiteOpenHelperの変数
+    static MySQLiteOpenHelper sqLiteOpenHelper;
     static ContentValues cv;
     static Cursor cursor;
 
-    static String openDB = "select * from users_table order by name desc, kana desc, birthday desc,category desc," +
-            "twitterID desc,memo desc,image desc,smallImage desc,presentFlag desc,tamura desc,notif_yest desc," +
-            "notif_today desc,notif_day desc,notif_recy desc";;
+    //orderで並び順を指定 ASCで昇順  DESCで降順
+    static String openDB = "select * from users_table order by id asc";
     final static String TABLE_NAME = "users_table";
 
 
     public dbAssist(Context context) {
-        hlpr = new MySQLiteOpenHelper(context);
-        mydb = hlpr.getWritableDatabase();
+        sqLiteOpenHelper = new MySQLiteOpenHelper(context);
+        sqldb = sqLiteOpenHelper.getWritableDatabase();
     }
 
     //データを追加するメソッド
     public static void insertData(Data data, Context context) {
-        hlpr = new MySQLiteOpenHelper(context);
-        mydb = hlpr.getWritableDatabase();
+        sqLiteOpenHelper = new MySQLiteOpenHelper(context);
+        sqldb = sqLiteOpenHelper.getWritableDatabase();
         cv = new ContentValues();
         cv.put("name", data.getName());
         cv.put("kana", data.getKana());
@@ -47,16 +47,16 @@ public class dbAssist {
         cv.put("notif_day", data.getNotif_day());
         cv.put("notif_recy", data.getNotif_recy());
 
-        mydb.insert(TABLE_NAME, null, cv);
-        mydb.close();
+        sqldb.insert(TABLE_NAME, null, cv);
+        sqldb.close();
     }
 
     //全てのデータを取得するメソッド
     public static ArrayList allSelect(Context context){
-        ArrayList <Data> DataArray=new ArrayList<Data>();
-        hlpr = new MySQLiteOpenHelper(context);
-        mydb = hlpr.getWritableDatabase();
-        cursor = mydb.rawQuery(openDB,null);
+        ArrayList <Data> DataArray= new ArrayList<>();
+        sqLiteOpenHelper = new MySQLiteOpenHelper(context);
+        sqldb = sqLiteOpenHelper.getWritableDatabase();
+        cursor = sqldb.rawQuery(openDB,null);
         while (cursor.moveToNext()) {
             Data data = new Data();
             data.setId(cursor.getInt(0));
@@ -76,24 +76,20 @@ public class dbAssist {
             data.setNotif_recy(cursor.getInt(14));
             DataArray.add(data);
         }
-        mydb.close();
+        sqldb.close();
         return DataArray;
     }
 
     //仮名検索をするメソッド
-    public static ArrayList kanaSelect(Context context ,String kana){
-        String sqlstr = "select *"
+    public static ArrayList kanaSelect(String kana,Context context){
+        String sqlStr = "select *"
                 +"from users_table "
                 + "where kana like" +"'%"+kana+"%'"
-                + "order by name desc, kana desc, birthday desc,category desc," +
-                "twitterID desc,memo desc,image desc,smallImage desc,presentFlag desc,tamura desc,notif_yest desc," +
-                "notif_today desc,notif_day desc,notif_recy desc";
-
-        //String sql    = "SELECT * FROM users_table WHERE `tag_name` = '?";
-        ArrayList <Data> DataArray=new ArrayList<Data>();
-        hlpr = new MySQLiteOpenHelper(context);
-        mydb = hlpr.getWritableDatabase();
-        cursor = mydb.rawQuery(sqlstr,null);
+                + "order by kana asc";
+        ArrayList <Data> DataArray=new ArrayList<>();
+        sqLiteOpenHelper = new MySQLiteOpenHelper(context);
+        sqldb = sqLiteOpenHelper.getWritableDatabase();
+        cursor = sqldb.rawQuery(sqlStr,null);
         while(cursor.moveToNext()) {
             Data data = new Data();
             data.setId(cursor.getInt(0));
@@ -113,23 +109,20 @@ public class dbAssist {
             data.setNotif_recy(cursor.getInt(14));
             DataArray.add(data);
         }
-        mydb.close();
+        sqldb.close();
 
         return DataArray;
     }
 
 
     //idから一つの行を検索するメソッド
-    public static Data idSelect(Context context ,int id){
+    public static Data idSelect(int id,Context context){
         String sqlstr = "select *"
                 +"from users_table "
-                + "where _id like" +"'%"+id+"%'"
-                + "order by name desc, kana desc, birthday desc,category desc," +
-                "twitterID desc,memo desc,image desc,smallImage desc,presentFlag desc,tamura desc,notif_yest desc," +
-                "notif_today desc,notif_day desc,notif_recy desc";
-        hlpr = new MySQLiteOpenHelper(context);
-        mydb = hlpr.getWritableDatabase();
-        cursor = mydb.rawQuery(sqlstr,null);
+                + "where id like" +"'%"+id+"%'";
+        sqLiteOpenHelper = new MySQLiteOpenHelper(context);
+        sqldb = sqLiteOpenHelper.getWritableDatabase();
+        cursor = sqldb.rawQuery(sqlstr,null);
         cursor.moveToNext();
         Data data = new Data();
         data.setId(cursor.getInt(0));
@@ -147,17 +140,17 @@ public class dbAssist {
         data.setNotif_today(cursor.getInt(12));
         data.setNotif_day(cursor.getInt(13));
         data.setNotif_recy(cursor.getInt(14));
-        mydb.close();
+        sqldb.close();
         return data;
     }
 
 
     //SQL文を使いたい時のメソッド
     public static ArrayList rawSelect(String dbString,Context context){
-        ArrayList <Data> DataArray=new ArrayList<Data>();
-        hlpr = new MySQLiteOpenHelper(context);
-        mydb = hlpr.getWritableDatabase();
-        cursor = mydb.rawQuery(dbString,null);
+        ArrayList <Data> DataArray= new ArrayList<>();
+        sqLiteOpenHelper = new MySQLiteOpenHelper(context);
+        sqldb = sqLiteOpenHelper.getWritableDatabase();
+        cursor = sqldb.rawQuery(dbString,null);
         while(cursor.moveToNext()) {
             Data data = new Data();
             data.setId(cursor.getInt(0));
@@ -177,18 +170,23 @@ public class dbAssist {
             data.setNotif_recy(cursor.getInt(14));
             DataArray.add(data);
         }
-        mydb.close();
+        sqldb.close();
 
         return DataArray;
     }
 
     //データを削除したい時のメソッド
-    public static void deleteData(int id){
-        mydb.delete(TABLE_NAME, "_id = " + id, null);
+    public static void deleteData(int id,Context context){
+        sqLiteOpenHelper = new MySQLiteOpenHelper(context);
+        sqldb = sqLiteOpenHelper.getWritableDatabase();
+        sqldb.delete(TABLE_NAME, "id = " + id, null);
     }
 
     //行のデータを更新したい時のメソッド
-    public static void updateData(int id,Data data){
+    public static void updateData(int id,Data data,Context context){
+        sqLiteOpenHelper = new MySQLiteOpenHelper(context);
+        sqldb = sqLiteOpenHelper.getWritableDatabase();
+        cv = new ContentValues();
         if (data.getName()!=null){
             cv.put("name", data.getName());
         }
@@ -232,6 +230,7 @@ public class dbAssist {
             cv.put("notif_recy", data.getNotif_recy());
         }
 
-        mydb.update(TABLE_NAME, cv, "_id ="+id, null);
+        sqldb.update(TABLE_NAME, cv, "id = "+id, null);
+
     }
 }

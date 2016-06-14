@@ -56,8 +56,8 @@ class MySQLiteOpenHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         // テーブル作成のクエリを発行
         String sql = "CREATE TABLE users_table ("
-                + " _id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + " name TEXT,"
+                + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + "name TEXT,"
                 +"kana TEXT,"
                 +"birthday long,"
                 +"category TEXT,"
