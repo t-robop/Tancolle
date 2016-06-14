@@ -79,6 +79,37 @@ public class dbAssist {
 
         return DataArray;
     }
+
+    public static ArrayList rawSelect(String dbString,Context context){
+        ArrayList <Data> DataArray=new ArrayList<Data>();
+        Data data = new Data();
+        hlpr = new MySQLiteOpenHelper(context);
+        mydb = hlpr.getWritableDatabase();
+        cursor = mydb.rawQuery(dbString,null);
+        while(cursor.moveToNext()) {
+            data.setId(cursor.getColumnIndex("_id"));
+            data.setName(cursor.getString(cursor.getColumnIndex("name")));
+            data.setKana(cursor.getString(cursor.getColumnIndex("kana")));
+            data.setBirthday(cursor.getColumnIndex("birthday"));
+            data.setCategory(cursor.getString(cursor.getColumnIndex("category")));
+            data.setTwitterID(cursor.getString(cursor.getColumnIndex("twitterID")));
+            data.setMemo(cursor.getString(cursor.getColumnIndex("memo")));
+            data.setImage(cursor.getString(cursor.getColumnIndex("image")));
+            data.setSmallImage(cursor.getString(cursor.getColumnIndex("smallImage")));
+            data.setPresentFlag(cursor.getColumnIndex("presentFlag"),context);
+            data.setTamura(cursor.getColumnIndex("tamura"),context);
+            data.setNotif_yest(cursor.getColumnIndex("notif_yest"),context);
+            data.setNotif_today(cursor.getColumnIndex("notif_today"),context);
+            data.setNotif_day(cursor.getColumnIndex("notif_day"));
+            data.setNotif_recy(cursor.getColumnIndex("notif_recy"));
+
+            DataArray.add(data);
+        }
+        mydb.close();
+
+        return DataArray;
+    }
+
     public static void deleteData(int id){
         mydb.delete(TABLE_NAME, "_id = " + id, null);
     }
