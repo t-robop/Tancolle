@@ -10,31 +10,31 @@ public class Data {
 
 
     //固有ID
-    int id;
+    static int id;
     //名前
-    String name;
+    static String name;
     //ふりがな
-    String kana;
+    static String kana;
     //誕生日
-    long birthday;
+    static long birthday;
     //カテゴリ
-    String category;
+    static String category;
     //twitterのID
-    String twitterID;
+    static String twitterID;
     //メモ欄
-    String memo;
+    static String memo;
     //画像(詳細画面用)
-    String image;
+    static String image;
     //画像(検索画面)
-    String smallImage;
+    static String smallImage;
     //presentを買ったか
-    int presentFlag;
+    static int presentFlag;
     //年齢を固定するか
-    int tamura;
+    static int tamura;
     //通知を前日にするか
-    int notif_yest;
+    static int notif_yest;
     //通知を当日にするか
-    int notif_today;
+    static int notif_today;
     //通知を何日前にするか
     int notif_day;
     //通知を何回繰り返すか
