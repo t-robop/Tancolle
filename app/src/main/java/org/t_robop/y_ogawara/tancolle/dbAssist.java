@@ -16,7 +16,9 @@ public class dbAssist {
     static ContentValues cv;
     static Cursor cursor;
     //TODO 書き換え
-    static String openDB = "select * from users_table order by year desc, month desc, date desc";
+    static String openDB = "select * from users_table order by name desc, kana desc, birthday desc,category desc," +
+            "twitterID desc,memo desc,image desc,smallImage desc,presentFlag desc,tamura desc,notif_yest desc," +
+            "notif_today desc,notif_day desc,notif_recy desc";
     final static String TABLE_NAME = "users_table";
 
 
