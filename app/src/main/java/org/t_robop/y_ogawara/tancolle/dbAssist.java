@@ -15,10 +15,10 @@ public class dbAssist {
     static MySQLiteOpenHelper hlpr;
     static ContentValues cv;
     static Cursor cursor;
-    //TODO 書き換え
+
     static String openDB = "select * from users_table order by name desc, kana desc, birthday desc,category desc," +
             "twitterID desc,memo desc,image desc,smallImage desc,presentFlag desc,tamura desc,notif_yest desc," +
-            "notif_today desc,notif_day desc,notif_recy desc";
+            "notif_today desc,notif_day desc,notif_recy desc";;
     final static String TABLE_NAME = "users_table";
 
 
@@ -27,6 +27,7 @@ public class dbAssist {
         mydb = hlpr.getWritableDatabase();
     }
 
+    //データを追加するメソッド
     public static void insertData(Data data, Context context) {
         hlpr = new MySQLiteOpenHelper(context);
         mydb = hlpr.getWritableDatabase();
@@ -50,14 +51,15 @@ public class dbAssist {
         mydb.close();
     }
 
-    public static ArrayList openData(Context context){
+    //全てのデータを取得するメソッド
+    public static ArrayList allSelect(Context context){
         ArrayList <Data> DataArray=new ArrayList<Data>();
-        Data data = new Data();
         hlpr = new MySQLiteOpenHelper(context);
         mydb = hlpr.getWritableDatabase();
         cursor = mydb.rawQuery(openDB,null);
-        while(cursor.moveToNext()) {
-            data.setId(cursor.getColumnIndex("_id"));
+        while (cursor.moveToNext()) {
+            Data data = new Data();
+            data.setId(cursor.getInt(0));
             data.setName(cursor.getString(cursor.getColumnIndex("name")));
             data.setKana(cursor.getString(cursor.getColumnIndex("kana")));
             data.setBirthday(cursor.getColumnIndex("birthday"));
@@ -66,20 +68,19 @@ public class dbAssist {
             data.setMemo(cursor.getString(cursor.getColumnIndex("memo")));
             data.setImage(cursor.getString(cursor.getColumnIndex("image")));
             data.setSmallImage(cursor.getString(cursor.getColumnIndex("smallImage")));
-            data.setPresentFlag(cursor.getColumnIndex("presentFlag"),context);
-            data.setTamura(cursor.getColumnIndex("tamura"),context);
-            data.setNotif_yest(cursor.getColumnIndex("notif_yest"),context);
-            data.setNotif_today(cursor.getColumnIndex("notif_today"),context);
-            data.setNotif_day(cursor.getColumnIndex("notif_day"));
-            data.setNotif_recy(cursor.getColumnIndex("notif_recy"));
-
+            data.setPresentFlag(cursor.getInt(9));
+            data.setTamura(cursor.getInt(10));
+            data.setNotif_yest(cursor.getInt(11));
+            data.setNotif_today(cursor.getInt(12));
+            data.setNotif_day(cursor.getInt(13));
+            data.setNotif_recy(cursor.getInt(14));
             DataArray.add(data);
         }
         mydb.close();
-
         return DataArray;
     }
 
+    //仮名検索をするメソッド
     public static ArrayList kanaSelect(Context context ,String kana){
         String sqlstr = "select *"
                 +"from users_table "
@@ -88,14 +89,14 @@ public class dbAssist {
                 "twitterID desc,memo desc,image desc,smallImage desc,presentFlag desc,tamura desc,notif_yest desc," +
                 "notif_today desc,notif_day desc,notif_recy desc";
 
-        String sql    = "SELECT * FROM users_table WHERE `tag_name` = '?";
+        //String sql    = "SELECT * FROM users_table WHERE `tag_name` = '?";
         ArrayList <Data> DataArray=new ArrayList<Data>();
-        Data data = new Data();
         hlpr = new MySQLiteOpenHelper(context);
         mydb = hlpr.getWritableDatabase();
         cursor = mydb.rawQuery(sqlstr,null);
         while(cursor.moveToNext()) {
-            data.setId(cursor.getColumnIndex("_id"));
+            Data data = new Data();
+            data.setId(cursor.getInt(0));
             data.setName(cursor.getString(cursor.getColumnIndex("name")));
             data.setKana(cursor.getString(cursor.getColumnIndex("kana")));
             data.setBirthday(cursor.getColumnIndex("birthday"));
@@ -104,13 +105,12 @@ public class dbAssist {
             data.setMemo(cursor.getString(cursor.getColumnIndex("memo")));
             data.setImage(cursor.getString(cursor.getColumnIndex("image")));
             data.setSmallImage(cursor.getString(cursor.getColumnIndex("smallImage")));
-            data.setPresentFlag(cursor.getColumnIndex("presentFlag"),context);
-            data.setTamura(cursor.getColumnIndex("tamura"),context);
-            data.setNotif_yest(cursor.getColumnIndex("notif_yest"),context);
-            data.setNotif_today(cursor.getColumnIndex("notif_today"),context);
-            data.setNotif_day(cursor.getColumnIndex("notif_day"));
-            data.setNotif_recy(cursor.getColumnIndex("notif_recy"));
-
+            data.setPresentFlag(cursor.getInt(9));
+            data.setTamura(cursor.getInt(10));
+            data.setNotif_yest(cursor.getInt(11));
+            data.setNotif_today(cursor.getInt(12));
+            data.setNotif_day(cursor.getInt(13));
+            data.setNotif_recy(cursor.getInt(14));
             DataArray.add(data);
         }
         mydb.close();
@@ -119,53 +119,48 @@ public class dbAssist {
     }
 
 
-    public static ArrayList idSelect(Context context ,int id){
+    //idから一つの行を検索するメソッド
+    public static Data idSelect(Context context ,int id){
         String sqlstr = "select *"
                 +"from users_table "
                 + "where _id like" +"'%"+id+"%'"
                 + "order by name desc, kana desc, birthday desc,category desc," +
                 "twitterID desc,memo desc,image desc,smallImage desc,presentFlag desc,tamura desc,notif_yest desc," +
                 "notif_today desc,notif_day desc,notif_recy desc";
-
-        String sql    = "SELECT * FROM users_table WHERE `tag_name` = '?";
-        ArrayList <Data> DataArray=new ArrayList<Data>();
-        Data data = new Data();
         hlpr = new MySQLiteOpenHelper(context);
         mydb = hlpr.getWritableDatabase();
         cursor = mydb.rawQuery(sqlstr,null);
-        while(cursor.moveToNext()) {
-            data.setId(cursor.getColumnIndex("_id"));
-            data.setName(cursor.getString(cursor.getColumnIndex("name")));
-            data.setKana(cursor.getString(cursor.getColumnIndex("kana")));
-            data.setBirthday(cursor.getColumnIndex("birthday"));
-            data.setCategory(cursor.getString(cursor.getColumnIndex("category")));
-            data.setTwitterID(cursor.getString(cursor.getColumnIndex("twitterID")));
-            data.setMemo(cursor.getString(cursor.getColumnIndex("memo")));
-            data.setImage(cursor.getString(cursor.getColumnIndex("image")));
-            data.setSmallImage(cursor.getString(cursor.getColumnIndex("smallImage")));
-            data.setPresentFlag(cursor.getColumnIndex("presentFlag"),context);
-            data.setTamura(cursor.getColumnIndex("tamura"),context);
-            data.setNotif_yest(cursor.getColumnIndex("notif_yest"),context);
-            data.setNotif_today(cursor.getColumnIndex("notif_today"),context);
-            data.setNotif_day(cursor.getColumnIndex("notif_day"));
-            data.setNotif_recy(cursor.getColumnIndex("notif_recy"));
-
-            DataArray.add(data);
-        }
+        cursor.moveToNext();
+        Data data = new Data();
+        data.setId(cursor.getInt(0));
+        data.setName(cursor.getString(cursor.getColumnIndex("name")));
+        data.setKana(cursor.getString(cursor.getColumnIndex("kana")));
+        data.setBirthday(cursor.getColumnIndex("birthday"));
+        data.setCategory(cursor.getString(cursor.getColumnIndex("category")));
+        data.setTwitterID(cursor.getString(cursor.getColumnIndex("twitterID")));
+        data.setMemo(cursor.getString(cursor.getColumnIndex("memo")));
+        data.setImage(cursor.getString(cursor.getColumnIndex("image")));
+        data.setSmallImage(cursor.getString(cursor.getColumnIndex("smallImage")));
+        data.setPresentFlag(cursor.getInt(9));
+        data.setTamura(cursor.getInt(10));
+        data.setNotif_yest(cursor.getInt(11));
+        data.setNotif_today(cursor.getInt(12));
+        data.setNotif_day(cursor.getInt(13));
+        data.setNotif_recy(cursor.getInt(14));
         mydb.close();
-
-        return DataArray;
+        return data;
     }
 
 
+    //SQL文を使いたい時のメソッド
     public static ArrayList rawSelect(String dbString,Context context){
         ArrayList <Data> DataArray=new ArrayList<Data>();
-        Data data = new Data();
         hlpr = new MySQLiteOpenHelper(context);
         mydb = hlpr.getWritableDatabase();
         cursor = mydb.rawQuery(dbString,null);
         while(cursor.moveToNext()) {
-            data.setId(cursor.getColumnIndex("_id"));
+            Data data = new Data();
+            data.setId(cursor.getInt(0));
             data.setName(cursor.getString(cursor.getColumnIndex("name")));
             data.setKana(cursor.getString(cursor.getColumnIndex("kana")));
             data.setBirthday(cursor.getColumnIndex("birthday"));
@@ -174,13 +169,12 @@ public class dbAssist {
             data.setMemo(cursor.getString(cursor.getColumnIndex("memo")));
             data.setImage(cursor.getString(cursor.getColumnIndex("image")));
             data.setSmallImage(cursor.getString(cursor.getColumnIndex("smallImage")));
-            data.setPresentFlag(cursor.getColumnIndex("presentFlag"),context);
-            data.setTamura(cursor.getColumnIndex("tamura"),context);
-            data.setNotif_yest(cursor.getColumnIndex("notif_yest"),context);
-            data.setNotif_today(cursor.getColumnIndex("notif_today"),context);
-            data.setNotif_day(cursor.getColumnIndex("notif_day"));
-            data.setNotif_recy(cursor.getColumnIndex("notif_recy"));
-
+            data.setPresentFlag(cursor.getInt(9));
+            data.setTamura(cursor.getInt(10));
+            data.setNotif_yest(cursor.getInt(11));
+            data.setNotif_today(cursor.getInt(12));
+            data.setNotif_day(cursor.getInt(13));
+            data.setNotif_recy(cursor.getInt(14));
             DataArray.add(data);
         }
         mydb.close();
@@ -188,10 +182,12 @@ public class dbAssist {
         return DataArray;
     }
 
+    //データを削除したい時のメソッド
     public static void deleteData(int id){
         mydb.delete(TABLE_NAME, "_id = " + id, null);
     }
 
+    //行のデータを更新したい時のメソッド
     public static void updateData(int id,Data data){
         if (data.getName()!=null){
             cv.put("name", data.getName());

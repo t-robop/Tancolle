@@ -10,31 +10,31 @@ public class Data {
 
 
     //固有ID
-    static int id;
+    int id;
     //名前
-    static String name;
+    String name;
     //ふりがな
-    static String kana;
+    String kana;
     //誕生日
-    static long birthday;
+    long birthday;
     //カテゴリ
-    static String category;
+    String category;
     //twitterのID
-    static String twitterID;
+    String twitterID;
     //メモ欄
-    static String memo;
+    String memo;
     //画像(詳細画面用)
-    static String image;
+    String image;
     //画像(検索画面)
-    static String smallImage;
+    String smallImage;
     //presentを買ったか
-    static int presentFlag;
+    int presentFlag;
     //年齢を固定するか
-    static int tamura;
+    int tamura;
     //通知を前日にするか
-    static int notif_yest;
+    int notif_yest;
     //通知を当日にするか
-    static int notif_today;
+    int notif_today;
     //通知を何日前にするか
     int notif_day;
     //通知を何回繰り返すか
@@ -126,10 +126,7 @@ public class Data {
         return presentFlag;
     }
 
-    public void setPresentFlag(int presentFlag,Context context) {
-        if (presentFlag !=0||presentFlag!=1){
-            error(context);
-        }
+    public void setPresentFlag(int presentFlag) {
         this.presentFlag = presentFlag;
     }
 
@@ -137,10 +134,8 @@ public class Data {
         return tamura;
     }
 
-    public void setTamura(int tamura, Context context) {
-        if (tamura !=0||tamura!=1){
-            error(context);
-        }
+    public void setTamura(int tamura) {
+
         this.tamura = tamura;
     }
 
@@ -148,10 +143,8 @@ public class Data {
         return notif_yest;
     }
 
-    public void setNotif_yest(int notif_yest,Context context) {
-        if (notif_yest !=0||notif_yest!=1){
-            error(context);
-        }
+    public void setNotif_yest(int notif_yest) {
+
         this.notif_yest = notif_yest;
     }
 
@@ -159,10 +152,8 @@ public class Data {
         return notif_today;
     }
 
-    public void setNotif_today(int notif_today,Context context) {
-        if (notif_today !=0||notif_today!=1){
-            error(context);
-        }
+    public void setNotif_today(int notif_today) {
+
         this.notif_today = notif_today;
     }
 

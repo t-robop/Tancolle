@@ -16,6 +16,9 @@ public class MainActivity extends AppCompatActivity {
     public static final int MENU_SELECT_A = 0;
     public static final int MENU_SELECT_B = 1;
     public static final int MENU_SELECT_C = 2;
+    public static final int MENU_SELECT_D = 3;
+    public static final int MENU_SELECT_E = 4;
+    public static final int MENU_SELECT_F = 5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,9 +43,12 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        menu.add(0, MENU_SELECT_A, 0, "Menu A");
-        menu.add(0, MENU_SELECT_B, 0, "Menu B");
-        menu.add(0, MENU_SELECT_C, 0, "Menu C");
+        menu.add(0, MENU_SELECT_A, 0, "データ書き込み");
+        menu.add(0, MENU_SELECT_B, 0, "データupdate");
+        menu.add(0, MENU_SELECT_C, 0, "全データ取得");
+        menu.add(0, MENU_SELECT_D, 0, "仮名検索");
+        menu.add(0, MENU_SELECT_E, 0, "id検索");
+        menu.add(0, MENU_SELECT_F, 0, "データ削除");
         return true;
     }
 
@@ -68,34 +74,74 @@ public class MainActivity extends AppCompatActivity {
                 testData.setMemo("教科書を見て実装して欲しい");
                 testData.setImage("Imageデータ");
                 testData.setSmallImage("Imageデータ");
-                testData.setPresentFlag(0,this);
-                testData.setTamura(2,this);
-                testData.setNotif_yest(1,this);
-                testData.setNotif_today(1,this);
+                testData.setPresentFlag(0);
+                testData.setTamura(1);
+                testData.setNotif_yest(1);
+                testData.setNotif_today(1);
                 testData.setNotif_day(3);
                 testData.setNotif_recy(3);
                 //dbに書き込み
                 dbAssist.insertData(testData,this);
+
+                //Data型の宣言
+                Data testData1 =new Data();
+                //Data型にデータをセット
+                testData1.setName("西");
+                testData1.setKana("にら");
+                testData1.setBirthday(19970714);
+                testData1.setCategory("友達");
+                testData1.setTwitterID("Taiga_Natvaevto");
+                testData1.setMemo("教科書を見てvesva実装して欲しい");
+                testData1.setImage("Imageデータ");
+                testData1.setSmallImage("Imadgeデータ");
+                testData1.setPresentFlag(10);
+                testData1.setTamura(11);
+                testData1.setNotif_yest(11);
+                testData1.setNotif_today(11);
+                testData1.setNotif_day(31);
+                testData1.setNotif_recy(31);
+                //dbに書き込み
+                dbAssist.insertData(testData1,this);
                 return true;
 
             case MENU_SELECT_B:
                 Log.d("Menu","DBをアップデートします");
+
                 testData = new Data();
                 testData.setName("aaaaa");
                 testData.setBirthday(19970714);
-                testData.setNotif_yest(1,this);
-                //DataBase.updateData(1,testData);
+                testData.setNotif_yest(1);
+                dbAssist.updateData(1,testData);
                 //ArrayList<Data> test=  dbAssist.openData(this);
                 return true;
 
             case MENU_SELECT_C:
-                Log.d("Menu","全データ検索と削除");
-                ArrayList<Data> dataList=  dbAssist.openData(this);
+                Log.d("Menu","全データ検索");
+                ArrayList<Data> dataList=  dbAssist.allSelect(this);
+                Log.d("","");
+                return true;
+
+            case MENU_SELECT_D:
+                Log.d("Menu","仮名検索");
+                ArrayList<Data> kanaList=  dbAssist.kanaSelect(this,"にしむら");
                 Log.d("","");
                 //idを指定して削除
                 //dbAssist.deleteData(1);
                 return true;
 
+            case MENU_SELECT_E:
+                Log.d("Menu","id検索");
+                Data idList=  dbAssist.idSelect(this,1);
+                Log.d("","");
+                //idを指定して削除
+                //dbAssist.deleteData(1);
+                return true;
+
+            case MENU_SELECT_F:
+                Log.d("Menu","削除");
+                //idを指定して削除
+                dbAssist.deleteData(1);
+                return true;
         }
         return false;
 
