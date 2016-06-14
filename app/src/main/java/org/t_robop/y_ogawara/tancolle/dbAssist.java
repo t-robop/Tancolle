@@ -15,6 +15,7 @@ public class dbAssist {
     static MySQLiteOpenHelper hlpr;
     static ContentValues cv;
     static Cursor cursor;
+    //TODO 書き換え
     static String openDB = "select * from users_table order by year desc, month desc, date desc";
     final static String TABLE_NAME = "users_table";
 
@@ -63,10 +64,10 @@ public class dbAssist {
             data.setMemo(cursor.getString(cursor.getColumnIndex("memo")));
             data.setImage(cursor.getString(cursor.getColumnIndex("image")));
             data.setSmallImage(cursor.getString(cursor.getColumnIndex("smallImage")));
-            data.setPresentFlag(cursor.getColumnIndex("presentFlag"));
-            data.setTamura(cursor.getColumnIndex("tamura"));
-            data.setNotif_yest(cursor.getColumnIndex("notif_yest"));
-            data.setNotif_today(cursor.getColumnIndex("notif_today"));
+            data.setPresentFlag(cursor.getColumnIndex("presentFlag"),context);
+            data.setTamura(cursor.getColumnIndex("tamura"),context);
+            data.setNotif_yest(cursor.getColumnIndex("notif_yest"),context);
+            data.setNotif_today(cursor.getColumnIndex("notif_today"),context);
             data.setNotif_day(cursor.getColumnIndex("notif_day"));
             data.setNotif_recy(cursor.getColumnIndex("notif_recy"));
 

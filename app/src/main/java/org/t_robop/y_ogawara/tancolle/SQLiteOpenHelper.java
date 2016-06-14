@@ -9,14 +9,14 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 class MySQLiteOpenHelper extends SQLiteOpenHelper {
 
-    // コンストラクタ
-    public MySQLiteOpenHelper(Context c) {
-        super(c, "tancolle.db", null, 1);
-    }
+
+    static final String DB_NAME = "tancolle.db";  //データベースの名前
+    static final int DB_VERSION = 1;             //データベースのバージョン
+    static final String DROP = "drop table users_table";   //データベースを下ろすSQL文
+
 
     /**
      * データベースファイル初回使用時に実行される処理
-     */
     //名前
     String name;
     //ふりがな
@@ -45,25 +45,31 @@ class MySQLiteOpenHelper extends SQLiteOpenHelper {
     int notif_day;
     //通知を繰り返すか
     int notif_recy;
+     */
+
+    // コンストラクタ
+    public MySQLiteOpenHelper(Context c) {
+        super(c, DB_NAME, null, DB_VERSION);
+    }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
         // テーブル作成のクエリを発行
         String sql = "CREATE TABLE users_table ("
                 + " _id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + " name TEXT"
-                +"kana TEXT"
-                +"birthday long"
-                +"category TEXT"
-                +"twitterID TEXT"
-                +"memo TEXT"
-                +"image TEXT"
-                +"smallImage TEXT"
-                +"presentFlag VALUE_BOOL"
-                +"tamura VALUE_BOOL"
-                +"notif_yest VALUE_BOOL"
-                +"notif_today VALUE_BOOL"
-                +"notif_day INTEGER"
+                + " name TEXT,"
+                +"kana TEXT,"
+                +"birthday long,"
+                +"category TEXT,"
+                +"twitterID TEXT,"
+                +"memo TEXT,"
+                +"image TEXT,"
+                +"smallImage TEXT,"
+                +"presentFlag INTEGER,"
+                +"tamura INTEGER,"
+                +"notif_yest INTEGER,"
+                +"notif_today INTEGER,"
+                +"notif_day INTEGER,"
                 +"notif_recy INTEGER"
                 + ");";
         db.execSQL(sql);
@@ -75,7 +81,8 @@ class MySQLiteOpenHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // テーブルの破棄と再作成
-        db.execSQL("drop table users_table;");
+        //db.execSQL("drop table users_table;");
+        db.execSQL(DROP);
         onCreate(db);
     }
 }

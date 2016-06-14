@@ -1,5 +1,8 @@
 package org.t_robop.y_ogawara.tancolle;
 
+import android.content.Context;
+import android.widget.Toast;
+
 /**
  * Created by yuusuke on 16/06/10.
  */
@@ -34,7 +37,7 @@ public class Data {
     int notif_today;
     //通知を何日前にするか
     int notif_day;
-    //通知を繰り返すか
+    //通知を何回繰り返すか
     int notif_recy;
 
 
@@ -123,7 +126,10 @@ public class Data {
         return presentFlag;
     }
 
-    public void setPresentFlag(int presentFlag) {
+    public void setPresentFlag(int presentFlag,Context context) {
+        if (presentFlag !=0||presentFlag!=1){
+            error(context);
+        }
         this.presentFlag = presentFlag;
     }
 
@@ -131,7 +137,10 @@ public class Data {
         return tamura;
     }
 
-    public void setTamura(int tamura) {
+    public void setTamura(int tamura, Context context) {
+        if (tamura !=0||tamura!=1){
+            error(context);
+        }
         this.tamura = tamura;
     }
 
@@ -139,7 +148,10 @@ public class Data {
         return notif_yest;
     }
 
-    public void setNotif_yest(int notif_yest) {
+    public void setNotif_yest(int notif_yest,Context context) {
+        if (notif_yest !=0||notif_yest!=1){
+            error(context);
+        }
         this.notif_yest = notif_yest;
     }
 
@@ -147,7 +159,10 @@ public class Data {
         return notif_today;
     }
 
-    public void setNotif_today(int notif_today) {
+    public void setNotif_today(int notif_today,Context context) {
+        if (notif_today !=0||notif_today!=1){
+            error(context);
+        }
         this.notif_today = notif_today;
     }
 
@@ -160,6 +175,9 @@ public class Data {
     }
 
 
+    void error(Context context){
+        Toast.makeText(context, "0か1を入力させてね", Toast.LENGTH_LONG).show();
 
+    }
 
 }
