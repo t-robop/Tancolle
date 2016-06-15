@@ -9,15 +9,33 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="org.t_robop.y_ogawara.tancolle.UserRegisterActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Name"
-        android:id="@+id/NameView"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:textSize="40dp"
-        android:singleLine="true" />
+        android:orientation="vertical">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="30dp"
+            android:onClick="EditPho"
+            android:id="@+id/EditPho"
+            android:inputType="text"
+            android:focusable="false"
+            android:textColorHint="#a09f9f"
+            android:layout_weight="1"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="30dp"
+            android:onClick="EditName"
+            android:id="@+id/EditName"
+            android:inputType="text"
+            android:focusable="false"
+            android:textColorHint="#a09f9f"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
 
 </RelativeLayout>
