@@ -16,7 +16,7 @@ public class Data {
     //ふりがな
     private String kana;
     //誕生日
-    private long birthday;
+    private int birthday;
     //カテゴリ
     private String category;
     //twitterのID
@@ -74,11 +74,11 @@ public class Data {
         this.kana = kana;
     }
 
-    public long getBirthday() {
+    public int getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(long birthday) {
+    public void setBirthday(int birthday) {
         this.birthday = birthday;
     }
 
