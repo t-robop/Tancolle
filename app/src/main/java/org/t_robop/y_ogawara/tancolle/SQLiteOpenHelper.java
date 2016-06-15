@@ -59,7 +59,7 @@ class MySQLiteOpenHelper extends SQLiteOpenHelper {
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + "name TEXT,"
                 +"kana TEXT,"
-                +"birthday long,"
+                +"birthday INTEGER,"
                 +"category TEXT,"
                 +"twitterID TEXT,"
                 +"memo TEXT,"
