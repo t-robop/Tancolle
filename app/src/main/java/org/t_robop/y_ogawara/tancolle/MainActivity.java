@@ -1,5 +1,6 @@
 package org.t_robop.y_ogawara.tancolle;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -68,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
                 //Data型にデータをセット
                 testData.setName("西村");
                 testData.setKana("にしむら");
-                testData.setBirthday(19970714);
+                testData.setBirthday(19970616);
                 testData.setCategory("友達");
                 testData.setTwitterID("Taiga_Natto");
                 testData.setMemo("教科書を見て実装して欲しい");
@@ -88,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
                 //Data型にデータをセット
                 testData1.setName("西");
                 testData1.setKana("にら");
-                testData1.setBirthday(19970714);
+                testData1.setBirthday(19970512);
                 testData1.setCategory("友達");
                 testData1.setTwitterID("Taiga_Natvaevto");
                 testData1.setMemo("教科書を見てvesva実装して欲しい");
@@ -150,5 +151,10 @@ public class MainActivity extends AppCompatActivity {
         }
         return false;
 
+    }
+
+    public void testBtn(View view) {
+        Intent intent = new Intent(this,UserDetailActivity.class);
+        startActivity(intent);
     }
 }
