@@ -38,9 +38,10 @@ public class SearchActivity extends Activity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
+        //Data型の宣言
         Data testData =new Data();
         //Data型にデータをセット
-         testData.setName("西村");
+        testData.setName("西村");
         testData.setKana("にしむら");
         testData.setBirthday(19970714);
         testData.setCategory("友達");
@@ -48,10 +49,10 @@ public class SearchActivity extends Activity implements
         testData.setMemo("教科書を見て実装して欲しい");
         testData.setImage("Imageデータ");
         testData.setSmallImage("Imageデータ");
-        testData.setPresentFlag(0,this);
-        testData.setTamura(0,this);
-        testData.setNotif_yest(1,this);
-        testData.setNotif_today(1,this);
+        testData.setPresentFlag(0);
+        testData.setTamura(1);
+        testData.setNotif_yest(1);
+        testData.setNotif_today(1);
         testData.setNotif_day(3);
         testData.setNotif_recy(3);
         //dbに書き込み
@@ -59,16 +60,28 @@ public class SearchActivity extends Activity implements
 
 
         //読み込み
-        ArrayList<String> dataList=  dbAssist.kanaSelect(this,"にしむら");
 
-        //String name = dataList.get(0);
-        Log.d("","");
+
+        //返り値は配列
+        ArrayList<Data> dataList=  dbAssist.allSelect(this);
+        Data allData = new Data();
+
+        allData = dataList.get(0);
+        List <String> tes = new ArrayList<>();
+        for (int i =0;dataList.size() > i;i++){
+            tes.add(dataList.get(i).getName());
+        }
+       Log.d("",allData.getMemo());
+       Log.d("aaa",dataList.get(0).getKana());
 
 
         searchView = (SearchView) findViewById(R.id.searchView1);
         listView = (ListView) findViewById(R.id.listView1);
-        adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,dataList);
+        // adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,dataList);
+        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, tes);
         listView.setAdapter(adapter);
+
+        //テキストフィルター(リアルタイム検索)
         listView.setTextFilterEnabled(true);
 
         // Sets the default or resting state of the search field.
@@ -77,8 +90,8 @@ public class SearchActivity extends Activity implements
         searchView.setIconifiedByDefault(false);
         searchView.setOnQueryTextListener(this);
 
-        // Sets the hint text to display in the query text field
-        searchView.setQueryHint("名前を入れてね！！");
+        // 入力するところのヒント
+        searchView.setQueryHint("名前を入力");
 
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
 //        setSupportActionBar(toolbar);
