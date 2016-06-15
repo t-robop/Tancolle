@@ -74,7 +74,7 @@ public class Data {
         this.kana = kana;
     }
 
-    public long getBirthday() {
+    public int getBirthday() {
         return birthday;
     }
 
