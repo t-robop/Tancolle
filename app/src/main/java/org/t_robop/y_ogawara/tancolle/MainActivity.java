@@ -120,7 +120,10 @@ public class MainActivity extends AppCompatActivity {
                 //引数は場所
                 //返り値は配列
                 ArrayList<Data> dataList=  dbAssist.allSelect(this);
-                Log.d("","");
+                Data allData =new Data();
+                allData = dataList.get(1);
+
+                Log.d("aaaaaaaaaaaa", dataList.get(1).getKana());
                 return true;
 
             case MENU_SELECT_D:

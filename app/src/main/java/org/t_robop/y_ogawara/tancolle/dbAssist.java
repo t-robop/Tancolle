@@ -62,7 +62,7 @@ public class dbAssist {
             data.setId(cursor.getInt(0));
             data.setName(cursor.getString(cursor.getColumnIndex("name")));
             data.setKana(cursor.getString(cursor.getColumnIndex("kana")));
-            data.setBirthday(cursor.getColumnIndex("birthday"));
+            data.setBirthday(cursor.getInt(3));
             data.setCategory(cursor.getString(cursor.getColumnIndex("category")));
             data.setTwitterID(cursor.getString(cursor.getColumnIndex("twitterID")));
             data.setMemo(cursor.getString(cursor.getColumnIndex("memo")));
@@ -95,7 +95,7 @@ public class dbAssist {
             data.setId(cursor.getInt(0));
             data.setName(cursor.getString(cursor.getColumnIndex("name")));
             data.setKana(cursor.getString(cursor.getColumnIndex("kana")));
-            data.setBirthday(cursor.getColumnIndex("birthday"));
+            data.setBirthday(cursor.getInt(3));
             data.setCategory(cursor.getString(cursor.getColumnIndex("category")));
             data.setTwitterID(cursor.getString(cursor.getColumnIndex("twitterID")));
             data.setMemo(cursor.getString(cursor.getColumnIndex("memo")));
@@ -128,7 +128,7 @@ public class dbAssist {
         data.setId(cursor.getInt(0));
         data.setName(cursor.getString(cursor.getColumnIndex("name")));
         data.setKana(cursor.getString(cursor.getColumnIndex("kana")));
-        data.setBirthday(cursor.getColumnIndex("birthday"));
+        data.setBirthday(cursor.getInt(3));
         data.setCategory(cursor.getString(cursor.getColumnIndex("category")));
         data.setTwitterID(cursor.getString(cursor.getColumnIndex("twitterID")));
         data.setMemo(cursor.getString(cursor.getColumnIndex("memo")));
@@ -156,7 +156,7 @@ public class dbAssist {
             data.setId(cursor.getInt(0));
             data.setName(cursor.getString(cursor.getColumnIndex("name")));
             data.setKana(cursor.getString(cursor.getColumnIndex("kana")));
-            data.setBirthday(cursor.getColumnIndex("birthday"));
+            data.setBirthday(cursor.getInt(3));
             data.setCategory(cursor.getString(cursor.getColumnIndex("category")));
             data.setTwitterID(cursor.getString(cursor.getColumnIndex("twitterID")));
             data.setMemo(cursor.getString(cursor.getColumnIndex("memo")));
