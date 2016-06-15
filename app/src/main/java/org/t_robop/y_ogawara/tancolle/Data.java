@@ -10,35 +10,35 @@ public class Data {
 
 
     //固有ID
-    int id;
+    private int id;
     //名前
-    String name;
+    private String name;
     //ふりがな
-    String kana;
+    private String kana;
     //誕生日
-    long birthday;
+    private long birthday;
     //カテゴリ
-    String category;
+    private String category;
     //twitterのID
-    String twitterID;
+    private String twitterID;
     //メモ欄
-    String memo;
+    private String memo;
     //画像(詳細画面用)
-    String image;
+    private String image;
     //画像(検索画面)
-    String smallImage;
+    private String smallImage;
     //presentを買ったか
-    int presentFlag;
+    private int presentFlag;
     //年齢を固定するか
-    int tamura;
+    private int tamura;
     //通知を前日にするか
-    int notif_yest;
+    private int notif_yest;
     //通知を当日にするか
-    int notif_today;
+    private int notif_today;
     //通知を何日前にするか
-    int notif_day;
+    private int notif_day;
     //通知を何回繰り返すか
-    int notif_recy;
+    private int notif_recy;
 
 
     public int getId() {
