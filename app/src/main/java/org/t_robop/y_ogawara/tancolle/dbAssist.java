@@ -119,7 +119,7 @@ public class dbAssist {
     public static Data idSelect(int id,Context context){
         String sqlstr = "select *"
                 +"from users_table "
-                + "where id like" +"'%"+id+"%'";
+                + "where id = "+id;
         sqLiteOpenHelper = new MySQLiteOpenHelper(context);
         sqldb = sqLiteOpenHelper.getWritableDatabase();
         cursor = sqldb.rawQuery(sqlstr,null);
