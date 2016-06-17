@@ -19,27 +19,50 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <EditText
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:textSize="30dp"
-                android:onClick="EditPho"
-                android:id="@+id/EditPho"
-                android:inputType="text"
-                android:focusable="false"
-                android:textColorHint="#a09f9f"
-                android:layout_weight="3"/>
+                android:orientation="horizontal">
 
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:textSize="30dp"
-                android:onClick="EditName"
-                android:id="@+id/EditName"
-                android:inputType="text"
-                android:focusable="false"
-                android:textColorHint="#a09f9f"
-                android:layout_weight="3"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_weight="1">
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="80dp"
+                        android:textSize="10dp"
+                        android:onClick="EditPho"
+                        android:id="@+id/EditPho"
+                        android:inputType="text"
+                        android:focusable="false"
+                        android:textColorHint="#a09f9f"
+                        android:layout_weight="3"/>
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:textSize="30dp"
+                        android:onClick="EditName"
+                        android:id="@+id/EditName"
+                        android:inputType="text"
+                        android:focusable="false"
+                        android:textColorHint="#a09f9f"
+                        android:layout_weight="3"/>
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="120dp"
+                    android:id="@+id/userview"
+                    android:onClick="UserView"/>
+
+
+
+            </LinearLayout>
 
             <TextView
                 android:layout_width="match_parent"
@@ -51,7 +74,9 @@
                 android:text="2000/10/10"
                 android:textSize="60dp"
                 android:gravity="center"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:onClick="BirthDay"
+                android:id="@+id/userbirthday"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -172,7 +197,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Notification Settings"
+                android:text="通知設定"
                 android:textSize="30dp"/>
 
             <TextView
