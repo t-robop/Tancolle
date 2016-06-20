@@ -19,11 +19,15 @@ public class dataListAdapter extends ArrayAdapter<ListItem> {
     LayoutInflater inflater;
 
     public dataListAdapter(Context context, int itemId, List<ListItem> items) {
-        super(context, itemId,items);
+        super(context, itemId, items);
 
         this.itemId = itemId;
         this.items = items;
-         this.inflater = (LayoutInflater)context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
+        this.inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
+    }
+    @Override
+    public long getItemId(int position) {
+        return position;
     }
 
     //1行1行表示させる
@@ -33,15 +37,16 @@ public class dataListAdapter extends ArrayAdapter<ListItem> {
         View view;
         if (convertView != null) {
             view = convertView;
-        }
-        else {
-            view = this.inflater.inflate(this.itemId,null);
+        } else {
+            view = this.inflater.inflate(this.itemId, null);
         }
 
         ListItem item = this.items.get(position);
 
         TextView tv = (TextView) view.findViewById(R.id.item_text);
         tv.setText(item.getName());
+        TextView tv1 = (TextView) view.findViewById(R.id.kana_text);
+        tv1.setText(item.getKana());
 
         return view;
     }

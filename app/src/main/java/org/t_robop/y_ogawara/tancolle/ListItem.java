@@ -3,15 +3,16 @@ package org.t_robop.y_ogawara.tancolle;
 public class ListItem {
 
     private String name;
+    private String kana;
 
     private int itemId;
 
-    public int getItemId() {
-        return itemId;
-    }
 
     public void setItemId(int itemId) {
         this.itemId = itemId;
+    }
+    public int getId(){
+        return itemId;
     }
 
 
@@ -21,5 +22,13 @@ public class ListItem {
 
     public String getName() {
         return name;
+    }
+
+    public void setKana(String kana) {
+        this.kana = kana;
+    }
+
+    public String getKana() {
+        return kana;
     }
 }
