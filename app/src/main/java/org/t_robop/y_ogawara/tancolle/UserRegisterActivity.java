@@ -4,34 +4,36 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Calendar;
-import java.util.StringTokenizer;
 
-public class UserRegisterActivity extends AppCompatActivity {
+public class UserRegisterActivity extends AppCompatActivity implements TextWatcher {
     private static final int REQUEST_GALLERY = 0;//ギャラリー選択で必要な初期化
 
     EditText edit_name;
@@ -43,24 +45,20 @@ public class UserRegisterActivity extends AppCompatActivity {
 
     TextView user_birthday;
 
+    TextView user_yearsold;
+
     InputMethodManager inputMethodManager;
 
 
     DatePickerDialog datePickerDialog;
-//    int rema;
-//    int nowM;
-//    int nowD;
     Calendar calendar;
     Calendar nowCale;
-    Calendar birthCale;
 
     int y;
     int m;
     int d;
 
     int birthday;
-
-
 
     //sppinerTest
     private Spinner spinnerCategory;
@@ -79,6 +77,23 @@ public class UserRegisterActivity extends AppCompatActivity {
     ArrayAdapter<String> adapter;
 
 
+    EditText edit_memo;
+
+
+    String TryText;
+    int TryFlag;
+
+    Bitmap img;
+    String img_name;
+
+    CheckBox tamura_check;
+    CheckBox yesterday_check;
+    CheckBox today_check;
+
+    int ta_check;
+    int ye_check;
+    int to_check;
+
 
 
     /////////////////////////Override/////////////////////////
@@ -94,6 +109,15 @@ public class UserRegisterActivity extends AppCompatActivity {
         sppinerCategory();
         sppinerSet(repetition,spinnerRepetitionItems);
 
+        user_yearsold=(TextView)findViewById(R.id.YearsOld);
+        //年齢表示
+        if(YearsOldSet(birthday)>1000) {
+            user_yearsold.setText("");
+        }
+        else {
+            user_yearsold.setText(String.valueOf(YearsOldSet(birthday))+"歳");
+        }
+
         edit_name=(EditText)findViewById(R.id.EditName);
         // EditText が空のときに表示させるヒントを設定
         edit_name.setHint("Name");
@@ -104,16 +128,18 @@ public class UserRegisterActivity extends AppCompatActivity {
 
         edit_twitter=(EditText)findViewById(R.id.twitter);
         // EditText が空のときに表示させるヒントを設定
-        edit_twitter.setHint("@");
+        edit_twitter.setHint("@twitter");
 
         edit_days_ago=(EditText)findViewById(R.id.ago);
         // EditText が空のときに表示させるヒントを設定
         edit_days_ago.setHint("Days");
 
+        edit_memo=(EditText)findViewById(R.id.Memo);
+        // EditText が空のときに表示させるヒントを設定
+        edit_memo.setHint("何でも自由に書いてね！");
 
         //キーボード表示を制御するためのオブジェクト
         inputMethodManager =  (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-
 
         //EditTextの内容設定
         EditTextSet(edit_name);
@@ -124,7 +150,16 @@ public class UserRegisterActivity extends AppCompatActivity {
         //ImageViewの初期設定
         user_view= (ImageView)findViewById(R.id.userview);
         user_view.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        user_view.setImageResource(R.drawable.kaede);
+
+        //CheckBox初期宣言
+        tamura_check=(CheckBox)findViewById(R.id.TamuraCheck);
+        yesterday_check=(CheckBox)findViewById(R.id.YesterdayCheck);
+        today_check=(CheckBox)findViewById(R.id.TodayCheck);
+        //CheckBoxの値を取得
+        TamuraJudge(tamura_check);
+        YesterdayJudge(yesterday_check);
+        TodayJudge(today_check);
+
 
         user_birthday=(TextView)findViewById(R.id.userbirthday);
 
@@ -136,11 +171,24 @@ public class UserRegisterActivity extends AppCompatActivity {
         BirthDayDraw(birthday);
 
 
-
         inflater = LayoutInflater.from(UserRegisterActivity.this);
         viewV = inflater.inflate(R.layout.dialog_user_register, null);
         editText = (EditText)viewV.findViewById(R.id.editText1);
 
+
+        edit_name.addTextChangedListener(this);//aaaaaaaaaaaaaa
+
+
+        //画像読み込み
+        InputStream in;
+        try {
+            in = openFileInput(img_name+".jpg");
+            img = BitmapFactory.decodeStream(in);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        user_view.setImageBitmap(img);
     }
 
     //画像をドキュメントから選択からのImageViewセット
@@ -168,7 +216,7 @@ public class UserRegisterActivity extends AppCompatActivity {
                 }
 
                 // bitmapの画像を元の比率から最適化された比率で作成する
-                Bitmap img = Bitmap.createScaledBitmap(pct, pctWidth, pctHeight, false);
+                img = Bitmap.createScaledBitmap(pct, pctWidth, pctHeight, false);
                 in.close();
 
                 // 選択した画像を表示
@@ -176,8 +224,97 @@ public class UserRegisterActivity extends AppCompatActivity {
                 } catch (Exception e) {
 
                 }
+
+
+
+            //画像保存時の名前用の現在日時取得
+            calendar = Calendar.getInstance();
+            int imgye,imgmo,imgda,imgho,imgmi,imgse;
+
+            imgye = calendar.get(Calendar.YEAR); // 年
+            imgmo = calendar.get(Calendar.MONTH); // 月
+            imgmo++;
+            imgda = calendar.get(Calendar.DAY_OF_MONTH); // 日
+            imgho=calendar.get(Calendar.HOUR_OF_DAY);//時
+            imgmi=calendar.get(Calendar.MINUTE);//分
+            imgse=calendar.get(Calendar.SECOND);//秒
+
+            img_name=String.valueOf(imgye)+String.valueOf(imgmo)+String.valueOf(imgda)+String.valueOf(imgho)+String.valueOf(imgmi)+String.valueOf(imgse);
+
+
+            //ローカルファイルへ保存
+            try{
+                final FileOutputStream out = openFileOutput(img_name+".jpg",Context.MODE_WORLD_READABLE);
+                Log.d("aaaa",img_name);
+                img.compress(Bitmap.CompressFormat.JPEG,100,out);
+                out.close();
+            }catch(IOException e){
+                e.printStackTrace();
+            }
+
             }
         }
+
+
+    //TextWatcher
+    @Override
+    public void beforeTextChanged(final CharSequence s, int start, int count, int after) {
+        //操作前のEtidTextの状態を取得する
+        edit_pho.setText(s.toString());
+
+
+        //EditTextにリスナーをセット
+        edit_name.setOnKeyListener(new View.OnKeyListener() {
+
+            //コールバックとしてonKey()メソッドを定義
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                //イベントを取得するタイミングには、ボタンが押されてなおかつエンターキーだったときを指定
+                if((event.getAction() != KeyEvent.ACTION_DOWN)){
+
+
+                    return true;
+                }
+
+                return false;
+            }
+        });
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        //操作中のEtidTextの状態を取得する
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+        //操作後のEtidTextの状態を取得する
+    }
+
+
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // アクションバー内に使用するメニューアイテムを注入します。
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.user_register_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    //アクションバー処理
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // アクションバーアイテム上の押下を処理します。
+        switch (item.getItemId()) {
+            case R.id.action_button:
+                AllRegist();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
 
     ////////////////////////////////////////////////////////////
 
@@ -236,6 +373,14 @@ public class UserRegisterActivity extends AppCompatActivity {
         datePickerDialog.show();
     }
 
+    //カテゴリ追加
+    public void CategoryPlus(View v)
+    {
+        SpinnerCategoryAdd();
+        Adddialog.show();
+    }
+
+
     //////////////////////////////////////////////////
 
 
@@ -243,15 +388,15 @@ public class UserRegisterActivity extends AppCompatActivity {
 
     ////////////////////自作関数群////////////////////
 
-    public void EditDaysAgo()
+    public void EditSetString(EditText edit,String string)
     {
         String text;
         // エディットテキストのテキストを全選択します
-        edit_days_ago.selectAll();
+        edit.selectAll();
         // エディットテキストのテキストを取得します
-        text = edit_days_ago.getText().toString();
+        text = edit.getText().toString();
         //editTextの初期化
-        edit_days_ago.getEditableText().clear();
+        edit.getEditableText().clear();
 
         //textの長さが0(何も入っていない)の場合
         if(text.length()==0)
@@ -263,7 +408,7 @@ public class UserRegisterActivity extends AppCompatActivity {
             //textから数値のみ取り出す
             int ret = Integer.parseInt(text.replaceAll("[^0-9]",""));
             //「日前」を加えて表示
-            edit_days_ago.setText(String.valueOf(ret)+"日前");
+            edit.setText(String.valueOf(ret)+string);
         }
     }
 
@@ -282,7 +427,7 @@ public class UserRegisterActivity extends AppCompatActivity {
                     //キーボードを閉じる
                     inputMethodManager.hideSoftInputFromWindow(edit.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
 
-                    EditDaysAgo();//edit_days_ago用処理
+                    EditSetString(edit_days_ago,"日前");//edit_days_ago用処理
 
                     //フォーカスを外す
                     edit.setFocusable(false);
@@ -318,8 +463,7 @@ public class UserRegisterActivity extends AppCompatActivity {
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // アイテムを追加します
-        adapter.add("<選択>");
-        adapter.add("+");
+        adapter.add("<未選択>");
         spinnerCategory = (Spinner) findViewById(R.id.spinner1);
         // アダプターを設定します
         spinnerCategory.setAdapter(adapter);
@@ -330,50 +474,12 @@ public class UserRegisterActivity extends AppCompatActivity {
                                        int position, long id) {
                 //処理
 
-                if(position==1)
-                {
-                    SpinnerCategoryAdd();
-                    Adddialog.show();
-                }
-                else
-                {
-                    //ここでカテゴリの名前保存しよう
-                }
 
             }
             @Override
             public void onNothingSelected(AdapterView<?> arg0) {
             }
         });
-
-
-//        // ArrayAdapter
-//        ArrayAdapter<String> adapter
-//                = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, spinnerItems);
-//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        // spinner に adapter をセット
-//        nSpinner.setAdapter(adapter);
-//
-//        // リスナーを登録
-//        nSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            //　アイテムが選択された時
-//            public void onItemSelected(AdapterView<?> parent, View viw, int arg2, long arg3) {
-//                Spinner spinner = (Spinner) parent;
-//                String item = (String) spinner.getSelectedItem();
-//
-//                if (item.equals(spinnerItems[1])) {
-//
-//                } else if (item.equals(spinnerItems[2])) {
-//
-//                } else {
-//
-//                }
-//            }
-//
-//            //　アイテムが選択されなかった
-//            public void onNothingSelected(AdapterView<?> parent) {
-//            }
-//        });
     }
 
     //spinner使おうぜ！！（セットするspinner,セットするTextView,セットするString）
@@ -453,6 +559,14 @@ public class UserRegisterActivity extends AppCompatActivity {
 
                 //描画
                 BirthDayDraw(birthday);
+
+                //年齢表示
+                if(YearsOldSet(birthday)>1000) {
+                    user_yearsold.setText("");
+                }
+                else {
+                    user_yearsold.setText(String.valueOf(YearsOldSet(birthday))+"歳");
+                }
             }
         };
         // 日付設定ダイアログの作成・リスナの登録
@@ -542,6 +656,137 @@ public class UserRegisterActivity extends AppCompatActivity {
                     })
                     .create();//初回AddDiaLog制作
         }
+    }
+
+    //年齢計算
+    public int YearsOldSet(int birth)
+    {
+        int birthyear,nowyear,nowmonth,nowday,yearsold;
+        int caly,calm,cald,cal;
+
+        caly=birth/10000;
+
+        calm=birth/100;
+        cal=caly*100;
+        calm=calm-cal;
+
+        cal=caly*10000;
+        cald=birth-cal;
+        cal=calm*100;
+        cald=cald-cal;
+
+
+        calendar = Calendar.getInstance();
+
+        nowyear = calendar.get(Calendar.YEAR); // 年
+        nowmonth = calendar.get(Calendar.MONTH); // 月
+        nowday = calendar.get(Calendar.DAY_OF_MONTH); // 日
+
+        birthyear=birth/10000;
+
+        yearsold=nowyear-birthyear;
+
+        if(calm>nowmonth)
+        {
+            yearsold=yearsold-1;
+        }
+        else if(calm==nowmonth&&cald>nowday)
+        {
+            yearsold=yearsold-1;
+        }
+
+        return yearsold;
+    }
+
+
+    //TamuraCheck判定処理
+    public void TamuraJudge(final CheckBox check)
+    {
+        // チェックボックスがクリックされた時に呼び出されるコールバックリスナーを登録します
+        check.setOnClickListener(new View.OnClickListener() {
+            @Override
+            // チェックボックスがクリックされた時に呼び出されます
+            public void onClick(View v) {
+                // チェックボックスのチェック状態を取得します
+                boolean checked = check.isChecked();
+
+                if(checked==true)
+                {
+                    ta_check=1;
+                }
+                else
+                {
+                    ta_check=0;
+                }
+            }
+        });
+    }
+    //YesterdayCheck判定処理
+    public void YesterdayJudge(final CheckBox check)
+    {
+        // チェックボックスがクリックされた時に呼び出されるコールバックリスナーを登録します
+        check.setOnClickListener(new View.OnClickListener() {
+            @Override
+            // チェックボックスがクリックされた時に呼び出されます
+            public void onClick(View v) {
+                // チェックボックスのチェック状態を取得します
+                boolean checked = check.isChecked();
+
+                if(checked==true)
+                {
+                    ye_check=1;
+                }
+                else
+                {
+                    ye_check=0;
+                }
+            }
+        });
+    }
+    //TodayCheck判定処理
+    public void TodayJudge(final CheckBox check)
+    {
+        // チェックボックスがクリックされた時に呼び出されるコールバックリスナーを登録します
+        check.setOnClickListener(new View.OnClickListener() {
+            @Override
+            // チェックボックスがクリックされた時に呼び出されます
+            public void onClick(View v) {
+                // チェックボックスのチェック状態を取得します
+                boolean checked = check.isChecked();
+
+                if(checked==true)
+                {
+                    to_check=1;
+                }
+                else
+                {
+                    to_check=0;
+                }
+            }
+        });
+    }
+
+
+    public void AllRegist()
+    {
+        //Data型の宣言
+        Data allData =new Data();
+        //Data型にデータをセット
+        allData.setName("西村");
+        allData.setKana("にしむら");
+        allData.setBirthday(19970616);
+        allData.setCategory("友達");
+        allData.setTwitterID("Taiga_Natto");
+        allData.setMemo("教科書を見て実装して欲しい");
+        allData.setImage("Imageデータ");
+        allData.setSmallImage("Imageデータ");
+        allData.setTamura(1);
+        allData.setNotif_yest(1);
+        allData.setNotif_today(1);
+        allData.setNotif_day(3);
+        allData.setNotif_recy(3);
+        //dbに書き込み
+        dbAssist.insertData(allData,this);
     }
 
     //////////////////////////////////////////////////
