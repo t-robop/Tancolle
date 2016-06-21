@@ -28,17 +28,18 @@ public class Data {
     //画像(検索画面)
     private String smallImage;
     //presentを買ったか
-    private int presentFlag;
+    //ここで、int型の最小値を初期値に設定、そうしないと0や-の値が使えなくなる
+    private int presentFlag = Integer.MIN_VALUE;
     //年齢を固定するか
-    private int tamura;
+    private int tamura = Integer.MIN_VALUE;
     //通知を前日にするか
-    private int notif_yest;
+    private int notif_yest = Integer.MIN_VALUE;
     //通知を当日にするか
-    private int notif_today;
+    private int notif_today = Integer.MIN_VALUE;
     //通知を何日前にするか
-    private int notif_day;
+    private int notif_day = Integer.MIN_VALUE;
     //通知を何回繰り返すか
-    private int notif_recy;
+    private int notif_recy = Integer.MIN_VALUE;
 
 
     public int getId() {
