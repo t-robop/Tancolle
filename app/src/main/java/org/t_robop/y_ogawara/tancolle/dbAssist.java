@@ -211,22 +211,22 @@ public class dbAssist {
         if (data.getSmallImage()!=null){
             cv.put("smallImage", data.getSmallImage());
         }
-        if (data.isPresentFlag()!=0){
+        if (data.isPresentFlag()!=Integer.MIN_VALUE){
             cv.put("presentFlag", data.isPresentFlag());
         }
-        if (data.isPresentFlag()!=0){
+        if (data.isPresentFlag()!=Integer.MIN_VALUE){
             cv.put("tamura", data.isTamura());
         }
-        if (data.isNotif_yest()!=0){
+        if (data.isNotif_yest()!=Integer.MIN_VALUE){
             cv.put("notif_yest", data.isNotif_today());
         }
-        if (data.isNotif_today()!=0){
+        if (data.isNotif_today()!=Integer.MIN_VALUE){
             cv.put("notif_today", data.isNotif_today());
         }
-        if (data.getNotif_day()!=0){
+        if (data.getNotif_day()!=Integer.MIN_VALUE){
             cv.put("notif_day", data.getNotif_day());
         }
-        if (data.getNotif_recy()!=0){
+        if (data.getNotif_recy()!=Integer.MIN_VALUE){
             cv.put("notif_recy", data.getNotif_recy());
         }
 
