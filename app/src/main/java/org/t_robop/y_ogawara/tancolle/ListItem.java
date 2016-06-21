@@ -32,3 +32,5 @@ public class ListItem {
         return kana;
     }
 }
+
+

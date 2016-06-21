@@ -51,13 +51,13 @@ public class SearchActivity extends Activity implements SearchView.OnQueryTextLi
         for (int i = 0; dataList.size() > i; i++) {
             ListItem item = new ListItem();
             item.setName(dataList.get(i).getName());
-            //item.setKana(dataList.get(i).getKana());
+            item.setKana(dataList.get(i).getKana());
             item.setItemId(111);
             name.add(item);
         }
         dataListAdapter adapter = new dataListAdapter(this, R.layout.activity_search__item, name);
         listView = (ListView) findViewById(R.id.listView);
-        listView.setAdapter(adapter);
+
 
         //テキストフィルター(リアルタイム検索)
         listView.setTextFilterEnabled(true);
@@ -69,6 +69,8 @@ public class SearchActivity extends Activity implements SearchView.OnQueryTextLi
         //上のボックスに入れるテキスト
         searchView.setQueryHint("名前を入力");
 
+        listView.setAdapter(adapter);
+        
     }
 
     @Override
@@ -100,6 +102,8 @@ public class SearchActivity extends Activity implements SearchView.OnQueryTextLi
 
         return true;
     }
+
+
 
 
 }
