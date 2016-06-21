@@ -112,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
                 updateData.setName("aaaaa");
                 updateData.setBirthday(19970714);
                 updateData.setNotif_yest(1);
+                updateData.setNotif_recy(0);
                 //引数はid,data,場所
                 dbAssist.updateData(1,updateData,this);
                 return true;
