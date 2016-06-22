@@ -22,7 +22,7 @@ class MySQLiteOpenHelper extends SQLiteOpenHelper {
     //ふりがな
     String kana;
     //誕生日
-    long birthday;
+    int birthday;
     //カテゴリ
     String category;
     //twitterのID
