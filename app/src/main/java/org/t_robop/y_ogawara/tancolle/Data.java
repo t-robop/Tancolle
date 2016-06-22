@@ -31,7 +31,7 @@ public class Data {
     //ここで、int型の最小値を初期値に設定、そうしないと0や-の値が使えなくなる
     private int presentFlag = Integer.MIN_VALUE;
     //年齢を固定するか
-    private int tamura = Integer.MIN_VALUE;
+    private int yukarin = Integer.MIN_VALUE;
     //通知を前日にするか
     private int notif_yest = Integer.MIN_VALUE;
     //通知を当日にするか
@@ -131,13 +131,13 @@ public class Data {
         this.presentFlag = presentFlag;
     }
 
-    public int isTamura() {
-        return tamura;
+    public int isYukarin() {
+        return yukarin;
     }
 
-    public void setTamura(int tamura) {
+    public void setYukarin(int yukarin) {
 
-        this.tamura = tamura;
+        this.yukarin = yukarin;
     }
 
     public int isNotif_yest() {

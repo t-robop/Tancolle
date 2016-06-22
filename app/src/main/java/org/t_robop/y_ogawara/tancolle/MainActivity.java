@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
                 testData.setImage("Imageデータ");
                 testData.setSmallImage("Imageデータ");
                 testData.setPresentFlag(0);
-                testData.setTamura(1);
+                testData.setYukarin(1);
                 testData.setNotif_yest(1);
                 testData.setNotif_today(1);
                 testData.setNotif_day(3);
@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
                 testData1.setImage("Imageデータ");
                 testData1.setSmallImage("Imadgeデータ");
                 testData1.setPresentFlag(10);
-                testData1.setTamura(11);
+                testData1.setYukarin(11);
                 testData1.setNotif_yest(11);
                 testData1.setNotif_today(11);
                 testData1.setNotif_day(31);
