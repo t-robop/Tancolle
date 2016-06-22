@@ -41,7 +41,7 @@ public class dbAssist {
         cv.put("image", data.getTwitterID());
         cv.put("smallImage", data.getSmallImage());
         cv.put("presentFlag", data.isPresentFlag());
-        cv.put("tamura", data.isTamura());
+        cv.put("yukarin", data.isYukarin());
         cv.put("notif_yest", data.isNotif_today());
         cv.put("notif_today", data.isNotif_today());
         cv.put("notif_day", data.getNotif_day());
@@ -69,7 +69,7 @@ public class dbAssist {
             data.setImage(cursor.getString(cursor.getColumnIndex("image")));
             data.setSmallImage(cursor.getString(cursor.getColumnIndex("smallImage")));
             data.setPresentFlag(cursor.getInt(9));
-            data.setTamura(cursor.getInt(10));
+            data.setYukarin(cursor.getInt(10));
             data.setNotif_yest(cursor.getInt(11));
             data.setNotif_today(cursor.getInt(12));
             data.setNotif_day(cursor.getInt(13));
@@ -102,7 +102,7 @@ public class dbAssist {
             data.setImage(cursor.getString(cursor.getColumnIndex("image")));
             data.setSmallImage(cursor.getString(cursor.getColumnIndex("smallImage")));
             data.setPresentFlag(cursor.getInt(9));
-            data.setTamura(cursor.getInt(10));
+            data.setYukarin(cursor.getInt(10));
             data.setNotif_yest(cursor.getInt(11));
             data.setNotif_today(cursor.getInt(12));
             data.setNotif_day(cursor.getInt(13));
@@ -135,7 +135,7 @@ public class dbAssist {
         data.setImage(cursor.getString(cursor.getColumnIndex("image")));
         data.setSmallImage(cursor.getString(cursor.getColumnIndex("smallImage")));
         data.setPresentFlag(cursor.getInt(9));
-        data.setTamura(cursor.getInt(10));
+        data.setYukarin(cursor.getInt(10));
         data.setNotif_yest(cursor.getInt(11));
         data.setNotif_today(cursor.getInt(12));
         data.setNotif_day(cursor.getInt(13));
@@ -163,7 +163,7 @@ public class dbAssist {
             data.setImage(cursor.getString(cursor.getColumnIndex("image")));
             data.setSmallImage(cursor.getString(cursor.getColumnIndex("smallImage")));
             data.setPresentFlag(cursor.getInt(9));
-            data.setTamura(cursor.getInt(10));
+            data.setYukarin(cursor.getInt(10));
             data.setNotif_yest(cursor.getInt(11));
             data.setNotif_today(cursor.getInt(12));
             data.setNotif_day(cursor.getInt(13));
@@ -215,7 +215,7 @@ public class dbAssist {
             cv.put("presentFlag", data.isPresentFlag());
         }
         if (data.isPresentFlag()!=Integer.MIN_VALUE){
-            cv.put("tamura", data.isTamura());
+            cv.put("yukarin", data.isYukarin());
         }
         if (data.isNotif_yest()!=Integer.MIN_VALUE){
             cv.put("notif_yest", data.isNotif_today());
