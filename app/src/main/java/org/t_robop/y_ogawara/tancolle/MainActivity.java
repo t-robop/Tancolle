@@ -1,5 +1,8 @@
 package org.t_robop.y_ogawara.tancolle;
 
+
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -153,9 +156,38 @@ public class MainActivity extends AppCompatActivity {
         return false;
 
     }
+    // プリファレンス保存
+// aaa,bbb,ccc... の文字列で保存
+    private void saveArray(String[] array,String PrefKey){
+        StringBuffer buffer = new StringBuffer();
+        String stringItem = null;
+        for(String item : array){
+            buffer.append(item+",");
+        };
+        if(buffer != null){
+            String buf = buffer.toString();
+            stringItem = buf.substring(0, buf.length() - 1);
 
+            SharedPreferences prefs1 = getSharedPreferences("Array", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = prefs1.edit();
+            editor.putString(PrefKey, stringItem).commit();
+        }
+    }
+
+    // プリファレンス取得
+// aaa,bbb,ccc...としたものをsplitして返す
+    private String[] getArray(String PrefKey) {
+        SharedPreferences prefs2 = getSharedPreferences("Array", Context.MODE_PRIVATE);
+        String stringItem = prefs2.getString(PrefKey, "");
+        if (stringItem != null && stringItem.length() != 0) {
+            return stringItem.split(",");
+        } else {
+            return null;
+        }
+    }
     public void testBtn(View view) {
         Intent intent = new Intent(this,UserDetailActivity.class);
         startActivity(intent);
+
     }
 }
