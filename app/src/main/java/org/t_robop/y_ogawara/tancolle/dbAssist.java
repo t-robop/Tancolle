@@ -28,8 +28,8 @@ public class dbAssist {
     }
 
     //データを追加するメソッド
-    public static void insertData(Data data, Context context) {
-        sqLiteOpenHelper = new MySQLiteOpenHelper(context);
+    public static void insertData(Data data,Context context) {
+        sqLiteOpenHelper = new MySQLiteOpenHelper(context.getApplicationContext());
         sqldb = sqLiteOpenHelper.getWritableDatabase();
         cv = new ContentValues();
         cv.put("name", data.getName());
