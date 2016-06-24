@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.app.AlertDialog;
@@ -31,6 +32,7 @@ import android.widget.TextView;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class UserRegisterActivity extends AppCompatActivity implements TextWatcher {
@@ -66,6 +68,9 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
     private Spinner repetition;
     private String spinnerRepetitionItems[] = {"繰り返し通知無し", "毎日", "一週間毎","一ヶ月毎"};
 
+    int reptition_loop;
+
+    int days_ago;//何日前ですかー？
 
     private AlertDialog Adddialog;
 
@@ -75,13 +80,12 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
     EditText editText;
 
     ArrayAdapter<String> adapter;
+    ArrayList<String> arraylist;
 
+    String user_category;
 
     EditText edit_memo;
-
-
-    String TryText;
-    int TryFlag;
+    
 
     Bitmap img;
     String img_name;
@@ -94,6 +98,10 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
     int ye_check;
     int to_check;
 
+    Data idDate;
+
+    String imgTest;
+    int id;
 
 
     /////////////////////////Override/////////////////////////
@@ -101,6 +109,8 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_register);
+
+        arraylist = new ArrayList<String>();
 
         //数多（予定）の宣言
         repetition=(Spinner)findViewById(R.id.spinner2);
@@ -138,6 +148,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         // EditText が空のときに表示させるヒントを設定
         edit_memo.setHint("何でも自由に書いてね！");
 
+
         //キーボード表示を制御するためのオブジェクト
         inputMethodManager =  (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
 
@@ -163,9 +174,29 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
 
         user_birthday=(TextView)findViewById(R.id.userbirthday);
 
+        if(id!=0) {
+            idDate = dbAssist.idSelect(id, this);
 
-        //誕生日初期設定
-        BirthTodaySet();
+            edit_name.setText(idDate.getName());
+            edit_pho.setText(idDate.getKana());
+            edit_twitter.setText(idDate.getTwitterID());
+            edit_days_ago.setText(idDate.getNotif_day());
+            edit_memo.setText(idDate.getMemo());
+            birthday=idDate.getBirthday();
+            ta_check=idDate.isTamura();
+            ye_check=idDate.isNotif_yest();
+            to_check=idDate.isNotif_today();
+            CheckBoxChange(tamura_check,ta_check);
+            CheckBoxChange(yesterday_check,ye_check);
+            CheckBoxChange(today_check,to_check);
+            repetition.setSelection(idDate.getNotif_recy());
+            imgTest=idDate.getImage();
+
+        }else {
+            //誕生日初期設定
+            BirthTodaySet();
+            imgTest = "null.jpg";
+        }
 
         //誕生日描画
         BirthDayDraw(birthday);
@@ -176,13 +207,13 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         editText = (EditText)viewV.findViewById(R.id.editText1);
 
 
-        edit_name.addTextChangedListener(this);//aaaaaaaaaaaaaa
+        edit_name.addTextChangedListener(this);//aaaaaaaaaaaaa
 
 
         //画像読み込み
         InputStream in;
         try {
-            in = openFileInput(img_name+".jpg");
+            in = openFileInput(imgTest);
             img = BitmapFactory.decodeStream(in);
         }
         catch (IOException e) {
@@ -245,7 +276,6 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             //ローカルファイルへ保存
             try{
                 final FileOutputStream out = openFileOutput(img_name+".jpg",Context.MODE_WORLD_READABLE);
-                Log.d("aaaa",img_name);
                 img.compress(Bitmap.CompressFormat.JPEG,100,out);
                 out.close();
             }catch(IOException e){
@@ -406,9 +436,9 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         else
         {
             //textから数値のみ取り出す
-            int ret = Integer.parseInt(text.replaceAll("[^0-9]",""));
+            days_ago = Integer.parseInt(text.replaceAll("[^0-9]",""));
             //「日前」を加えて表示
-            edit.setText(String.valueOf(ret)+string);
+            edit.setText(String.valueOf(days_ago)+string);
         }
     }
 
@@ -462,8 +492,21 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
 
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // プリファレンスから取得
+        String[] arrayItem2 = getArray("StringItem");
+
+        //Log.d("aaaa",String.valueOf(arrayItem2.length));
+
         // アイテムを追加します
         adapter.add("<未選択>");
+        if(arrayItem2==null) {
+        }
+        else {
+            for (int n = 1; n < arrayItem2.length; n++) {
+                adapter.add(arrayItem2[n]);
+            }
+        }
         spinnerCategory = (Spinner) findViewById(R.id.spinner1);
         // アダプターを設定します
         spinnerCategory.setAdapter(adapter);
@@ -473,8 +516,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int position, long id) {
                 //処理
-
-
+                user_category=(String) spinnerCategory.getItemAtPosition(position);
             }
             @Override
             public void onNothingSelected(AdapterView<?> arg0) {
@@ -482,7 +524,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         });
     }
 
-    //spinner使おうぜ！！（セットするspinner,セットするTextView,セットするString）
+    //spinner使おうぜ！！（セットするspinner,セットするString）
     public void sppinerSet(Spinner nSpinner, final String spinnerItems[])
     {
         // ArrayAdapter
@@ -501,18 +543,19 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
 
                 if (item.equals(spinnerItems[1]))
                 {
+                    reptition_loop=1;
                 }
                 else if (item.equals(spinnerItems[2]))
                 {
-
+                    reptition_loop=2;
                 }
                 else if (item.equals(spinnerItems[3]))
                 {
-
+                    reptition_loop=3;
                 }
                 else //初期値
                 {
-
+                    reptition_loop=0;
                 }
             }
 
@@ -552,8 +595,6 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
                 y = year;
                 m = monthOfYear;
                 d = dayOfMonth;
-
-                //birthCale.set(y,m,d);
 
                 birthday=BirthDayGet(y,m,d);
 
@@ -644,6 +685,8 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
                             //要素追加
                             //リストとadaptorに入力値を入れる
                             adapter.add(addcategory);
+
+                            arraylist.add(addcategory);
 
                             //adapter更新
                             adapter.notifyDataSetChanged();
@@ -766,27 +809,94 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         });
     }
 
+    //checkboxの中身を判断してtruefalse変更
+    public void CheckBoxChange(CheckBox Cb,int check)
+    {
+        if(check==0)
+        {
+            Cb.setChecked(false);
+        }
+        else
+        {
+            Cb.setChecked(true);
+        }
+    }
+
+
+    // プリファレンス保存
+// aaa,bbb,ccc... の文字列で保存
+    private void saveArray(ArrayList<String> array, String PrefKey){
+        StringBuffer buffer = new StringBuffer();
+        String stringItem = null;
+        for(String item : array){
+            buffer.append(item+",");
+        };
+        if(buffer != null){
+            String buf = buffer.toString();
+            stringItem = buf.substring(0, buf.length() - 1);
+
+            SharedPreferences prefs1 = getSharedPreferences("Array", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = prefs1.edit();
+            editor.putString(PrefKey, stringItem).commit();
+        }
+    }
+
+    // プリファレンス取得
+// aaa,bbb,ccc...としたものをsplitして返す
+    private String[] getArray(String PrefKey){
+        SharedPreferences prefs2 = getSharedPreferences("Array", Context.MODE_PRIVATE);
+        String stringItem = prefs2.getString(PrefKey,"");
+        if(stringItem != null && stringItem.length() != 0){
+            return stringItem.split(",");
+        }else{
+            return null;
+        }
+    }
+
 
     public void AllRegist()
     {
         //Data型の宣言
         Data allData =new Data();
         //Data型にデータをセット
-        allData.setName("西村");
-        allData.setKana("にしむら");
-        allData.setBirthday(19970616);
-        allData.setCategory("友達");
-        allData.setTwitterID("Taiga_Natto");
-        allData.setMemo("教科書を見て実装して欲しい");
-        allData.setImage("Imageデータ");
-        allData.setSmallImage("Imageデータ");
-        allData.setTamura(1);
-        allData.setNotif_yest(1);
-        allData.setNotif_today(1);
-        allData.setNotif_day(3);
-        allData.setNotif_recy(3);
+        allData.setName(edit_name.getText().toString());
+        allData.setKana(edit_pho.getText().toString());
+        allData.setBirthday(birthday+100);
+        allData.setCategory(user_category);
+        allData.setTwitterID(edit_twitter.getText().toString());
+        allData.setMemo(edit_memo.getText().toString());
+        allData.setImage(img_name+".jpg");
+        allData.setSmallImage(img_name+".jpg");
+        allData.setTamura(ta_check);
+        allData.setNotif_yest(ye_check);
+        allData.setNotif_today(to_check);
+        allData.setNotif_day(days_ago);
+        allData.setNotif_recy(reptition_loop);
         //dbに書き込み
         dbAssist.insertData(allData,this);
+
+        // プレファレンスに保存
+        saveArray(arraylist,"StringItem");
+
+        ALLLOG();
+    }
+
+    //Log
+    public void ALLLOG()
+    {
+        Log.d("ALLLOG",edit_name.getText().toString());
+        Log.d("ALLLOG",edit_pho.getText().toString());
+        Log.d("ALLLOG",String.valueOf(birthday+100));
+        Log.d("ALLLOG",user_category);
+        Log.d("ALLLOG",edit_twitter.getText().toString());
+        Log.d("ALLLOG",edit_memo.getText().toString());
+        Log.d("ALLLOG",img_name+".jpg");
+        Log.d("ALLLOG",img_name+".jpg");
+        Log.d("ALLLOG",String.valueOf(ta_check));
+        Log.d("ALLLOG",String.valueOf(ye_check));
+        Log.d("ALLLOG",String.valueOf(to_check));
+        Log.d("ALLLOG",String.valueOf(days_ago));
+        Log.d("ALLLOG",String.valueOf(reptition_loop));
     }
 
     //////////////////////////////////////////////////
