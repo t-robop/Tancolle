@@ -42,67 +42,64 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
     EditText edit_pho;
     EditText edit_twitter;
     EditText edit_days_ago;
-
     ImageView user_view;
-
     TextView user_birthday;
-
     TextView user_yearsold;
-
-    InputMethodManager inputMethodManager;
-
-
+    CheckBox tamura_check;
+    CheckBox yesterday_check;
+    CheckBox today_check;
+    EditText edit_memo;
     DatePickerDialog datePickerDialog;
     Calendar calendar;
     Calendar nowCale;
 
-    int y;
-    int m;
-    int d;
-
-    int birthday;
-
-    //sppinerTest
-    private Spinner spinnerCategory;
-
-    private Spinner repetition;
-    private String spinnerRepetitionItems[] = {"繰り返し通知無し", "毎日", "一週間毎","一ヶ月毎"};
-
-    int reptition_loop;
-
-    int days_ago;//何日前ですかー？
-
-    private AlertDialog Adddialog;
+    //キーボード制御
+    InputMethodManager inputMethodManager;
 
     //EditText用変数群
     View viewV;
     LayoutInflater inflater;
     EditText editText;
 
+    //arraylist&arrayadapter
     ArrayAdapter<String> adapter;
     ArrayList<String> arraylist;
 
     String user_category;
 
-    EditText edit_memo;
-    
+    //MostImportantDate
+    Data idDate;
+
+    //img初期設定用
+    String imgTest;
+
+    private AlertDialog Adddialog;
 
     Bitmap img;
     String img_name;
 
-    CheckBox tamura_check;
-    CheckBox yesterday_check;
-    CheckBox today_check;
+    //sppinerTest
+    private Spinner spinnerCategory;
+    private Spinner repetition;
 
+    private String spinnerRepetitionItems[] = {"繰り返し通知無し", "毎日", "一週間毎","一ヶ月毎"};
+
+
+    int y;
+    int m;
+    int d;
+    int birthday;
+
+    int reptition_loop;//繰り返しフラグ
+    int days_ago;//何日前ですかー？
+
+    //チェックフラグ
     int ta_check;
     int ye_check;
     int to_check;
 
-    Data idDate;
-
-    String imgTest;
+    //idチェック
     int id;
-
 
     /////////////////////////Override/////////////////////////
     @Override
@@ -110,7 +107,11 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_register);
 
-        arraylist = new ArrayList<String>();
+        //画面切り替わり時のid取得
+        Intent intent=getIntent();
+        id=intent.getIntExtra("IdNum",0);
+
+        arraylist = new ArrayList<String>();//めっさ大事
 
         //数多（予定）の宣言
         repetition=(Spinner)findViewById(R.id.spinner2);
@@ -120,13 +121,8 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         sppinerSet(repetition,spinnerRepetitionItems);
 
         user_yearsold=(TextView)findViewById(R.id.YearsOld);
-        //年齢表示
-        if(YearsOldSet(birthday)>1000) {
-            user_yearsold.setText("");
-        }
-        else {
-            user_yearsold.setText(String.valueOf(YearsOldSet(birthday))+"歳");
-        }
+
+        user_birthday=(TextView)findViewById(R.id.userbirthday);
 
         edit_name=(EditText)findViewById(R.id.EditName);
         // EditText が空のときに表示させるヒントを設定
@@ -171,9 +167,15 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         YesterdayJudge(yesterday_check);
         TodayJudge(today_check);
 
+        //年齢表示
+        if(YearsOldSet(birthday)>1000) {
+            user_yearsold.setText("");
+        }
+        else {
+            user_yearsold.setText(String.valueOf(YearsOldSet(birthday))+"歳");
+        }
 
-        user_birthday=(TextView)findViewById(R.id.userbirthday);
-
+        //データがある場合は読み込み
         if(id!=0) {
             idDate = dbAssist.idSelect(id, this);
 
@@ -201,14 +203,13 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         //誕生日描画
         BirthDayDraw(birthday);
 
-
+        //DiaLog用のxmlとの連携
         inflater = LayoutInflater.from(UserRegisterActivity.this);
         viewV = inflater.inflate(R.layout.dialog_user_register, null);
         editText = (EditText)viewV.findViewById(R.id.editText1);
 
-
-        edit_name.addTextChangedListener(this);//aaaaaaaaaaaaa
-
+        //TextWacher
+        edit_name.addTextChangedListener(this);
 
         //画像読み込み
         InputStream in;
@@ -219,6 +220,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         catch (IOException e) {
             e.printStackTrace();
         }
+        //画像セット
         user_view.setImageBitmap(img);
     }
 
@@ -228,6 +230,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         //TODO Auto-generated method stub
         if(requestCode == REQUEST_GALLERY && resultCode == RESULT_OK) {
             try {
+                //画像取得
                 InputStream in = getContentResolver().openInputStream(data.getData());
                 Bitmap pct = BitmapFactory.decodeStream(in);
 
@@ -275,7 +278,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
 
             //ローカルファイルへ保存
             try{
-                final FileOutputStream out = openFileOutput(img_name+".jpg",Context.MODE_WORLD_READABLE);
+                final FileOutputStream out = openFileOutput(img_name+".jpg",Context.MODE_WORLD_READABLE);//.jpgつけてちょ
                 img.compress(Bitmap.CompressFormat.JPEG,100,out);
                 out.close();
             }catch(IOException e){
@@ -286,12 +289,11 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         }
 
 
-    //TextWatcher
+    //TextWatcher/////未完成/////
     @Override
     public void beforeTextChanged(final CharSequence s, int start, int count, int after) {
         //操作前のEtidTextの状態を取得する
         edit_pho.setText(s.toString());
-
 
         //EditTextにリスナーをセット
         edit_name.setOnKeyListener(new View.OnKeyListener() {
@@ -301,7 +303,6 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 //イベントを取得するタイミングには、ボタンが押されてなおかつエンターキーだったときを指定
                 if((event.getAction() != KeyEvent.ACTION_DOWN)){
-
 
                     return true;
                 }
@@ -877,6 +878,19 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
 
         // プレファレンスに保存
         saveArray(arraylist,"StringItem");
+
+        //新規作成か編集かによって画面切り替え場所の変更
+        if(id==0) {
+            //MainへGo!
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        }
+        else
+        {
+            //DetailへGo!
+            Intent intent = new Intent(this, UserDetailActivity.class);
+            startActivity(intent);
+        }
 
         ALLLOG();
     }
