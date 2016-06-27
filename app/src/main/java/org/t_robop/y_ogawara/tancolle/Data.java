@@ -17,6 +17,12 @@ public class Data {
     private String kana;
     //誕生日
     private int birthday;
+    //年
+    private int year;
+    //月
+    private int month;
+    //日
+    private int day;
     //カテゴリ
     private String category;
     //twitterのID
@@ -31,7 +37,7 @@ public class Data {
     //ここで、int型の最小値を初期値に設定、そうしないと0や-の値が使えなくなる
     private int presentFlag = Integer.MIN_VALUE;
     //年齢を固定するか
-    private int tamura = Integer.MIN_VALUE;
+    private int yukarin = Integer.MIN_VALUE;
     //通知を前日にするか
     private int notif_yest = Integer.MIN_VALUE;
     //通知を当日にするか
@@ -131,13 +137,13 @@ public class Data {
         this.presentFlag = presentFlag;
     }
 
-    public int isTamura() {
-        return tamura;
+    public int isYukarin() {
+        return yukarin;
     }
 
-    public void setTamura(int tamura) {
+    public void setYukarin(int yukarin) {
 
-        this.tamura = tamura;
+        this.yukarin = yukarin;
     }
 
     public int isNotif_yest() {
@@ -165,6 +171,31 @@ public class Data {
     public void setNotif_day(int notif_day) {
         this.notif_day = notif_day;
     }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
+    }
+
+    public int getDay() {
+        return day;
+    }
+
+    public void setDay(int day) {
+        this.day = day;
+    }
+
 
 
     void error(Context context){

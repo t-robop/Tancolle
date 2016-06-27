@@ -28,8 +28,8 @@ public class dbAssist {
     }
 
     //データを追加するメソッド
-    public static void insertData(Data data, Context context) {
-        sqLiteOpenHelper = new MySQLiteOpenHelper(context);
+    public static void insertData(Data data,Context context) {
+        sqLiteOpenHelper = new MySQLiteOpenHelper(context.getApplicationContext());
         sqldb = sqLiteOpenHelper.getWritableDatabase();
         cv = new ContentValues();
         cv.put("name", data.getName());
@@ -41,7 +41,7 @@ public class dbAssist {
         cv.put("image", data.getTwitterID());
         cv.put("smallImage", data.getSmallImage());
         cv.put("presentFlag", data.isPresentFlag());
-        cv.put("tamura", data.isTamura());
+        cv.put("yukarin", data.isYukarin());
         cv.put("notif_yest", data.isNotif_today());
         cv.put("notif_today", data.isNotif_today());
         cv.put("notif_day", data.getNotif_day());
@@ -69,7 +69,7 @@ public class dbAssist {
             data.setImage(cursor.getString(cursor.getColumnIndex("image")));
             data.setSmallImage(cursor.getString(cursor.getColumnIndex("smallImage")));
             data.setPresentFlag(cursor.getInt(9));
-            data.setTamura(cursor.getInt(10));
+            data.setYukarin(cursor.getInt(10));
             data.setNotif_yest(cursor.getInt(11));
             data.setNotif_today(cursor.getInt(12));
             data.setNotif_day(cursor.getInt(13));
@@ -102,7 +102,7 @@ public class dbAssist {
             data.setImage(cursor.getString(cursor.getColumnIndex("image")));
             data.setSmallImage(cursor.getString(cursor.getColumnIndex("smallImage")));
             data.setPresentFlag(cursor.getInt(9));
-            data.setTamura(cursor.getInt(10));
+            data.setYukarin(cursor.getInt(10));
             data.setNotif_yest(cursor.getInt(11));
             data.setNotif_today(cursor.getInt(12));
             data.setNotif_day(cursor.getInt(13));
@@ -113,6 +113,41 @@ public class dbAssist {
 
         return DataArray;
     }
+
+    //何月で検索するメソッド
+    public static ArrayList birthdaySelect(int month,Context context){
+        String sqlStr = "select *"
+                +"from users_table "
+                + "where month like" +"'%"+month+"%'"
+                + "order by month asc";
+        ArrayList <Data> DataArray=new ArrayList<>();
+        sqLiteOpenHelper = new MySQLiteOpenHelper(context);
+        sqldb = sqLiteOpenHelper.getWritableDatabase();
+        cursor = sqldb.rawQuery(sqlStr,null);
+        while(cursor.moveToNext()) {
+            Data data = new Data();
+            data.setId(cursor.getInt(0));
+            data.setName(cursor.getString(cursor.getColumnIndex("name")));
+            data.setKana(cursor.getString(cursor.getColumnIndex("kana")));
+            data.setBirthday(cursor.getInt(3));
+            data.setCategory(cursor.getString(cursor.getColumnIndex("category")));
+            data.setTwitterID(cursor.getString(cursor.getColumnIndex("twitterID")));
+            data.setMemo(cursor.getString(cursor.getColumnIndex("memo")));
+            data.setImage(cursor.getString(cursor.getColumnIndex("image")));
+            data.setSmallImage(cursor.getString(cursor.getColumnIndex("smallImage")));
+            data.setPresentFlag(cursor.getInt(9));
+            data.setYukarin(cursor.getInt(10));
+            data.setNotif_yest(cursor.getInt(11));
+            data.setNotif_today(cursor.getInt(12));
+            data.setNotif_day(cursor.getInt(13));
+            data.setNotif_recy(cursor.getInt(14));
+            DataArray.add(data);
+        }
+        sqldb.close();
+
+        return DataArray;
+    }
+
 
 
     //idから一つの行を検索するメソッド
@@ -135,7 +170,7 @@ public class dbAssist {
         data.setImage(cursor.getString(cursor.getColumnIndex("image")));
         data.setSmallImage(cursor.getString(cursor.getColumnIndex("smallImage")));
         data.setPresentFlag(cursor.getInt(9));
-        data.setTamura(cursor.getInt(10));
+        data.setYukarin(cursor.getInt(10));
         data.setNotif_yest(cursor.getInt(11));
         data.setNotif_today(cursor.getInt(12));
         data.setNotif_day(cursor.getInt(13));
@@ -163,7 +198,7 @@ public class dbAssist {
             data.setImage(cursor.getString(cursor.getColumnIndex("image")));
             data.setSmallImage(cursor.getString(cursor.getColumnIndex("smallImage")));
             data.setPresentFlag(cursor.getInt(9));
-            data.setTamura(cursor.getInt(10));
+            data.setYukarin(cursor.getInt(10));
             data.setNotif_yest(cursor.getInt(11));
             data.setNotif_today(cursor.getInt(12));
             data.setNotif_day(cursor.getInt(13));
@@ -215,7 +250,7 @@ public class dbAssist {
             cv.put("presentFlag", data.isPresentFlag());
         }
         if (data.isPresentFlag()!=Integer.MIN_VALUE){
-            cv.put("tamura", data.isTamura());
+            cv.put("yukarin", data.isYukarin());
         }
         if (data.isNotif_yest()!=Integer.MIN_VALUE){
             cv.put("notif_yest", data.isNotif_today());

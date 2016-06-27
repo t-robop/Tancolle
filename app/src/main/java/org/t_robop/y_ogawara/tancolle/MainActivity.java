@@ -1,5 +1,8 @@
 package org.t_robop.y_ogawara.tancolle;
 
+
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -70,13 +73,16 @@ public class MainActivity extends AppCompatActivity {
                 testData.setName("西村");
                 testData.setKana("にしむら");
                 testData.setBirthday(19970616);
+                testData.setYear(1997);
+                testData.setMonth(06);
+                testData.setDay(16);
                 testData.setCategory("友達");
                 testData.setTwitterID("Taiga_Natto");
                 testData.setMemo("教科書を見て実装して欲しい");
                 testData.setImage("Imageデータ");
                 testData.setSmallImage("Imageデータ");
                 testData.setPresentFlag(0);
-                testData.setTamura(1);
+                testData.setYukarin(1);
                 testData.setNotif_yest(1);
                 testData.setNotif_today(1);
                 testData.setNotif_day(3);
@@ -90,13 +96,16 @@ public class MainActivity extends AppCompatActivity {
                 testData1.setName("西");
                 testData1.setKana("にら");
                 testData1.setBirthday(19970512);
+                testData1.setYear(1997);
+                testData1.setMonth(05);
+                testData1.setDay(12);
                 testData1.setCategory("友達");
                 testData1.setTwitterID("Taiga_Natvaevto");
                 testData1.setMemo("教科書を見てvesva実装して欲しい");
                 testData1.setImage("Imageデータ");
                 testData1.setSmallImage("Imadgeデータ");
                 testData1.setPresentFlag(10);
-                testData1.setTamura(11);
+                testData1.setYukarin(11);
                 testData1.setNotif_yest(11);
                 testData1.setNotif_today(11);
                 testData1.setNotif_day(31);
@@ -153,9 +162,38 @@ public class MainActivity extends AppCompatActivity {
         return false;
 
     }
+    // プリファレンス保存
+// aaa,bbb,ccc... の文字列で保存
+    private void saveArray(String[] array,String PrefKey){
+        StringBuffer buffer = new StringBuffer();
+        String stringItem = null;
+        for(String item : array){
+            buffer.append(item+",");
+        };
+        if(buffer != null){
+            String buf = buffer.toString();
+            stringItem = buf.substring(0, buf.length() - 1);
 
+            SharedPreferences prefs1 = getSharedPreferences("Array", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = prefs1.edit();
+            editor.putString(PrefKey, stringItem).commit();
+        }
+    }
+
+    // プリファレンス取得
+// aaa,bbb,ccc...としたものをsplitして返す
+    private String[] getArray(String PrefKey) {
+        SharedPreferences prefs2 = getSharedPreferences("Array", Context.MODE_PRIVATE);
+        String stringItem = prefs2.getString(PrefKey, "");
+        if (stringItem != null && stringItem.length() != 0) {
+            return stringItem.split(",");
+        } else {
+            return null;
+        }
+    }
     public void testBtn(View view) {
         Intent intent = new Intent(this,UserDetailActivity.class);
         startActivity(intent);
+
     }
 }
