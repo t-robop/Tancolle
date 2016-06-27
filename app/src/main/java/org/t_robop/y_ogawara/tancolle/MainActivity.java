@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
                 testData.setMonth(06);
                 testData.setDay(16);
                 testData.setCategory("友達");
-                testData.setTwitterID("Taiga_Natto");
+                testData.setTwitterID("taiga_si");
                 testData.setMemo("教科書を見て実装して欲しい");
                 testData.setImage("Imageデータ");
                 testData.setSmallImage("Imageデータ");

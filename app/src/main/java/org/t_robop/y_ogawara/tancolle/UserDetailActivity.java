@@ -19,6 +19,29 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+
+
+
+//TODO 総評
+/*
+そんなにコードは汚くない
+変数名がちょっと雑
+コメントがなさすぎる
+わからないコードは全部コメントを書くように
+書けない時はわかってないからちゃんと聞く
+Google検索を活用しましょう
+時間が不足してる感あり
+仮であっても、a,bなどの変数はやめましょう
+最低限、スラスラ説明できるぐらいコメントを書いて
+他人がわかる変数名に
+コードの理解が低い
+もっとコードをまとめて、onCreateの書く内容を減らしましょう
+
+
+*/
+
+
+
 public class UserDetailActivity extends AppCompatActivity {
 
     int intentId;
@@ -57,7 +80,7 @@ public class UserDetailActivity extends AppCompatActivity {
         day = calendar.get(Calendar.DAY_OF_MONTH);
 
         image = (ImageView) this.findViewById(R.id.present);
-        //データを読みだして、その値でセットする画像を変える
+        //TODO データを読みだして、その値でセットする画像を変える
         image.setImageResource(R.drawable.ao);
 
         Data data = dbAssist.idSelect(intentId, this);
@@ -69,12 +92,12 @@ public class UserDetailActivity extends AppCompatActivity {
         int birthyear = data.getYear();
         int birthmonth = data.getMonth();
         int birthday = data.getDay();
-        int sqlDay;
+        //int sqlDay;
 
 
         a = birthmonth * 100 + birthday;  //誕生日を７月１４日を→７１４みたいな形に
         b = month * 100 + day; //現在の日付を６月１５日→６１５みたいな形に
-        sqlDay = a % 100; //誕生日の日付を割り出す
+        //sqlDay = a % 100; //誕生日の日付を割り出す
         if (a > b) {  //もし誕生日の方の数値が大きかったら（まだ今年の誕生日がきてなかったら）
             age = year - birthyear - 1;   //今年ー誕生年から更に１才ひく
         } else {    //今年の誕生日がきていたら
@@ -160,9 +183,6 @@ public class UserDetailActivity extends AppCompatActivity {
                                 memo = data.getMemo(); //SQliteからもってくる
                                 memoTV.setText(memo);
 
-
-
-                                //Log.d("sssss",string);
                             }
                         })
                 .setNegativeButton("キャンセル", new DialogInterface.OnClickListener() {
@@ -203,7 +223,7 @@ public class UserDetailActivity extends AppCompatActivity {
         }else{
             Intent intent = new Intent();
             intent.setAction( Intent.ACTION_VIEW );
-            intent.setData( Uri.parse("twitter://user?screen_name="+TwitterID) ); // @skc1210 (アカウントを指定)
+            intent.setData( Uri.parse("twitter://user?screen_name="+TwitterID) ); //  (アカウントを指定)
             try {
                 startActivity(intent);
             } // Twitterが端末にインストールされていない場合はTwitterインストール画面へ

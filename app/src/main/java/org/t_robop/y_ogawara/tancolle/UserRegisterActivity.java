@@ -35,6 +35,39 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+
+
+
+
+
+//TODO 総評
+/*
+コメントがない
+コードが長い
+メソッドにまとめる意味わかってる？？
+コードの理解が低い
+わからないなら聞きましょう
+わからないコードをそのままにしない
+ググッて知識を蓄える
+変数名に一貫性がない
+メソッド名も同じく一貫性がない
+フラグ分けが酷い
+関連付けがまとまってない
+グローバル変数とローカル変数わかってる？
+最低限、スラスラ説明できるぐらいコメントを書いて
+他人がわかる変数名に
+TODOとか使おう
+コメントは正確に書こう
+自作メソッドを見返してみよう
+同じようなメソッド大量にあるよね
+*/
+
+
+
+
+
+
+
 public class UserRegisterActivity extends AppCompatActivity implements TextWatcher {
     private static final int REQUEST_GALLERY = 0;//ギャラリー選択で必要な初期化
 
@@ -85,9 +118,10 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
     private String spinnerRepetitionItems[] = {"繰り返し通知無し", "毎日", "一週間毎","一ヶ月毎"};
 
 
-    int y;
-    int m;
-    int d;
+    int year;
+    int month;
+    int day;
+    //TODO 八桁にするのに、月が06じゃなくて6とかって入ってるから死にます
     int birthday;
 
     int reptition_loop;//繰り返しフラグ
@@ -500,7 +534,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         // プリファレンスから取得
         String[] arrayItem2 = getArray("StringItem");
 
-        //Log.d("aaaa",String.valueOf(arrayItem2.length));
+        //Log.day("aaaa",String.valueOf(arrayItem2.length));
 
         // アイテムを追加します
         adapter.add("<未選択>");
@@ -575,13 +609,13 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         ////////// 日付情報の初期設定 //////////
         calendar = Calendar.getInstance();
 
-        y = calendar.get(Calendar.YEAR); // 年
-        m = calendar.get(Calendar.MONTH); // 月
-        d = calendar.get(Calendar.DAY_OF_MONTH); // 日
+        year = calendar.get(Calendar.YEAR); // 年
+        month = calendar.get(Calendar.MONTH); // 月
+        day = calendar.get(Calendar.DAY_OF_MONTH); // 日
 
         nowCale=calendar;
 
-        birthday=BirthDayGet(y,m,d);
+        birthday=BirthDayGet(year, month, day);
 
         ////////////////////////////////////////
     }
@@ -596,11 +630,11 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             public void onDateSet(DatePicker datePicker, int year,
                                   int monthOfYear, int dayOfMonth) {
                 //押されてる日時を変数へ
-                y = year;
-                m = monthOfYear;
-                d = dayOfMonth;
+                UserRegisterActivity.this.year = year;
+                month = monthOfYear;
+                day = dayOfMonth;
 
-                birthday=BirthDayGet(y,m,d);
+                birthday=BirthDayGet(UserRegisterActivity.this.year, month, day);
 
                 //描画
                 BirthDayDraw(birthday);
@@ -615,7 +649,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             }
         };
         // 日付設定ダイアログの作成・リスナの登録
-        datePickerDialog = new DatePickerDialog(this, DateSetListener, y, m, d);
+        datePickerDialog = new DatePickerDialog(this, DateSetListener, year, month, day);
     }
 
 
@@ -646,13 +680,13 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         cal=calm*100;
         cald=cald-cal;
 
-        y=caly;
-        m=calm;
-        d=cald;
+        year =caly;
+        month =calm;
+        day =cald;
 
-        cal=m+1;
+        cal= month +1;
 
-        user_birthday.setText(y+"/"+cal+"/"+d);
+        user_birthday.setText(year +"/"+cal+"/"+ day);
     }
 
     //spinnerCategory追加処理
