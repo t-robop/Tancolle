@@ -1,15 +1,20 @@
 package org.t_robop.y_ogawara.tancolle;
 
+import android.app.Activity;
 import android.content.ClipData;
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.OrientationEventListener;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -18,79 +23,99 @@ import java.util.List;
 
 //TODO クラスの中にクラスは作れません
 //独自Adapterつくる
-public class dataListAdapter extends ArrayAdapter<ListItem> implements Filterable {
+public class dataListAdapter extends BaseAdapter implements Filterable {
 
-    int itemId;
-    private List<ListItem> items;
-    LayoutInflater inflater;
+    Context context;
+    ArrayList<ListItem> items;
+    ArrayList<ListItem> mStringFilterList;
+    ValueFilter valueFilter;
 
-    public dataListAdapter(Context context, int itemId, List<ListItem> items) {
-        super(context, itemId, items);
 
-        this.itemId = itemId;
+    dataListAdapter(Context context, ArrayList<ListItem> items) {
+        this.context = context;
         this.items = items;
-        this.inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
+        mStringFilterList = items;
     }
+
+
+    @Override
+    public int getCount() {
+        return items.size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return items.get(position);
+    }
+
 
     @Override
     public long getItemId(int position) {
-        return position;
+        return items.indexOf(getItem(position));
     }
 
-
-    //1行1行表示させる
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        //convertViewを使うことでViewを再利用
-        View view;
-        if (convertView != null) {
-            view = convertView;
-        } else {
-            view = this.inflater.inflate(this.itemId, null);
+
+        LayoutInflater mInflater = (LayoutInflater) context
+                .getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+
+        convertView = null;
+        if (convertView == null) {
+            convertView = mInflater.inflate(R.layout.activity_search__item, null);
+
+            TextView name_tv = (TextView) convertView.findViewById(R.id.name_text);
+            TextView kana_tv = (TextView) convertView.findViewById(R.id.kana_text);
+
+            ListItem listItem = items.get(position);
+
+            name_tv.setText(listItem.getName());
+            kana_tv.setText(listItem.getKana());
         }
-
-        ListItem item = this.items.get(position);
-
-        TextView tv = (TextView) view.findViewById(R.id.item_text);
-        tv.setText(item.getName());
-        TextView tv1 = (TextView) view.findViewById(R.id.kana_text);
-        tv1.setText(item.getKana());
-
-        return view;
+        return convertView;
     }
 
-    private class ListFilter extends Filter {
+    @Override
+    public Filter getFilter() {
+        if (valueFilter == null) {
+            valueFilter = new ValueFilter();
+        }
+        return valueFilter;
+    }
 
+    private class ValueFilter extends Filter {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-            FilterResults result = new FilterResults();
-//            List<ListItem> allItem = getallItem();
-            if (constraint == null || constraint.length() == 0) {
+            FilterResults results = new FilterResults();
 
-//                result.values = allItem;
-//                result.count = allItem.size();
+            if (constraint != null && constraint.length() > 0) {
+                ArrayList<ListItem> filterList = new ArrayList<ListItem>();
+                for (int i = 0; i < mStringFilterList.size(); i++) {
+                    if ((mStringFilterList.get(i).getName().toUpperCase())
+                            .contains(constraint.toString().toUpperCase())) {
+
+                        ListItem listItem = new ListItem(mStringFilterList.get(i)
+                                .getName(), mStringFilterList.get(i)
+                                .getKana());
+
+                        filterList.add(listItem);
+                    }
+                }
+                results.count = filterList.size();
+                results.values = filterList;
             } else {
-                ArrayList<ListItem> filteredList = new ArrayList<ListItem>();
-//                for(ListItem j: allItem){
-//                    if(j.source.title.contains(constraint))
-//                        filteredList.add(j);
-//                }
-                result.values = filteredList;
-                result.count = filteredList.size();
+                results.count = mStringFilterList.size();
+                results.values = mStringFilterList;
             }
+            return results;
 
-            return result;
         }
 
-        @SuppressWarnings("unchecked")
         @Override
-        protected void publishResults(CharSequence constraint, FilterResults results) {
-            if (results.count == 0) {
-                notifyDataSetInvalidated();
-            } else {
-                items = (ArrayList<ListItem>) results.values;
-                notifyDataSetChanged();
-            }
+        protected void publishResults(CharSequence constraint,
+                                      FilterResults results) {
+            items = (ArrayList<ListItem>) results.values;
+            notifyDataSetChanged();
         }
 
     }
