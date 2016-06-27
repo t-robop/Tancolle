@@ -184,7 +184,10 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             edit_twitter.setText(idDate.getTwitterID());
             edit_days_ago.setText(idDate.getNotif_day());
             edit_memo.setText(idDate.getMemo());
-            birthday=idDate.getBirthday();
+
+            //年月日で読み込んでから8桁に変換
+            birthday=BirthDayGet(idDate.getYear(),idDate.getMonth(),idDate.getDay());
+
             ta_check=idDate.isYukarin();
             ye_check=idDate.isNotif_yest();
             to_check=idDate.isNotif_today();
@@ -854,6 +857,49 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         }
     }
 
+    //年のみ算出
+    public int YearLoad(int Birthday)
+    {
+        int caly;
+
+        caly=Birthday/10000;
+
+        return caly;
+    }
+
+    //月のみ算出
+    public int MonthLoad(int Birthday)
+    {
+        int caly,calm,cal;
+
+        caly=Birthday/10000;
+
+        calm=Birthday/100;
+        cal=caly*100;
+        calm=calm-cal;
+
+        return calm+1;
+    }
+
+    //日のみ算出
+    public int DayLoad(int Birthday)
+    {
+        int caly,calm,cald,cal;
+
+        caly=Birthday/10000;
+
+        calm=Birthday/100;
+        cal=caly*100;
+        calm=calm-cal;
+
+        cal=caly*10000;
+        cald=Birthday-cal;
+        cal=calm*100;
+        cald=cald-cal;
+
+        return cald;
+    }
+
 
     public void AllRegist()
     {
@@ -862,7 +908,11 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         //Data型にデータをセット
         allData.setName(edit_name.getText().toString());
         allData.setKana(edit_pho.getText().toString());
-        allData.setBirthday(birthday+100);
+
+        allData.setYear(YearLoad(birthday));
+        allData.setMonth(MonthLoad(birthday));
+        allData.setDay(DayLoad(birthday));
+
         allData.setCategory(user_category);
         allData.setTwitterID(edit_twitter.getText().toString());
         allData.setMemo(edit_memo.getText().toString());
