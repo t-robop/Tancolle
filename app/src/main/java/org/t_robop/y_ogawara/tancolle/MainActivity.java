@@ -73,6 +73,9 @@ public class MainActivity extends AppCompatActivity {
                 testData.setName("西村");
                 testData.setKana("にしむら");
                 testData.setBirthday(19970616);
+                testData.setYear(1997);
+                testData.setMonth(06);
+                testData.setDay(16);
                 testData.setCategory("友達");
                 testData.setTwitterID("Taiga_Natto");
                 testData.setMemo("教科書を見て実装して欲しい");
@@ -93,6 +96,9 @@ public class MainActivity extends AppCompatActivity {
                 testData1.setName("西");
                 testData1.setKana("にら");
                 testData1.setBirthday(19970512);
+                testData1.setYear(1997);
+                testData1.setMonth(05);
+                testData1.setDay(12);
                 testData1.setCategory("友達");
                 testData1.setTwitterID("Taiga_Natvaevto");
                 testData1.setMemo("教科書を見てvesva実装して欲しい");

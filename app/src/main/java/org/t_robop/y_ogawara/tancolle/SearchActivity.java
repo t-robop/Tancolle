@@ -1,7 +1,7 @@
 package org.t_robop.y_ogawara.tancolle;
 
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+        import android.os.Bundle;
 
 public class SearchActivity extends AppCompatActivity {
 

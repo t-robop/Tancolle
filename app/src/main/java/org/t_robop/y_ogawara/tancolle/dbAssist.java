@@ -114,6 +114,41 @@ public class dbAssist {
         return DataArray;
     }
 
+    //何月で検索するメソッド
+    public static ArrayList birthdaySelect(int month,Context context){
+        String sqlStr = "select *"
+                +"from users_table "
+                + "where month like" +"'%"+month+"%'"
+                + "order by month asc";
+        ArrayList <Data> DataArray=new ArrayList<>();
+        sqLiteOpenHelper = new MySQLiteOpenHelper(context);
+        sqldb = sqLiteOpenHelper.getWritableDatabase();
+        cursor = sqldb.rawQuery(sqlStr,null);
+        while(cursor.moveToNext()) {
+            Data data = new Data();
+            data.setId(cursor.getInt(0));
+            data.setName(cursor.getString(cursor.getColumnIndex("name")));
+            data.setKana(cursor.getString(cursor.getColumnIndex("kana")));
+            data.setBirthday(cursor.getInt(3));
+            data.setCategory(cursor.getString(cursor.getColumnIndex("category")));
+            data.setTwitterID(cursor.getString(cursor.getColumnIndex("twitterID")));
+            data.setMemo(cursor.getString(cursor.getColumnIndex("memo")));
+            data.setImage(cursor.getString(cursor.getColumnIndex("image")));
+            data.setSmallImage(cursor.getString(cursor.getColumnIndex("smallImage")));
+            data.setPresentFlag(cursor.getInt(9));
+            data.setYukarin(cursor.getInt(10));
+            data.setNotif_yest(cursor.getInt(11));
+            data.setNotif_today(cursor.getInt(12));
+            data.setNotif_day(cursor.getInt(13));
+            data.setNotif_recy(cursor.getInt(14));
+            DataArray.add(data);
+        }
+        sqldb.close();
+
+        return DataArray;
+    }
+
+
 
     //idから一つの行を検索するメソッド
     public static Data idSelect(int id,Context context){
