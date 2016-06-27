@@ -18,11 +18,11 @@ public class Data {
     //誕生日
     private int birthday;
     //年
-    private int year;
+    private int year = Integer.MIN_VALUE;
     //月
-    private int month;
+    private int month = Integer.MIN_VALUE;
     //日
-    private int day;
+    private int day = Integer.MIN_VALUE;
     //カテゴリ
     private String category;
     //twitterのID

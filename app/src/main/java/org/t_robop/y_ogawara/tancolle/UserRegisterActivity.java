@@ -185,7 +185,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             edit_days_ago.setText(idDate.getNotif_day());
             edit_memo.setText(idDate.getMemo());
             birthday=idDate.getBirthday();
-            ta_check=idDate.isTamura();
+            ta_check=idDate.isYukarin();
             ye_check=idDate.isNotif_yest();
             to_check=idDate.isNotif_today();
             CheckBoxChange(tamura_check,ta_check);
@@ -868,7 +868,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         allData.setMemo(edit_memo.getText().toString());
         allData.setImage(img_name+".jpg");
         allData.setSmallImage(img_name+".jpg");
-        allData.setTamura(ta_check);
+        allData.setYukarin(ta_check);
         allData.setNotif_yest(ye_check);
         allData.setNotif_today(to_check);
         allData.setNotif_day(days_ago);
