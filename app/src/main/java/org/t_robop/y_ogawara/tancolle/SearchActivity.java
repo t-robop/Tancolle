@@ -48,7 +48,6 @@ public class SearchActivity extends Activity implements
         testData.setImage("Imageデータ");
         testData.setSmallImage("Imageデータ");
         testData.setPresentFlag(0);
-        testData.setTamura(1);
         testData.setNotif_yest(1);
         testData.setNotif_today(1);
         testData.setNotif_day(3);
