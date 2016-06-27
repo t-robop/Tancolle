@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="org.t_robop.y_ogawara.tancolle.UserDetailActivity">
+    android:layout_height="match_parent">
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -43,11 +42,14 @@
                 android:layout_gravity="right|center_vertical" />
 
             <Button
-                android:layout_width="wrap_content"
+                android:layout_width="44dp"
                 android:layout_height="wrap_content"
-                android:text="New Button"
-                android:id="@+id/button2"
-                android:layout_gravity="left|bottom" />
+                android:text="t"
+                android:id="@+id/tweet"
+                android:onClick="tweetClick"
+                android:layout_gravity="left|bottom"
+
+                />
 
         </FrameLayout>
 
@@ -126,10 +128,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="00日"
+                android:text="残り000日"
                 android:id="@+id/nokori"
                 android:layout_weight="1"
-                android:textSize="55dp"
+                android:textSize="40dp"
                 android:gravity="center"
 
                 />
@@ -168,13 +170,15 @@
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="あああああ"
                     android:id="@+id/chou"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1"
+                    android:onClick="memoclick"/>
 
                 <ImageButton
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:id="@+id/imageButton"
-                    android:layout_weight="3" />
+                    android:id="@+id/present"
+                    android:layout_weight="3"
+                    android:onClick="presentClick"/>
 
 
             </LinearLayout>
