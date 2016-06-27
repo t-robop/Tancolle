@@ -36,7 +36,7 @@ class MySQLiteOpenHelper extends SQLiteOpenHelper {
     //presentを買ったか
     int presentFlag;
     //年齢を固定するか
-    int tamura;
+    int yukarin;
     //通知を前日にするか
     int notif_yest;
     //通知を当日にするか
@@ -60,13 +60,16 @@ class MySQLiteOpenHelper extends SQLiteOpenHelper {
                 + "name TEXT,"
                 +"kana TEXT,"
                 +"birthday INTEGER,"
+                +"year INTEGER,"
+                +"month INTEGER,"
+                +"day INTEGER,"
                 +"category TEXT,"
                 +"twitterID TEXT,"
                 +"memo TEXT,"
                 +"image TEXT,"
                 +"smallImage TEXT,"
                 +"presentFlag INTEGER,"
-                +"tamura INTEGER,"
+                +"yukarin INTEGER,"
                 +"notif_yest INTEGER,"
                 +"notif_today INTEGER,"
                 +"notif_day INTEGER,"

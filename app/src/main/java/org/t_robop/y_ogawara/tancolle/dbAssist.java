@@ -28,20 +28,23 @@ public class dbAssist {
     }
 
     //データを追加するメソッド
-    public static void insertData(Data data, Context context) {
-        sqLiteOpenHelper = new MySQLiteOpenHelper(context);
+    public static void insertData(Data data,Context context) {
+        sqLiteOpenHelper = new MySQLiteOpenHelper(context.getApplicationContext());
         sqldb = sqLiteOpenHelper.getWritableDatabase();
         cv = new ContentValues();
         cv.put("name", data.getName());
         cv.put("kana", data.getKana());
         cv.put("birthday", data.getBirthday());
+        cv.put("year", data.getYear());
+        cv.put("month", data.getMonth());
+        cv.put("day", data.getDay());
         cv.put("category", data.getCategory());
         cv.put("twitterID", data.getTwitterID());
         cv.put("memo", data.getMemo());
         cv.put("image", data.getTwitterID());
         cv.put("smallImage", data.getSmallImage());
         cv.put("presentFlag", data.isPresentFlag());
-        cv.put("tamura", data.isTamura());
+        cv.put("yukarin", data.isYukarin());
         cv.put("notif_yest", data.isNotif_today());
         cv.put("notif_today", data.isNotif_today());
         cv.put("notif_day", data.getNotif_day());
@@ -63,17 +66,20 @@ public class dbAssist {
             data.setName(cursor.getString(cursor.getColumnIndex("name")));
             data.setKana(cursor.getString(cursor.getColumnIndex("kana")));
             data.setBirthday(cursor.getInt(3));
+            data.setYear(cursor.getInt(4));
+            data.setMonth(cursor.getInt(5));
+            data.setDay(cursor.getInt(6));
             data.setCategory(cursor.getString(cursor.getColumnIndex("category")));
             data.setTwitterID(cursor.getString(cursor.getColumnIndex("twitterID")));
             data.setMemo(cursor.getString(cursor.getColumnIndex("memo")));
             data.setImage(cursor.getString(cursor.getColumnIndex("image")));
             data.setSmallImage(cursor.getString(cursor.getColumnIndex("smallImage")));
-            data.setPresentFlag(cursor.getInt(9));
-            data.setTamura(cursor.getInt(10));
-            data.setNotif_yest(cursor.getInt(11));
-            data.setNotif_today(cursor.getInt(12));
-            data.setNotif_day(cursor.getInt(13));
-            data.setNotif_recy(cursor.getInt(14));
+            data.setPresentFlag(cursor.getInt(12));
+            data.setYukarin(cursor.getInt(13));
+            data.setNotif_yest(cursor.getInt(14));
+            data.setNotif_today(cursor.getInt(15));
+            data.setNotif_day(cursor.getInt(16));
+            data.setNotif_recy(cursor.getInt(17));
             DataArray.add(data);
         }
         sqldb.close();
@@ -96,23 +102,64 @@ public class dbAssist {
             data.setName(cursor.getString(cursor.getColumnIndex("name")));
             data.setKana(cursor.getString(cursor.getColumnIndex("kana")));
             data.setBirthday(cursor.getInt(3));
+            data.setYear(cursor.getInt(4));
+            data.setMonth(cursor.getInt(5));
+            data.setDay(cursor.getInt(6));
             data.setCategory(cursor.getString(cursor.getColumnIndex("category")));
             data.setTwitterID(cursor.getString(cursor.getColumnIndex("twitterID")));
             data.setMemo(cursor.getString(cursor.getColumnIndex("memo")));
             data.setImage(cursor.getString(cursor.getColumnIndex("image")));
             data.setSmallImage(cursor.getString(cursor.getColumnIndex("smallImage")));
-            data.setPresentFlag(cursor.getInt(9));
-            data.setTamura(cursor.getInt(10));
-            data.setNotif_yest(cursor.getInt(11));
-            data.setNotif_today(cursor.getInt(12));
-            data.setNotif_day(cursor.getInt(13));
-            data.setNotif_recy(cursor.getInt(14));
+            data.setPresentFlag(cursor.getInt(12));
+            data.setYukarin(cursor.getInt(13));
+            data.setNotif_yest(cursor.getInt(14));
+            data.setNotif_today(cursor.getInt(15));
+            data.setNotif_day(cursor.getInt(16));
+            data.setNotif_recy(cursor.getInt(17));
             DataArray.add(data);
         }
         sqldb.close();
 
         return DataArray;
     }
+
+    //何月で検索するメソッド
+    public static ArrayList birthdaySelect(int month,Context context){
+        String sqlStr = "select *"
+                +"from users_table "
+                + "where month like" +"'%"+month+"%'"
+                + "order by month asc";
+        ArrayList <Data> DataArray=new ArrayList<>();
+        sqLiteOpenHelper = new MySQLiteOpenHelper(context);
+        sqldb = sqLiteOpenHelper.getWritableDatabase();
+        cursor = sqldb.rawQuery(sqlStr,null);
+        while(cursor.moveToNext()) {
+            Data data = new Data();
+            data.setId(cursor.getInt(0));
+            data.setName(cursor.getString(cursor.getColumnIndex("name")));
+            data.setKana(cursor.getString(cursor.getColumnIndex("kana")));
+            data.setBirthday(cursor.getInt(3));
+            data.setYear(cursor.getInt(4));
+            data.setMonth(cursor.getInt(5));
+            data.setDay(cursor.getInt(6));
+            data.setCategory(cursor.getString(cursor.getColumnIndex("category")));
+            data.setTwitterID(cursor.getString(cursor.getColumnIndex("twitterID")));
+            data.setMemo(cursor.getString(cursor.getColumnIndex("memo")));
+            data.setImage(cursor.getString(cursor.getColumnIndex("image")));
+            data.setSmallImage(cursor.getString(cursor.getColumnIndex("smallImage")));
+            data.setPresentFlag(cursor.getInt(12));
+            data.setYukarin(cursor.getInt(13));
+            data.setNotif_yest(cursor.getInt(14));
+            data.setNotif_today(cursor.getInt(15));
+            data.setNotif_day(cursor.getInt(16));
+            data.setNotif_recy(cursor.getInt(17));
+            DataArray.add(data);
+        }
+        sqldb.close();
+
+        return DataArray;
+    }
+
 
 
     //idから一つの行を検索するメソッド
@@ -129,17 +176,20 @@ public class dbAssist {
         data.setName(cursor.getString(cursor.getColumnIndex("name")));
         data.setKana(cursor.getString(cursor.getColumnIndex("kana")));
         data.setBirthday(cursor.getInt(3));
+        data.setYear(cursor.getInt(4));
+        data.setMonth(cursor.getInt(5));
+        data.setDay(cursor.getInt(6));
         data.setCategory(cursor.getString(cursor.getColumnIndex("category")));
         data.setTwitterID(cursor.getString(cursor.getColumnIndex("twitterID")));
         data.setMemo(cursor.getString(cursor.getColumnIndex("memo")));
         data.setImage(cursor.getString(cursor.getColumnIndex("image")));
         data.setSmallImage(cursor.getString(cursor.getColumnIndex("smallImage")));
-        data.setPresentFlag(cursor.getInt(9));
-        data.setTamura(cursor.getInt(10));
-        data.setNotif_yest(cursor.getInt(11));
-        data.setNotif_today(cursor.getInt(12));
-        data.setNotif_day(cursor.getInt(13));
-        data.setNotif_recy(cursor.getInt(14));
+        data.setPresentFlag(cursor.getInt(12));
+        data.setYukarin(cursor.getInt(13));
+        data.setNotif_yest(cursor.getInt(14));
+        data.setNotif_today(cursor.getInt(15));
+        data.setNotif_day(cursor.getInt(16));
+        data.setNotif_recy(cursor.getInt(17));
         sqldb.close();
         return data;
     }
@@ -157,17 +207,20 @@ public class dbAssist {
             data.setName(cursor.getString(cursor.getColumnIndex("name")));
             data.setKana(cursor.getString(cursor.getColumnIndex("kana")));
             data.setBirthday(cursor.getInt(3));
+            data.setYear(cursor.getInt(4));
+            data.setMonth(cursor.getInt(5));
+            data.setDay(cursor.getInt(6));
             data.setCategory(cursor.getString(cursor.getColumnIndex("category")));
             data.setTwitterID(cursor.getString(cursor.getColumnIndex("twitterID")));
             data.setMemo(cursor.getString(cursor.getColumnIndex("memo")));
             data.setImage(cursor.getString(cursor.getColumnIndex("image")));
             data.setSmallImage(cursor.getString(cursor.getColumnIndex("smallImage")));
-            data.setPresentFlag(cursor.getInt(9));
-            data.setTamura(cursor.getInt(10));
-            data.setNotif_yest(cursor.getInt(11));
-            data.setNotif_today(cursor.getInt(12));
-            data.setNotif_day(cursor.getInt(13));
-            data.setNotif_recy(cursor.getInt(14));
+            data.setPresentFlag(cursor.getInt(12));
+            data.setYukarin(cursor.getInt(13));
+            data.setNotif_yest(cursor.getInt(14));
+            data.setNotif_today(cursor.getInt(15));
+            data.setNotif_day(cursor.getInt(16));
+            data.setNotif_recy(cursor.getInt(17));
             DataArray.add(data);
         }
         sqldb.close();
@@ -196,9 +249,20 @@ public class dbAssist {
         if (data.getBirthday()!=0){
             cv.put("birthday", data.getBirthday());
         }
+        if (data.getYear()!=Integer.MIN_VALUE){
+            cv.put("year", data.getYear());
+        }
+        if (data.getMonth()!=Integer.MIN_VALUE){
+            cv.put("month", data.getMonth());
+        }
+        if (data.getDay()!=Integer.MIN_VALUE){
+            cv.put("day", data.getDay());
+        }
+
         if (data.getCategory()!=null){
             cv.put("category", data.getCategory());
         }
+
         if (data.getTwitterID()!=null){
             cv.put("twitterID", data.getTwitterID());
         }
@@ -215,7 +279,7 @@ public class dbAssist {
             cv.put("presentFlag", data.isPresentFlag());
         }
         if (data.isPresentFlag()!=Integer.MIN_VALUE){
-            cv.put("tamura", data.isTamura());
+            cv.put("yukarin", data.isYukarin());
         }
         if (data.isNotif_yest()!=Integer.MIN_VALUE){
             cv.put("notif_yest", data.isNotif_today());

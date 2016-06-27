@@ -3,55 +3,67 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="org.t_robop.y_ogawara.tancolle.UserDetailActivity">
+    android:layout_height="match_parent">
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/a"
         android:layout_weight="1">
-
-        <FrameLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_weight="1">
 
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/imageView"
-                android:layout_gravity="center_horizontal"
-                android:layout_weight="1"/>
+                android:layout_weight="1" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="東海太郎"
-                android:id="@+id/Name"
-                android:layout_gravity="right|bottom"
-                android:textSize="45dp"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="1">
+
+                <ImageButton
+                    android:layout_width="51dp"
+                    android:layout_height="59dp"
+                    android:id="@+id/tweet"
+                    android:onClick="tweetClick"
+                    android:src="@drawable/twitterlogo"
+                    android:scaleType="fitCenter"
+                    android:background="#00000000"
 
                 />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="とうかいたろう"
-                android:id="@+id/Kana"
-                android:layout_gravity="right|center_vertical" />
+                <TextView
+                    android:layout_width="139dp"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="とうかいたろう"
+                    android:id="@+id/Kana"
+                    android:layout_weight="1" />
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="New Button"
-                android:id="@+id/button2"
-                android:layout_gravity="left|bottom" />
+                <org.t_robop.y_ogawara.tancolle.AutoshrinkTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="53dp"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="東海太郎"
+                    android:id="@+id/Name"
+                    android:textSize="45dp"
+                    android:layout_weight="1" />
 
-        </FrameLayout>
 
-        />
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
     </LinearLayout>
 
     <LinearLayout
@@ -126,10 +138,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="00日"
+                android:text="残り000日"
                 android:id="@+id/nokori"
                 android:layout_weight="1"
-                android:textSize="55dp"
+                android:textSize="40dp"
                 android:gravity="center"
 
                 />
@@ -168,13 +180,18 @@
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="あああああ"
                     android:id="@+id/chou"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1"
+                    android:onClick="memoclick"/>
 
                 <ImageButton
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:id="@+id/imageButton"
-                    android:layout_weight="3" />
+                    android:id="@+id/present"
+                    android:layout_weight="3"
+                    android:onClick="presentClick"
+                    android:scaleType="fitXY"
+                    android:background="#00000000"
+                    />
 
 
             </LinearLayout>
