@@ -1,24 +1,21 @@
 package org.t_robop.y_ogawara.tancolle;
 
 import android.app.Activity;
-import android.content.ClipData;
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
-import android.util.Log;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
-import android.view.OrientationEventListener;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.List;
 
 
 //TODO クラスの中にクラスは作れません
@@ -62,18 +59,42 @@ public class dataListAdapter extends BaseAdapter implements Filterable {
 
         convertView = null;
         if (convertView == null) {
+            //TODO ついでに画像も書いといた
             convertView = mInflater.inflate(R.layout.activity_search__item, null);
 
             TextView name_tv = (TextView) convertView.findViewById(R.id.name_text);
             TextView kana_tv = (TextView) convertView.findViewById(R.id.kana_text);
+            ImageView item_image = (ImageView)convertView.findViewById(R.id.item_image);
 
             ListItem listItem = items.get(position);
 
             name_tv.setText(listItem.getName());
             kana_tv.setText(listItem.getKana());
+            //TODO ここが画像
+            /*
+            実際は、キャッシュした上で、表示するからもうちょい複雑
+            キャッシュはできてないけど、画像の表示はできた
+             */
+
+            //画像読み込み
+            InputStream in;
+            Bitmap img = null;
+            try {
+                in = context.openFileInput(listItem.getSmallImage());
+                img = BitmapFactory.decodeStream(in);
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+            //画像セット
+            //user_view.setImageBitmap(img);
+            //Picasso.with(context).load(img).into(item_image);
+            item_image.setImageBitmap(img);
         }
         return convertView;
     }
+
+
 
     @Override
     public Filter getFilter() {
@@ -94,9 +115,12 @@ public class dataListAdapter extends BaseAdapter implements Filterable {
                     if ((mStringFilterList.get(i).getName().toUpperCase())
                             .contains(constraint.toString().toUpperCase())) {
 
-                        ListItem listItem = new ListItem(mStringFilterList.get(i)
-                                .getName(), mStringFilterList.get(i)
-                                .getKana());
+                        ListItem listItem = mStringFilterList.get(i);
+
+                        //TODO ListItem型が取得したくて、mStringFilterListはListItem型の配列なんだから、とり方は上の書き方、下のは書き方おかしいよ
+//                        ListItem listItem = new ListItem(mStringFilterList.get(i)
+//                                .getName(), mStringFilterList.get(i)
+//                                .getKana());
 
                         filterList.add(listItem);
                     }

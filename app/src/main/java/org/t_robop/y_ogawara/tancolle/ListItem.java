@@ -4,14 +4,16 @@ public class ListItem {
 
     String name;
     String kana;
-    String image;
+
+    String smallImage;
 
     int  itemId;
 
-    ListItem(String name, String kana) {
-        this.name = name;
-        this.kana = kana;
-    }
+    //TODO これが要らない、こいつのせいで型がって言われてた
+//    ListItem(String name, String kana) {
+//        this.name = name;
+//        this.kana = kana;
+//    }
 
     public void setItemId(int itemId) {
         this.itemId = itemId;
@@ -20,11 +22,13 @@ public class ListItem {
         return itemId;
     }
 
-    public void setSmallImage(String image){
-        this.image = image;
+
+    public String getSmallImage() {
+        return smallImage;
     }
-    public String getImage(){
-        return image;
+
+    public void setSmallImage(String smallImage) {
+        this.smallImage = smallImage;
     }
 
     public void setName(String name) {
