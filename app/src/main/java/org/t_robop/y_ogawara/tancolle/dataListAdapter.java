@@ -112,8 +112,8 @@ public class dataListAdapter extends BaseAdapter implements Filterable {
             if (constraint != null && constraint.length() > 0) {
                 ArrayList<ListItem> filterList = new ArrayList<ListItem>();
                 for (int i = 0; i < mStringFilterList.size(); i++) {
-                    if ((mStringFilterList.get(i).getName().toUpperCase())
-                            .contains(constraint.toString().toUpperCase())) {
+                    if ((mStringFilterList.get(i).getKana().toUpperCase()+mStringFilterList.get(i).getName().toUpperCase())
+                        .contains(constraint.toString().toUpperCase())) {
 
                         ListItem listItem = mStringFilterList.get(i);
 
