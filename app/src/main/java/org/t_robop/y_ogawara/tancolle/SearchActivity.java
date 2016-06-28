@@ -8,9 +8,27 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
+
+/*
+TODO 総評
+classの概念がまだ理解できてない
+コメントアウトがない
+コードの理解が低い
+わからないなら聞きましょう
+わからないコードをそのままにしない
+ググッて知識を蓄える
+綺麗に書けば解決できる問題多し
+メソッドでまとめよう
+最低でも関連付けだけメソッド化するとか
+デバッグ用のメソッドとか
+privateつけないと、getter,setterの意味が無い
+クラスの中にクラス作る事案多すぎ
+
+*/
+
+
 
 public class SearchActivity extends Activity implements
         SearchView.OnQueryTextListener {
