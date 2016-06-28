@@ -31,7 +31,7 @@ public class SearchActivity extends Activity implements
         listView = (ListView) findViewById(R.id.listView);
         searchView = (SearchView) findViewById(R.id.searchView);
 
-        //Data型の宣言
+        //Data型の宣言uge
 //        Data testData = new Data();
 //        //Data型にデータをセット
 //        testData.setName("西村");
