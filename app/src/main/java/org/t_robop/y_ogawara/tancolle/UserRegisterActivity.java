@@ -7,9 +7,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -964,17 +964,20 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         saveArray(arraylist,"StringItem");
 
         //新規作成か編集かによって画面切り替え場所の変更
-        if(id==0) {
-            //MainへGo!
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-        }
-        else
-        {
-            //DetailへGo!
-            Intent intent = new Intent(this, UserDetailActivity.class);
-            startActivity(intent);
-        }
+        //TODO test用
+        Intent intent1 = new Intent(this, SearchActivity.class);
+        startActivity(intent1);
+//        if(id==0) {
+//            //MainへGo!
+//            Intent intent = new Intent(this, MainActivity.class);
+//            startActivity(intent);
+//        }
+//        else
+//        {
+//            //DetailへGo!
+//            Intent intent = new Intent(this, UserDetailActivity.class);
+//            startActivity(intent);
+//        }
 
         ALLLOG();
     }
