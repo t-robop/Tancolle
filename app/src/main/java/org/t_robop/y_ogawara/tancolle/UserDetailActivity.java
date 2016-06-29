@@ -3,10 +3,12 @@ package org.t_robop.y_ogawara.tancolle;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -14,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -38,6 +42,8 @@ public class UserDetailActivity extends AppCompatActivity {
     String TwitterID;
     //人の顔写真が入るとこ
     ImageView photoImageView;
+    //画像データを一時的に蓄えるとこ
+    Bitmap bitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,15 +64,29 @@ public class UserDetailActivity extends AppCompatActivity {
         month = calendar.get(Calendar.MONTH) + 1; //0から11までしかないから１個足す
         day = calendar.get(Calendar.DAY_OF_MONTH);
 
+        photoImageView = (ImageView)findViewById(R.id.imageView);
         image = (ImageView) this.findViewById(R.id.present);
+
         //データを読みだして、その値でセットする画像を変える
         image.setImageResource(R.drawable.ao);
 
         Data data = dbAssist.idSelect(intentId, this);
         String name = data.getName(); //SQliteからもってくる
         String kana = data.getKana();
+        String smallImage = data.getSmallImage();
         TwitterID = data.getTwitterID();
         memo = data.getMemo();
+
+//画像読み込み
+        InputStream in;
+        try {
+            in = openFileInput(smallImage);//画像の名前からファイル開いて読み込み
+            bitmap = BitmapFactory.decodeStream(in);//読み込んだ画像をBitMap化
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        photoImageView.setImageBitmap(bitmap);
         //int birth = data.getBirthday();
         int birthyear = data.getYear();
         int birthmonth = data.getMonth();
