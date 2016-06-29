@@ -36,6 +36,8 @@ public class UserDetailActivity extends AppCompatActivity {
     int imagecount = 1;
     String memo;
     String TwitterID;
+    //人の顔写真が入るとこ
+    ImageView photoImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
