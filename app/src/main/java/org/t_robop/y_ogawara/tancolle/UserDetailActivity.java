@@ -1,17 +1,18 @@
 package org.t_robop.y_ogawara.tancolle;
 
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -29,13 +30,12 @@ public class UserDetailActivity extends AppCompatActivity {
     TextView memoTV;
     Calendar calendar;
     int year, month, day; //現在の日付
-    int a, b, c;
+    int a, b;
     int age;//年齢の計算結果を入れる箱
     ImageView image;
     int imagecount = 1;
-
     String memo;
-
+    String TwitterID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,24 +58,27 @@ public class UserDetailActivity extends AppCompatActivity {
 
         image = (ImageView) this.findViewById(R.id.present);
         //データを読みだして、その値でセットする画像を変える
-        image.setImageResource(R.drawable.cat1);
+        image.setImageResource(R.drawable.ao);
 
         Data data = dbAssist.idSelect(intentId, this);
         String name = data.getName(); //SQliteからもってくる
         String kana = data.getKana();
+        TwitterID = data.getTwitterID();
         memo = data.getMemo();
-        int birth = data.getBirthday();
+        //int birth = data.getBirthday();
+        int birthyear = data.getYear();
+        int birthmonth = data.getMonth();
+        int birthday = data.getDay();
         int sqlDay;
 
 
-        a = birth / 10000;  //19970714→1997みたいね年度だけにする
-        b = birth % 10000;  //誕生日を７月１４日を→７１４みたいな形に
-        c = month * 100 + day; //現在の日付を６月１５日→６１５みたいな形に
-        sqlDay = b % 100; //現在の日付を割り出す
-        if (b > c) {  //もし誕生日の方の数値が大きかったら（まだ今年の誕生日がきてなかったら）
-            age = year - a - 1;   //今年ー誕生年から更に１才ひく
+        a = birthmonth * 100 + birthday;  //誕生日を７月１４日を→７１４みたいな形に
+        b = month * 100 + day; //現在の日付を６月１５日→６１５みたいな形に
+        sqlDay = a % 100; //誕生日の日付を割り出す
+        if (a > b) {  //もし誕生日の方の数値が大きかったら（まだ今年の誕生日がきてなかったら）
+            age = year - birthyear - 1;   //今年ー誕生年から更に１才ひく
         } else {    //今年の誕生日がきていたら
-            age = year - a;  //そのまんま今年から誕生年をひく
+            age = year - birthyear;  //そのまんま今年から誕生年をひく
         }
 
         //データのフォーマット
@@ -89,14 +92,14 @@ public class UserDetailActivity extends AppCompatActivity {
             //TODO ココらへんで今年の誕生日が過ぎていたら、来年の誕生日で計算させる
             dateFrom = sdf.parse(year + "/" + month + "/" + day);
             //指定フォーマットでデータを入力
-            if (b < c) {  //誕生日より今日の日にちが大きかったら（もう誕生日がきていたら
+            if (a < b) {  //誕生日より今日の日にちが大きかったら（もう誕生日がきていたら
                 int num;
                 num = year + 1; //＋１して来年の誕生日の数値を割り出す
 
-                dateTo = sdf.parse(num + "/" + b / 100 + "/" + sqlDay);
+                dateTo = sdf.parse(num + "/" + birthmonth + "/" + birthday);
             } else {  //まだ誕生日がきていなかったら
 
-                dateTo = sdf.parse(year + "/" + b / 100 + "/" + sqlDay); //今年の誕生日を作る
+                dateTo = sdf.parse(year + "/" + birthmonth + "/" + birthday); //今年の誕生日を作る
             }
 
             //エラーが起きた時
@@ -116,7 +119,7 @@ public class UserDetailActivity extends AppCompatActivity {
 
         nameTV.setText(name);
         kanaTV.setText(kana);
-        birthTV.setText(String.valueOf(b / 100) + "/" + String.valueOf(b % 100));
+        birthTV.setText(String.valueOf(birthmonth) + "/" + String.valueOf(birthday));
         ageTV.setText(String.valueOf(age) + "才");
         remaTV.setText("残り" + String.valueOf(remDay) + "日");
         memoTV.setText(memo);
@@ -179,23 +182,48 @@ public class UserDetailActivity extends AppCompatActivity {
 
 
     public void presentClick(View view) { //プレゼントボタンをおした時
-        Data presentdate =new Data();
+        Data presentdate = new Data();
         presentdate.setPresentFlag(imagecount);
-        dbAssist.updateData(intentId,presentdate,this);
+        dbAssist.updateData(intentId, presentdate, this);
 
-        if(imagecount == 2){
+        if (imagecount == 2) {
             imagecount = 1;
-            image.setImageResource(R.drawable.cat1);
-        }else{
+            image.setImageResource(R.drawable.ao);
+        } else {
             imagecount = 2;
-            image.setImageResource(R.drawable.cat2);
+            image.setImageResource(R.drawable.ribon);
+
+        }
+    }
+
+    public void tweetClick(View view){ //ツイートボタンをおした時
+        if(TwitterID.equals("")){
+            Toast toast = Toast.makeText(UserDetailActivity.this, "TwitterIDが登録されていません", Toast.LENGTH_LONG);
+            toast.show();
+        }else{
+            Intent intent = new Intent();
+            intent.setAction( Intent.ACTION_VIEW );
+            intent.setData( Uri.parse("twitter://user?screen_name="+TwitterID) ); // @skc1210 (アカウントを指定)
+            try {
+                startActivity(intent);
+            } // Twitterが端末にインストールされていない場合はTwitterインストール画面へ
+            catch( ActivityNotFoundException e ) {
+                try { startActivity( new Intent( Intent.ACTION_VIEW, Uri.parse("market://details?id=com.twitter.android") ) );
+                } catch ( android.content.ActivityNotFoundException anfe ) {
+                    startActivity( new Intent( Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.twitter.android") ) );
+                }
+            }
 
         }
 
-
-
-
+    }
 
 
     }
-}
+
+
+
+
+
+
+
