@@ -2,13 +2,12 @@ package org.t_robop.y_ogawara.tancolle;
 
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
 
         FloatingActionButton add = (FloatingActionButton) findViewById(R.id.add);
@@ -191,9 +190,17 @@ public class MainActivity extends AppCompatActivity {
             return null;
         }
     }
-    public void testBtn(View view) {
+    public void UserRegisterActivityBtn(View view) {
+        Intent intent = new Intent(this,UserRegisterActivity.class);
+        startActivity(intent);
+    }
+    public void UserDetailActivityBtn(View view) {
         Intent intent = new Intent(this,UserDetailActivity.class);
         startActivity(intent);
 
+    }
+    public void SearchActivityBtn(View view) {
+        Intent intent = new Intent(this,SearchActivity.class);
+        startActivity(intent);
     }
 }

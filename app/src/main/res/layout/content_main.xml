@@ -15,10 +15,38 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Button"
+        android:text="UserDetailActivity(まりか画面に)"
         android:id="@+id/button"
-        android:onClick="testBtn"
+        android:onClick="UserDetailActivityBtn"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="64dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="UserDetailActivity(西村画面)"
+        android:id="@+id/button2"
+        android:onClick="UserDetailActivityBtn"
+        android:layout_below="@+id/button"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="UserRegisterActivity(まりか画面)"
+        android:id="@+id/button3"
+        android:onClick="UserRegisterActivityBtn"
+        android:layout_below="@+id/button2"
+        android:layout_alignLeft="@+id/button2"
+        android:layout_alignStart="@+id/button2" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="UserDetailActivity(中里見)"
+        android:id="@+id/button4"
+        android:onClick="SearchActivityBtn"
+        android:layout_below="@+id/button3"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>
