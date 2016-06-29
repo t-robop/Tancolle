@@ -10,10 +10,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
+import android.os.Build;
+import android.os.Bundle;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -35,6 +37,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -80,7 +83,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
 
     //カテゴリ追加用DiaLog
     private AlertDialog addCategory;
-    
+
     Bitmap img;//表示するBitmapデータ
     String img_name;//選択されたBitmapの名前（後でsqlに飛ばすよ）
 
@@ -89,7 +92,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
     private Spinner spinnerRepetition;//繰り返し通知スピナー
 
     //繰り返し通知スピナーに並べる文字列群
-    private String spinnerRepetitionItems[] = {"繰り返し通知無し", "毎日", "一週間毎","一ヶ月毎"};
+    private String spinnerRepetitionItems[] = {"繰り返し通知無し", "毎日", "一週間毎", "一ヶ月毎"};
 
     //一時的な年月日の保存
     int temporary_year;
@@ -125,35 +128,35 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         setContentView(R.layout.activity_user_register);
 
         //繰り返し通知スピナーの関連付け
-        spinnerRepetition=(Spinner)findViewById(R.id.spinner2);
+        spinnerRepetition = (Spinner) findViewById(R.id.spinner2);
         //年齢表示の関連付け
-        user_yearsold=(TextView)findViewById(R.id.YearsOld);
+        user_yearsold = (TextView) findViewById(R.id.YearsOld);
         //誕生日の関連付け
-        user_birthday=(TextView)findViewById(R.id.userbirthday);
+        user_birthday = (TextView) findViewById(R.id.userbirthday);
         //名前入力欄の関連付け
-        edit_name=(EditText)findViewById(R.id.EditName);
+        edit_name = (EditText) findViewById(R.id.EditName);
         //振り仮名入力欄の関連付け
-        edit_pho=(EditText)findViewById(R.id.EditPho);
+        edit_pho = (EditText) findViewById(R.id.EditPho);
         //twitterid入力欄の関連付け
-        edit_twitter=(EditText)findViewById(R.id.twitter);
+        edit_twitter = (EditText) findViewById(R.id.twitter);
         //通知は何日前かの入力欄の関連付け
-        edit_days_ago=(EditText)findViewById(R.id.ago);
+        edit_days_ago = (EditText) findViewById(R.id.ago);
         //メモ入力欄の関連付け
-        edit_memo=(EditText)findViewById(R.id.Memo);
+        edit_memo = (EditText) findViewById(R.id.Memo);
         //キーボード表示を制御（出したり消したり）するためのオブジェクトの関連付け
-        inputMethodManager =  (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         //画像表示場所の関連付け
-        user_view= (ImageView)findViewById(R.id.userview);
+        user_view = (ImageView) findViewById(R.id.userview);
         //田村チェックボックスの関連付け
-        tamura_check=(CheckBox)findViewById(R.id.TamuraCheck);
+        tamura_check = (CheckBox) findViewById(R.id.TamuraCheck);
         //前日に通知するかどうかのチェックボックスの関連付け
-        yesterday_check=(CheckBox)findViewById(R.id.YesterdayCheck);
+        yesterday_check = (CheckBox) findViewById(R.id.YesterdayCheck);
         //当日に通知するかどうかのチェックボックスの関連付け
-        today_check=(CheckBox)findViewById(R.id.TodayCheck);
+        today_check = (CheckBox) findViewById(R.id.TodayCheck);
         //DiaLog用のxmlとの連携の関連付け
         inflater = LayoutInflater.from(UserRegisterActivity.this);
         viewV = inflater.inflate(R.layout.dialog_user_register, null);
-        editText = (EditText)viewV.findViewById(R.id.editText1);
+        editText = (EditText) viewV.findViewById(R.id.editText1);
 
         // EditText が空のときに表示させるヒントを設定
         edit_name.setHint("Name");
@@ -163,14 +166,14 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         edit_memo.setHint("何でも自由に書いてね！");
 
         //画面切り替わり時のid取得
-        Intent intent=getIntent();
-        id=intent.getIntExtra("IdNum",0);//何も無かったら（新規作成でidデータが送られてない場合）0を入れる
+        Intent intent = getIntent();
+        id = intent.getIntExtra("IdNum", 0);//何も無かったら（新規作成でidデータが送られてない場合）0を入れる
 
         arraylist = new ArrayList<>();//新規ArrayList使う
 
         //Spinner設定
         sppinerCategory();//カテゴリスピナー設定
-        sppinerSet(spinnerRepetition,spinnerRepetitionItems);//繰り返し通知スピナー設定
+        sppinerSet(spinnerRepetition, spinnerRepetitionItems);//繰り返し通知スピナー設定
 
         //EditTextの内容設定
         EditTextSet(edit_name);
@@ -188,15 +191,14 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         TodayJudge(today_check);
 
         //年齢表示
-        if(YearsOldSet(birthday)>1000||YearsOldSet(birthday)<0) {//バグとか、通常はありえない数値の場合は空白をセット
+        if (YearsOldSet(birthday) > 1000 || YearsOldSet(birthday) < 0) {//バグとか、通常はありえない数値の場合は空白をセット
             user_yearsold.setText("");
-        }
-        else {
-            user_yearsold.setText(String.valueOf(YearsOldSet(birthday))+"歳");//年齢を算出して「歳」を付けて表示
+        } else {
+            user_yearsold.setText(String.valueOf(YearsOldSet(birthday)) + "歳");//年齢を算出して「歳」を付けて表示
         }
 
         //データがある場合（編集として呼ばれた場合）は読み込み
-        if(id!=0) {
+        if (id != 0) {
             idDate = dbAssist.idSelect(id, this);
 
             edit_name.setText(idDate.getName());
@@ -204,20 +206,19 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             edit_twitter.setText(idDate.getTwitterID());
             edit_days_ago.setText(idDate.getNotif_day());
             edit_memo.setText(idDate.getMemo());
-            tamura_flag =idDate.isYukarin();
-            yesterday_flag =idDate.isNotif_yest();
-            today_flag =idDate.isNotif_today();
+            tamura_flag = idDate.isYukarin();
+            yesterday_flag = idDate.isNotif_yest();
+            today_flag = idDate.isNotif_today();
             spinnerRepetition.setSelection(idDate.getNotif_recy());
-            imgSetting=idDate.getImage();
+            imgSetting = idDate.getImage();
 
             //年月日で読み込んでから8桁に変換
-            birthday=BirthDayGet(idDate.getYear(),idDate.getMonth(),idDate.getDay());
+            birthday = BirthDayGet(idDate.getYear(), idDate.getMonth(), idDate.getDay());
             //読み込んだ段階でデータからフラグを適用
             CheckBoxChange(tamura_check, tamura_flag);
             CheckBoxChange(yesterday_check, yesterday_flag);
             CheckBoxChange(today_check, today_flag);
-        }
-        else//新規作成として呼ばれた場合
+        } else//新規作成として呼ばれた場合
         {
             BirthTodaySet();//新規作成の場合は現在の日時を誕生日欄にセット
             imgSetting = "null.jpg";//新規作成の場合でも画像の名前を設定しておく
@@ -235,8 +236,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         try {
             in = openFileInput(imgSetting);//画像の名前からファイル開いて読み込み
             img = BitmapFactory.decodeStream(in);//読み込んだ画像をBitMap化
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         //BitMapから画像セット
@@ -244,83 +244,128 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
     }
 
     //画像をドキュメントから選択からのImageViewセット
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        //TODO Auto-generated method stub
-        if(requestCode == REQUEST_GALLERY && resultCode == RESULT_OK)//安心設計（ギャラリー開くリクエストしてギャラリーが開かれる＆画像選択に成功した場合のみの処理）
-        {
-            try {
-                //画像取得
-                InputStream in = getContentResolver().openInputStream(data.getData());//選択した画像を取得
-                Bitmap pct = BitmapFactory.decodeStream(in);//取得した画像をBitMap化
-                in.close();//TODO　わっかんねえ
+            @Override
+            protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+                //TODO Auto-generated method stub
 
-                // 作られたBitMapから横幅と高さを取得
-                pctWidth = pct.getWidth();
-                pctHeight = pct.getHeight();
+                if (resultCode != RESULT_OK) return;
 
-                Cursor c;
-                String[] columns= {MediaStore.Images.Media.DATA };
+                if (requestCode == 0) {
+                    String[] columns = {MediaStore.MediaColumns.DATA};
+                    Cursor cursor = getContentResolver().query(data.getData(), columns, null, null, null);
 
-                //TODO dataからfilepathへの変換
-                c = getContentResolver().query(data.getData(), columns, null, null, null);
-                c.moveToFirst();
-                exifInterface = new ExifInterface(c.getString(0));
-                // TODO 向きを取得
-                orientation = Integer.parseInt(exifInterface.getAttribute(ExifInterface.TAG_ORIENTATION));
-                ViewRotate();
+                    if (cursor.moveToFirst()) {
+                        try {
+                            exifInterface = new ExifInterface(cursor.getString(0));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                } else if (requestCode == 1) {
+                    String id = null;
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+                        id = DocumentsContract.getDocumentId(data.getData());
+                    }
+                    String selection = "_id=?";
+                    String[] selectionArgs = new String[]{id.split(":")[1]};
 
-                //BitMapの解像度が1000以上であれば5で割らせる
-                if(pctWidth>1000||pctHeight>1000) {
-                    pctWidth = pctWidth / 3;
-                    pctHeight = pctHeight / 3;
+                    Cursor cursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new String[]{MediaStore.MediaColumns.DATA}, selection, selectionArgs, null);
+
+                    if (cursor.moveToFirst()) {
+                        // fileから写真を読み込む
+                        try {
+                            exifInterface = new ExifInterface(cursor.getString(0));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    cursor.close();
                 }
-                else//BitMapの解像度が1000以下であれば2で許す
-                {
-                    pctWidth = pctWidth / 2;
-                    pctHeight = pctHeight / 2;
-                }
+//        if(requestCode == REQUEST_GALLERY && resultCode == RESULT_OK)//安心設計（ギャラリー開くリクエストしてギャラリーが開かれる＆画像選択に成功した場合のみの処理）
+//        {
 
-                //設定した解像度をBitMapに反映
-                img = Bitmap.createScaledBitmap(pct, pctWidth, pctHeight, false);
+                try {
+                    //画像取得
+                    InputStream in = getContentResolver().openInputStream(data.getData());//選択した画像を取得
+                    Bitmap pct = BitmapFactory.decodeStream(in);//取得した画像をBitMap化
+                    in.close();//TODO　わっかんねえ
+                    //InputStreamを閉じてる
 
-                //TODO　闇
-                //img = Bitmap.createBitmap(pct,0,0,pctWidth,pctHeight,mat,false);
-                //img = Bitmap.createBitmap(pct,0,0, pctWidth, pctHeight,mat, true);
+                    // 作られたBitMapから横幅と高さを取得
+                    pctWidth = pct.getWidth();
+                    pctHeight = pct.getHeight();
 
-                //BitMapを表示
-                user_view.setImageBitmap(img);
-                } catch (Exception e) {
+                    //Cursor c;
+                    //String[] columns= {MediaStore.Images.Media.DATA };
 
-                }
-
-            //画像保存時の名前用の現在日時取得
-            calendar = Calendar.getInstance();//現在日時を取得
-            int imgye,imgmo,imgda,imgho,imgmi,imgse;
-            imgye = calendar.get(Calendar.YEAR); // 年
-            imgmo = calendar.get(Calendar.MONTH); // 月
-            imgmo++;//monthに+１して整合性を保つ
-            imgda = calendar.get(Calendar.DAY_OF_MONTH); // 日
-            imgho=calendar.get(Calendar.HOUR_OF_DAY);//時
-            imgmi=calendar.get(Calendar.MINUTE);//分
-            imgse=calendar.get(Calendar.SECOND);//秒
-
-            //保存する画像の名前の決定
-            img_name=String.valueOf(imgye)+String.valueOf(imgmo)+String.valueOf(imgda)+String.valueOf(imgho)+String.valueOf(imgmi)+String.valueOf(imgse);
+                    //TODO dataからfilepathへの変換
+            /*
+            *
+            //c = getContentResolver().query(data.getData(), columns, null, null, null);
+            //c.moveToFirst();
+            //exifInterface = new ExifInterface(c.getString(0));
+            // TODO 向きを取得
+            //orientation = Integer.parseInt(exifInterface.getAttribute(ExifInterface.TAG_ORIENTATION));
+            */
+                    orientation = exifInterface.getAttributeInt(
+                            ExifInterface.TAG_ORIENTATION,
+                            ExifInterface.ORIENTATION_UNDEFINED);
 
 
-            //TODO　画像回転させようとしたら保存出来なくなった（BitMap取得できてないからかと思われる）ので詰んでます
-            //ローカルファイルへ保存
-//            try{
-//                final FileOutputStream out = openFileOutput(img_name+".jpg",Context.MODE_WORLD_READABLE);//.jpgつけてちょ
-//                img.compress(Bitmap.CompressFormat.JPEG,100,out);
-//                out.close();
-//            }catch(IOException e){
-//                e.printStackTrace();
-//            }
+                    ViewRotate();
+                    /*
+                    //BitMapの解像度が1000以上であれば5で割らせる
+                    if (pctWidth > 1000 || pctHeight > 1000) {
+                        pctWidth = pctWidth / 3;
+                        pctHeight = pctHeight / 3;
+                    } else//BitMapの解像度が1000以下であれば2で許す
+                    {
+                        pctWidth = pctWidth / 2;
+                        pctHeight = pctHeight / 2;
+                    }
 
-            }
+                    */
+
+            //設定した解像度をBitMapに反映
+            //img = Bitmap.createScaledBitmap(pct, pctWidth, pctHeight, false);
+
+            //TODO　闇
+            //img = Bitmap.createBitmap(pct,0,0,pctWidth,pctHeight,mat,false);
+            img = Bitmap.createBitmap(pct,0,0, pctWidth, pctHeight,mat, true);
+
+            //BitMapを表示
+            user_view.setImageBitmap(img);
+        } catch (Exception e) {
+
         }
+
+        //画像保存時の名前用の現在日時取得
+        calendar = Calendar.getInstance();//現在日時を取得
+        int imgye, imgmo, imgda, imgho, imgmi, imgse;
+        imgye = calendar.get(Calendar.YEAR); // 年
+        imgmo = calendar.get(Calendar.MONTH); // 月
+        imgmo++;//monthに+１して整合性を保つ
+        imgda = calendar.get(Calendar.DAY_OF_MONTH); // 日
+        imgho = calendar.get(Calendar.HOUR_OF_DAY);//時
+        imgmi = calendar.get(Calendar.MINUTE);//分
+        imgse = calendar.get(Calendar.SECOND);//秒
+
+        //保存する画像の名前の決定
+        img_name = String.valueOf(imgye) + String.valueOf(imgmo) + String.valueOf(imgda) + String.valueOf(imgho) + String.valueOf(imgmi) + String.valueOf(imgse);
+
+
+        //TODO　画像回転させようとしたら保存出来なくなった（BitMap取得できてないからかと思われる）ので詰んでます
+        //ローカルファイルへ保存
+        try {
+            final FileOutputStream out = openFileOutput(img_name + ".jpg", Context.MODE_WORLD_READABLE);//.jpgつけてちょ
+            img.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+//}
 
 
     //TODO　やめろ！見るな！
@@ -425,11 +470,22 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
     //画像クリック時
     public void UserView(View v)
     {
-        // ギャラリー呼び出し
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent, REQUEST_GALLERY);
+//        // ギャラリー呼び出し
+//        Intent intent = new Intent();
+//        intent.setType("image/*");
+//        intent.setAction(Intent.ACTION_GET_CONTENT);
+//        startActivityForResult(intent, REQUEST_GALLERY);
+
+        if (Build.VERSION.SDK_INT < 19) {
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.setType("image/jpeg");
+            startActivityForResult(Intent.createChooser(intent, "Pick a source"), 0);
+        } else {
+            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.setType("image/jpeg");
+            startActivityForResult(Intent.createChooser(intent, "Pick a source"), 1);
+        }
     }
 
     //誕生日クリック時

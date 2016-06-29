@@ -2,8 +2,8 @@ package org.t_robop.y_ogawara.tancolle;
 
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -192,8 +192,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     public void testBtn(View view) {
+
+
+    }
+
+    public void UserDetailActivityBtn(View view) {
         Intent intent = new Intent(this,UserDetailActivity.class);
         startActivity(intent);
-
     }
 }
