@@ -918,20 +918,43 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
     // プリファレンス保存
 // aaa,bbb,ccc... の文字列で保存
     private void saveArray(ArrayList<String> array, String PrefKey){
-        StringBuffer buffer = new StringBuffer();
-        String stringItem = null;
-        for(String item : array){
-            buffer.append(item+",");
-        };
-        if(buffer != null){
-            String buf = buffer.toString();
-            stringItem = buf.substring(0, buf.length() - 1);
-
-            SharedPreferences prefs1 = getSharedPreferences("Array", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = prefs1.edit();
-            editor.putString(PrefKey, stringItem).commit();
+        String str = "";
+        for (int i =0;i<array.size();i++){
+            str = str + array.get(i);
+            if (i !=array.size()-1){
+                str = str + ",";
+            }
         }
+        SharedPreferences prefs1 = getSharedPreferences("Array", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs1.edit();
+        editor.putString(PrefKey, str).commit();
     }
+//    private void saveArray(ArrayList<String> array, String PrefKey){
+//        String str = null;
+//        for (int i =0;i<array.size();i++){
+//            str = array.get(i);
+//            if (i !=array.size()-1){
+//                str = ",";
+//            }
+//        }
+//        SharedPreferences prefs1 = getSharedPreferences("Array", Context.MODE_PRIVATE);
+//        SharedPreferences.Editor editor = prefs1.edit();
+//        editor.putString(PrefKey, str).commit();
+//
+//        StringBuffer buffer = new StringBuffer();
+//        String stringItem = null;
+//        for(String item : array){
+//            buffer.append(item+",");
+//        };
+//        if(buffer != null){
+//            String buf = buffer.toString();
+//            stringItem = buf.substring(0, buf.length() - 1);
+//
+//            SharedPreferences prefs1 = getSharedPreferences("Array", Context.MODE_PRIVATE);
+//            SharedPreferences.Editor editor = prefs1.edit();
+//            editor.putString(PrefKey, stringItem).commit();
+//        }
+//    }
 
     // プリファレンス取得
 // aaa,bbb,ccc...としたものをsplitして返す
@@ -944,6 +967,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             return null;
         }
     }
+
 
     public void ViewRotate()
     {
