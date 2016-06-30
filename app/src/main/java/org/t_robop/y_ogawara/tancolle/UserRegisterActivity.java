@@ -1090,7 +1090,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         dbAssist.insertData(allData,this);
 
         // プレファレンスに保存
-        saveArray(arraylist,"StringItem");
+        //saveArray(arraylist,"StringItem");
 
         //新規作成か編集かによって画面切り替え場所の変更
         if(id==0) {
