@@ -275,10 +275,10 @@ public class dbAssist {
         if (data.getSmallImage()!=null){
             cv.put("smallImage", data.getSmallImage());
         }
-        if (data.isPresentFlag()!=Integer.MIN_VALUE){
+        if (data.isPresentFlag()!=0){
             cv.put("presentFlag", data.isPresentFlag());
         }
-        if (data.isPresentFlag()!=Integer.MIN_VALUE){
+        if (data.isYukarin()!=Integer.MIN_VALUE){
             cv.put("yukarin", data.isYukarin());
         }
         if (data.isNotif_yest()!=Integer.MIN_VALUE){
@@ -293,8 +293,6 @@ public class dbAssist {
         if (data.getNotif_recy()!=Integer.MIN_VALUE){
             cv.put("notif_recy", data.getNotif_recy());
         }
-
         sqldb.update(TABLE_NAME, cv, "id = "+id, null);
-
     }
 }
