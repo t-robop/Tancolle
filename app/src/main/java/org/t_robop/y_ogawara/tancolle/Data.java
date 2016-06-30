@@ -35,7 +35,7 @@ public class Data {
     private String smallImage;
     //presentを買ったか
     //ここで、int型の最小値を初期値に設定、そうしないと0や-の値が使えなくなる
-    private int presentFlag = 0;
+    private int presentFlag = Integer.MIN_VALUE;
     //年齢を固定するか
     private int yukarin = Integer.MIN_VALUE;
     //通知を前日にするか

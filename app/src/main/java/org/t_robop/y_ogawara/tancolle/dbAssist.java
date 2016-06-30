@@ -275,7 +275,7 @@ public class dbAssist {
         if (data.getSmallImage()!=null){
             cv.put("smallImage", data.getSmallImage());
         }
-        if (data.isPresentFlag()!=0){
+        if (data.isPresentFlag()!=Integer.MIN_VALUE){
             cv.put("presentFlag", data.isPresentFlag());
         }
         if (data.isYukarin()!=Integer.MIN_VALUE){
