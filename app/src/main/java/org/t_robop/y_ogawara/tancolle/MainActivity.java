@@ -40,6 +40,15 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
+        ArrayList<String> str = new ArrayList<>();
+        str.add("aaa");
+        str.add("bbb");
+        str.add("ccc");
+        str.add("abv");
+        saveArray(str,"test");
+        String[] aaa = getArray1("test");
+
+        Log.d(",",",");
     }
 
     @Override
@@ -161,35 +170,7 @@ public class MainActivity extends AppCompatActivity {
         return false;
 
     }
-    // プリファレンス保存
-// aaa,bbb,ccc... の文字列で保存
-    private void saveArray(String[] array,String PrefKey){
-        StringBuffer buffer = new StringBuffer();
-        String stringItem = null;
-        for(String item : array){
-            buffer.append(item+",");
-        };
-        if(buffer != null){
-            String buf = buffer.toString();
-            stringItem = buf.substring(0, buf.length() - 1);
 
-            SharedPreferences prefs1 = getSharedPreferences("Array", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = prefs1.edit();
-            editor.putString(PrefKey, stringItem).commit();
-        }
-    }
-
-    // プリファレンス取得
-// aaa,bbb,ccc...としたものをsplitして返す
-    private String[] getArray(String PrefKey) {
-        SharedPreferences prefs2 = getSharedPreferences("Array", Context.MODE_PRIVATE);
-        String stringItem = prefs2.getString(PrefKey, "");
-        if (stringItem != null && stringItem.length() != 0) {
-            return stringItem.split(",");
-        } else {
-            return null;
-        }
-    }
     public void UserRegisterActivityBtn(View view) {
         Intent intent = new Intent(this,UserRegisterActivity.class);
         startActivity(intent);
@@ -202,5 +183,28 @@ public class MainActivity extends AppCompatActivity {
     public void SearchActivityBtn(View view) {
         Intent intent = new Intent(this,SearchActivity.class);
         startActivity(intent);
+    }
+
+    private void saveArray(ArrayList<String> array, String PrefKey){
+        String str = "";
+        for (int i =0;i<array.size();i++){
+            str = str + array.get(i);
+            if (i !=array.size()-1){
+                str = str + ",";
+            }
+        }
+        SharedPreferences prefs1 = getSharedPreferences("Array", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs1.edit();
+        editor.putString(PrefKey, str).commit();
+    }
+    // aaa,bbb,ccc...としたものをsplitして返す
+    private String[] getArray1(String PrefKey){
+        SharedPreferences prefs2 = getSharedPreferences("Array", Context.MODE_PRIVATE);
+        String stringItem = prefs2.getString(PrefKey,"");
+        if(stringItem != null && stringItem.length() != 0){
+            return stringItem.split(",");
+        }else{
+            return null;
+        }
     }
 }

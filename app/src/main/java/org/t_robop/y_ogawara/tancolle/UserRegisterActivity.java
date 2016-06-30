@@ -121,9 +121,6 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
     ExifInterface exifInterface;
     Matrix mat;
 
-    //preference保存用配列
-    String[] categoryItem;
-
     /////////////////////////Override/////////////////////////
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,8 +129,6 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
 
         //繰り返し通知スピナーの関連付け
         spinnerRepetition = (Spinner) findViewById(R.id.spinner2);
-        //カテゴリスピナーの関連付け
-        spinnerCategory = (Spinner) findViewById(R.id.spinner1);
         //年齢表示の関連付け
         user_yearsold = (TextView) findViewById(R.id.YearsOld);
         //誕生日の関連付け
@@ -166,7 +161,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         // EditText が空のときに表示させるヒントを設定
         edit_name.setHint("Name");
         edit_pho.setHint("Phonetic");
-        edit_twitter.setHint("@無しのid");
+        edit_twitter.setHint("@twitter");
         edit_days_ago.setHint("Days");
         edit_memo.setHint("何でも自由に書いてね！");
 
@@ -180,12 +175,8 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         sppinerCategory();//カテゴリスピナー設定
         sppinerSet(spinnerRepetition, spinnerRepetitionItems);//繰り返し通知スピナー設定
 
-        //TextWacher
-        //TODO　ヤバイ
-        edit_name.addTextChangedListener(this);
-
         //EditTextの内容設定
-        //EditTextSet(edit_name);
+        EditTextSet(edit_name);
         EditTextSet(edit_pho);
         EditTextSet(edit_twitter);
         EditTextSet(edit_days_ago);
@@ -236,6 +227,10 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         //誕生日描画
         BirthDayDraw(birthday);
 
+        //TextWacher
+        //TODO　ヤバイ
+        edit_name.addTextChangedListener(this);
+
         //画像読み込み
         InputStream in;
         try {
@@ -246,19 +241,6 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         }
         //BitMapから画像セット
         user_view.setImageBitmap(img);
-
-        // プリファレンスから取得
-        categoryItem = getArray("StringItem");
-
-        // アイテムを追加します
-        adapter.add("<未選択>");
-        if(categoryItem ==null) {
-        }
-        else {
-            for (int n = 0; n < categoryItem.length; n++) {
-                adapter.add(categoryItem[n]);
-            }
-        }
     }
 
     //画像をドキュメントから選択からのImageViewセット
@@ -367,13 +349,14 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         imgmi = calendar.get(Calendar.MINUTE);//分
         imgse = calendar.get(Calendar.SECOND);//秒
 
-        //保存する画像の名前の決定(2016/1/1,23時30分15秒の場合は「201611233025.jpg」)
-        img_name = String.valueOf(imgye) + String.valueOf(imgmo) + String.valueOf(imgda) + String.valueOf(imgho) + String.valueOf(imgmi) + String.valueOf(imgse)+ ".jpg";
+        //保存する画像の名前の決定
+        img_name = String.valueOf(imgye) + String.valueOf(imgmo) + String.valueOf(imgda) + String.valueOf(imgho) + String.valueOf(imgmi) + String.valueOf(imgse);
+
 
         //TODO　画像回転させようとしたら保存出来なくなった（BitMap取得できてないからかと思われる）ので詰んでます
         //ローカルファイルへ保存
         try {
-            final FileOutputStream out = openFileOutput(img_name , Context.MODE_WORLD_READABLE);//.jpgつけてちょ
+            final FileOutputStream out = openFileOutput(img_name + ".jpg", Context.MODE_WORLD_READABLE);//.jpgつけてちょ
             img.compress(Bitmap.CompressFormat.JPEG, 100, out);
             out.close();
         } catch (IOException e) {
@@ -398,18 +381,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 //イベントを取得するタイミングには、ボタンが押されてなおかつエンターキーだったときを指定
-                if((event.getAction() == KeyEvent.ACTION_DOWN)&&(keyCode == KeyEvent.KEYCODE_ENTER)){
-
-                    //キーボードを閉じる
-                    inputMethodManager.hideSoftInputFromWindow(edit_name.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
-
-                    //フォーカスを外す
-                    edit_name.setFocusable(false);
-                    edit_name.setFocusableInTouchMode(false);
-                    edit_name.requestFocus();
-
-                    // エディットテキストのテキストを全選択します
-                    edit_name.selectAll();
+                if((event.getAction() != KeyEvent.ACTION_DOWN)){
 
                     return true;
                 }
@@ -613,7 +585,21 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
+        // プリファレンスから取得
+        String[] arrayItem2 = getArray("StringItem");
 
+        //Log.d("aaaa",String.valueOf(arrayItem2.length));
+
+        // アイテムを追加します
+        adapter.add("<未選択>");
+        if(arrayItem2==null) {
+        }
+        else {
+            for (int n = 1; n < arrayItem2.length; n++) {
+                adapter.add(arrayItem2[n]);
+            }
+        }
+        spinnerCategory = (Spinner) findViewById(R.id.spinner1);
         // アダプターを設定します
         spinnerCategory.setAdapter(adapter);
         // スピナーのアイテムが選択された時に呼び出されるコールバックリスナーを登録します
@@ -936,7 +922,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         String stringItem = null;
         for(String item : array){
             buffer.append(item+",");
-        }
+        };
         if(buffer != null){
             String buf = buffer.toString();
             stringItem = buf.substring(0, buf.length() - 1);
@@ -1091,7 +1077,6 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         allData.setDay(DayLoad(birthday));
 
         allData.setCategory(user_category);
-        Log.d("aaaa",user_category);
         allData.setTwitterID(edit_twitter.getText().toString());
         allData.setMemo(edit_memo.getText().toString());
         allData.setImage(img_name+".jpg");
@@ -1105,7 +1090,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         dbAssist.insertData(allData,this);
 
         // プレファレンスに保存
-        saveArray(arraylist, "StringItem");
+        saveArray(arraylist,"StringItem");
 
         //新規作成か編集かによって画面切り替え場所の変更
         if(id==0) {
