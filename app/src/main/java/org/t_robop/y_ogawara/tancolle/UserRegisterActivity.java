@@ -116,7 +116,6 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
     int pctWidth;
     int pctHeight;
 
-
     int orientation;
     ExifInterface exifInterface;
     Matrix mat;
@@ -129,6 +128,8 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
 
         //繰り返し通知スピナーの関連付け
         spinnerRepetition = (Spinner) findViewById(R.id.spinner2);
+        //カテゴリスピナーの関連付け
+        spinnerCategory = (Spinner) findViewById(R.id.spinner1);
         //年齢表示の関連付け
         user_yearsold = (TextView) findViewById(R.id.YearsOld);
         //誕生日の関連付け
@@ -176,7 +177,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         sppinerSet(spinnerRepetition, spinnerRepetitionItems);//繰り返し通知スピナー設定
 
         //EditTextの内容設定
-        EditTextSet(edit_name);
+        //EditTextSet(edit_name);
         EditTextSet(edit_pho);
         EditTextSet(edit_twitter);
         EditTextSet(edit_days_ago);
@@ -241,6 +242,22 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         }
         //BitMapから画像セット
         user_view.setImageBitmap(img);
+
+        // プリファレンスから取得
+        String[] arrayItem2 = getArray("StringItem");
+
+        // アイテムを追加します
+        adapter.add("<未選択>");
+        if(arrayItem2==null) {
+        }
+        else {
+            for (int n = 0; n < arrayItem2.length; n++) {
+                adapter.add(arrayItem2[n]);
+                arraylist.add(arrayItem2[n]);
+            }
+        }
+        //adapter更新
+        //adapter.notifyDataSetChanged();
     }
 
     //画像をドキュメントから選択からのImageViewセット
@@ -288,8 +305,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             //画像取得
             InputStream in = getContentResolver().openInputStream(data.getData());//選択した画像を取得
             Bitmap pct = BitmapFactory.decodeStream(in);//取得した画像をBitMap化
-            in.close();//TODO　わっかんねえ
-            //InputStreamを閉じてる
+            in.close();//InputStreamを閉じてる
 
             // 作られたBitMapから横幅と高さを取得
             pctWidth = pct.getWidth();
@@ -310,7 +326,6 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             orientation = exifInterface.getAttributeInt(
                     ExifInterface.TAG_ORIENTATION,
                     ExifInterface.ORIENTATION_UNDEFINED);
-
 
             ViewRotate();
                     /*
@@ -352,7 +367,6 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         //保存する画像の名前の決定
         img_name = String.valueOf(imgye) + String.valueOf(imgmo) + String.valueOf(imgda) + String.valueOf(imgho) + String.valueOf(imgmi) + String.valueOf(imgse);
 
-
         //TODO　画像回転させようとしたら保存出来なくなった（BitMap取得できてないからかと思われる）ので詰んでます
         //ローカルファイルへ保存
         try {
@@ -363,9 +377,6 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             e.printStackTrace();
         }
     }
-
-//}
-
 
     //TODO　やめろ！見るな！
     //TextWatcher/////未完成/////
@@ -381,7 +392,18 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 //イベントを取得するタイミングには、ボタンが押されてなおかつエンターキーだったときを指定
-                if((event.getAction() != KeyEvent.ACTION_DOWN)){
+                if((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)){
+
+                    //キーボードを閉じる
+                    inputMethodManager.hideSoftInputFromWindow(edit_name.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
+
+                    //フォーカスを外す
+                    edit_name.setFocusable(false);
+                    edit_name.setFocusableInTouchMode(false);
+                    edit_name.requestFocus();
+
+                    // エディットテキストのテキストを全選択します
+                    edit_name.selectAll();
 
                     return true;
                 }
@@ -534,7 +556,6 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         }
     }
 
-
     public void EditTextSet(final EditText edit)
     {
         //EditTextにリスナーをセット
@@ -577,7 +598,6 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         //edit.getEditableText().clear();//editTextの初期化
     }
 
-
     //カテゴリー追加用spinner
     public void sppinerCategory()
     {
@@ -585,21 +605,6 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        // プリファレンスから取得
-        String[] arrayItem2 = getArray("StringItem");
-
-        //Log.d("aaaa",String.valueOf(arrayItem2.length));
-
-        // アイテムを追加します
-        adapter.add("<未選択>");
-        if(arrayItem2==null) {
-        }
-        else {
-            for (int n = 1; n < arrayItem2.length; n++) {
-                adapter.add(arrayItem2[n]);
-            }
-        }
-        spinnerCategory = (Spinner) findViewById(R.id.spinner1);
         // アダプターを設定します
         spinnerCategory.setAdapter(adapter);
         // スピナーのアイテムが選択された時に呼び出されるコールバックリスナーを登録します
@@ -706,7 +711,6 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         datePickerDialog = new DatePickerDialog(this, DateSetListener, temporary_year, temporary_month, temporary_day);
     }
 
-
     //カレンダーデータを八桁の数値へ
     public int BirthDayGet(int Year,int Month,int Day)
     {
@@ -749,7 +753,6 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         if(addCategory == null)//Adddialogが作成されていない時
         {
 
-
             addCategory = new AlertDialog.Builder(UserRegisterActivity.this)
                     .setTitle("カテゴリー入力")//DiaLogタイトル
                     .setView(viewV)//View指定
@@ -768,7 +771,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
 
                             //editTextに何も入力されてない時
                             if (editText.getText().toString().equals("")) {
-                                addcategory = "";//0が入る
+                                addcategory = "";//TODO nullにしてみよう
                             } else {
                                 // エディットテキストのテキストを取得します
                                 addcategory = editText.getText().toString();
@@ -809,7 +812,6 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         cald=birth-cal;
         cal=calm*100;
         cald=cald-cal;
-
 
         calendar = Calendar.getInstance();
 
@@ -918,19 +920,16 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
     // プリファレンス保存
 // aaa,bbb,ccc... の文字列で保存
     private void saveArray(ArrayList<String> array, String PrefKey){
-        StringBuffer buffer = new StringBuffer();
-        String stringItem = null;
-        for(String item : array){
-            buffer.append(item+",");
-        };
-        if(buffer != null){
-            String buf = buffer.toString();
-            stringItem = buf.substring(0, buf.length() - 1);
-
-            SharedPreferences prefs1 = getSharedPreferences("Array", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = prefs1.edit();
-            editor.putString(PrefKey, stringItem).commit();
+        String str = new String("");
+        for (int i =0;i<array.size();i++){
+            str = str + array.get(i);
+            if (i !=array.size()-1){
+                str = str + ",";
+            }
         }
+        SharedPreferences prefs1 = getSharedPreferences("Array", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs1.edit();
+        editor.putString(PrefKey, str).commit();
     }
 
     // プリファレンス取得
