@@ -162,7 +162,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         // EditText が空のときに表示させるヒントを設定
         edit_name.setHint("Name");
         edit_pho.setHint("Phonetic");
-        edit_twitter.setHint("@twitter");
+        edit_twitter.setHint("@いらないよ");
         edit_days_ago.setHint("Days");
         edit_memo.setHint("何でも自由に書いてね！");
 
@@ -186,7 +186,6 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         user_view.setScaleType(ImageView.ScaleType.CENTER_CROP);//CENTER_CROPでViewに合わせて拡大し、画像のはみ出した部分は切り取って、中心にフォーカスする
 
         //CheckBoxの値を取得
-        //TODO　クソ
         TamuraJudge(tamura_check);
         YesterdayJudge(yesterday_check);
         TodayJudge(today_check);
@@ -225,11 +224,10 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             imgSetting = "null.jpg";//新規作成の場合でも画像の名前を設定しておく
         }
 
-        //誕生日描画
+        //誕生日描画(8桁をTextViewに直接描画してる)
         BirthDayDraw(birthday);
 
         //TextWacher
-        //TODO　ヤバイ
         edit_name.addTextChangedListener(this);
 
         //画像読み込み
@@ -237,6 +235,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         try {
             in = openFileInput(imgSetting);//画像の名前からファイル開いて読み込み
             img = BitmapFactory.decodeStream(in);//読み込んだ画像をBitMap化
+            //TODO　ここでin.closeしなくていいんですか
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -314,15 +313,13 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             //Cursor c;
             //String[] columns= {MediaStore.Images.Media.DATA };
 
-            //TODO dataからfilepathへの変換
-            /*
-            *
+            //dataからfilepathへの変換
             //c = getContentResolver().query(data.getData(), columns, null, null, null);
             //c.moveToFirst();
             //exifInterface = new ExifInterface(c.getString(0));
-            // TODO 向きを取得
+            //向きを取得
             //orientation = Integer.parseInt(exifInterface.getAttribute(ExifInterface.TAG_ORIENTATION));
-            */
+
             orientation = exifInterface.getAttributeInt(
                     ExifInterface.TAG_ORIENTATION,
                     ExifInterface.ORIENTATION_UNDEFINED);
@@ -343,7 +340,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             //設定した解像度をBitMapに反映
             //img = Bitmap.createScaledBitmap(pct, pctWidth, pctHeight, false);
 
-            //TODO　闇
+            //闇
             //img = Bitmap.createBitmap(pct,0,0,pctWidth,pctHeight,mat,false);
             img = Bitmap.createBitmap(pct,0,0, pctWidth, pctHeight,mat, true);
 
@@ -367,7 +364,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         //保存する画像の名前の決定
         img_name = String.valueOf(imgye) + String.valueOf(imgmo) + String.valueOf(imgda) + String.valueOf(imgho) + String.valueOf(imgmi) + String.valueOf(imgse);
 
-        //TODO　画像回転させようとしたら保存出来なくなった（BitMap取得できてないからかと思われる）ので詰んでます
+        //TODO　何故、画像回転が成功したのでしょう
         //ローカルファイルへ保存
         try {
             final FileOutputStream out = openFileOutput(img_name + ".jpg", Context.MODE_WORLD_READABLE);//.jpgつけてちょ
@@ -378,7 +375,6 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         }
     }
 
-    //TODO　やめろ！見るな！
     //TextWatcher/////未完成/////
     @Override
     public void beforeTextChanged(final CharSequence s, int start, int count, int after) {
@@ -422,7 +418,6 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
     public void afterTextChanged(Editable s) {
         //操作後のEtidTextの状態を取得する
     }
-//////////TODO　ここまで見るな！
 
 
 
@@ -771,7 +766,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
 
                             //editTextに何も入力されてない時
                             if (editText.getText().toString().equals("")) {
-                                addcategory = "";//TODO nullにしてみよう
+                                addcategory = null;
                             } else {
                                 // エディットテキストのテキストを取得します
                                 addcategory = editText.getText().toString();
@@ -779,9 +774,12 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
 
                             //要素追加
                             //リストとadaptorに入力値を入れる
-                            adapter.add(addcategory);
+                            if(addcategory!=null) {
+                                adapter.add(addcategory);
 
-                            arraylist.add(addcategory);
+                                arraylist.add(addcategory);
+                            }
+
 
                             //adapter更新
                             adapter.notifyDataSetChanged();
