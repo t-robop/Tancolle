@@ -235,7 +235,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         try {
             in = openFileInput(imgSetting);//画像の名前からファイル開いて読み込み
             img = BitmapFactory.decodeStream(in);//読み込んだ画像をBitMap化
-            //TODO　ここでin.closeしなくていいんですか
+            in.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

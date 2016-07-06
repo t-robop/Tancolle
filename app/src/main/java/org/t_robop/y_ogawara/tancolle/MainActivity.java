@@ -49,7 +49,37 @@ public class MainActivity extends AppCompatActivity {
         String[] aaa = getArray1("test");
 
         Log.d(",",",");
+
+        //TODO adapterDataセットするテスト
+        //for(int month=1;
+        int month=6;//とりあえず6月でプレイ
+        ArrayList<Data> monthData;//ArrayListの宣言
+        monthData=dbAssist.birthdaySelect(month,this);//ArrayListに月検索したデータをぶち込む
+
+        MainAdapterData Mad = null;//自分で作成したclassの宣言
+
+        ArrayList<MainAdapterData> adapterData=new ArrayList<>();//classのArrayListの作成
+
+        //読み込んだ月のデータの数だけ回す。（3分の1でいいのと、後述のListデータの取得に使うため+3）
+        for(int size=1;size<=monthData.size();size=size+3) {
+
+            //三人分だけ保存するため3回回す。
+            for (int i = 0; i < 3; i++) {
+                Data fuck;//fuck!(感情)
+                fuck=monthData.get(i+size);//読み込んだListの要素を取得
+                Mad.setId(i, fuck.getId());//idのセット
+                Mad.setName(i, fuck.getName());//名前のセット
+                Mad.setBirthMonth(i, fuck.getMonth());//誕生月のセット
+                Mad.setBirthDay(i, fuck.getDay());//誕生日のセット
+                Mad.setPresentFlag(i, fuck.isPresentFlag());//プレゼントフラグのセット
+            }
+
+            //この辺に書き込み処理書きます。
+
+                adapterData.add(Mad);//自分で作成したArrayListに追加
     }
+        Log.d("aaaa", String.valueOf(adapterData.size()));
+}
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
