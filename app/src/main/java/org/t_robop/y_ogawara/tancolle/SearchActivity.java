@@ -18,8 +18,6 @@ public class SearchActivity extends Activity implements
     ListView listView;
     SearchView searchView;
 
-    String[] name_items, kana_items;
-
     //ArrayList<ListItem> items;
     dataListAdapter adapter;
 
