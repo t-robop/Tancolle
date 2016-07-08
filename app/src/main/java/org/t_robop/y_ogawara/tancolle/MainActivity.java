@@ -50,35 +50,46 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d(",",",");
 
-        //TODO adapterDataセットするテスト
-        //for(int month=1;
-        int month=6;//とりあえず6月でプレイ
-        ArrayList<Data> monthData;//ArrayListの宣言
-        monthData=dbAssist.birthdaySelect(month,this);//ArrayListに月検索したデータをぶち込む
 
-        MainAdapterData Mad = null;//自分で作成したclassの宣言
+        //adapterDataセット
+        int month=7;//とりあえず7月でプレイ(ここらへんで月の指定お願いします)
+
+        ArrayList<Data> monthTurnData;//ArrayListの宣言
+
+        monthTurnData=dbAssist.birthdaySelect(month,this);//ArrayListに月検索したデータをぶち込む
+
+        MainAdapterData Mad = new MainAdapterData();//自分で作成したclassの宣言
 
         ArrayList<MainAdapterData> adapterData=new ArrayList<>();//classのArrayListの作成
 
-        //読み込んだ月のデータの数だけ回す。（3分の1でいいのと、後述のListデータの取得に使うため+3）
-        for(int size=1;size<=monthData.size();size=size+3) {
+        Mad.startMad();//クラスの変数の初期化
 
+        //読み込んだ月のデータの数だけ回す。（3分の1でいいのと、後述のListデータの取得に使うため+3）
+        for(int j=0;j<monthTurnData.size();j=j+3)//TODO .size()-3で回避できるので初期の三つのどこかの設定がおかしいのかも
+        {
             //三人分だけ保存するため3回回す。
             for (int i = 0; i < 3; i++) {
-                Data fuck;//fuck!(感情)
-                fuck=monthData.get(i+size);//読み込んだListの要素を取得
-                Mad.setId(i, fuck.getId());//idのセット
-                Mad.setName(i, fuck.getName());//名前のセット
-                Mad.setBirthMonth(i, fuck.getMonth());//誕生月のセット
-                Mad.setBirthDay(i, fuck.getDay());//誕生日のセット
-                Mad.setPresentFlag(i, fuck.isPresentFlag());//プレゼントフラグのセット
+                Data getData;//monthTurnData取得用のデータ型
+
+                //TODO monthTurnData.get(i+j)で落ちます
+
+                Log.d("aaaa", String.valueOf(i+j));
+                Log.d("aaaa", String.valueOf(monthTurnData.get(i+j)));
+
+                getData=monthTurnData.get(i+j);//読み込んだListの要素を取得
+
+                Mad.setId(i, getData.getId());//idのセット
+                Mad.setName(i, getData.getName());//名前のセット
+                Mad.setBirthMonth(i, getData.getMonth());//誕生月のセット
+                Mad.setBirthDay(i, getData.getDay());//誕生日のセット
+                Mad.setPresentFlag(i, getData.isPresentFlag());//プレゼントフラグのセット
             }
 
-            //この辺に書き込み処理書きます。
+            //この辺に書き込み処理書いてくらさい。
 
-                adapterData.add(Mad);//自分で作成したArrayListに追加
+            adapterData.add(Mad);//三人のデータの追加
     }
-        Log.d("aaaa", String.valueOf(adapterData.size()));
+
 }
 
     @Override
