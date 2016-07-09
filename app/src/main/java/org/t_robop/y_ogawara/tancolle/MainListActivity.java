@@ -19,11 +19,11 @@ public class MainListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main_list);
         ListView listView = (ListView) findViewById(R.id.listView1);
 
-        // データを突っ込む
+
         ArrayList<MainListData> MainListArray = new ArrayList<>();
 
 
-
+        // データを突っ込む
         for (int i =1;i<3;i=i+3){
             MainListData MainList = new MainListData();
             MainList.setBirth1("6/10");
@@ -38,12 +38,13 @@ public class MainListActivity extends AppCompatActivity {
 
         }
 
-
+        //Adapterをセット
         MainListAdapter adapter = new MainListAdapter(this, 0, MainListArray);
         //listView.setEmptyView(findViewById(R.id.listView));
         listView.setAdapter(adapter);
     }
 
+    //リストをクリックした時のイベント
     public void listClick(View view) {
         Log.d("hello","aaaaaaaaaaaaaa");
     }

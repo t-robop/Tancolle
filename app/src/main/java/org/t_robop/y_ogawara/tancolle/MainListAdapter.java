@@ -16,6 +16,7 @@ import java.util.ArrayList;
  */
 public class MainListAdapter extends ArrayAdapter<MainListData> {
 
+
     private LayoutInflater layoutInflater;
 
     public MainListAdapter(Context c, int id, ArrayList<MainListData> MainListArray) {
@@ -25,6 +26,8 @@ public class MainListAdapter extends ArrayAdapter<MainListData> {
         );
     }
 
+
+    //viewを使い回すのにinflaterを使う(お決まりのやつ)
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
@@ -37,6 +40,7 @@ public class MainListAdapter extends ArrayAdapter<MainListData> {
 
 
 
+        //データを各idへセット
         MainListData mainListData = getItem(position);
         ((TextView) convertView.findViewById(R.id.name1)).setText(mainListData.getName1());
         ((TextView) convertView.findViewById(R.id.birth1)).setText(mainListData.getBirth1());
@@ -45,6 +49,7 @@ public class MainListAdapter extends ArrayAdapter<MainListData> {
         ((TextView) convertView.findViewById(R.id.name3)).setText(mainListData.getName3());
         ((TextView) convertView.findViewById(R.id.birth3)).setText(mainListData.getBirth3());
 
+        //linerにtagをつけてクリックしたときにわかるように
         LinearLayout liner1 = (LinearLayout) convertView.findViewById(R.id.liner1);
         liner1.setTag(position);
         LinearLayout liner2 = (LinearLayout) convertView.findViewById(R.id.liner2);
@@ -52,6 +57,7 @@ public class MainListAdapter extends ArrayAdapter<MainListData> {
         LinearLayout liner3 = (LinearLayout) convertView.findViewById(R.id.liner3);
         liner3.setTag(position);
 
+        //viewを返す
         return convertView;
 
     }
