@@ -18,6 +18,10 @@
         <activity android:name=".UserDetailActivity" />
         <activity android:name=".HomeActivity" />
         <activity android:name=".MainActivity">
+
+        </activity>
+
+        <activity android:name=".MainListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
