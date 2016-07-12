@@ -20,6 +20,7 @@ public class HomeActivity extends AppCompatActivity implements GestureDetector.O
     private ViewFlipper flipper;
     private Animation slideInFromLeft;
     private Animation slideInFromRight;
+
     private Animation slideOutToLeft;
     private Animation slideOutToRight;
     @Override
