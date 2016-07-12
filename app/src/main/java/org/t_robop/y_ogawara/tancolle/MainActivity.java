@@ -207,4 +207,14 @@ public class MainActivity extends AppCompatActivity {
             return null;
         }
     }
+
+    public void ViewFlipperTestActivityBtn(View view) {
+        Intent intent = new Intent(this,ViewFlipperTestActivity.class);
+        startActivity(intent);
+    }
+
+    public void HomeActivityBtn(View view) {
+        Intent intent = new Intent(this,GestureDecActivity.class);
+        startActivity(intent);
+    }
 }

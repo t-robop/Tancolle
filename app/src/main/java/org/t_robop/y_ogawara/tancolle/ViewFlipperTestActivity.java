@@ -1,33 +1,32 @@
 package org.t_robop.y_ogawara.tancolle;
 
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
-import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ListView;
 import android.widget.ViewFlipper;
 
-import java.util.ArrayList;
-
-public class HomeActivity extends AppCompatActivity implements GestureDetector.OnGestureListener {
+public class ViewFlipperTestActivity extends AppCompatActivity implements GestureDetector.OnGestureListener {
     //タッチイベントを取得する変数
     private GestureDetector gestureDetector;
+    //ViewFlipper型の宣言
     private ViewFlipper flipper;
+    //アニメーションを読み込む変数
     private Animation slideInFromLeft;
     private Animation slideInFromRight;
     private Animation slideOutToLeft;
     private Animation slideOutToRight;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
-        ListView listView = (ListView) findViewById(R.id.listView);
+        setContentView(R.layout.activity_view_flipper_test);
+        //ViewFlipperの関連付け
         flipper = (ViewFlipper)findViewById(R.id.flipper);
+        //flipper.addView();
+        //アニメーション用の変数にデータをセット
         slideInFromLeft =
                 AnimationUtils.loadAnimation(this, R.anim.slide_in_from_left);
         slideInFromRight =
@@ -36,42 +35,11 @@ public class HomeActivity extends AppCompatActivity implements GestureDetector.O
                 AnimationUtils.loadAnimation(this, R.anim.slide_out_to_left);
         slideOutToRight =
                 AnimationUtils.loadAnimation(this, R.anim.slide_out_to_right);
+        //gestureDetectorクラスのインスタンスを生成(実態を生成しているみたいな、classがあるだけだと、設計図があるだけなので)
         gestureDetector = new GestureDetector(this,this);
-        // データを準備
-        ArrayList<ListCellData> cellDataArray = new ArrayList<>();
-
-
-        for (int i =1;i<9;i=i+3){
-            ListCellData cellData = new ListCellData();
-            cellData.setBirthday1("6/10");
-            cellData.setBirthday2("6/12");
-            cellData.setBirthday3("6/20");
-            cellData.setName1("西村");
-            cellData.setName2("西");
-            cellData.setName3("村");
-
-            cellData.setBitmap1(BitmapFactory.decodeResource(getResources(),R.mipmap.ic_launcher));
-            cellData.setBitmap2(BitmapFactory.decodeResource(getResources(),R.mipmap.ic_launcher));
-            cellData.setBitmap3(BitmapFactory.decodeResource(getResources(),R.mipmap.ic_launcher));
-
-            cellData.setId1(i);
-            cellData.setId2(i+1);
-            cellData.setId3(i+2);
-            cellDataArray.add(cellData);
-        }
-
-        // Adapter - ArrayAdapter - UserAdapter
-        ListCellAdapter adapter = new ListCellAdapter(this, 0, cellDataArray);
-
-
-        // ListViewに表示
-        listView.setEmptyView(findViewById(R.id.listView));
-        listView.setAdapter(adapter);
     }
-    public void cellClick(View view) {
-        Log.v("yorosiku!",  String.valueOf(view.getTag()));
 
-    }
+    //画面をタッチした時に呼ばれるメソッド
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
         return gestureDetector.onTouchEvent(event)
@@ -103,29 +71,40 @@ public class HomeActivity extends AppCompatActivity implements GestureDetector.O
 
     }
 
+    //フリックした時に呼ばれる
     @Override
-    public final boolean onFling(
-            final MotionEvent e1,
-            final MotionEvent e2,
-            final float velocityX,
-            final float velocityY) {
+    public final boolean onFling(final MotionEvent e1, final MotionEvent e2, final float velocityX, final float velocityY) {
+        //画面をタッチした時の値と、画面から指を離した時の値を引いて、絶対値を入れる
         float dx = Math.abs(e1.getX() - e2.getX());
         float dy = Math.abs(e1.getY() - e2.getY());
+        //もし、縦の移動よりも横の移動のほうが多い場合
         if (dx > dy) {
+            //フリックの速度 -なら左 +なら右にフリック
             if (velocityX > 0) {
-                flipper.setInAnimation(slideInFromLeft);
+                //flipper.setInAnimation(slideInFromLeft);
                 //flipper.setOutAnimation(slideOutToRight);
+                //アニメーションを実行する
+                //flipper.showPrevious();
+                flipper.setInAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_in_from_left));
+                flipper.setOutAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_out_to_right));
                 flipper.showPrevious();
 
+
             } else {
-                flipper.setInAnimation(slideInFromRight);
-                //TODO: ここで一度画面外にとどめておいて、更新して、コールバックでアニメーションを使い、戻す
-                //TODO: アニメーションは止まった、後は更新した結果をコールバックして戻すだけ
+                //flipper.setInAnimation(slideInFromRight);
                 //flipper.setOutAnimation(slideOutToLeft);
+                //アニメーションを実行する
+                //flipper.showNext();
+
+
+                flipper.setInAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_in_from_right));
+                flipper.setOutAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_out_to_left));
                 flipper.showNext();
             }
             return true;
         }
         return false;
     }
+
+    // ...
 }
