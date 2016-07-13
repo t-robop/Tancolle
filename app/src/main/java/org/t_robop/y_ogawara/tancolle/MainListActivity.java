@@ -214,5 +214,6 @@ public class MainListActivity extends AppCompatActivity {
         intent.putExtra("id", numData);
         startActivity(intent);
 
+
     }
 }
