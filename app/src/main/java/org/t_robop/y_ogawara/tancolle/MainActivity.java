@@ -82,12 +82,6 @@ public class MainActivity extends AppCompatActivity {
                     Mad.setBirthMonth(i, getData.getMonth());//誕生月のセット
                     Mad.setBirthDay(i, getData.getDay());//誕生日のセット
                     Mad.setPresentFlag(i, getData.isPresentFlag());//プレゼントフラグのセット
-
-                    Mad.getId(i);//idのセット
-                    Mad.getName(i);//名前のセット
-                    Mad.getBirthMonth(i);//誕生月のセット
-                    Mad.getBirthDay(i);//誕生日のセット
-                    Mad.getPresentFlag(i);//プレゼントフラグのセット
                 }
                 num=num-1;//ここでnumから今セットした三人分だけ引く
             }
