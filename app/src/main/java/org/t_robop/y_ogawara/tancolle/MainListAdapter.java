@@ -54,7 +54,7 @@ public class MainListAdapter extends ArrayAdapter<MainAdapterData> {
         ((TextView) convertView.findViewById(R.id.name3)).setText(mainListData.getName(2));
         ((TextView) convertView.findViewById(R.id.birth3)).setText(mainListData.getBirthMonth(2)+"/"+mainListData.getBirthDay(2));
 
-
+//ooooooooooooooooooooooooooo
 
         //linerにtagをつけてクリックしたときにわかるように
         LinearLayout liner1 = (LinearLayout) convertView.findViewById(R.id.liner1);
