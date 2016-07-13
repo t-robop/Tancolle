@@ -25,19 +25,6 @@ public class MainAdapterData {
     //誕生日フラグ(0or1)
     private int[] presentFlag=new int[] {0,0,0};
 
-//    //変数初期化
-//    public void startMad()
-//    {
-//        for(int i=0;i<3;i++)
-//        {
-//            id[i]=0;
-//            name[i]="";
-//            birthMonth[i]=0;
-//            birthDay[i]=0;
-//            presentFlag[i]=0;
-//        }
-//    }
-
     //保存
     //num(配列番号)
     public void setId(int num,int id)
