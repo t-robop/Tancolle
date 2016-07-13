@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
         ArrayList<MainAdapterData> adapterData=new ArrayList<>();//classのArrayListの作成
 
-        Mad.startMad();//クラスの変数の初期化
+        //Mad.startMad();//クラスの変数の初期化
 
         int num=monthTurnData.size();//int型変数numにmonthTurnDataの配列数を入れる
 
