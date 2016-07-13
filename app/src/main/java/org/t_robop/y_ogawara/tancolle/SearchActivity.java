@@ -18,8 +18,6 @@ public class SearchActivity extends Activity implements
     ListView listView;
     SearchView searchView;
 
-    String[] name_items, kana_items;
-
     //ArrayList<ListItem> items;
     dataListAdapter adapter;
 
@@ -115,24 +113,27 @@ public class SearchActivity extends Activity implements
             name.add(item);
         }
 
-
+        //adapterをセット
         adapter = new dataListAdapter(getApplicationContext(), name);
         listView.setAdapter(adapter);
 
+        //searchViewに関する設定
         searchView.setOnQueryTextListener(this);
         searchView.setQueryHint("名前を入力");
         searchView.setIconifiedByDefault(false);
 
+        //TODO 要メソッド化(読みにくい)
         // ListView がクリックされた時に呼び出されるコールバックを登録
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView parent, View view, int position, long id) {
                 //ここに書く
+                //listViewのitemを取得してadapterからItemをもらってくる
                 ListView listView = (ListView) parent;
                 listView.getItemAtPosition(position);
 
                 ListItem listItem = (ListItem) listView.getAdapter().getItem(position);
 
-
+                //Intentで飛ばす＆idをキーにする
                 Intent intent = new Intent(SearchActivity.this, UserDetailActivity.class);
                 intent.putExtra("id", listItem.getItemId());
                 startActivity(intent);
@@ -145,8 +146,10 @@ public class SearchActivity extends Activity implements
 
     }
 
+    //Textが変わった時に呼び出される
     @Override
     public boolean onQueryTextChange(String newText) {
+        //adapterにfilterを送ってfilterされたのをもらってくる
         adapter.getFilter().filter(newText);
         return false;
     }
