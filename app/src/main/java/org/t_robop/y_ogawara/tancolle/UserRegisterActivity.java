@@ -116,7 +116,6 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
     int pctWidth;
     int pctHeight;
 
-
     int orientation;
     ExifInterface exifInterface;
     Matrix mat;
@@ -129,6 +128,8 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
 
         //繰り返し通知スピナーの関連付け
         spinnerRepetition = (Spinner) findViewById(R.id.spinner2);
+        //カテゴリスピナーの関連付け
+        spinnerCategory = (Spinner) findViewById(R.id.spinner1);
         //年齢表示の関連付け
         user_yearsold = (TextView) findViewById(R.id.YearsOld);
         //誕生日の関連付け
@@ -161,7 +162,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         // EditText が空のときに表示させるヒントを設定
         edit_name.setHint("Name");
         edit_pho.setHint("Phonetic");
-        edit_twitter.setHint("@twitter");
+        edit_twitter.setHint("@いらないよ");
         edit_days_ago.setHint("Days");
         edit_memo.setHint("何でも自由に書いてね！");
 
@@ -176,7 +177,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         sppinerSet(spinnerRepetition, spinnerRepetitionItems);//繰り返し通知スピナー設定
 
         //EditTextの内容設定
-        EditTextSet(edit_name);
+        //EditTextSet(edit_name);
         EditTextSet(edit_pho);
         EditTextSet(edit_twitter);
         EditTextSet(edit_days_ago);
@@ -185,7 +186,6 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         user_view.setScaleType(ImageView.ScaleType.CENTER_CROP);//CENTER_CROPでViewに合わせて拡大し、画像のはみ出した部分は切り取って、中心にフォーカスする
 
         //CheckBoxの値を取得
-        //TODO　クソ
         TamuraJudge(tamura_check);
         YesterdayJudge(yesterday_check);
         TodayJudge(today_check);
@@ -224,11 +224,10 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             imgSetting = "null.jpg";//新規作成の場合でも画像の名前を設定しておく
         }
 
-        //誕生日描画
+        //誕生日描画(8桁をTextViewに直接描画してる)
         BirthDayDraw(birthday);
 
         //TextWacher
-        //TODO　ヤバイ
         edit_name.addTextChangedListener(this);
 
         //画像読み込み
@@ -236,11 +235,28 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         try {
             in = openFileInput(imgSetting);//画像の名前からファイル開いて読み込み
             img = BitmapFactory.decodeStream(in);//読み込んだ画像をBitMap化
+            in.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
         //BitMapから画像セット
         user_view.setImageBitmap(img);
+
+        // プリファレンスから取得
+        String[] arrayItem2 = getArray("StringItem");
+
+        // アイテムを追加します
+        adapter.add("<未選択>");
+        if(arrayItem2==null) {
+        }
+        else {
+            for (int n = 0; n < arrayItem2.length; n++) {
+                adapter.add(arrayItem2[n]);
+                arraylist.add(arrayItem2[n]);
+            }
+        }
+        //adapter更新
+        //adapter.notifyDataSetChanged();
     }
 
     //画像をドキュメントから選択からのImageViewセット
@@ -288,8 +304,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             //画像取得
             InputStream in = getContentResolver().openInputStream(data.getData());//選択した画像を取得
             Bitmap pct = BitmapFactory.decodeStream(in);//取得した画像をBitMap化
-            in.close();//TODO　わっかんねえ
-            //InputStreamを閉じてる
+            in.close();//InputStreamを閉じてる
 
             // 作られたBitMapから横幅と高さを取得
             pctWidth = pct.getWidth();
@@ -298,19 +313,16 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             //Cursor c;
             //String[] columns= {MediaStore.Images.Media.DATA };
 
-            //TODO dataからfilepathへの変換
-            /*
-            *
+            //dataからfilepathへの変換
             //c = getContentResolver().query(data.getData(), columns, null, null, null);
             //c.moveToFirst();
             //exifInterface = new ExifInterface(c.getString(0));
-            // TODO 向きを取得
+            //向きを取得
             //orientation = Integer.parseInt(exifInterface.getAttribute(ExifInterface.TAG_ORIENTATION));
-            */
+
             orientation = exifInterface.getAttributeInt(
                     ExifInterface.TAG_ORIENTATION,
                     ExifInterface.ORIENTATION_UNDEFINED);
-
 
             ViewRotate();
                     /*
@@ -328,7 +340,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             //設定した解像度をBitMapに反映
             //img = Bitmap.createScaledBitmap(pct, pctWidth, pctHeight, false);
 
-            //TODO　闇
+            //闇
             //img = Bitmap.createBitmap(pct,0,0,pctWidth,pctHeight,mat,false);
             img = Bitmap.createBitmap(pct,0,0, pctWidth, pctHeight,mat, true);
 
@@ -352,8 +364,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         //保存する画像の名前の決定
         img_name = String.valueOf(imgye) + String.valueOf(imgmo) + String.valueOf(imgda) + String.valueOf(imgho) + String.valueOf(imgmi) + String.valueOf(imgse);
 
-
-        //TODO　画像回転させようとしたら保存出来なくなった（BitMap取得できてないからかと思われる）ので詰んでます
+        //TODO　何故、画像回転が成功したのでしょう
         //ローカルファイルへ保存
         try {
             final FileOutputStream out = openFileOutput(img_name + ".jpg", Context.MODE_WORLD_READABLE);//.jpgつけてちょ
@@ -364,10 +375,6 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         }
     }
 
-//}
-
-
-    //TODO　やめろ！見るな！
     //TextWatcher/////未完成/////
     @Override
     public void beforeTextChanged(final CharSequence s, int start, int count, int after) {
@@ -381,7 +388,18 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 //イベントを取得するタイミングには、ボタンが押されてなおかつエンターキーだったときを指定
-                if((event.getAction() != KeyEvent.ACTION_DOWN)){
+                if((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)){
+
+                    //キーボードを閉じる
+                    inputMethodManager.hideSoftInputFromWindow(edit_name.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
+
+                    //フォーカスを外す
+                    edit_name.setFocusable(false);
+                    edit_name.setFocusableInTouchMode(false);
+                    edit_name.requestFocus();
+
+                    // エディットテキストのテキストを全選択します
+                    edit_name.selectAll();
 
                     return true;
                 }
@@ -400,7 +418,6 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
     public void afterTextChanged(Editable s) {
         //操作後のEtidTextの状態を取得する
     }
-//////////TODO　ここまで見るな！
 
 
 
@@ -534,7 +551,6 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         }
     }
 
-
     public void EditTextSet(final EditText edit)
     {
         //EditTextにリスナーをセット
@@ -577,7 +593,6 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         //edit.getEditableText().clear();//editTextの初期化
     }
 
-
     //カテゴリー追加用spinner
     public void sppinerCategory()
     {
@@ -585,21 +600,6 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        // プリファレンスから取得
-        String[] arrayItem2 = getArray("StringItem");
-
-        //Log.d("aaaa",String.valueOf(arrayItem2.length));
-
-        // アイテムを追加します
-        adapter.add("<未選択>");
-        if(arrayItem2==null) {
-        }
-        else {
-            for (int n = 1; n < arrayItem2.length; n++) {
-                adapter.add(arrayItem2[n]);
-            }
-        }
-        spinnerCategory = (Spinner) findViewById(R.id.spinner1);
         // アダプターを設定します
         spinnerCategory.setAdapter(adapter);
         // スピナーのアイテムが選択された時に呼び出されるコールバックリスナーを登録します
@@ -706,7 +706,6 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         datePickerDialog = new DatePickerDialog(this, DateSetListener, temporary_year, temporary_month, temporary_day);
     }
 
-
     //カレンダーデータを八桁の数値へ
     public int BirthDayGet(int Year,int Month,int Day)
     {
@@ -749,7 +748,6 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         if(addCategory == null)//Adddialogが作成されていない時
         {
 
-
             addCategory = new AlertDialog.Builder(UserRegisterActivity.this)
                     .setTitle("カテゴリー入力")//DiaLogタイトル
                     .setView(viewV)//View指定
@@ -768,7 +766,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
 
                             //editTextに何も入力されてない時
                             if (editText.getText().toString().equals("")) {
-                                addcategory = "";//0が入る
+                                addcategory = null;
                             } else {
                                 // エディットテキストのテキストを取得します
                                 addcategory = editText.getText().toString();
@@ -776,9 +774,12 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
 
                             //要素追加
                             //リストとadaptorに入力値を入れる
-                            adapter.add(addcategory);
+                            if(addcategory!=null) {
+                                adapter.add(addcategory);
 
-                            arraylist.add(addcategory);
+                                arraylist.add(addcategory);
+                            }
+
 
                             //adapter更新
                             adapter.notifyDataSetChanged();
@@ -809,7 +810,6 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         cald=birth-cal;
         cal=calm*100;
         cald=cald-cal;
-
 
         calendar = Calendar.getInstance();
 
@@ -918,7 +918,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
     // プリファレンス保存
 // aaa,bbb,ccc... の文字列で保存
     private void saveArray(ArrayList<String> array, String PrefKey){
-        String str = "";
+        String str = new String("");
         for (int i =0;i<array.size();i++){
             str = str + array.get(i);
             if (i !=array.size()-1){
@@ -929,32 +929,6 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         SharedPreferences.Editor editor = prefs1.edit();
         editor.putString(PrefKey, str).commit();
     }
-//    private void saveArray(ArrayList<String> array, String PrefKey){
-//        String str = null;
-//        for (int i =0;i<array.size();i++){
-//            str = array.get(i);
-//            if (i !=array.size()-1){
-//                str = ",";
-//            }
-//        }
-//        SharedPreferences prefs1 = getSharedPreferences("Array", Context.MODE_PRIVATE);
-//        SharedPreferences.Editor editor = prefs1.edit();
-//        editor.putString(PrefKey, str).commit();
-//
-//        StringBuffer buffer = new StringBuffer();
-//        String stringItem = null;
-//        for(String item : array){
-//            buffer.append(item+",");
-//        };
-//        if(buffer != null){
-//            String buf = buffer.toString();
-//            stringItem = buf.substring(0, buf.length() - 1);
-//
-//            SharedPreferences prefs1 = getSharedPreferences("Array", Context.MODE_PRIVATE);
-//            SharedPreferences.Editor editor = prefs1.edit();
-//            editor.putString(PrefKey, stringItem).commit();
-//        }
-//    }
 
     // プリファレンス取得
 // aaa,bbb,ccc...としたものをsplitして返す
@@ -967,7 +941,6 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             return null;
         }
     }
-
 
     public void ViewRotate()
     {
@@ -1114,7 +1087,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         dbAssist.insertData(allData,this);
 
         // プレファレンスに保存
-        //saveArray(arraylist,"StringItem");
+        saveArray(arraylist,"StringItem");
 
         //新規作成か編集かによって画面切り替え場所の変更
         if(id==0) {

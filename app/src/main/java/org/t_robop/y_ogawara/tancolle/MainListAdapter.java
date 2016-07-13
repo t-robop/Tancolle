@@ -14,12 +14,12 @@ import java.util.ArrayList;
 /**
  * Created by iris on 2016/07/01.
  */
-public class MainListAdapter extends ArrayAdapter<MainListData> {
+public class MainListAdapter extends ArrayAdapter<MainAdapterData> {
 
 
     private LayoutInflater layoutInflater;
 
-    public MainListAdapter(Context c, int id, ArrayList<MainListData> MainListArray) {
+    public MainListAdapter(Context c, int id, ArrayList<MainAdapterData> MainListArray) {
         super(c, id, MainListArray);
         this.layoutInflater = (LayoutInflater) c.getSystemService(
                 Context.LAYOUT_INFLATER_SERVICE
@@ -41,21 +41,28 @@ public class MainListAdapter extends ArrayAdapter<MainListData> {
 
 
         //データを各idへセット
-        MainListData mainListData = getItem(position);
-        ((TextView) convertView.findViewById(R.id.name1)).setText(mainListData.getName1());
-        ((TextView) convertView.findViewById(R.id.birth1)).setText(mainListData.getBirth1());
-        ((TextView) convertView.findViewById(R.id.name2)).setText(mainListData.getName2());
-        ((TextView) convertView.findViewById(R.id.birth2)).setText(mainListData.getBirth2());
-        ((TextView) convertView.findViewById(R.id.name3)).setText(mainListData.getName3());
-        ((TextView) convertView.findViewById(R.id.birth3)).setText(mainListData.getBirth3());
+        MainAdapterData mainListData = getItem(position);
+
+
+
+
+
+        ((TextView) convertView.findViewById(R.id.name1)).setText(mainListData.getName(0));
+        ((TextView) convertView.findViewById(R.id.birth1)).setText(mainListData.getBirthMonth(0)+"/"+mainListData.getBirthDay(0));
+        ((TextView) convertView.findViewById(R.id.name2)).setText(mainListData.getName(1));
+        ((TextView) convertView.findViewById(R.id.birth2)).setText(mainListData.getBirthMonth(1)+"/"+mainListData.getBirthDay(1));
+        ((TextView) convertView.findViewById(R.id.name3)).setText(mainListData.getName(2));
+        ((TextView) convertView.findViewById(R.id.birth3)).setText(mainListData.getBirthMonth(2)+"/"+mainListData.getBirthDay(2));
+
+//ooooooooooooooooooooooooooo
 
         //linerにtagをつけてクリックしたときにわかるように
         LinearLayout liner1 = (LinearLayout) convertView.findViewById(R.id.liner1);
-        liner1.setTag(position);
+        liner1.setTag(mainListData.getId(0));
         LinearLayout liner2 = (LinearLayout) convertView.findViewById(R.id.liner2);
-        liner2.setTag(position);
+        liner2.setTag(mainListData.getId(1));
         LinearLayout liner3 = (LinearLayout) convertView.findViewById(R.id.liner3);
-        liner3.setTag(position);
+        liner3.setTag(mainListData.getId(2));
 
         //viewを返す
         return convertView;
