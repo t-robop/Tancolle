@@ -2,12 +2,13 @@ package org.t_robop.y_ogawara.tancolle;
 
 public class ListItem {
 
-    String name;
-    String kana;
+    //TODO privateにしないと意味が無い
+    private String name;
+    private String kana;
 
-    String smallImage;
+    private String smallImage;
 
-    int  itemId;
+   private int  itemId;
 
     //TODO これが要らない、こいつのせいで型がって言われてた
 //    ListItem(String name, String kana) {

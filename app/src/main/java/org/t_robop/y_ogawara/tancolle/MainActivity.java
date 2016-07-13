@@ -40,16 +40,60 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
-        ArrayList<String> str = new ArrayList<>();
-        str.add("aaa");
-        str.add("bbb");
-        str.add("ccc");
-        str.add("abv");
-        saveArray(str,"test");
-        String[] aaa = getArray1("test");
+//        ArrayList<String> str = new ArrayList<>();
+//        str.add("aaa");
+//        str.add("bbb");
+//        str.add("ccc");
+//        str.add("abv");
+//        saveArray(str,"test");
+//        String[] aaa = getArray1("test");
+//
+//        Log.d(",",",");
 
-        Log.d(",",",");
+
+        //adapterDataセット
+        int month=7;//とりあえず7月でプレイ(ここらへんで月の指定お願いします)
+
+        ArrayList<Data> monthTurnData;//ArrayListの宣言
+
+        monthTurnData=dbAssist.birthdaySelect(month,this);//ArrayListに月検索したデータをぶち込む
+
+        MainAdapterData Mad = new MainAdapterData();//自分で作成したclassの宣言
+
+        ArrayList<MainAdapterData> adapterData=new ArrayList<>();//classのArrayListの作成
+
+        Mad.startMad();//クラスの変数の初期化
+
+        int num=monthTurnData.size();//int型変数numにmonthTurnDataの配列数を入れる
+
+        //読み込んだ月のデータの数だけ回す。（3分の1でいいのと、後述のListデータの取得に使うため+3）
+        for(int j=0;j<monthTurnData.size();j=j+3)
+        {
+            //三人分だけ保存するため3回回す。
+            for (int i = 0; i < 3; i++) {
+                Data getData;//monthTurnData取得用のデータ型
+
+                Log.d("aaaa", String.valueOf(i+j));
+
+                if(i<num)//iとnumを比較してiの方が低い時だけ（データ無いのに取得しようとして落ちるやつの修正）
+                {
+                    getData = monthTurnData.get(i + j);//読み込んだListの要素を取得
+
+                    Mad.setId(i, getData.getId());//idのセット
+                    Mad.setName(i, getData.getName());//名前のセット
+                    Mad.setBirthMonth(i, getData.getMonth());//誕生月のセット
+                    Mad.setBirthDay(i, getData.getDay());//誕生日のセット
+                    Mad.setPresentFlag(i, getData.isPresentFlag());//プレゼントフラグのセット
+                }
+                num=num-3;//ここでnumから今セットした三人分だけ引く
+            }
+
+            //この辺に書き込み処理書いてくらさい。
+
+            adapterData.add(Mad);//三人のデータの追加
     }
+
+}
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -82,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
                 testData.setKana("にしむら");
                 testData.setBirthday(19970616);
                 testData.setYear(1997);
-                testData.setMonth(06);
+                testData.setMonth(7);
                 testData.setDay(16);
                 testData.setCategory("友達");
                 testData.setTwitterID("Taiga_Natto");
@@ -105,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
                 testData1.setKana("にら");
                 testData1.setBirthday(19970512);
                 testData1.setYear(1997);
-                testData1.setMonth(05);
+                testData1.setMonth(5);
                 testData1.setDay(12);
                 testData1.setCategory("友達");
                 testData1.setTwitterID("Taiga_Natvaevto");
