@@ -67,23 +67,23 @@ public class MainListActivity extends AppCompatActivity {
 
         monthTurnData = dbAssist.birthdaySelect(month, this);//ArrayListに月検索したデータをぶち込む
 
-        MainAdapterData Mad = new MainAdapterData();//自分で作成したclassの宣言
+        MainAdapterData Mad;//自分で作成したclassの宣言
 
         ArrayList<MainAdapterData> adapterData = new ArrayList<>();//classのArrayListの作成
-
-        Mad.startMad();//クラスの変数の初期化
 
         int num = monthTurnData.size();//int型変数numにmonthTurnDataの配列数を入れる
 
         //読み込んだ月のデータの数だけ回す。（3分の1でいいのと、後述のListデータの取得に使うため+3）
-        for (int j = 0; j < monthTurnData.size(); j = j + 3) {
-            //三人分だけ保存するため3回回す。
+        for (int j = 0; j < monthTurnData.size(); j = j + 3) {//三人分だけ保存するため3回回す。
+
+            Mad = new MainAdapterData();//自分で作成したclassの初期化
+
             for (int i = 0; i < 3; i++) {
                 Data getData;//monthTurnData取得用のデータ型
 
-                Log.d("aaaa", String.valueOf(i + j));
+                //Log.d("aaaa", String.valueOf(i + j));
 
-                if (i < num)//iとnumを比較してiの方が低い時だけ（データ無いのに取得しようとして落ちるやつの修正）
+                if (i <= num)//iとnumを比較してiの方が低い時だけ（データ無いのに取得しようとして落ちるやつの修正）
                 {
                     getData = monthTurnData.get(i + j);//読み込んだListの要素を取得
 
@@ -93,12 +93,10 @@ public class MainListActivity extends AppCompatActivity {
                     Mad.setBirthDay(i, getData.getDay());//誕生日のセット
                     Mad.setPresentFlag(i, getData.isPresentFlag());//プレゼントフラグのセット
                 }
-                num = num - 1;//ここでnumから今セットした三人分だけ引く
+                num = num - 1;//ここでnumから今セットした一人分だけ引く
             }
 
-            //この辺に書き込み処理書いてくらさい。
-
-        adapterData.add(Mad);//三人のデータの追加
+        adapterData.add(Mad);//三人分のデータの追加
 
     }
 
@@ -110,6 +108,6 @@ public class MainListActivity extends AppCompatActivity {
 
     //リストをクリックした時のイベント
     public void listClick(View view) {
-        Log.d("hello","aaaaaaaaaaaaaa");
+        Log.d("hello",String.valueOf(view.getTag()));
     }
 }

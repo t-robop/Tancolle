@@ -11,32 +11,19 @@ public class MainAdapterData {
 //必要なデータはid,名前,誕生月,誕生日,プレゼントフラグ
 
     //id
-    private int[] id=new int[3];
+    private int[] id=new int[] {0,0,0};
 
     //名前
-    private String[] name=new String[3];
+    private String[] name=new String[] {null,null,null};
 
     //誕生月
-    private int[] birthMonth=new int[3];
+    private int[] birthMonth=new int[] {0,0,0};
 
     //誕生日
-    private int[] birthDay=new int[3];
+    private int[] birthDay=new int[] {0,0,0};
 
     //誕生日フラグ(0or1)
-    private int[] presentFlag=new int[3];
-
-    //変数初期化
-    public void startMad()
-    {
-        for(int i=0;i<3;i++)
-        {
-            id[i]=0;
-            name[i]="";
-            birthMonth[i]=0;
-            birthDay[i]=0;
-            presentFlag[i]=0;
-        }
-    }
+    private int[] presentFlag=new int[] {0,0,0};
 
     //保存
     //num(配列番号)

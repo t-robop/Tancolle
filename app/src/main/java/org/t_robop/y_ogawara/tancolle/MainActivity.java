@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
         ArrayList<MainAdapterData> adapterData=new ArrayList<>();//classのArrayListの作成
 
-        Mad.startMad();//クラスの変数の初期化
+        //Mad.startMad();//クラスの変数の初期化
 
         int num=monthTurnData.size();//int型変数numにmonthTurnDataの配列数を入れる
 
@@ -72,8 +72,6 @@ public class MainActivity extends AppCompatActivity {
             //三人分だけ保存するため3回回す。
             for (int i = 0; i < 3; i++) {
                 Data getData;//monthTurnData取得用のデータ型
-
-                Log.d("aaaa", String.valueOf(i+j));
 
                 if(i<num)//iとnumを比較してiの方が低い時だけ（データ無いのに取得しようとして落ちるやつの修正）
                 {
@@ -85,15 +83,15 @@ public class MainActivity extends AppCompatActivity {
                     Mad.setBirthDay(i, getData.getDay());//誕生日のセット
                     Mad.setPresentFlag(i, getData.isPresentFlag());//プレゼントフラグのセット
                 }
-                num=num-3;//ここでnumから今セットした三人分だけ引く
+                num=num-1;//ここでnumから今セットした三人分だけ引く
             }
 
             //この辺に書き込み処理書いてくらさい。
 
             adapterData.add(Mad);//三人のデータの追加
-    }
+        }
 
-}
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
