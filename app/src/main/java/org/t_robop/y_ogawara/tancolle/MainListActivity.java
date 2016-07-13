@@ -111,12 +111,5 @@ public class MainListActivity extends AppCompatActivity {
     //リストをクリックした時のイベント
     public void listClick(View view) {
         Log.d("hello","aaaaaaaaaaaaaa");
-        ListView listView = (ListView) parent;
-        listView.getItemAtPosition(position);
-
-        ListItem listItem = (ListItem) listView.getAdapter().getItem(position);
-        Intent intent = new Intent(MainListActivity.this, UserDetailActivity.class);
-        intent.putExtra("id", MainAdapterData.getId());
-        startActivity(intent);
     }
 }
