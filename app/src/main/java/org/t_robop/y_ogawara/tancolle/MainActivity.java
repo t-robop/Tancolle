@@ -208,4 +208,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this,SearchActivity.class);
         startActivity(intent);
     }
+
+    public void ViewFlipperBtn(View view) {
+        Intent intent = new Intent(this,ScrollActivity.class);
+        startActivity(intent);
+    }
 }

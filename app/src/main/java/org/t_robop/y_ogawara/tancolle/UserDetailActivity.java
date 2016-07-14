@@ -47,11 +47,13 @@ public class UserDetailActivity extends AppCompatActivity {
     Bitmap bitmap;
 
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_detail);
         Intent intent = getIntent();
         intentId = intent.getIntExtra("id", 1);
+
 
         nameTV = (TextView) findViewById(R.id.Name);
         kanaTV = (TextView) findViewById(R.id.Kana);
