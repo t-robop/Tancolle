@@ -39,7 +39,7 @@ public class MainListActivity extends AppCompatActivity {
 
 //        ArrayList<MainListData> MainListArray = new ArrayList<>();
 //
-//
+//b
         // データを突っ込む
 //        for (int i =1;i<3;i=i+3){
 //            MainListData MainList = new MainListData();
@@ -54,94 +54,94 @@ public class MainListActivity extends AppCompatActivity {
 //            MainListArray.add(MainList);
 //
 //        }
-
-        Data testData = new Data();
-
-        //Data型にデータをセット
-        testData.setName("西村1111");
-        testData.setKana("にしむら");
-        testData.setBirthday(19970616);
-        testData.setYear(1997);
-        testData.setMonth(7);
-        testData.setDay(16);
-        testData.setCategory("友達");
-        testData.setTwitterID("Taiga_Natto");
-        testData.setMemo("教科書を見て実装して欲しい");
-        testData.setImage("Imageデータ");
-        testData.setSmallImage("Imageデータ");
-        testData.setPresentFlag(0);
-        testData.setYukarin(1);
-        testData.setNotif_yest(1);
-        testData.setNotif_today(1);
-        testData.setNotif_day(3);
-        testData.setNotif_recy(3);
-        //dbに書き込み
-        dbAssist.insertData(testData, this);
-
-        //Data型にデータをセット
-        testData.setName("西村22222");
-        testData.setKana("にしむら");
-        testData.setBirthday(19970616);
-        testData.setYear(1997);
-        testData.setMonth(7);
-        testData.setDay(16);
-        testData.setCategory("友達");
-        testData.setTwitterID("Taiga_Natto");
-        testData.setMemo("教科書を見て実装して欲しい");
-        testData.setImage("Imageデータ");
-        testData.setSmallImage("Imageデータ");
-        testData.setPresentFlag(0);
-        testData.setYukarin(1);
-        testData.setNotif_yest(1);
-        testData.setNotif_today(1);
-        testData.setNotif_day(3);
-        testData.setNotif_recy(3);
-        //dbに書き込み
-        dbAssist.insertData(testData, this);
-
-
-        //Data型にデータをセット
-        testData.setName("西村33333");
-        testData.setKana("にしむら");
-        testData.setBirthday(19970616);
-        testData.setYear(1997);
-        testData.setMonth(7);
-        testData.setDay(16);
-        testData.setCategory("友達");
-        testData.setTwitterID("Taiga_Natto");
-        testData.setMemo("教科書を見て実装して欲しい");
-        testData.setImage("Imageデータ");
-        testData.setSmallImage("Imageデータ");
-        testData.setPresentFlag(0);
-        testData.setYukarin(1);
-        testData.setNotif_yest(1);
-        testData.setNotif_today(1);
-        testData.setNotif_day(3);
-        testData.setNotif_recy(3);
-        //dbに書き込み
-        dbAssist.insertData(testData, this);
-
-
-        //Data型にデータをセット
-        testData.setName("西村44444");
-        testData.setKana("にしむら");
-        testData.setBirthday(19970616);
-        testData.setYear(1997);
-        testData.setMonth(7);
-        testData.setDay(16);
-        testData.setCategory("友達");
-        testData.setTwitterID("Taiga_Natto");
-        testData.setMemo("教科書を見て実装して欲しい");
-        testData.setImage("Imageデータ");
-        testData.setSmallImage("Imageデータ");
-        testData.setPresentFlag(0);
-        testData.setYukarin(1);
-        testData.setNotif_yest(1);
-        testData.setNotif_today(1);
-        testData.setNotif_day(3);
-        testData.setNotif_recy(3);
-        //dbに書き込み
-        dbAssist.insertData(testData, this);
+//
+//        Data testData = new Data();
+//
+//        //Data型にデータをセット
+//        testData.setName("西村1111");
+//        testData.setKana("にしむら");
+//        testData.setBirthday(19970616);
+//        testData.setYear(1997);
+//        testData.setMonth(7);
+//        testData.setDay(16);
+//        testData.setCategory("友達");
+//        testData.setTwitterID("Taiga_Natto");
+//        testData.setMemo("教科書を見て実装して欲しい");
+//        testData.setImage("Imageデータ");
+//        testData.setSmallImage("Imageデータ");
+//        testData.setPresentFlag(0);
+//        testData.setYukarin(1);
+//        testData.setNotif_yest(1);
+//        testData.setNotif_today(1);
+//        testData.setNotif_day(3);
+//        testData.setNotif_recy(3);
+//        //dbに書き込み
+//        dbAssist.insertData(testData, this);
+//
+//        //Data型にデータをセット
+//        testData.setName("西村22222");
+//        testData.setKana("にしむら");
+//        testData.setBirthday(19970616);
+//        testData.setYear(1997);
+//        testData.setMonth(7);
+//        testData.setDay(16);
+//        testData.setCategory("友達");
+//        testData.setTwitterID("Taiga_Natto");
+//        testData.setMemo("教科書を見て実装して欲しい");
+//        testData.setImage("Imageデータ");
+//        testData.setSmallImage("Imageデータ");
+//        testData.setPresentFlag(0);
+//        testData.setYukarin(1);
+//        testData.setNotif_yest(1);
+//        testData.setNotif_today(1);
+//        testData.setNotif_day(3);
+//        testData.setNotif_recy(3);
+//        //dbに書き込み
+//        dbAssist.insertData(testData, this);
+//
+//
+//        //Data型にデータをセット
+//        testData.setName("西村33333");
+//        testData.setKana("にしむら");
+//        testData.setBirthday(19970616);
+//        testData.setYear(1997);
+//        testData.setMonth(7);
+//        testData.setDay(16);
+//        testData.setCategory("友達");
+//        testData.setTwitterID("Taiga_Natto");
+//        testData.setMemo("教科書を見て実装して欲しい");
+//        testData.setImage("Imageデータ");
+//        testData.setSmallImage("Imageデータ");
+//        testData.setPresentFlag(0);
+//        testData.setYukarin(1);
+//        testData.setNotif_yest(1);
+//        testData.setNotif_today(1);
+//        testData.setNotif_day(3);
+//        testData.setNotif_recy(3);
+//        //dbに書き込み
+//        dbAssist.insertData(testData, this);
+//
+//
+//        //Data型にデータをセット
+//        testData.setName("西村44444");
+//        testData.setKana("にしむら");
+//        testData.setBirthday(19970616);
+//        testData.setYear(1997);
+//        testData.setMonth(7);
+//        testData.setDay(16);
+//        testData.setCategory("友達");
+//        testData.setTwitterID("Taiga_Natto");
+//        testData.setMemo("教科書を見て実装して欲しい");
+//        testData.setImage("Imageデータ");
+//        testData.setSmallImage("Imageデータ");
+//        testData.setPresentFlag(0);
+//        testData.setYukarin(1);
+//        testData.setNotif_yest(1);
+//        testData.setNotif_today(1);
+//        testData.setNotif_day(3);
+//        testData.setNotif_recy(3);
+//        //dbに書き込み
+//        dbAssist.insertData(testData, this);
         //adapterDataセット
         int month = 7;//とりあえず7月でプレイ(ここらへんで月の指定お願いします)
 
