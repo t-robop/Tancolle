@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
@@ -12,9 +13,12 @@
         <LinearLayout
             android:id="@+id/ll_main"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <include layout="@layout/activity_main_list" android:id="@+id/list1"/>
-            <include layout="@layout/activity_main_list" android:id="@+id/list2"/>
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <include layout="@layout/activity_main_list" android:id="@+id/list1" />
+            <include layout="@layout/activity_main_list" android:id="@+id/list2" android:layout_marginLeft="100dp"
+                android:layout_height="fill_parent"
+                android:layout_width="fill_parent" />
             <include layout="@layout/activity_main_list" android:id="@+id/list3"/>
             <include layout="@layout/activity_main_list" android:id="@+id/list4"/>
             <include layout="@layout/activity_main_list" android:id="@+id/list5"/>
@@ -30,5 +34,15 @@
         </LinearLayout>
 
     </HorizontalScrollView>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@android:drawable/ic_input_add"
+        app:backgroundTint="@android:color/black"
+        />
 
-</LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>

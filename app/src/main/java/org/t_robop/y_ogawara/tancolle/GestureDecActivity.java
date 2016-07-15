@@ -320,31 +320,17 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
     public boolean onFling(MotionEvent envent1, MotionEvent envent2,
                            float velocityX, float velocityY) {
         Log.d("onFling", "onFling");
-
-        int rangeX = (int) (envent1.getRawX() - envent2.getRawX());
-
-        if (rangeX < -displayWidth * 0.1) {
-            // 右に一定距離のスライド
-            setPage(false);
-        } else if (rangeX > displayWidth * 0.1) {
-            // 左に一定距離のスライド
-            setPage(true);
-        } else {
-            //slideLimitFlg = SCROLL_NONE;
-        }
-
-
         // スクロールが一定距離を超えていない時のフリック操作は有効とする
-        //if (slideLimitFlg == SCROLL_NONE) {
-//            if (velocityX < 100) {
+//        if (slideLimitFlg == SCROLL_NONE) {
+//            if (velocityX < 0) {
 //                // 左フリック
 //                setPage(true);
-//            } else if (velocityX > 100) {
+//            } else if (velocityX > 0) {
 //                // 右フリック
 //                setPage(false);
 //            }
-            horizontalScrollView.scrollTo(page * displayWidth, displayHeight);
-       // }
+//            horizontalScrollView.scrollTo(page * displayWidth, displayHeight);
+//        }
         return true;
     }
 
@@ -352,21 +338,21 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
     @Override
     public boolean onScroll(MotionEvent envent1, MotionEvent envent2,
                             float distanceX, float distanceY) {
-       // Log.d("onScroll", "onScroll");
-       // scrollFlg = true;
-//
-//        // スライド距離の計算
-//        int rangeX = (int) (envent1.getRawX() - envent2.getRawX());
-//
-//        if (rangeX < -displayWidth * 0.6) {
-//            // 右に一定距離のスライド
-//            slideLimitFlg = SCROLL_RIGHT;
-//        } else if (rangeX > displayWidth * 0.6) {
-//            // 左に一定距離のスライド
-//            slideLimitFlg = SCROLL_LEFT;
-//        } else {
-//            slideLimitFlg = SCROLL_NONE;
-//        }
+        Log.d("onScroll", "onScroll");
+        scrollFlg = true;
+
+        // スライド距離の計算
+        int rangeX = (int) (envent1.getRawX() - envent2.getRawX());
+
+        if (rangeX < -displayWidth * 0.1) {
+            // 右に一定距離のスライド
+            slideLimitFlg = SCROLL_RIGHT;
+        } else if (rangeX > displayWidth * 0.1) {
+            // 左に一定距離のスライド
+            slideLimitFlg = SCROLL_LEFT;
+        } else {
+            slideLimitFlg = SCROLL_NONE;
+        }
         return false;
     }
 
