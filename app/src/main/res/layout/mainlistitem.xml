@@ -22,15 +22,12 @@
             android:id="@+id/birth1"
             android:layout_width="100dp"
             android:layout_height="80dp"
-            android:text="7/6"
-            android:textSize="40dp"
-            android:gravity="center"/>
+            android:textSize="40dp"/>
         <TextView
             android:id="@+id/name1"
             android:layout_width="100dp"
             android:layout_height="20dp"
-            android:text="ニシムラ"
-            android:gravity="center"/>
+            android:text="ニシムラ"/>
 
     </LinearLayout>
 
@@ -52,15 +49,12 @@
             android:id="@+id/birth2"
             android:layout_width="100dp"
             android:layout_height="80dp"
-            android:text="7/7"
-            android:textSize="40dp"
-            android:gravity="center"/>
+            android:textSize="40dp"/>
         <TextView
             android:id="@+id/name2"
             android:layout_width="100dp"
             android:layout_height="20dp"
-            android:text="にしむら"
-            android:gravity="center"/>
+            android:text="にしむら"/>
     </LinearLayout>
 
     <LinearLayout
@@ -81,20 +75,11 @@
             android:id="@+id/birth3"
             android:layout_width="100dp"
             android:layout_height="80dp"
-            android:text="7/8"
-            android:textSize="40dp"
-            android:gravity="center"/>
+            android:textSize="40dp"/>
         <TextView
             android:id="@+id/name3"
             android:layout_width="100dp"
             android:layout_height="20dp"
-            android:text="ゴディバ"
-            android:gravity="center"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_weight="6">
+            android:text="ゴディバ"/>
     </LinearLayout>
 </LinearLayout>
