@@ -1092,7 +1092,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         //新規作成か編集かによって画面切り替え場所の変更
         if(id==0) {
             //MainへGo!
-            Intent intent = new Intent(this, MainActivity.class);
+            Intent intent = new Intent(this, MainListActivity.class);
             startActivity(intent);
         }
         else
