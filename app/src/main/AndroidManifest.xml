@@ -19,14 +19,16 @@
         <activity android:name=".UserDetailActivity">
         </activity>
         <activity android:name=".MainListActivity">
+        </activity>
+        <activity
+            android:name=".HomeActivity">
+            </activity>
+        <activity android:name=".GestureDecActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".HomeActivity">
 
-            </activity>
+        </activity>
     </application>
 </manifest>
