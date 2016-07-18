@@ -127,8 +127,8 @@ public class dbAssist {
     public static ArrayList birthdaySelect(int month,Context context){
         String sqlStr = "select *"
                 +"from users_table "
-                + "where month like" +"'%"+month+"%'"
-                + "order by month asc";
+                + "where month ="+month
+                + " order by month asc";
         ArrayList <Data> DataArray=new ArrayList<>();
         sqLiteOpenHelper = new MySQLiteOpenHelper(context);
         sqldb = sqLiteOpenHelper.getWritableDatabase();
