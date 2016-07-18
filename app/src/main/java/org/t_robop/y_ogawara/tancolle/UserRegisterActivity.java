@@ -120,6 +120,8 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
     ExifInterface exifInterface;
     Matrix mat;
 
+    int monthSetting;//Todo 初期"月"設定テスト(修復時：消せ)
+
     /////////////////////////Override/////////////////////////
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -170,6 +172,8 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         Intent intent = getIntent();
         id = intent.getIntExtra("IdNum", 0);//何も無かったら（新規作成でidデータが送られてない場合）0を入れる
 
+        monthSetting=intent.getIntExtra("month",0);//Todo 初期"月"設定テスト(選択された月データを取得します。修復時：消せ)
+
         arraylist = new ArrayList<>();//新規ArrayList使う
 
         //Spinner設定
@@ -214,6 +218,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
 
             //年月日で読み込んでから8桁に変換
             birthday = BirthDayGet(idDate.getYear(), idDate.getMonth(), idDate.getDay());
+
             //読み込んだ段階でデータからフラグを適用
             CheckBoxChange(tamura_check, tamura_flag);
             CheckBoxChange(yesterday_check, yesterday_flag);
@@ -668,6 +673,8 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         temporary_day = calendar.get(Calendar.DAY_OF_MONTH); // 日
 
         nowCale=calendar;
+
+        temporary_month=monthSetting-1;//Todo 初期"月"設定テスト(修復時：消せ)
 
         birthday=BirthDayGet(temporary_year, temporary_month,temporary_day);
 

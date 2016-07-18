@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -29,26 +30,22 @@ public class MainListAdapter extends ArrayAdapter<MainAdapterData> {
     //viewを使い回すのにinflaterを使う(お決まりのやつ)
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
-        MainAdapterData mainListData;
         if (convertView == null) {
             convertView = layoutInflater.inflate(
                     R.layout.mainlistitem,
                     parent,
                     false
             );
-
         }
 
+
+
         //データを各idへセット
-        mainListData = getItem(position);
+        MainAdapterData mainListData = getItem(position);
 
 
 
-
-
-
-        //linerにtagをつけてクリックしたときにわかるように
+//linerにtagをつけてクリックしたときにわかるように
         LinearLayout liner1 = (LinearLayout) convertView.findViewById(R.id.liner1);
         liner1.setTag(mainListData.getId(0));
         LinearLayout liner2 = (LinearLayout) convertView.findViewById(R.id.liner2);
@@ -61,26 +58,40 @@ public class MainListAdapter extends ArrayAdapter<MainAdapterData> {
         TextView nameText1 = ((TextView) convertView.findViewById(R.id.name1));
         nameText1.setText(mainListData.getName(0));
         ((TextView) convertView.findViewById(R.id.birth1)).setText(mainListData.getBirthMonth(0)+"/"+mainListData.getBirthDay(0));
+
         TextView nameText2 = ((TextView) convertView.findViewById(R.id.name2));
-
         TextView birthText2 = ((TextView) convertView.findViewById(R.id.birth2));
-        TextView nameText3 = ((TextView) convertView.findViewById(R.id.name3));
 
+        TextView nameText3 = ((TextView) convertView.findViewById(R.id.name3));
         TextView birthText3 = ((TextView) convertView.findViewById(R.id.birth3));
 
 
-        //if (mainListData.getName(1)==null){
-            nameText2.setText(mainListData.getName(1));
-            if (mainListData.getName(1)!=null){
-                birthText2 .setText(mainListData.getBirthMonth(1)+"/"+mainListData.getBirthDay(1));
-            }
+        nameText2.setText(mainListData.getName(1));
+//        if (mainListData.getName(1)!=null){
+//            birthText2 .setText(mainListData.getBirthMonth(1)+"/"+mainListData.getBirthDay(1));
+//        }
+        birthText2.setText(mainListData.getBirthMonth(1)+"/"+mainListData.getBirthDay(1));
+        nameText3.setText(mainListData.getName(2));
+        birthText3.setText(mainListData.getBirthMonth(2)+"/"+mainListData.getBirthDay(2));
+        //listの行数が、最終行だったとき
+        if (position!=0){
 
-            // }
-        //  if (mainListData.getName(2)==null){
-            nameText3.setText(mainListData.getName(2));
-        if (mainListData.getName(2)!=null){
-            birthText3.setText(mainListData.getBirthMonth(2)+"/"+mainListData.getBirthDay(2));
+
+            if (position==GestureDecActivity.dataSize/3){
+                switch (GestureDecActivity.num2){
+                    case 0:
+                        break;
+                    case 2:
+                        liner2.setVisibility(View.INVISIBLE);
+                    case 1:
+                        liner3.setVisibility(View.INVISIBLE);
+                        break;
+                }
+            }
         }
+//        if (mainListData.getName(2)!=null){
+//            birthText3.setText(mainListData.getBirthMonth(2)+"/"+mainListData.getBirthDay(2));
+//        }
 
             //}
 

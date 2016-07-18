@@ -34,7 +34,8 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
     private static final int SCROLL_LEFT = 2; //
     private static final int SCROLL_RIGHT = 1; //
     private int slideLimitFlg = SCROLL_NONE; // スライドの状態判定
-
+    static int num2;
+    static int dataSize;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,165 +43,165 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
         setViewSize();
 
 
-        ListView listView1 = ((ListView) findViewById(R.id.list1).findViewById(R.id.listView1));
-        ListView listView2 = (ListView) findViewById(R.id.list2).findViewById(R.id.listView1);
-        ListView listView3 = (ListView) findViewById(R.id.list3).findViewById(R.id.listView1);
-        ListView listView4 = (ListView) findViewById(R.id.list4).findViewById(R.id.listView1);
-        ListView listView5 = (ListView) findViewById(R.id.list5).findViewById(R.id.listView1);
-        ListView listView6 = (ListView) findViewById(R.id.list6).findViewById(R.id.listView1);
-        ListView listView7 = (ListView) findViewById(R.id.list7).findViewById(R.id.listView1);
-        ListView listView8 = (ListView) findViewById(R.id.list8).findViewById(R.id.listView1);
-        ListView listView9 = (ListView) findViewById(R.id.list9).findViewById(R.id.listView1);
-        ListView listView10 = (ListView) findViewById(R.id.list10).findViewById(R.id.listView1);
-        ListView listView11 = (ListView) findViewById(R.id.list11).findViewById(R.id.listView1);
-        ListView listView12 = (ListView) findViewById(R.id.list12).findViewById(R.id.listView1);
+        //配列で12ヶ月分のlistView作ります
+        ListView[] listView=new ListView[12];
+        listView[0] = (ListView) findViewById(R.id.list1).findViewById(R.id.listView1);
+        listView[1] = (ListView) findViewById(R.id.list2).findViewById(R.id.listView1);
+        listView[2] = (ListView) findViewById(R.id.list3).findViewById(R.id.listView1);
+        listView[3] = (ListView) findViewById(R.id.list4).findViewById(R.id.listView1);
+        listView[4] = (ListView) findViewById(R.id.list5).findViewById(R.id.listView1);
+        listView[5] = (ListView) findViewById(R.id.list6).findViewById(R.id.listView1);
+        listView[6] = (ListView) findViewById(R.id.list7).findViewById(R.id.listView1);
+        listView[7] = (ListView) findViewById(R.id.list8).findViewById(R.id.listView1);
+        listView[8] = (ListView) findViewById(R.id.list9).findViewById(R.id.listView1);
+        listView[9] = (ListView) findViewById(R.id.list10).findViewById(R.id.listView1);
+        listView[10] = (ListView) findViewById(R.id.list11).findViewById(R.id.listView1);
+        listView[11] = (ListView) findViewById(R.id.list12).findViewById(R.id.listView1);
+
         ///////////////////////////////////////////////////////////////
-        Data testData = new Data();
+       // Data testData = new Data();
 
-        //Data型にデータをセット
-        testData.setName("西村1111");
-        testData.setKana("にしむら");
-        testData.setBirthday(19970616);
-        testData.setYear(1997);
-        testData.setMonth(7);
-        testData.setDay(16);
-        testData.setCategory("友達");
-        testData.setTwitterID("Taiga_Natto");
-        testData.setMemo("教科書を見て実装して欲しい");
-        testData.setImage("Imageデータ");
-        testData.setSmallImage("Imageデータ");
-        testData.setPresentFlag(0);
-        testData.setYukarin(1);
-        testData.setNotif_yest(1);
-        testData.setNotif_today(1);
-        testData.setNotif_day(3);
-        testData.setNotif_recy(3);
-        //dbに書き込み
-        dbAssist.insertData(testData, this);
-
-        //Data型にデータをセット
-        testData.setName("西村22222");
-        testData.setKana("にしむら");
-        testData.setBirthday(19970616);
-        testData.setYear(1997);
-        testData.setMonth(7);
-        testData.setDay(16);
-        testData.setCategory("友達");
-        testData.setTwitterID("Taiga_Natto");
-        testData.setMemo("教科書を見て実装して欲しい");
-        testData.setImage("Imageデータ");
-        testData.setSmallImage("Imageデータ");
-        testData.setPresentFlag(0);
-        testData.setYukarin(1);
-        testData.setNotif_yest(1);
-        testData.setNotif_today(1);
-        testData.setNotif_day(3);
-        testData.setNotif_recy(3);
-        //dbに書き込み
-        dbAssist.insertData(testData, this);
-
-
-        //Data型にデータをセット
-        testData.setName("西村33333");
-        testData.setKana("にしむら");
-        testData.setBirthday(19970616);
-        testData.setYear(1997);
-        testData.setMonth(7);
-        testData.setDay(16);
-        testData.setCategory("友達");
-        testData.setTwitterID("Taiga_Natto");
-        testData.setMemo("教科書を見て実装して欲しい");
-        testData.setImage("Imageデータ");
-        testData.setSmallImage("Imageデータ");
-        testData.setPresentFlag(0);
-        testData.setYukarin(1);
-        testData.setNotif_yest(1);
-        testData.setNotif_today(1);
-        testData.setNotif_day(3);
-        testData.setNotif_recy(3);
-        //dbに書き込み
-        dbAssist.insertData(testData, this);
-
-
-        //Data型にデータをセット
-        testData.setName("西村44444");
-        testData.setKana("にしむら");
-        testData.setBirthday(19970616);
-        testData.setYear(1997);
-        testData.setMonth(7);
-        testData.setDay(16);
-        testData.setCategory("友達");
-        testData.setTwitterID("Taiga_Natto");
-        testData.setMemo("教科書を見て実装して欲しい");
-        testData.setImage("Imageデータ");
-        testData.setSmallImage("Imageデータ");
-        testData.setPresentFlag(0);
-        testData.setYukarin(1);
-        testData.setNotif_yest(1);
-        testData.setNotif_today(1);
-        testData.setNotif_day(3);
-        testData.setNotif_recy(3);
-        //dbに書き込み
-        dbAssist.insertData(testData, this);
+//        //Data型にデータをセット
+//        testData.setName("西村1111");
+//        testData.setKana("にしむら");
+//        testData.setBirthday(19970616);
+//        testData.setYear(1997);
+//        testData.setMonth(7);
+//        testData.setDay(16);
+//        testData.setCategory("友達");
+//        testData.setTwitterID("Taiga_Natto");
+//        testData.setMemo("教科書を見て実装して欲しい");
+//        testData.setImage("Imageデータ");
+//        testData.setSmallImage("Imageデータ");
+//        testData.setPresentFlag(0);
+//        testData.setYukarin(1);
+//        testData.setNotif_yest(1);
+//        testData.setNotif_today(1);
+//        testData.setNotif_day(3);
+//        testData.setNotif_recy(3);
+//        //dbに書き込み
+//        dbAssist.insertData(testData, this);
+//
+//        //Data型にデータをセット
+//        testData.setName("西村22222");
+//        testData.setKana("にしむら");
+//        testData.setBirthday(19970616);
+//        testData.setYear(1997);
+//        testData.setMonth(7);
+//        testData.setDay(16);
+//        testData.setCategory("友達");
+//        testData.setTwitterID("Taiga_Natto");
+//        testData.setMemo("教科書を見て実装して欲しい");
+//        testData.setImage("Imageデータ");
+//        testData.setSmallImage("Imageデータ");
+//        testData.setPresentFlag(0);
+//        testData.setYukarin(1);
+//        testData.setNotif_yest(1);
+//        testData.setNotif_today(1);
+//        testData.setNotif_day(3);
+//        testData.setNotif_recy(3);
+//        //dbに書き込み
+//        dbAssist.insertData(testData, this);
+//
+//
+//        //Data型にデータをセット
+//        testData.setName("西村33333");
+//        testData.setKana("にしむら");
+//        testData.setBirthday(19970616);
+//        testData.setYear(1997);
+//        testData.setMonth(7);
+//        testData.setDay(16);
+//        testData.setCategory("友達");
+//        testData.setTwitterID("Taiga_Natto");
+//        testData.setMemo("教科書を見て実装して欲しい");
+//        testData.setImage("Imageデータ");
+//        testData.setSmallImage("Imageデータ");
+//        testData.setPresentFlag(0);
+//        testData.setYukarin(1);
+//        testData.setNotif_yest(1);
+//        testData.setNotif_today(1);
+//        testData.setNotif_day(3);
+//        testData.setNotif_recy(3);
+//        //dbに書き込み
+//        dbAssist.insertData(testData, this);
+//
+//
+//        //Data型にデータをセット
+//        testData.setName("西村44444");
+//        testData.setKana("にしむら");
+//        testData.setBirthday(19970616);
+//        testData.setYear(1997);
+//        testData.setMonth(7);
+//        testData.setDay(16);
+//        testData.setCategory("友達");
+//        testData.setTwitterID("Taiga_Natto");
+//        testData.setMemo("教科書を見て実装して欲しい");
+//        testData.setImage("Imageデータ");
+//        testData.setSmallImage("Imageデータ");
+//        testData.setPresentFlag(0);
+//        testData.setYukarin(1);
+//        testData.setNotif_yest(1);
+//        testData.setNotif_today(1);
+//        testData.setNotif_day(3);
+//        testData.setNotif_recy(3);
+//        //dbに書き込み
+//        dbAssist.insertData(testData, this);
         //adapterDataセット
-        int month = 7;//とりあえず7月でプレイ(ここらへんで月の指定お願いします)
+        //int month = 7;//とりあえず7月でプレイ(ここらへんで月の指定お願いします)
 
-        ArrayList<Data> monthTurnData;//ArrayListの宣言
+        //12ヶ月分セットするために12回ループさせます。
+        for(int fullReturn=0;fullReturn<12;fullReturn++) {
 
-        monthTurnData = dbAssist.birthdaySelect(month, this);//ArrayListに月検索したデータをぶち込む
+            ArrayList<Data> monthTurnData;//ArrayListの宣言
 
-        MainAdapterData Mad;//自分で作成したclassの宣言
+            monthTurnData = dbAssist.birthdaySelect(fullReturn+1, this);//ArrayListに月検索したデータをぶち込む
 
-        ArrayList<MainAdapterData> adapterData = new ArrayList<>();//classのArrayListの作成
+            MainAdapterData Mad;//自分で作成したclassの宣言
+
+            ArrayList<MainAdapterData> adapterData = new ArrayList<>();//classのArrayListの作成
 
 
-        int num = monthTurnData.size();//int型変数numにmonthTurnDataの配列数を入れる
+            int num = monthTurnData.size();//int型変数numにmonthTurnDataの配列数を入れる
+            dataSize = num;
+            //欠番している数
+            num2 = 3-(num%3);
 
-        //読み込んだ月のデータの数だけ回す。（3分の1でいいのと、後述のListデータの取得に使うため+3）
-        for (int j = 0; j < monthTurnData.size(); j = j + 3) {
-            //三人分だけ保存するため3回回す。
-            // Mad.startMad();//クラスの変数の初期化
-            Mad = new MainAdapterData();//自分で作成したclassの宣言
+            //読み込んだ月のデータの数だけ回す。（3分の1でいいのと、後述のListデータの取得に使うため+3）
+            for (int j = 0; j < monthTurnData.size(); j = j + 3) {
+                //三人分だけ保存するため3回回す。
+                // Mad.startMad();//クラスの変数の初期化
+                Mad = new MainAdapterData();//自分で作成したclassの宣言
 
-            for (int i = 0; i < 3; i++) {
-                Data getData;//monthTurnData取得用のデータ型
+                for (int i = 0; i < 3; i++) {
+                    Data getData;//monthTurnData取得用のデータ型
 
-                Log.d("aaaa", String.valueOf(i + j));
+                    Log.d("aaaa", String.valueOf(i + j));
 
-                if (i <= num)//iとnumを比較してiの方が低い時だけ（データ無いのに取得しようとして落ちるやつの修正）
-                {
-                    getData = monthTurnData.get(i + j);//読み込んだListの要素を取得
+                    if (i <= num)//iとnumを比較してiの方が低い時だけ（データ無いのに取得しようとして落ちるやつの修正）
+                    {
+                        getData = monthTurnData.get(i + j);//読み込んだListの要素を取得
 
-                    Mad.setId(i, getData.getId());//idのセット
-                    Mad.setName(i, getData.getName());//名前のセット
-                    Mad.setBirthMonth(i, getData.getMonth());//誕生月のセット
-                    Mad.setBirthDay(i, getData.getDay());//誕生日のセット
-                    Mad.setPresentFlag(i, getData.isPresentFlag());//プレゼントフラグのセット
+                        Mad.setId(i, getData.getId());//idのセット
+                        Mad.setName(i, getData.getName());//名前のセット
+                        Mad.setBirthMonth(i, getData.getMonth());//誕生月のセット
+                        Mad.setBirthDay(i, getData.getDay());//誕生日のセット
+                        Mad.setPresentFlag(i, getData.isPresentFlag());//プレゼントフラグのセット
+                    }
+                    num = num - 1;//ここでnumから今セットした三人分だけ引く
                 }
-                num = num - 1;//ここでnumから今セットした三人分だけ引く
+
+                //この辺に書き込み処理書いてくらさい。
+
+                adapterData.add(Mad);//三人のデータの追加
+
             }
 
-            //この辺に書き込み処理書いてくらさい。
-
-            adapterData.add(Mad);//三人のデータの追加
+            //Adapterをセット
+            MainListAdapter adapter = new MainListAdapter(this, 0, adapterData);
+            //listView.setEmptyView(findViewById(R.id.listView));
+            listView[fullReturn].setAdapter(adapter);
 
         }
-
-        //Adapterをセット
-        MainListAdapter adapter = new MainListAdapter(this, 0, adapterData);
-        //listView.setEmptyView(findViewById(R.id.listView));
-        listView1.setAdapter(adapter);
-        listView2.setAdapter(adapter);
-        listView3.setAdapter(adapter);
-        listView4.setAdapter(adapter);
-        listView5.setAdapter(adapter);
-        listView6.setAdapter(adapter);
-        listView7.setAdapter(adapter);
-        listView8.setAdapter(adapter);
-        listView9.setAdapter(adapter);
-        listView10.setAdapter(adapter);
-        listView11.setAdapter(adapter);
-        listView12.setAdapter(adapter);
 
 
 
@@ -236,6 +237,9 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(GestureDecActivity.this, UserRegisterActivity.class);
+
+                    intent.putExtra("month", page+1);//Todo 初期"月"設定テスト(修復時：消せ)
+
                     startActivity(intent);
 //                    Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                            .setAction("Action", null).show();
