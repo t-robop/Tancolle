@@ -3,9 +3,12 @@ package org.t_robop.y_ogawara.tancolle;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -36,7 +39,7 @@ public class MainListActivity extends AppCompatActivity {
 
 //        ArrayList<MainListData> MainListArray = new ArrayList<>();
 //
-//b
+//
         // データを突っ込む
 //        for (int i =1;i<3;i=i+3){
 //            MainListData MainList = new MainListData();
@@ -51,7 +54,7 @@ public class MainListActivity extends AppCompatActivity {
 //            MainListArray.add(MainList);
 //
 //        }
-//
+
         Data testData = new Data();
 
         //Data型にデータをセット
@@ -221,13 +224,10 @@ public class MainListActivity extends AppCompatActivity {
 
         int numData = new Integer((Integer) view.getTag());
 
-        if (numData != 0){
-            //Intentで飛ばす＆idをキーにする
-            Intent intent = new Intent(MainListActivity.this, UserDetailActivity.class);
-            intent.putExtra("id", numData);
-            startActivity(intent);
-        }
-
+        //Intentで飛ばす＆idをキーにする
+        Intent intent = new Intent(MainListActivity.this, UserDetailActivity.class);
+        intent.putExtra("id", numData);
+        startActivity(intent);
 
 
     }
