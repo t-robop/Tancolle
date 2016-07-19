@@ -126,6 +126,8 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
 
     int monthSetting;//Todo 初期"月"設定テスト(修復時：消せ)
 
+    boolean keyBoad=false;
+
     /////////////////////////Override/////////////////////////
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -446,6 +448,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         EditTextClick(edit_name);
         //キーボード表示
         inputMethodManager.showSoftInput(v, InputMethodManager.SHOW_FORCED);
+        keyBoad=true;
     }
 
     public void EditPho(View v)
@@ -454,6 +457,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         EditTextClick(edit_pho);
         //キーボード表示
         inputMethodManager.showSoftInput(v, InputMethodManager.SHOW_FORCED);
+        keyBoad=true;
     }
 
     public void EditTwitter(View v)
@@ -462,6 +466,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         EditTextClick(edit_twitter);
         //キーボード表示
         inputMethodManager.showSoftInput(v, InputMethodManager.SHOW_FORCED);
+        keyBoad=true;
     }
 
     public void EditAgo(View v)
@@ -470,6 +475,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         EditTextClick(edit_days_ago);
         //キーボード表示
         inputMethodManager.showSoftInput(v, InputMethodManager.SHOW_FORCED);
+        keyBoad=true;
     }
 
     //画像クリック時
@@ -598,6 +604,8 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
 
                     // エディットテキストのテキストを全選択します
                     edit.selectAll();
+
+                    keyBoad=false;
 
                     return true;
                 }
@@ -962,8 +970,10 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
 
     public void AllRegist()
     {
-        //キーボード絶対殺すマン
-        inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        if(keyBoad==true) {
+            //キーボード絶対気絶させるマン
+            inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        }
 
         //sqlに保存
         //Data型の宣言
