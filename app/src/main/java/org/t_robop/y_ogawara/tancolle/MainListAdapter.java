@@ -16,7 +16,7 @@ import java.util.ArrayList;
  * Created by iris on 2016/07/01.
  */
 public class MainListAdapter extends ArrayAdapter<MainAdapterData> {
-    
+
     private LayoutInflater layoutInflater;
 
     public MainListAdapter(Context c, int id, ArrayList<MainAdapterData> MainListArray) {
