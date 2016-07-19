@@ -130,38 +130,8 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_register);
 
-        //繰り返し通知スピナーの関連付け
-        spinnerRepetition = (Spinner) findViewById(R.id.spinner2);
-        //カテゴリスピナーの関連付け
-        spinnerCategory = (Spinner) findViewById(R.id.spinner1);
-        //年齢表示の関連付け
-        user_yearsold = (TextView) findViewById(R.id.YearsOld);
-        //誕生日の関連付け
-        user_birthday = (TextView) findViewById(R.id.userbirthday);
-        //名前入力欄の関連付け
-        edit_name = (EditText) findViewById(R.id.EditName);
-        //振り仮名入力欄の関連付け
-        edit_pho = (EditText) findViewById(R.id.EditPho);
-        //twitterid入力欄の関連付け
-        edit_twitter = (EditText) findViewById(R.id.twitter);
-        //通知は何日前かの入力欄の関連付け
-        edit_days_ago = (EditText) findViewById(R.id.ago);
-        //メモ入力欄の関連付け
-        edit_memo = (EditText) findViewById(R.id.Memo);
-        //キーボード表示を制御（出したり消したり）するためのオブジェクトの関連付け
-        inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        //画像表示場所の関連付け
-        user_view = (ImageView) findViewById(R.id.userview);
-        //田村チェックボックスの関連付け
-        tamura_check = (CheckBox) findViewById(R.id.TamuraCheck);
-        //前日に通知するかどうかのチェックボックスの関連付け
-        yesterday_check = (CheckBox) findViewById(R.id.YesterdayCheck);
-        //当日に通知するかどうかのチェックボックスの関連付け
-        today_check = (CheckBox) findViewById(R.id.TodayCheck);
-        //DiaLog用のxmlとの連携の関連付け
-        inflater = LayoutInflater.from(UserRegisterActivity.this);
-        viewV = inflater.inflate(R.layout.dialog_user_register, null);
-        editText = (EditText) viewV.findViewById(R.id.editText1);
+        //関連付け
+        Association();
 
         // EditText が空のときに表示させるヒントを設定
         edit_name.setHint("Name");
@@ -533,6 +503,42 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
 
 
     ////////////////////自作関数群////////////////////
+
+    public void Association()
+    {
+        //繰り返し通知スピナーの関連付け
+        spinnerRepetition = (Spinner) findViewById(R.id.spinner2);
+        //カテゴリスピナーの関連付け
+        spinnerCategory = (Spinner) findViewById(R.id.spinner1);
+        //年齢表示の関連付け
+        user_yearsold = (TextView) findViewById(R.id.YearsOld);
+        //誕生日の関連付け
+        user_birthday = (TextView) findViewById(R.id.userbirthday);
+        //名前入力欄の関連付け
+        edit_name = (EditText) findViewById(R.id.EditName);
+        //振り仮名入力欄の関連付け
+        edit_pho = (EditText) findViewById(R.id.EditPho);
+        //twitterid入力欄の関連付け
+        edit_twitter = (EditText) findViewById(R.id.twitter);
+        //通知は何日前かの入力欄の関連付け
+        edit_days_ago = (EditText) findViewById(R.id.ago);
+        //メモ入力欄の関連付け
+        edit_memo = (EditText) findViewById(R.id.Memo);
+        //キーボード表示を制御（出したり消したり）するためのオブジェクトの関連付け
+        inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        //画像表示場所の関連付け
+        user_view = (ImageView) findViewById(R.id.userview);
+        //田村チェックボックスの関連付け
+        tamura_check = (CheckBox) findViewById(R.id.TamuraCheck);
+        //前日に通知するかどうかのチェックボックスの関連付け
+        yesterday_check = (CheckBox) findViewById(R.id.YesterdayCheck);
+        //当日に通知するかどうかのチェックボックスの関連付け
+        today_check = (CheckBox) findViewById(R.id.TodayCheck);
+        //DiaLog用のxmlとの連携の関連付け
+        inflater = LayoutInflater.from(UserRegisterActivity.this);
+        viewV = inflater.inflate(R.layout.dialog_user_register, null);
+        editText = (EditText) viewV.findViewById(R.id.editText1);
+    }
 
     public void EditSetString(EditText edit,String string)
     {
@@ -1073,6 +1079,9 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
 
     public void AllRegist()
     {
+        inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+
+
         //Data型の宣言
         Data allData =new Data();
         //Data型にデータをセット
