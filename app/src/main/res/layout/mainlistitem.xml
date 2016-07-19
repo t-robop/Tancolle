@@ -28,7 +28,6 @@
             android:id="@+id/name1"
             android:layout_width="match_parent"
             android:layout_height="20dp"
-            android:text="ニシムラ"
             android:gravity="center"/>
 
     </LinearLayout>
@@ -57,7 +56,6 @@
             android:id="@+id/name2"
             android:layout_width="match_parent"
             android:layout_height="20dp"
-            android:text="にしむら"
             android:gravity="center"/>
     </LinearLayout>
 
@@ -85,7 +83,6 @@
             android:id="@+id/name3"
             android:layout_width="match_parent"
             android:layout_height="20dp"
-            android:text="ゴディバ"
             android:gravity="center"/>
     </LinearLayout>
 

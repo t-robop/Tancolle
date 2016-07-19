@@ -35,7 +35,6 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
     private static final int SCROLL_RIGHT = 1; //
     private int slideLimitFlg = SCROLL_NONE; // スライドの状態判定
     static int num2;
-    static int dataSize;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -163,7 +162,6 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
 
             int num = monthTurnData.size();//int型変数numにmonthTurnDataの配列数を入れる
 
-            dataSize = num;
             //欠番している数
             num2 = 3-(num%3);
 
@@ -192,7 +190,7 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
 
                 //この辺に書き込み処理書いてくらさい。
 
-                    Mad.setAllSize(dataSize);
+                Mad.setAllSize(num);
                 adapterData.add(Mad);//三人のデータの追加
 
             }

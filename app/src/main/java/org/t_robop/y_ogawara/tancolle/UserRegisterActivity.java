@@ -42,6 +42,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.List;
 
 public class UserRegisterActivity extends AppCompatActivity implements TextWatcher {
     private static final int REQUEST_GALLERY = 0;//ギャラリー選択で必要な初期化
@@ -602,11 +604,12 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
     public void sppinerCategory()
     {
 
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         // アダプターを設定します
         spinnerCategory.setAdapter(adapter);
+
         // スピナーのアイテムが選択された時に呼び出されるコールバックリスナーを登録します
         spinnerCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -1099,7 +1102,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         //新規作成か編集かによって画面切り替え場所の変更
         if(id==0) {
             //MainへGo!
-            Intent intent = new Intent(this, MainListActivity.class);
+            Intent intent = new Intent(this, GestureDecActivity.class);
             startActivity(intent);
         }
         else
