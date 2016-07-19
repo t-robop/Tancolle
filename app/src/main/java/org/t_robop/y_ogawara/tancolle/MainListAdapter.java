@@ -1,6 +1,7 @@
 package org.t_robop.y_ogawara.tancolle;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,21 +75,40 @@ public class MainListAdapter extends ArrayAdapter<MainAdapterData> {
         nameText3.setText(mainListData.getName(2));
         birthText3.setText(mainListData.getBirthMonth(2)+"/"+mainListData.getBirthDay(2));
         //listの行数が、最終行だったとき
-        if (position!=0){
-
-
-            if (position==GestureDecActivity.dataSize/3){
-                switch (GestureDecActivity.num2){
+        //if (position!=0){
+        if(mainListData.getAllSize()==1||mainListData.getAllSize()==2) {
+          //  if (position == mainListData.getAllSize() / 3) {
+                switch (mainListData.getSize()) {
                     case 0:
-                        break;
-                    case 2:
                         liner2.setVisibility(View.INVISIBLE);
                     case 1:
                         liner3.setVisibility(View.INVISIBLE);
                         break;
                 }
-            }
+          //  }
         }
+//        else{
+//           // if (position == mainListData.getAllSize() / 3) {
+//            switch (mainListData.getSize()) {
+//                case 0:
+//                    liner2.setVisibility(View.INVISIBLE);
+//                case 1:
+//                    liner3.setVisibility(View.INVISIBLE);
+//                    break;
+//            }
+          //  }
+       // }
+        //}
+//        else{
+//                switch (mainListData.getSize()){
+//                    case 1:
+//                        liner2.setVisibility(View.INVISIBLE);
+//                    case 2:
+//                        liner3.setVisibility(View.INVISIBLE);
+//                        break;
+//            }
+//        }
+
 //        if (mainListData.getName(2)!=null){
 //            birthText3.setText(mainListData.getBirthMonth(2)+"/"+mainListData.getBirthDay(2));
 //        }

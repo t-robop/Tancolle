@@ -14,7 +14,8 @@ public class MainAdapterData {
     private int[] id=new int[] {0,0,0};
 
     //名前
-    private String[] name=new String[] {null,null,null};
+    private ArrayList <String> name=new ArrayList<>();
+
 
     //誕生月
     private int[] birthMonth=new int[] {0,0,0};
@@ -25,6 +26,16 @@ public class MainAdapterData {
     //誕生日フラグ(0or1)
     private int[] presentFlag=new int[] {0,0,0};
 
+
+    //全データのsize
+    private int allSize;
+
+    public MainAdapterData () {
+        name.add(0,null);
+        name.add(1,null);
+        name.add(2,null);
+    }
+
     //保存
     //num(配列番号)
     public void setId(int num,int id)
@@ -32,9 +43,14 @@ public class MainAdapterData {
         this.id[num]=id;
     }
 
+
+    public void setAllSize(int allSize) {
+        this.allSize = allSize;
+    }
+
     public void setName(int num,String name)
     {
-        this.name[num]=name;
+        this.name.add(num,name);
     }
 
     public void setBirthMonth(int num,int birthMonth)
@@ -52,7 +68,15 @@ public class MainAdapterData {
         this.presentFlag[num]=presentFlag;
     }
 
-
+    public int getSize(){
+        int test =0;
+        for (int i = 0; i<name.size();i++) {
+            if (name.get(i) != null){
+                test++;
+            }
+        }
+        return test;
+    }
     //取り出し
     //num(配列番号)
     public int getId(int num)
@@ -62,7 +86,10 @@ public class MainAdapterData {
 
     public String getName(int num)
     {
-        return name[num];
+//        if (name.size()==1||name.size()==2){
+//            return null;
+//        }
+        return name.get(num);
     }
 
     public int getBirthMonth(int num)
@@ -81,4 +108,7 @@ public class MainAdapterData {
     }
 
 
+    public int getAllSize() {
+        return allSize;
+    }
 }
