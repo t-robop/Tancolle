@@ -162,6 +162,7 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
 
 
             int num = monthTurnData.size();//int型変数numにmonthTurnDataの配列数を入れる
+
             dataSize = num;
             //欠番している数
             num2 = 3-(num%3);
@@ -177,7 +178,7 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
 
                     Log.d("aaaa", String.valueOf(i + j));
 
-                    if (i <= num)//iとnumを比較してiの方が低い時だけ（データ無いのに取得しようとして落ちるやつの修正）
+                    if (i+j+1 <= num)//iとnumを比較してiの方が低い時だけ（データ無いのに取得しようとして落ちるやつの修正）
                     {
                         getData = monthTurnData.get(i + j);//読み込んだListの要素を取得
 
@@ -187,11 +188,11 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
                         Mad.setBirthDay(i, getData.getDay());//誕生日のセット
                         Mad.setPresentFlag(i, getData.isPresentFlag());//プレゼントフラグのセット
                     }
-                    num = num - 1;//ここでnumから今セットした三人分だけ引く
                 }
 
                 //この辺に書き込み処理書いてくらさい。
 
+                    Mad.setAllSize(dataSize);
                 adapterData.add(Mad);//三人のデータの追加
 
             }
