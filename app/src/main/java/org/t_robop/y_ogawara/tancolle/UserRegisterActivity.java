@@ -187,7 +187,6 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
                     reptition_loop=0;
                 }
             }
-
             //　アイテムが選択されなかった
             public void onNothingSelected(AdapterView<?> parent) {
             }
@@ -202,9 +201,9 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         user_view.setScaleType(ImageView.ScaleType.CENTER_CROP);//CENTER_CROPでViewに合わせて拡大し、画像のはみ出した部分は切り取って、中心にフォーカスする
 
         //CheckBoxの値を取得
-        TamuraJudge(tamura_check);
-        YesterdayJudge(yesterday_check);
-        TodayJudge(today_check);
+        CheckJudge(tamura_check,0);
+        CheckJudge(yesterday_check,1);
+        CheckJudge(today_check,2);
 
         //年齢表示
         if (YearsOldSet(birthYear,birthMonth,birthDay) > 1000 || YearsOldSet(birthYear,birthMonth,birthDay) < 0) {//バグとか、通常はありえない数値の場合は空白をセット
@@ -243,8 +242,8 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             imgSetting = "null.jpg";//新規作成の場合でも画像の名前を設定しておく
         }
 
-        birthMonth++;
         //誕生日描画
+        birthMonth++;
         user_birthday.setText(birthYear+"/"+birthMonth+"/"+birthDay);
 
         //TextWacher
@@ -394,7 +393,6 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
 
                     return true;
                 }
-
                 return false;
             }
         });
@@ -409,9 +407,6 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
     public void afterTextChanged(Editable s) {
         //操作後のEtidTextの状態を取得する
     }
-
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -434,10 +429,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         }
     }
 
-
     ////////////////////////////////////////////////////////////
-
-
 
 
     ////////////////////クリック処理群/////////////////////////
@@ -508,10 +500,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         addCategory.show();
     }
 
-
     //////////////////////////////////////////////////
-
-
 
 
     ////////////////////自作関数群////////////////////
@@ -609,7 +598,6 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
 
                     return true;
                 }
-
                 return false;
             }
         });
@@ -783,8 +771,8 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         return yearsold;
     }
 
-    //TamuraCheck判定処理
-    public void TamuraJudge(final CheckBox check)
+    //CheckBox判定処理（tamura:0,yesterday:1,today:2）
+    public void CheckJudge(final CheckBox check, final int flag)
     {
         // チェックボックスがクリックされた時に呼び出されるコールバックリスナーを登録します
         check.setOnClickListener(new View.OnClickListener() {
@@ -796,57 +784,31 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
 
                 if(checked==true)
                 {
-                    tamura_flag =1;
+                    switch (flag){
+                        case 0:
+                            tamura_flag = 1;
+                            break;
+                        case 1:
+                            yesterday_flag =1;
+                            break;
+                        case 2:
+                            today_flag =1;
+                            break;
+                    }
                 }
                 else
                 {
-                    tamura_flag =0;
-                }
-            }
-        });
-    }
-
-    //YesterdayCheck判定処理
-    public void YesterdayJudge(final CheckBox check)
-    {
-        // チェックボックスがクリックされた時に呼び出されるコールバックリスナーを登録します
-        check.setOnClickListener(new View.OnClickListener() {
-            @Override
-            // チェックボックスがクリックされた時に呼び出されます
-            public void onClick(View v) {
-                // チェックボックスのチェック状態を取得します
-                boolean checked = check.isChecked();
-
-                if(checked==true)
-                {
-                    yesterday_flag =1;
-                }
-                else
-                {
-                    yesterday_flag =0;
-                }
-            }
-        });
-    }
-
-    //TodayCheck判定処理
-    public void TodayJudge(final CheckBox check)
-    {
-        // チェックボックスがクリックされた時に呼び出されるコールバックリスナーを登録します
-        check.setOnClickListener(new View.OnClickListener() {
-            @Override
-            // チェックボックスがクリックされた時に呼び出されます
-            public void onClick(View v) {
-                // チェックボックスのチェック状態を取得します
-                boolean checked = check.isChecked();
-
-                if(checked==true)
-                {
-                    today_flag =1;
-                }
-                else
-                {
-                    today_flag =0;
+                    switch (flag){
+                        case 0:
+                            tamura_flag = 0;
+                            break;
+                        case 1:
+                            yesterday_flag =0;
+                            break;
+                        case 2:
+                            today_flag =0;
+                            break;
+                    }
                 }
             }
         });
@@ -910,71 +872,55 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             case 1://only scaling
                 factor = (float)width/(float)pctWidth;
                 mat.preScale(factor, factor);
-//                lp.width = (int)(wOrg*factor);
-//                lp.height = (int)(hOrg*factor);
                 break;
             case 2://flip vertical
                 factor = (float)width/(float)pctWidth;
                 mat.postScale(factor, -factor);
                 mat.postTranslate(0, pctHeight*factor);
-//                lp.width = (int)(wOrg*factor);
-//                lp.height = (int)(hOrg*factor);
                 break;
             case 3://rotate 180
                 mat.postRotate(180, pctWidth/2f, pctHeight/2f);
                 factor = (float)width/(float)pctWidth;
                 mat.postScale(factor, factor);
-//                lp.width = (int)(wOrg*factor);
-//                lp.height = (int)(hOrg*factor);
                 break;
             case 4://flip horizontal
                 factor = (float)width/(float)pctWidth;
                 mat.postScale(-factor, factor);
                 mat.postTranslate(pctWidth*factor, 0);
-//                lp.width = (int)(wOrg*factor);
-//                lp.height = (int)(hOrg*factor);
                 break;
             case 5://flip vertical rotate270
                 mat.postRotate(270, 0, 0);
                 factor = (float)width/(float)pctHeight;
                 mat.postScale(factor, -factor);
-//                lp.width = (int)(hOrg*factor);
-//                lp.height = (int)(wOrg*factor);
                 break;
             case 6://rotate 90
                 mat.postRotate(90, 0, 0);
                 factor = (float)width/(float)pctHeight;
                 mat.postScale(factor, factor);
                 mat.postTranslate(pctHeight*factor, 0);
-//                lp.width = (int)(hOrg*factor);
-//                lp.height = (int)(wOrg*factor);
                 break;
             case 7://flip vertical, rotate 90
                 mat.postRotate(90, 0, 0);
                 factor = (float)width/(float)pctHeight;
                 mat.postScale(factor, -factor);
                 mat.postTranslate(pctHeight*factor, pctWidth*factor);
-//                lp.width = (int)(hOrg*factor);
-//                lp.height = (int)(wOrg*factor);
                 break;
             case 8://rotate 270
                 mat.postRotate(270, 0, 0);
                 factor = (float)width/(float)pctHeight;
                 mat.postScale(factor, factor);
                 mat.postTranslate(0, pctWidth*factor);
-//                lp.width = (int)(hOrg*factor);
-//                lp.height = (int)(wOrg*factor);
                 break;
         }
     }
 
     public void AllRegist()
     {
+        //キーボードが表示されてるかどうか判定
         if(keyBoad==true) {
             //キーボード絶対気絶させるマン
             inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
         }
-
         //sqlに保存
         //Data型の宣言
         Data allData =new Data();
@@ -1012,7 +958,6 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             Intent intent = new Intent(this, UserDetailActivity.class);
             startActivity(intent);
         }
-
         ALLLOG();
     }
 
