@@ -138,7 +138,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="残り000日a"
+                android:text="残り000日"
                 android:id="@+id/nokori"
                 android:layout_weight="1"
                 android:textSize="40dp"
