@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -46,11 +47,13 @@ public class UserDetailActivity extends AppCompatActivity {
     Bitmap bitmap;
 
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_detail);
         Intent intent = getIntent();
         intentId = intent.getIntExtra("id", 1);
+
 
         nameTV = (TextView) findViewById(R.id.Name);
         kanaTV = (TextView) findViewById(R.id.Kana);
@@ -67,8 +70,7 @@ public class UserDetailActivity extends AppCompatActivity {
         photoImageView = (ImageView)findViewById(R.id.imageView);
         image = (ImageView) this.findViewById(R.id.present);
 
-        //データを読みだして、その値でセットする画像を変える
-        image.setImageResource(R.drawable.ao);
+
 
         Data data = dbAssist.idSelect(intentId, this);
         String name = data.getName(); //SQliteからもってくる
@@ -76,6 +78,21 @@ public class UserDetailActivity extends AppCompatActivity {
         String smallImage = data.getSmallImage();
         TwitterID = data.getTwitterID();
         memo = data.getMemo();
+        imagecount = data.isPresentFlag();
+        Log.d("aaaaaa",String.valueOf(imagecount));
+        if (imagecount == Integer.MIN_VALUE) {
+            imagecount = 0;
+
+        }
+
+        //データを読みだして、その値でセットする画像を変える
+
+        if(imagecount==0){
+            image.setImageResource(R.drawable.ao);
+        }else{
+            image.setImageResource(R.drawable.ribon);
+        }
+
 
 //画像読み込み
         InputStream in;
@@ -204,16 +221,27 @@ public class UserDetailActivity extends AppCompatActivity {
 
 
     public void presentClick(View view) { //プレゼントボタンをおした時
-        Data presentdate = new Data();
-        presentdate.setPresentFlag(imagecount);
-        dbAssist.updateData(intentId, presentdate, this);
+        //Data presentdate = new Data();
+        //presentdate.setPresentFlag(imagecount);
+        //dbAssist.updateData(intentId, presentdate, this);
+        Log.d("bbbbbbbb",String.valueOf(imagecount));
 
-        if (imagecount == 2) {
+        Data updateData =new Data();
+        //TODO なんかプレゼントフラグ反映されとらんで
+        if (imagecount == 0) {
             imagecount = 1;
-            image.setImageResource(R.drawable.ao);
-        } else {
-            imagecount = 2;
+            updateData.setPresentFlag(imagecount);
+            dbAssist.updateData(intentId,updateData,this);
             image.setImageResource(R.drawable.ribon);
+            Log.d("ccccccc",String.valueOf(imagecount));
+
+        } else {
+            imagecount = 0;
+            updateData.setPresentFlag(imagecount);
+            dbAssist.updateData(intentId,updateData,this);
+            image.setImageResource(R.drawable.ao);
+            Log.d("ddddddd",String.valueOf(imagecount));
+
 
         }
     }
@@ -241,11 +269,4 @@ public class UserDetailActivity extends AppCompatActivity {
     }
 
 
-    }
-
-
-
-
-
-
-
+}
