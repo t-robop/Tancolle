@@ -58,7 +58,8 @@
                     android:layout_width="100dp"
                     android:layout_height="120dp"
                     android:id="@+id/userview"
-                    android:onClick="UserView"/>
+                    android:onClick="UserView"
+                    android:scaleType="fitCenter"/>
 
 
 
