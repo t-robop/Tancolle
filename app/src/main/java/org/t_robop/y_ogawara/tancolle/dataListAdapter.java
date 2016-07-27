@@ -22,11 +22,10 @@ import java.util.ArrayList;
 //独自Adapterつくる
 public class dataListAdapter extends BaseAdapter implements Filterable {
 
-    Context context;
-    ArrayList<ListItem> items;
-    ArrayList<ListItem> mStringFilterList;
-    ValueFilter valueFilter;
-
+    private Context context;
+    private ArrayList<ListItem> items;
+    private ArrayList<ListItem> mStringFilterList;
+    private ValueFilter valueFilter;
 
     dataListAdapter(Context context, ArrayList<ListItem> items) {
         this.context = context;
@@ -35,6 +34,7 @@ public class dataListAdapter extends BaseAdapter implements Filterable {
     }
 
 
+    //BOX?に収める
     @Override
     public int getCount() {
         return items.size();
@@ -54,6 +54,7 @@ public class dataListAdapter extends BaseAdapter implements Filterable {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
+        //Inflaterを使うことでviewを動的に生成(item.xmlで作ったviewを使いまわせる)
         LayoutInflater mInflater = (LayoutInflater) context
                 .getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
 
@@ -64,7 +65,7 @@ public class dataListAdapter extends BaseAdapter implements Filterable {
 
             TextView name_tv = (TextView) convertView.findViewById(R.id.name_text);
             TextView kana_tv = (TextView) convertView.findViewById(R.id.kana_text);
-            ImageView item_image = (ImageView)convertView.findViewById(R.id.item_image);
+            ImageView item_image = (ImageView) convertView.findViewById(R.id.item_image);
 
             ListItem listItem = items.get(position);
 
@@ -82,8 +83,7 @@ public class dataListAdapter extends BaseAdapter implements Filterable {
             try {
                 in = context.openFileInput(listItem.getSmallImage());
                 img = BitmapFactory.decodeStream(in);
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
             //画像セット
@@ -91,11 +91,12 @@ public class dataListAdapter extends BaseAdapter implements Filterable {
             //Picasso.with(context).load(img).into(item_image);
             item_image.setImageBitmap(img);
         }
+        //Viewを返す
         return convertView;
     }
 
 
-
+    //extendしたアダプタで使うfilter
     @Override
     public Filter getFilter() {
         if (valueFilter == null) {
@@ -104,6 +105,7 @@ public class dataListAdapter extends BaseAdapter implements Filterable {
         return valueFilter;
     }
 
+    //標準のfilterをextendする
     private class ValueFilter extends Filter {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
@@ -112,8 +114,8 @@ public class dataListAdapter extends BaseAdapter implements Filterable {
             if (constraint != null && constraint.length() > 0) {
                 ArrayList<ListItem> filterList = new ArrayList<ListItem>();
                 for (int i = 0; i < mStringFilterList.size(); i++) {
-                    if ((mStringFilterList.get(i).getKana().toUpperCase()+mStringFilterList.get(i).getName().toUpperCase())
-                        .contains(constraint.toString().toUpperCase())) {
+                    if ((mStringFilterList.get(i).getKana().toUpperCase() + mStringFilterList.get(i).getName().toUpperCase())
+                            .contains(constraint.toString().toUpperCase())) {
 
                         ListItem listItem = mStringFilterList.get(i);
 
