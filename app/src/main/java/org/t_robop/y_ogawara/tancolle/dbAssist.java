@@ -128,7 +128,7 @@ public class dbAssist {
         String sqlStr = "select *"
                 +"from users_table "
                 + "where month ="+month
-                + " order by month asc";
+                + " order by day asc";
         ArrayList <Data> DataArray=new ArrayList<>();
         sqLiteOpenHelper = new MySQLiteOpenHelper(context);
         sqldb = sqLiteOpenHelper.getWritableDatabase();
