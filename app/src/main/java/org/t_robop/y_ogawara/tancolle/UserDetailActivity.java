@@ -10,7 +10,11 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -266,6 +270,40 @@ public class UserDetailActivity extends AppCompatActivity {
 
         }
 
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // アクションバー内に使用するメニューアイテムを注入します。
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.user_detail_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    //アクションバー処理
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // アクションバーアイテム上の押下を処理します。
+        switch (item.getItemId()) {
+            case R.id.edit_button:
+                Edit();
+                return true;
+            case R.id.delete_button:
+                Delete();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void Edit() {
+        Intent intent = new Intent(UserDetailActivity.this, UserRegisterActivity.class);
+        intent.putExtra("IdNum",intentId);
+        startActivity(intent);
+    }
+    private void Delete(){
+        dbAssist.deleteData(intentId,this);
+        finish();
     }
 
 

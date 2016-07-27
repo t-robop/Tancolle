@@ -219,7 +219,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             edit_name.setText(idDate.getName());
             edit_pho.setText(idDate.getKana());
             edit_twitter.setText(idDate.getTwitterID());
-            edit_days_ago.setText(idDate.getNotif_day());
+            edit_days_ago.setText(String.valueOf(idDate.getNotif_day()));
             edit_memo.setText(idDate.getMemo());
             tamura_flag = idDate.isYukarin();
             yesterday_flag = idDate.isNotif_yest();
