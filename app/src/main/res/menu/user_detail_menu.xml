@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <!-- Search, should appear as action button -->
+    <item
+        android:id="@+id/edit_button"
+        android:title="編集"
+        android:showAsAction="ifRoom" />
+    <item
+    android:id="@+id/delete_button"
+    android:title="削除"
+        android:showAsAction="ifRoom" />
+</menu>
