@@ -42,8 +42,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.List;
 
 public class UserRegisterActivity extends AppCompatActivity implements TextWatcher {
     private static final int REQUEST_GALLERY = 0;//ギャラリー選択で必要な初期化
@@ -174,13 +172,6 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         CheckJudge(yesterday_check,1);
         CheckJudge(today_check,2);
 
-        //年齢表示
-        if (YearsOldSet(birthYear,birthMonth,birthDay) > 1000 || YearsOldSet(birthYear,birthMonth,birthDay) < 0) {//バグとか、通常はありえない数値の場合は空白をセット
-            user_yearsold.setText("");
-        } else {
-            user_yearsold.setText(String.valueOf(YearsOldSet(birthYear,birthMonth,birthDay)) + "歳");//年齢を算出して「歳」を付けて表示
-        }
-
         //データがある場合（編集として呼ばれた場合）は読み込み
         if (id != 0) {
             idDate = dbAssist.idSelect(id, this);
@@ -210,12 +201,9 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             imgSetting = "null.jpg";//新規作成の場合でも画像の名前を設定しておく
         }
 
-        //誕生日描画
+        //誕生日と年齢表示
         birthMonth++;
-        user_birthday.setText(birthYear+"/"+birthMonth+"/"+birthDay);
-
-        //TextWacher
-        edit_name.addTextChangedListener(this);
+        drawBirthAndOld();
 
         //画像読み込み
         InputStream in;
@@ -519,8 +507,42 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         }
     }
 
+    //指定されたEditTextの指定文字数から後ろ全てを消すメソッド（("ABCD",2)➝AB）
+    public void EditCutString(EditText edit,int num){
+        int size= (int) edit.getTextSize();
+        String string;
+
+        size=size-num;
+
+        string= String.valueOf(edit.getText());
+
+        string=string.substring(0,size);
+
+        edit.setText(string);
+    }
+
     //EditTextのキーボード関連の処理のメソッド
     public void EditTextSet(final EditText edit) {
+
+        //フォーカスが付いた時・外れた時
+        edit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+                    //受け取った時
+
+//                    if(edit_days_ago.getText()!=null) {
+//                        EditCutString(edit_days_ago, 2);
+//                    }
+
+                }else{
+                    //離れた時
+                    //edit_days_ago用処理
+                    EditSetString(edit_days_ago,"日前");
+                }
+            }
+        });
+
         //EditTextにリスナーをセット
         edit.setOnKeyListener(new View.OnKeyListener() {
 
@@ -532,9 +554,6 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
 
                     //キーボードを閉じる
                     inputMethodManager.hideSoftInputFromWindow(edit.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
-
-                    //edit_days_ago用処理
-                    EditSetString(edit_days_ago,"日前");
 
                     //フォーカスを外す
                     edit.setFocusable(false);
@@ -663,19 +682,30 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
                 birthDay=temporary_day;
 
                 //描画
-                user_birthday.setText(birthYear+"/"+birthMonth+"/"+birthDay);
+                drawBirthAndOld();
 
-                //年齢表示
-                if(YearsOldSet(birthYear,birthMonth,birthDay)>1000) {
-                    user_yearsold.setText("");
-                }
-                else {
-                    user_yearsold.setText(String.valueOf(YearsOldSet(birthYear,birthMonth,birthDay))+"歳");
-                }
             }
         };
         // 日付設定ダイアログの作成・リスナの登録
         datePickerDialog = new DatePickerDialog(this, DateSetListener, temporary_year, temporary_month, temporary_day);
+    }
+
+    //誕生日と年齢表示
+    public void drawBirthAndOld(){
+        if(tamura_flag==0) {
+            user_birthday.setText(birthYear + "/" + birthMonth + "/" + birthDay);
+            //年齢表示
+            if (YearsOldSet(birthYear, birthMonth, birthDay) > 1000) {
+                user_yearsold.setText("");
+            } else {
+                user_yearsold.setText(String.valueOf(YearsOldSet(birthYear, birthMonth, birthDay)) + "歳");
+            }
+        }
+        else{
+            user_birthday.setText(birthMonth + "/" + birthDay);
+            //年齢表示
+            user_yearsold.setText("不明");
+        }
     }
 
     //spinnerCategory追加処理
@@ -768,6 +798,8 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
                     switch (flag){
                         case 0:
                             tamura_flag = 1;
+                            user_birthday.setText(birthMonth + "/" + birthDay);
+                            user_yearsold.setText("不明");
                             break;
                         case 1:
                             yesterday_flag =1;
@@ -781,6 +813,13 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
                     switch (flag){
                         case 0:
                             tamura_flag = 0;
+                            user_birthday.setText(birthYear+"/"+birthMonth + "/" + birthDay);
+                            //年齢表示
+                            if (YearsOldSet(birthYear, birthMonth, birthDay) > 1000 || YearsOldSet(birthYear, birthMonth, birthDay) < 0) {//バグとか、通常はありえない数値の場合は空白をセット
+                                user_yearsold.setText("");
+                            } else {
+                                user_yearsold.setText(String.valueOf(YearsOldSet(birthYear, birthMonth, birthDay)) + "歳");//年齢を算出して「歳」を付けて表示
+                            }
                             break;
                         case 1:
                             yesterday_flag =0;

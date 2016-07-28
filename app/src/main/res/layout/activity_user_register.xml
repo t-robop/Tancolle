@@ -61,8 +61,6 @@
                     android:onClick="UserView"
                     android:scaleType="fitCenter"/>
 
-
-
             </LinearLayout>
 
             <TextView
@@ -131,7 +129,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="田村"
+                    android:text="年齢不詳"
                     android:layout_weight="5.5"
                     android:textSize="20dp"
                     android:gravity="center_vertical"
