@@ -85,8 +85,8 @@ public class UserDetailActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         photoImageView.setImageBitmap(bitmap);
+
         //int birth = data.getBirthday();
         int birthyear = data.getYear();
         int birthmonth = data.getMonth();
