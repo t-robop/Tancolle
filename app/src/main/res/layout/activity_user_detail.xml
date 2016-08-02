@@ -20,8 +20,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/imageView"
+<<<<<<< Temporary merge branch 1
+                android:layout_weight="1"/>
+=======
                 android:layout_weight="1"
                 android:scaleType="fitCenter"/>
+>>>>>>> Temporary merge branch 2
 
             <LinearLayout
                 android:layout_width="match_parent"
