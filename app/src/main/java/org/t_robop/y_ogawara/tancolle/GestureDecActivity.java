@@ -58,31 +58,31 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
         listView[11] = (ListView) findViewById(R.id.list12).findViewById(R.id.listView1);
 
         ///////////////////////////////////////////////////////////////
-        Data testData = new Data();
-
-        for (int i =0;i<20;i++){
-
-            //Data型にデータをセット
-            testData.setName("西村1111");
-            testData.setKana("にしむら");
-            testData.setBirthday(19970616);
-            testData.setYear(1997);
-            testData.setMonth(1);
-            testData.setDay(16);
-            testData.setCategory("友達");
-            testData.setTwitterID("Taiga_Natto");
-            testData.setMemo("教科書を見て実装して欲しい");
-            testData.setImage("Imageデータ");
-            testData.setSmallImage("Imageデータ");
-            testData.setPresentFlag(0);
-            testData.setYukarin(1);
-            testData.setNotif_yest(1);
-            testData.setNotif_today(1);
-            testData.setNotif_day(3);
-            testData.setNotif_recy(3);
-            //dbに書き込み
-            dbAssist.insertData(testData, this);
-        }
+//        Data testData = new Data();
+//
+//        for (int i =0;i<20;i++){
+//
+//            //Data型にデータをセット
+//            testData.setName("西村1111");
+//            testData.setKana("にしむら");
+//            testData.setBirthday(19970616);
+//            testData.setYear(1997);
+//            testData.setMonth(1);
+//            testData.setDay(16);
+//            testData.setCategory("友達");
+//            testData.setTwitterID("Taiga_Natto");
+//            testData.setMemo("教科書を見て実装して欲しい");
+//            testData.setImage("Imageデータ");
+//            testData.setSmallImage("Imageデータ");
+//            testData.setPresentFlag(0);
+//            testData.setYukarin(1);
+//            testData.setNotif_yest(1);
+//            testData.setNotif_today(1);
+//            testData.setNotif_day(3);
+//            testData.setNotif_recy(3);
+//            //dbに書き込み
+//            dbAssist.insertData(testData, this);
+//        }
 
         //12ヶ月分セットするために12回ループさせます。
         for(int fullReturn=0;fullReturn<12;fullReturn++) {

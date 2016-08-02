@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,6 +18,7 @@ import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Display;
@@ -144,6 +146,9 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         //関連付け
         Association();
 
+        //EditText毎に入力制御
+        edit_days_ago.setInputType(InputType.TYPE_CLASS_NUMBER);
+
         // EditText が空のときに表示させるヒントを設定
         edit_name.setHint("Name");
         edit_pho.setHint("Phonetic");
@@ -214,9 +219,15 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         //画像読み込み
         InputStream in;
         try {
-            in = openFileInput(imgSetting);//画像の名前からファイル開いて読み込み
-            img = BitmapFactory.decodeStream(in);//読み込んだ画像をBitMap化
-            in.close();
+            if(imgSetting.equals("null.jpg")){
+                Resources r = getResources();
+                img = BitmapFactory.decodeResource(r, R.drawable.normal_shadow);
+            }
+            else {
+                in = openFileInput(imgSetting);//画像の名前からファイル開いて読み込み
+                img = BitmapFactory.decodeStream(in);//読み込んだ画像をBitMap化
+                in.close();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -295,13 +306,10 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
 
             img = Bitmap.createBitmap(pct,0,0, pctWidth, pctHeight,mat, true);
 
-            pctHeight=pctHeight/4;
-            pctWidth=pctWidth/4;
-
-            small_img=Bitmap.createBitmap(pct,0,0, pctWidth, pctHeight,mat, true);
+            small_img= Bitmap.createScaledBitmap(img,pctWidth/4,pctHeight/4,false);
 
             //BitMapを表示
-            user_view.setImageBitmap(small_img);
+            user_view.setImageBitmap(img);
         } catch (Exception e) {}
 
         //画像保存時の名前用の現在日時取得
@@ -950,13 +958,13 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
 
     public void AllRegist() {
         //キーボードが表示されてるかどうか判定
-        if(keyBoad==true) {
+        if (keyBoad == true) {
             //キーボード絶対堕とすマン
             inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
         }
         //sqlに保存
         //Data型の宣言
-        Data allData =new Data();
+        Data allData = new Data();
         //Data型にデータをセット
         allData.setName(edit_name.getText().toString());
         allData.setKana(edit_pho.getText().toString());
@@ -965,47 +973,40 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         allData.setDay(birthDay);
         allData.setCategory(user_category);
 
-        twitter_id=edit_twitter.getText().toString();//現在のedit_twitterに表示されてる文字列を取得
-<<<<<<< Temporary merge branch 1
-        if(twitter_id.length()!=0) {
+        twitter_id = edit_twitter.getText().toString();//現在のedit_twitterに表示されてる文字列を取得
+        if (twitter_id.length() != 0) {
             if (twitter_id.charAt(0) == '@') {//一文字目を取得して@が付いてたらそれだけ消して取得
                 twitter_id = twitter_id.substring(1);
             }
-=======
-
-        if(twitter_id.charAt(0)=='@'){//一文字目を取得して@が付いてたらそれだけ消して取得
-            twitter_id=twitter_id.substring(1);
->>>>>>> Temporary merge branch 2
         }
         allData.setTwitterID(twitter_id);
 
         allData.setMemo(edit_memo.getText().toString());
-        allData.setImage(img_name+".jpg");
-        allData.setSmallImage(small_img_name+".jpg");
+        allData.setImage(img_name + ".jpg");
+        allData.setSmallImage(small_img_name + ".jpg");
         allData.setYukarin(tamura_flag);
         allData.setNotif_yest(yesterday_flag);
         allData.setNotif_today(today_flag);
         allData.setNotif_day(days_ago);
         allData.setNotif_recy(reptition_loop);
         //dbに書き込み
-        dbAssist.insertData(allData,this);
+        dbAssist.insertData(allData, this);
 
         // プレファレンスに保存
-        saveArray(arraylist,"StringItem");
+        saveArray(arraylist, "StringItem");
 
         //新規作成か編集かによって画面切り替え場所の変更
-        if(id==0) {
+        if (id == 0) {
             //MainへGo!
             Intent intent = new Intent(this, GestureDecActivity.class);
             startActivity(intent);
-        }
-        else {
+        } else {
             //DetailへGo!
-            Intent intent = new Intent(this, UserDetailActivity.class);
-            startActivity(intent);
+            finish();
         }
         ALLLOG();
-    }
+        }
+
 
     //Log
     public void ALLLOG() {
