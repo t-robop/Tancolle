@@ -185,7 +185,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             edit_name.setText(idDate.getName());
             edit_pho.setText(idDate.getKana());
             edit_twitter.setText(idDate.getTwitterID());
-            edit_days_ago.setText(idDate.getNotif_day());
+            edit_days_ago.setText(String.valueOf(idDate.getNotif_day()));
             edit_memo.setText(idDate.getMemo());
             tamura_flag = idDate.isYukarin();
             yesterday_flag = idDate.isNotif_yest();
@@ -295,7 +295,10 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
 
             img = Bitmap.createBitmap(pct,0,0, pctWidth, pctHeight,mat, true);
 
-            small_img= Bitmap.createScaledBitmap(img, pctWidth/4,pctHeight/4, false);
+            pctHeight=pctHeight/4;
+            pctWidth=pctWidth/4;
+
+            small_img=Bitmap.createBitmap(pct,0,0, pctWidth, pctHeight,mat, true);
 
             //BitMapを表示
             user_view.setImageBitmap(small_img);
@@ -963,10 +966,16 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         allData.setCategory(user_category);
 
         twitter_id=edit_twitter.getText().toString();//現在のedit_twitterに表示されてる文字列を取得
+<<<<<<< Temporary merge branch 1
         if(twitter_id.length()!=0) {
             if (twitter_id.charAt(0) == '@') {//一文字目を取得して@が付いてたらそれだけ消して取得
                 twitter_id = twitter_id.substring(1);
             }
+=======
+
+        if(twitter_id.charAt(0)=='@'){//一文字目を取得して@が付いてたらそれだけ消して取得
+            twitter_id=twitter_id.substring(1);
+>>>>>>> Temporary merge branch 2
         }
         allData.setTwitterID(twitter_id);
 

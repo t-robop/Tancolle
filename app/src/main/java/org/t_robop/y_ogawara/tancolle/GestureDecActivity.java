@@ -58,95 +58,31 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
         listView[11] = (ListView) findViewById(R.id.list12).findViewById(R.id.listView1);
 
         ///////////////////////////////////////////////////////////////
-       // Data testData = new Data();
+        Data testData = new Data();
 
-//        //Data型にデータをセット
-//        testData.setName("西村1111");
-//        testData.setKana("にしむら");
-//        testData.setBirthday(19970616);
-//        testData.setYear(1997);
-//        testData.setMonth(7);
-//        testData.setDay(16);
-//        testData.setCategory("友達");
-//        testData.setTwitterID("Taiga_Natto");
-//        testData.setMemo("教科書を見て実装して欲しい");
-//        testData.setImage("Imageデータ");
-//        testData.setSmallImage("Imageデータ");
-//        testData.setPresentFlag(0);
-//        testData.setYukarin(1);
-//        testData.setNotif_yest(1);
-//        testData.setNotif_today(1);
-//        testData.setNotif_day(3);
-//        testData.setNotif_recy(3);
-//        //dbに書き込み
-//        dbAssist.insertData(testData, this);
-//
-//        //Data型にデータをセット
-//        testData.setName("西村22222");
-//        testData.setKana("にしむら");
-//        testData.setBirthday(19970616);
-//        testData.setYear(1997);
-//        testData.setMonth(7);
-//        testData.setDay(16);
-//        testData.setCategory("友達");
-//        testData.setTwitterID("Taiga_Natto");
-//        testData.setMemo("教科書を見て実装して欲しい");
-//        testData.setImage("Imageデータ");
-//        testData.setSmallImage("Imageデータ");
-//        testData.setPresentFlag(0);
-//        testData.setYukarin(1);
-//        testData.setNotif_yest(1);
-//        testData.setNotif_today(1);
-//        testData.setNotif_day(3);
-//        testData.setNotif_recy(3);
-//        //dbに書き込み
-//        dbAssist.insertData(testData, this);
-//
-//
-//        //Data型にデータをセット
-//        testData.setName("西村33333");
-//        testData.setKana("にしむら");
-//        testData.setBirthday(19970616);
-//        testData.setYear(1997);
-//        testData.setMonth(7);
-//        testData.setDay(16);
-//        testData.setCategory("友達");
-//        testData.setTwitterID("Taiga_Natto");
-//        testData.setMemo("教科書を見て実装して欲しい");
-//        testData.setImage("Imageデータ");
-//        testData.setSmallImage("Imageデータ");
-//        testData.setPresentFlag(0);
-//        testData.setYukarin(1);
-//        testData.setNotif_yest(1);
-//        testData.setNotif_today(1);
-//        testData.setNotif_day(3);
-//        testData.setNotif_recy(3);
-//        //dbに書き込み
-//        dbAssist.insertData(testData, this);
-//
-//
-//        //Data型にデータをセット
-//        testData.setName("西村44444");
-//        testData.setKana("にしむら");
-//        testData.setBirthday(19970616);
-//        testData.setYear(1997);
-//        testData.setMonth(7);
-//        testData.setDay(16);
-//        testData.setCategory("友達");
-//        testData.setTwitterID("Taiga_Natto");
-//        testData.setMemo("教科書を見て実装して欲しい");
-//        testData.setImage("Imageデータ");
-//        testData.setSmallImage("Imageデータ");
-//        testData.setPresentFlag(0);
-//        testData.setYukarin(1);
-//        testData.setNotif_yest(1);
-//        testData.setNotif_today(1);
-//        testData.setNotif_day(3);
-//        testData.setNotif_recy(3);
-//        //dbに書き込み
-//        dbAssist.insertData(testData, this);
-        //adapterDataセット
-        //int month = 7;//とりあえず7月でプレイ(ここらへんで月の指定お願いします)
+        for (int i =0;i<20;i++){
+
+            //Data型にデータをセット
+            testData.setName("西村1111");
+            testData.setKana("にしむら");
+            testData.setBirthday(19970616);
+            testData.setYear(1997);
+            testData.setMonth(1);
+            testData.setDay(16);
+            testData.setCategory("友達");
+            testData.setTwitterID("Taiga_Natto");
+            testData.setMemo("教科書を見て実装して欲しい");
+            testData.setImage("Imageデータ");
+            testData.setSmallImage("Imageデータ");
+            testData.setPresentFlag(0);
+            testData.setYukarin(1);
+            testData.setNotif_yest(1);
+            testData.setNotif_today(1);
+            testData.setNotif_day(3);
+            testData.setNotif_recy(3);
+            //dbに書き込み
+            dbAssist.insertData(testData, this);
+        }
 
         //12ヶ月分セットするために12回ループさせます。
         for(int fullReturn=0;fullReturn<12;fullReturn++) {
@@ -201,30 +137,6 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
             listView[fullReturn].setAdapter(adapter);
 
         }
-
-
-
-//        listView2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            public void listClick(AdapterView parent, View view, int position, long id) {
-//                //ここに書く
-//                //listViewのitemを取得してadapterからItemをもらってくる
-//                ListView listView = (ListView) parent;
-//                listView.getItemAtPosition(position);
-//
-//                ListItem listItem = (ListItem) listView.getAdapter().getItem(position);
-//
-//                //Intentで飛ばす＆idをキーにする
-//                Intent intent = new Intent(MainListActivity.this, UserDetailActivity.class);
-//                //intent.putExtra("id", MainAdapterData.getId());
-//                startActivity(intent);
-//
-//                //トースト
-//                //Toast.makeText(SearchActivity.this, "Click: " + item, Toast.LENGTH_LONG).show();
-//
-////            }
-//        });
-
-
 
 
         ////////////////////////////////////////////////////////////////
@@ -343,14 +255,20 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
                             float distanceX, float distanceY) {
         Log.d("onScroll", "onScroll");
         scrollFlg = true;
+        int rangeX=0;
+        //envent1がnullの時(１月データの時に12月に行こうとするとでる)
+        if (envent1 == null){
+            rangeX = (int) (0 - envent2.getRawX());
+        }else{
+            // スライド距離の計算
+            rangeX = (int) (envent1.getRawX() - envent2.getRawX());
+        }
 
-        // スライド距離の計算
-        int rangeX = (int) (envent1.getRawX() - envent2.getRawX());
 
-        if (rangeX < -displayWidth * 0.1) {
+        if (rangeX < -displayWidth * 0.15) {
             // 右に一定距離のスライド
             slideLimitFlg = SCROLL_RIGHT;
-        } else if (rangeX > displayWidth * 0.1) {
+        } else if (rangeX > displayWidth * 0.15) {
             // 左に一定距離のスライド
             slideLimitFlg = SCROLL_LEFT;
         } else {
