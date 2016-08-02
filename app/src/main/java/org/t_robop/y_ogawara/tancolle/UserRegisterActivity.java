@@ -295,10 +295,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
 
             img = Bitmap.createBitmap(pct,0,0, pctWidth, pctHeight,mat, true);
 
-            pctHeight=pctHeight/4;
-            pctWidth=pctWidth/4;
-
-            small_img=Bitmap.createBitmap(pct,0,0, pctWidth, pctHeight,mat, true);
+            small_img= Bitmap.createScaledBitmap(img, pctWidth/4,pctHeight/4, false);
 
             //BitMapを表示
             user_view.setImageBitmap(small_img);
