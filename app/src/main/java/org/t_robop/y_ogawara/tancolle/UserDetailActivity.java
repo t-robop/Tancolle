@@ -80,7 +80,7 @@ public class UserDetailActivity extends AppCompatActivity {
         Data data = dbAssist.idSelect(intentId, this);
         String name = data.getName(); //SQliteからもってくる
         String kana = data.getKana();
-        String smallImage = data.getSmallImage();
+        String smallImage = data.getImage(); //TODO
         TwitterID = data.getTwitterID();
         memo = data.getMemo();
         imagecount = data.isPresentFlag();

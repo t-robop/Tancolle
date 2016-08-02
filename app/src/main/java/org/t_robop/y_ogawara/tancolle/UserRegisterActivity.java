@@ -84,12 +84,8 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
     //カテゴリ追加用DiaLog
     private AlertDialog addCategory;
 
-    //表示するBitmapデータ
-    Bitmap img;
-    Bitmap small_img;
-    //選択されたBitmapの名前（後でsqlに飛ばすよ）
-    String img_name;
-    String small_img_name;
+    Bitmap img;//表示するBitmapデータ
+    String img_name;//選択されたBitmapの名前（後でsqlに飛ばすよ）
 
     //sppinerTest
     private Spinner spinnerCategory;//カテゴリスピナー
@@ -167,8 +163,6 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         EditTextSet(edit_pho);
         EditTextSet(edit_twitter);
         EditTextSet(edit_days_ago);
-
-        edit_name.addTextChangedListener(this);
 
         //ImageViewの初期設定
         user_view.setScaleType(ImageView.ScaleType.CENTER_CROP);//CENTER_CROPでViewに合わせて拡大し、画像のはみ出した部分は切り取って、中心にフォーカスする
@@ -295,13 +289,8 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
 
             img = Bitmap.createBitmap(pct,0,0, pctWidth, pctHeight,mat, true);
 
-            pctHeight=pctHeight/4;
-            pctWidth=pctWidth/4;
-
-            small_img=Bitmap.createBitmap(pct,0,0, pctWidth, pctHeight,mat, true);
-
             //BitMapを表示
-            user_view.setImageBitmap(small_img);
+            user_view.setImageBitmap(img);
         } catch (Exception e) {}
 
         //画像保存時の名前用の現在日時取得
@@ -317,7 +306,6 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
 
         //保存する画像の名前の決定
         img_name = String.valueOf(imgye) + String.valueOf(imgmo) + String.valueOf(imgda) + String.valueOf(imgho) + String.valueOf(imgmi) + String.valueOf(imgse);
-        small_img_name ="small_"+ String.valueOf(imgye) + String.valueOf(imgmo) + String.valueOf(imgda) + String.valueOf(imgho) + String.valueOf(imgmi) + String.valueOf(imgse);
 
         //TODO　何故、画像回転が成功したのでしょう
         //ローカルファイルへ保存
@@ -325,11 +313,6 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             final FileOutputStream out = openFileOutput(img_name + ".jpg", Context.MODE_WORLD_READABLE);//.jpgつけてちょ
             img.compress(Bitmap.CompressFormat.JPEG, 100, out);
             out.close();
-
-            final FileOutputStream small_out = openFileOutput(small_img_name + ".jpg", Context.MODE_WORLD_READABLE);//.jpgつけてちょ
-            small_img.compress(Bitmap.CompressFormat.JPEG, 100, small_out);
-            out.close();
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -357,8 +340,6 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
                     edit_name.setFocusable(false);
                     edit_name.setFocusableInTouchMode(false);
                     edit_name.requestFocus();
-
-                    keyBoad=false;
 
                     // エディットテキストのテキストを全選択します
                     edit_name.selectAll();
@@ -816,7 +797,6 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
                 if(checked==true) {
                     switch (flag){
                         case 0:
-                            //年齢不詳
                             tamura_flag = 1;
                             user_birthday.setText(birthMonth + "/" + birthDay);
                             user_yearsold.setText("不明");
@@ -966,16 +946,15 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         allData.setCategory(user_category);
 
         twitter_id=edit_twitter.getText().toString();//現在のedit_twitterに表示されてる文字列を取得
-        if(twitter_id.length()!=0) {
-            if (twitter_id.charAt(0) == '@') {//一文字目を取得して@が付いてたらそれだけ消して取得
-                twitter_id = twitter_id.substring(1);
-            }
+
+        if(twitter_id.charAt(0)=='@'){//一文字目を取得して@が付いてたらそれだけ消して取得
+            twitter_id=twitter_id.substring(1);
         }
         allData.setTwitterID(twitter_id);
 
         allData.setMemo(edit_memo.getText().toString());
         allData.setImage(img_name+".jpg");
-        allData.setSmallImage(small_img_name+".jpg");
+        allData.setSmallImage(img_name+".jpg");
         allData.setYukarin(tamura_flag);
         allData.setNotif_yest(yesterday_flag);
         allData.setNotif_today(today_flag);
