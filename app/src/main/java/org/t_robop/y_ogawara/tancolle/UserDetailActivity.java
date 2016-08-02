@@ -9,7 +9,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -37,7 +42,8 @@ public class UserDetailActivity extends AppCompatActivity {
     int a, b;
     int age;//年齢の計算結果を入れる箱
     ImageView image;
-    int imagecount = 1;
+    int imagecount; //プレゼントボタンの判定
+    int yukarin;
     String memo;
     String TwitterID;
     //人の顔写真が入るとこ
@@ -46,11 +52,13 @@ public class UserDetailActivity extends AppCompatActivity {
     Bitmap bitmap;
 
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_detail);
         Intent intent = getIntent();
         intentId = intent.getIntExtra("id", 1);
+
 
         nameTV = (TextView) findViewById(R.id.Name);
         kanaTV = (TextView) findViewById(R.id.Kana);
@@ -67,15 +75,30 @@ public class UserDetailActivity extends AppCompatActivity {
         photoImageView = (ImageView)findViewById(R.id.imageView);
         image = (ImageView) this.findViewById(R.id.present);
 
-        //データを読みだして、その値でセットする画像を変える
-        image.setImageResource(R.drawable.ao);
+
 
         Data data = dbAssist.idSelect(intentId, this);
         String name = data.getName(); //SQliteからもってくる
         String kana = data.getKana();
-        String smallImage = data.getSmallImage();
+        String smallImage = data.getImage(); //TODO
         TwitterID = data.getTwitterID();
         memo = data.getMemo();
+        imagecount = data.isPresentFlag();
+        yukarin = data.isYukarin();
+        Log.d("aaaaaa",String.valueOf(imagecount));
+        if (imagecount == Integer.MIN_VALUE) {
+            imagecount = 0;
+
+        }
+
+        //データを読みだして、その値でセットする画像を変える
+
+        if(imagecount==0){
+            image.setImageResource(R.drawable.ao);
+        }else{
+            image.setImageResource(R.drawable.ribon);
+        }
+
 
 //画像読み込み
         InputStream in;
@@ -142,10 +165,13 @@ public class UserDetailActivity extends AppCompatActivity {
         nameTV.setText(name);
         kanaTV.setText(kana);
         birthTV.setText(String.valueOf(birthmonth) + "/" + String.valueOf(birthday));
-        ageTV.setText(String.valueOf(age) + "才");
         remaTV.setText("残り" + String.valueOf(remDay) + "日");
         memoTV.setText(memo);
-
+        if(yukarin==0){
+            ageTV.setText(String.valueOf(age) + "才");
+        }else{
+            ageTV.setText("XX才");
+        }
     }
 
     public void memoclick(View view) {
@@ -204,16 +230,27 @@ public class UserDetailActivity extends AppCompatActivity {
 
 
     public void presentClick(View view) { //プレゼントボタンをおした時
-        Data presentdate = new Data();
-        presentdate.setPresentFlag(imagecount);
-        dbAssist.updateData(intentId, presentdate, this);
+        //Data presentdate = new Data();
+        //presentdate.setPresentFlag(imagecount);
+        //dbAssist.updateData(intentId, presentdate, this);
+        Log.d("bbbbbbbb",String.valueOf(imagecount));
 
-        if (imagecount == 2) {
+        Data updateData =new Data();
+        //TODO なんかプレゼントフラグ反映されとらんで
+        if (imagecount == 0) {
             imagecount = 1;
-            image.setImageResource(R.drawable.ao);
-        } else {
-            imagecount = 2;
+            updateData.setPresentFlag(imagecount);
+            dbAssist.updateData(intentId,updateData,this);
             image.setImageResource(R.drawable.ribon);
+            Log.d("ccccccc",String.valueOf(imagecount));
+
+        } else {
+            imagecount = 0;
+            updateData.setPresentFlag(imagecount);
+            dbAssist.updateData(intentId,updateData,this);
+            image.setImageResource(R.drawable.ao);
+            Log.d("ddddddd",String.valueOf(imagecount));
+
 
         }
     }
@@ -239,13 +276,55 @@ public class UserDetailActivity extends AppCompatActivity {
         }
 
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // アクションバー内に使用するメニューアイテムを注入します。
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.user_detail_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 
+    //アクションバー処理
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // アクションバーアイテム上の押下を処理します。
+        switch (item.getItemId()) {
+            case R.id.edit_button:
+                Edit();
+                return true;
+            case R.id.delete_button:
+                Delete();
+                return true;
 
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void Edit() {
+        Intent intent = new Intent(UserDetailActivity.this, UserRegisterActivity.class);
+        intent.putExtra("IdNum",intentId);
+        startActivity(intent);
+    }
+    private void Delete(){
+        new AlertDialog.Builder(UserDetailActivity.this)
+                .setMessage("本当に削除してもいいですか？")
+                .setCancelable(false)
+                .setPositiveButton("はい", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dbAssist.deleteData(intentId,getApplicationContext());
+                        Toast toast = Toast.makeText(UserDetailActivity.this, "データを消去しました", Toast.LENGTH_LONG);
+                        toast.show();
+                        finish();
+                    }
+                })
+                .setNegativeButton("いいえ", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                })
+                .show();
     }
 
 
-
-
-
-
-
+}
