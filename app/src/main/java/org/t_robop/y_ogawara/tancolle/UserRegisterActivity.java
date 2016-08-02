@@ -946,6 +946,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         allData.setCategory(user_category);
 
         twitter_id=edit_twitter.getText().toString();//現在のedit_twitterに表示されてる文字列を取得
+
         if(twitter_id.charAt(0)=='@'){//一文字目を取得して@が付いてたらそれだけ消して取得
             twitter_id=twitter_id.substring(1);
         }
