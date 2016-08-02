@@ -201,9 +201,7 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
             listView[fullReturn].setAdapter(adapter);
 
         }
-
-
-
+        
 //        listView2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 //            public void listClick(AdapterView parent, View view, int position, long id) {
 //                //ここに書く
