@@ -35,15 +35,63 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
     private static final int SCROLL_RIGHT = 1; //
     private int slideLimitFlg = SCROLL_NONE; // スライドの状態判定
     static int num2;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gesture_dec);
         setViewSize();
 
+        FloatingActionButton add = (FloatingActionButton) findViewById(R.id.add);
+        if (add != null) {
+            add.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(GestureDecActivity.this, UserRegisterActivity.class);
+
+                    intent.putExtra("month", page + 1);//Todo 初期"月"設定テスト(修復時：消せ)
+
+                    startActivity(intent);
+                }
+            });
+
+            // GestureDetectorの生成
+            gestureDetector = new GestureDetector(getApplicationContext(), this);
+
+            horizontalScrollView = (HorizontalScrollView) findViewById(R.id.hsv_main);
+            horizontalScrollView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    // GestureDetectorにイベントを委譲する
+                    boolean result = gestureDetector.onTouchEvent(event);
+
+                    // スクロールが発生した後に画面から指を離した時
+                    if ((event.getAction() == MotionEvent.ACTION_UP) && scrollFlg) {
+                        switch (slideLimitFlg) {
+                            case SCROLL_NONE:
+                                break;
+                            case SCROLL_LEFT:
+                                setPage(true);
+                                break;
+                            case SCROLL_RIGHT:
+                                setPage(false);
+                                break;
+                        }
+                        // 指定ページへスクロールする
+                        horizontalScrollView.scrollTo(page * displayWidth,
+                                displayHeight);
+                    }
+                    return result;
+                }
+            });
+        }
+    }
+
+    @Override
+    protected void onResume() {
 
         //配列で12ヶ月分のlistView作ります
-        ListView[] listView=new ListView[12];
+        ListView[] listView = new ListView[12];
         listView[0] = (ListView) findViewById(R.id.list1).findViewById(R.id.listView1);
         listView[1] = (ListView) findViewById(R.id.list2).findViewById(R.id.listView1);
         listView[2] = (ListView) findViewById(R.id.list3).findViewById(R.id.listView1);
@@ -58,102 +106,38 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
         listView[11] = (ListView) findViewById(R.id.list12).findViewById(R.id.listView1);
 
         ///////////////////////////////////////////////////////////////
-       // Data testData = new Data();
-
-//        //Data型にデータをセット
-//        testData.setName("西村1111");
-//        testData.setKana("にしむら");
-//        testData.setBirthday(19970616);
-//        testData.setYear(1997);
-//        testData.setMonth(7);
-//        testData.setDay(16);
-//        testData.setCategory("友達");
-//        testData.setTwitterID("Taiga_Natto");
-//        testData.setMemo("教科書を見て実装して欲しい");
-//        testData.setImage("Imageデータ");
-//        testData.setSmallImage("Imageデータ");
-//        testData.setPresentFlag(0);
-//        testData.setYukarin(1);
-//        testData.setNotif_yest(1);
-//        testData.setNotif_today(1);
-//        testData.setNotif_day(3);
-//        testData.setNotif_recy(3);
-//        //dbに書き込み
-//        dbAssist.insertData(testData, this);
+//        Data testData = new Data();
 //
-//        //Data型にデータをセット
-//        testData.setName("西村22222");
-//        testData.setKana("にしむら");
-//        testData.setBirthday(19970616);
-//        testData.setYear(1997);
-//        testData.setMonth(7);
-//        testData.setDay(16);
-//        testData.setCategory("友達");
-//        testData.setTwitterID("Taiga_Natto");
-//        testData.setMemo("教科書を見て実装して欲しい");
-//        testData.setImage("Imageデータ");
-//        testData.setSmallImage("Imageデータ");
-//        testData.setPresentFlag(0);
-//        testData.setYukarin(1);
-//        testData.setNotif_yest(1);
-//        testData.setNotif_today(1);
-//        testData.setNotif_day(3);
-//        testData.setNotif_recy(3);
-//        //dbに書き込み
-//        dbAssist.insertData(testData, this);
+//        for (int i =0;i<20;i++){
 //
-//
-//        //Data型にデータをセット
-//        testData.setName("西村33333");
-//        testData.setKana("にしむら");
-//        testData.setBirthday(19970616);
-//        testData.setYear(1997);
-//        testData.setMonth(7);
-//        testData.setDay(16);
-//        testData.setCategory("友達");
-//        testData.setTwitterID("Taiga_Natto");
-//        testData.setMemo("教科書を見て実装して欲しい");
-//        testData.setImage("Imageデータ");
-//        testData.setSmallImage("Imageデータ");
-//        testData.setPresentFlag(0);
-//        testData.setYukarin(1);
-//        testData.setNotif_yest(1);
-//        testData.setNotif_today(1);
-//        testData.setNotif_day(3);
-//        testData.setNotif_recy(3);
-//        //dbに書き込み
-//        dbAssist.insertData(testData, this);
-//
-//
-//        //Data型にデータをセット
-//        testData.setName("西村44444");
-//        testData.setKana("にしむら");
-//        testData.setBirthday(19970616);
-//        testData.setYear(1997);
-//        testData.setMonth(7);
-//        testData.setDay(16);
-//        testData.setCategory("友達");
-//        testData.setTwitterID("Taiga_Natto");
-//        testData.setMemo("教科書を見て実装して欲しい");
-//        testData.setImage("Imageデータ");
-//        testData.setSmallImage("Imageデータ");
-//        testData.setPresentFlag(0);
-//        testData.setYukarin(1);
-//        testData.setNotif_yest(1);
-//        testData.setNotif_today(1);
-//        testData.setNotif_day(3);
-//        testData.setNotif_recy(3);
-//        //dbに書き込み
-//        dbAssist.insertData(testData, this);
-        //adapterDataセット
-        //int month = 7;//とりあえず7月でプレイ(ここらへんで月の指定お願いします)
+//            //Data型にデータをセット
+//            testData.setName("西村1111");
+//            testData.setKana("にしむら");
+//            testData.setBirthday(19970616);
+//            testData.setYear(1997);
+//            testData.setMonth(1);
+//            testData.setDay(16);
+//            testData.setCategory("友達");
+//            testData.setTwitterID("Taiga_Natto");
+//            testData.setMemo("教科書を見て実装して欲しい");
+//            testData.setImage("Imageデータ");
+//            testData.setSmallImage("Imageデータ");
+//            testData.setPresentFlag(0);
+//            testData.setYukarin(1);
+//            testData.setNotif_yest(1);
+//            testData.setNotif_today(1);
+//            testData.setNotif_day(3);
+//            testData.setNotif_recy(3);
+//            //dbに書き込み
+//            dbAssist.insertData(testData, this);
+//        }
 
         //12ヶ月分セットするために12回ループさせます。
-        for(int fullReturn=0;fullReturn<12;fullReturn++) {
+        for (int fullReturn = 0; fullReturn < 12; fullReturn++) {
 
             ArrayList<Data> monthTurnData;//ArrayListの宣言
 
-            monthTurnData = dbAssist.birthdaySelect(fullReturn+1, this);//ArrayListに月検索したデータをぶち込む
+            monthTurnData = dbAssist.birthdaySelect(fullReturn + 1, this);//ArrayListに月検索したデータをぶち込む
 
             MainAdapterData Mad;//自分で作成したclassの宣言
 
@@ -163,7 +147,7 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
             int num = monthTurnData.size();//int型変数numにmonthTurnDataの配列数を入れる
 
             //欠番している数
-            num2 = 3-(num%3);
+            num2 = 3 - (num % 3);
 
             //読み込んだ月のデータの数だけ回す。（3分の1でいいのと、後述のListデータの取得に使うため+3）
             for (int j = 0; j < monthTurnData.size(); j = j + 3) {
@@ -176,7 +160,7 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
 
                     Log.d("aaaa", String.valueOf(i + j));
 
-                    if (i+j+1 <= num)//iとnumを比較してiの方が低い時だけ（データ無いのに取得しようとして落ちるやつの修正）
+                    if (i + j + 1 <= num)//iとnumを比較してiの方が低い時だけ（データ無いのに取得しようとして落ちるやつの修正）
                     {
                         getData = monthTurnData.get(i + j);//読み込んだListの要素を取得
 
@@ -201,33 +185,6 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
             listView[fullReturn].setAdapter(adapter);
 
         }
-
-
-
-//        listView2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            public void listClick(AdapterView parent, View view, int position, long id) {
-//                //ここに書く
-//                //listViewのitemを取得してadapterからItemをもらってくる
-//                ListView listView = (ListView) parent;
-//                listView.getItemAtPosition(position);
-//
-//                ListItem listItem = (ListItem) listView.getAdapter().getItem(position);
-//
-//                //Intentで飛ばす＆idをキーにする
-//                Intent intent = new Intent(MainListActivity.this, UserDetailActivity.class);
-//                //intent.putExtra("id", MainAdapterData.getId());
-//                startActivity(intent);
-//
-//                //トースト
-//                //Toast.makeText(SearchActivity.this, "Click: " + item, Toast.LENGTH_LONG).show();
-//
-////            }
-//        });
-
-
-
-
-        ////////////////////////////////////////////////////////////////
 
 
         FloatingActionButton add = (FloatingActionButton) findViewById(R.id.add);
@@ -275,6 +232,8 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
             }
         });
     }
+        Log.d("onResume", "onResume");
+        super.onResume();
     }
 
     // ページ設定用 true;次のページ false:前のページ
@@ -284,7 +243,7 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
                 page++;
             }
             //もし一番右にいた時に、右側に行こうとした時
-            else{
+            else {
                 page = 0;
             }
         } else {
@@ -343,14 +302,20 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
                             float distanceX, float distanceY) {
         Log.d("onScroll", "onScroll");
         scrollFlg = true;
+        int rangeX=0;
+        //envent1がnullの時(１月データの時に12月に行こうとするとでる)
+        if (envent1 == null){
+            rangeX = (int) (0 - envent2.getRawX());
+        }else{
+            // スライド距離の計算
+            rangeX = (int) (envent1.getRawX() - envent2.getRawX());
+        }
 
-        // スライド距離の計算
-        int rangeX = (int) (envent1.getRawX() - envent2.getRawX());
 
-        if (rangeX < -displayWidth * 0.1) {
+        if (rangeX < -displayWidth * 0.15) {
             // 右に一定距離のスライド
             slideLimitFlg = SCROLL_RIGHT;
-        } else if (rangeX > displayWidth * 0.1) {
+        } else if (rangeX > displayWidth * 0.15) {
             // 左に一定距離のスライド
             slideLimitFlg = SCROLL_LEFT;
         } else {
@@ -359,7 +324,9 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
         return false;
     }
 
-    /*** 今回未使用のOnGestureListener関連イベント *********************/
+    /***
+     * 今回未使用のOnGestureListener関連イベント
+     *********************/
     @Override
     public boolean onDown(MotionEvent envent) {
         Log.d("onDown", "onDown");
@@ -381,6 +348,7 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
     public void onLongPress(MotionEvent envent) {
         Log.d("onLongPress", "onLongPress");
     }
+
     /*******************************************************************/
     //リストをクリックした時のイベント
     public void listClick(View view) {
@@ -393,7 +361,7 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
 
         int numData = new Integer((Integer) view.getTag());
 
-        if (numData != 0){
+        if (numData != 0) {
             //Intentで飛ばす＆idをキーにする
             Intent intent = new Intent(GestureDecActivity.this, UserDetailActivity.class);
             intent.putExtra("id", numData);

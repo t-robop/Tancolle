@@ -30,7 +30,7 @@ class MySQLiteOpenHelper extends SQLiteOpenHelper {
     //メモ欄
     String memo;
     //画像(詳細画面用)
-    String image;
+    String present;
     //画像(検索画面)
     String smallImage;
     //presentを買ったか

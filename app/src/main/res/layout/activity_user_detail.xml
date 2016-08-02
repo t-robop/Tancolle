@@ -20,7 +20,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/imageView"
-                android:layout_weight="1" />
+                android:layout_weight="1"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -36,10 +36,9 @@
                     android:src="@drawable/twitterlogo"
                     android:scaleType="fitCenter"
                     android:background="#00000000"
-
                 />
 
-                <TextView
+                <org.t_robop.y_ogawara.tancolle.AutoshrinkTextView
                     android:layout_width="139dp"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
@@ -85,7 +84,7 @@
                 android:text="Birthday"
                 android:id="@+id/day" />
 
-            <TextView
+            <org.t_robop.y_ogawara.tancolle.AutoshrinkTextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:textAppearance="?android:attr/textAppearanceLarge"
@@ -113,14 +112,14 @@
                 android:text="Current"
                 android:id="@+id/Current" />
 
-            <TextView
+            <org.t_robop.y_ogawara.tancolle.AutoshrinkTextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="00才"
                 android:id="@+id/age"
                 android:layout_weight="1"
-                android:textSize="55dp"
+                android:textSize="40dp"
                 android:gravity="center"
                 />
 
@@ -134,7 +133,7 @@
 
 
 
-            <TextView
+            <org.t_robop.y_ogawara.tancolle.AutoshrinkTextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:textAppearance="?android:attr/textAppearanceLarge"
@@ -160,7 +159,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">≈
+            android:orientation="vertical">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

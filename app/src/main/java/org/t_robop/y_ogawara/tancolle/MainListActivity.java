@@ -6,11 +6,12 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -24,6 +25,7 @@ public class MainListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main_list);
         ListView listView2 = (ListView) findViewById(R.id.listView1);
 
+
         FloatingActionButton add = (FloatingActionButton) findViewById(R.id.add);
         if (add != null) {
             add.setOnClickListener(new View.OnClickListener() {
@@ -31,10 +33,99 @@ public class MainListActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     Intent intent = new Intent(MainListActivity.this, UserRegisterActivity.class);
                     startActivity(intent);
+//                    Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                            .setAction("Action", null).show();
                 }
             });
         }
 
+
+
+//        //Data型にデータをセット
+//        testData.setName("西村1111");
+//        testData.setKana("にしむら");
+//        testData.setBirthday(19970616);
+//        testData.setYear(1997);
+//        testData.setMonth(7);
+//        testData.setDay(16);
+//        testData.setCategory("友達");
+//        testData.setTwitterID("Taiga_Natto");
+//        testData.setMemo("教科書を見て実装して欲しい");
+//        testData.setImage("Imageデータ");
+//        testData.setSmallImage("Imageデータ");
+//        testData.setPresentFlag(0);
+//        testData.setYukarin(1);
+//        testData.setNotif_yest(1);
+//        testData.setNotif_today(1);
+//        testData.setNotif_day(3);
+//        testData.setNotif_recy(3);
+//        //dbに書き込み
+//        dbAssist.insertData(testData, this);
+//
+//        //Data型にデータをセット
+//        testData.setName("西村22222");
+//        testData.setKana("にしむら");
+//        testData.setBirthday(19970616);
+//        testData.setYear(1997);
+//        testData.setMonth(7);
+//        testData.setDay(16);
+//        testData.setCategory("友達");
+//        testData.setTwitterID("Taiga_Natto");
+//        testData.setMemo("教科書を見て実装して欲しい");
+//        testData.setImage("Imageデータ");
+//        testData.setSmallImage("Imageデータ");
+//        testData.setPresentFlag(0);
+//        testData.setYukarin(1);
+//        testData.setNotif_yest(1);
+//        testData.setNotif_today(1);
+//        testData.setNotif_day(3);
+//        testData.setNotif_recy(3);
+//        //dbに書き込み
+//        dbAssist.insertData(testData, this);
+//
+//
+//        //Data型にデータをセット
+//        testData.setName("西村33333");
+//        testData.setKana("にしむら");
+//        testData.setBirthday(19970616);
+//        testData.setYear(1997);
+//        testData.setMonth(7);
+//        testData.setDay(16);
+//        testData.setCategory("友達");
+//        testData.setTwitterID("Taiga_Natto");
+//        testData.setMemo("教科書を見て実装して欲しい");
+//        testData.setImage("Imageデータ");
+//        testData.setSmallImage("Imageデータ");
+//        testData.setPresentFlag(0);
+//        testData.setYukarin(1);
+//        testData.setNotif_yest(1);
+//        testData.setNotif_today(1);
+//        testData.setNotif_day(3);
+//        testData.setNotif_recy(3);
+//        //dbに書き込み
+//        dbAssist.insertData(testData, this);
+//
+//
+//        //Data型にデータをセット
+//        testData.setName("西村44444");
+//        testData.setKana("にしむら");
+//        testData.setBirthday(19970616);
+//        testData.setYear(1997);
+//        testData.setMonth(7);
+//        testData.setDay(16);
+//        testData.setCategory("友達");
+//        testData.setTwitterID("Taiga_Natto");
+//        testData.setMemo("教科書を見て実装して欲しい");
+//        testData.setImage("Imageデータ");
+//        testData.setSmallImage("Imageデータ");
+//        testData.setPresentFlag(0);
+//        testData.setYukarin(1);
+//        testData.setNotif_yest(1);
+//        testData.setNotif_today(1);
+//        testData.setNotif_day(3);
+//        testData.setNotif_recy(3);
+//        //dbに書き込み
+//        dbAssist.insertData(testData, this);
         //adapterDataセット
         int month = 7;//とりあえず7月でプレイ(ここらへんで月の指定お願いします)
 
@@ -52,7 +143,7 @@ public class MainListActivity extends AppCompatActivity {
         //読み込んだ月のデータの数だけ回す。（3分の1でいいのと、後述のListデータの取得に使うため+3）
         for (int j = 0; j < monthTurnData.size(); j = j + 3) {
             //三人分だけ保存するため3回回す。
-            // Mad.startMad();//クラスの変数の初期化
+           // Mad.startMad();//クラスの変数の初期化
             Mad = new MainAdapterData();//自分で作成したclassの宣言
 
             for (int i = 0; i < 3; i++) {
@@ -83,14 +174,39 @@ public class MainListActivity extends AppCompatActivity {
         MainListAdapter adapter = new MainListAdapter(this, 0, adapterData);
         //listView.setEmptyView(findViewById(R.id.listView));
         listView2.setAdapter(adapter);
+
+
+//        listView2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            public void listClick(AdapterView parent, View view, int position, long id) {
+//                //ここに書く
+//                //listViewのitemを取得してadapterからItemをもらってくる
+//                ListView listView = (ListView) parent;
+//                listView.getItemAtPosition(position);
+//
+//                ListItem listItem = (ListItem) listView.getAdapter().getItem(position);
+//
+//                //Intentで飛ばす＆idをキーにする
+//                Intent intent = new Intent(MainListActivity.this, UserDetailActivity.class);
+//                //intent.putExtra("id", MainAdapterData.getId());
+//                startActivity(intent);
+//
+//                //トースト
+//                //Toast.makeText(SearchActivity.this, "Click: " + item, Toast.LENGTH_LONG).show();
+//
+////            }
+//        });
     }
+
+
 
     //リストをクリックした時のイベント
     public void listClick(View view) {
         Log.d("hello", String.valueOf(view.getTag()));
 
 
-        //listViewのitemを取得してadapterからItemをもらってくる
+//        //listViewのitemを取得してadapterからItemをもらってくる
+//        ListView listView = (ListView) parent;
+//        listView.getItemAtPosition(position);
 
         int numData = new Integer((Integer) view.getTag());
 
@@ -98,25 +214,7 @@ public class MainListActivity extends AppCompatActivity {
         Intent intent = new Intent(MainListActivity.this, UserDetailActivity.class);
         intent.putExtra("id", numData);
         startActivity(intent);
-    }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_settings:
-                // User chose the "Settings" item, show the app settings UI...
-                return true;
 
-            case R.id.action_search:
-                // User chose the "Search" action, mark the current item
-                // as a favorite...
-                Intent intent = new Intent(this,SearchActivity.class);
-                startActivity(intent);
-                return true;
-            default:
-                // If we got here, the user's action was not recognized.
-                // Invoke the superclass to handle it.
-                return super.onOptionsItemSelected(item);
 
-        }
     }
 }
