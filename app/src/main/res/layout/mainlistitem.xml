@@ -43,6 +43,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:gravity="center"
+
         android:id="@+id/liner2"
         android:onClick="listClick"
         android:layout_weight="1">

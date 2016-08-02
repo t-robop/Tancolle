@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -22,6 +24,7 @@ public class MainListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_list);
         ListView listView2 = (ListView) findViewById(R.id.listView1);
+
 
         FloatingActionButton add = (FloatingActionButton) findViewById(R.id.add);
         if (add != null) {
@@ -37,26 +40,7 @@ public class MainListActivity extends AppCompatActivity {
         }
 
 
-//        ArrayList<MainListData> MainListArray = new ArrayList<>();
-//
-//
-        // データを突っ込む
-//        for (int i =1;i<3;i=i+3){
-//            MainListData MainList = new MainListData();
-//            MainList.setBirth1("6/10");
-//            MainList.setBirth2("1/2");
-//            MainList.setBirth3("12/25");
-//            MainList.setName1("西村");
-//            MainList.setName2("いか");
-//            MainList.setName3("キリスト");
-//
-//
-//            MainListArray.add(MainList);
-//
-//        }
 
-//        Data testData = new Data();
-//
 //        //Data型にデータをセット
 //        testData.setName("西村1111");
 //        testData.setKana("にしむら");
@@ -212,6 +196,8 @@ public class MainListActivity extends AppCompatActivity {
 ////            }
 //        });
     }
+
+
 
     //リストをクリックした時のイベント
     public void listClick(View view) {
