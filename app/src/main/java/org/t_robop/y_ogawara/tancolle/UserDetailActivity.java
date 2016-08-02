@@ -30,7 +30,6 @@ import java.util.Date;
 
 public class UserDetailActivity extends AppCompatActivity {
 
-    // てすとおおおおお
     int intentId;
     TextView nameTV;
     TextView kanaTV;
