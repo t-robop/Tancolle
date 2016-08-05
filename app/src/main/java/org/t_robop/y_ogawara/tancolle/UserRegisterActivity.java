@@ -198,10 +198,15 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             spinnerRepetition.setSelection(idDate.getNotif_recy());
             imgSetting = idDate.getImage();
 
-            //誕生年月日の初期値を現年月日へ
+            //誕生年月日の初期値を設定年月日へ
             birthYear=idDate.getYear();
             birthMonth=idDate.getMonth();
+            birthMonth--;
             birthDay=idDate.getDay();
+
+            temporary_year=birthYear;
+            temporary_month=birthMonth;
+            temporary_day=birthDay;
 
             //読み込んだ段階でデータからフラグを適用
             CheckBoxChange(tamura_check, tamura_flag);
@@ -327,17 +332,21 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         img_name = String.valueOf(imgye) + String.valueOf(imgmo) + String.valueOf(imgda) + String.valueOf(imgho) + String.valueOf(imgmi) + String.valueOf(imgse);
         small_img_name ="small_"+ String.valueOf(imgye) + String.valueOf(imgmo) + String.valueOf(imgda) + String.valueOf(imgho) + String.valueOf(imgmi) + String.valueOf(imgse);
 
-        //TODO　何故、画像回転が成功したのでしょう
+        //TODO　加工前のオリジナルの画像imgが保存できません
         //ローカルファイルへ保存
+        FileOutputStream out;
         try {
-            final FileOutputStream out = openFileOutput(img_name + ".jpg", Context.MODE_WORLD_READABLE);//.jpgつけてちょ
+            out = this.openFileOutput(img_name + ".jpg", Context.MODE_PRIVATE);//.jpgつけてちょ
             img.compress(Bitmap.CompressFormat.JPEG, 100, out);
             out.close();
-
-            final FileOutputStream small_out = openFileOutput(small_img_name + ".jpg", Context.MODE_WORLD_READABLE);//.jpgつけてちょ
-            small_img.compress(Bitmap.CompressFormat.JPEG, 100, small_out);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //TODO こっちの画質の粗いsmall_imgは保存できます
+        try {
+            out = this.openFileOutput(small_img_name + ".jpg", Context.MODE_PRIVATE);//.jpgつけてちょ
+            small_img.compress(Bitmap.CompressFormat.JPEG, 100, out);
             out.close();
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -703,14 +712,15 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
                 temporary_month = monthOfYear;
                 temporary_day = dayOfMonth;
 
+                temporary_month++;
+
                 //それぞれ代入
                 birthYear=temporary_year;
-                birthMonth=temporary_month+1;
+                birthMonth=temporary_month;
                 birthDay=temporary_day;
 
                 //描画
                 drawBirthAndOld();
-
             }
         };
         // 日付設定ダイアログの作成・リスナの登録
@@ -990,7 +1000,12 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         allData.setNotif_day(days_ago);
         allData.setNotif_recy(reptition_loop);
         //dbに書き込み
-        dbAssist.insertData(allData, this);
+        if(id==0) {
+            dbAssist.insertData(allData, this);
+        }
+        else{
+            dbAssist.updateData(id,allData,this);
+        }
 
         // プレファレンスに保存
         saveArray(arraylist, "StringItem");
@@ -1010,9 +1025,10 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
 
     //Log
     public void ALLLOG() {
+        Log.d("ALLLOG",String.valueOf(id));
         Log.d("ALLLOG",edit_name.getText().toString());
         Log.d("ALLLOG",edit_pho.getText().toString());
-        Log.d("ALLLOG",String.valueOf(birthYear+birthMonth+birthDay));
+        Log.d("ALLLOG",String.valueOf(birthYear)+String.valueOf(birthMonth)+String.valueOf(birthDay));
         Log.d("ALLLOG",user_category);
         Log.d("ALLLOG",edit_twitter.getText().toString());
         Log.d("ALLLOG",edit_memo.getText().toString());
