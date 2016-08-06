@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,6 +18,7 @@ import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Display;
@@ -84,8 +86,12 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
     //カテゴリ追加用DiaLog
     private AlertDialog addCategory;
 
-    Bitmap img;//表示するBitmapデータ
-    String img_name;//選択されたBitmapの名前（後でsqlに飛ばすよ）
+    //表示するBitmapデータ
+    Bitmap img;
+    Bitmap small_img;
+    //選択されたBitmapの名前（後でsqlに飛ばすよ）
+    String img_name;
+    String small_img_name;
 
     //sppinerTest
     private Spinner spinnerCategory;//カテゴリスピナー
@@ -140,6 +146,9 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         //関連付け
         Association();
 
+        //EditText毎に入力制御
+        edit_days_ago.setInputType(InputType.TYPE_CLASS_NUMBER);
+
         // EditText が空のときに表示させるヒントを設定
         edit_name.setHint("Name");
         edit_pho.setHint("Phonetic");
@@ -164,6 +173,8 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         EditTextSet(edit_twitter);
         EditTextSet(edit_days_ago);
 
+        edit_name.addTextChangedListener(this);
+
         //ImageViewの初期設定
         user_view.setScaleType(ImageView.ScaleType.CENTER_CROP);//CENTER_CROPでViewに合わせて拡大し、画像のはみ出した部分は切り取って、中心にフォーカスする
 
@@ -187,10 +198,15 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             spinnerRepetition.setSelection(idDate.getNotif_recy());
             imgSetting = idDate.getImage();
 
-            //誕生年月日の初期値を現年月日へ
+            //誕生年月日の初期値を設定年月日へ
             birthYear=idDate.getYear();
             birthMonth=idDate.getMonth();
+            birthMonth--;
             birthDay=idDate.getDay();
+
+            temporary_year=birthYear;
+            temporary_month=birthMonth;
+            temporary_day=birthDay;
 
             //読み込んだ段階でデータからフラグを適用
             CheckBoxChange(tamura_check, tamura_flag);
@@ -208,9 +224,15 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         //画像読み込み
         InputStream in;
         try {
-            in = openFileInput(imgSetting);//画像の名前からファイル開いて読み込み
-            img = BitmapFactory.decodeStream(in);//読み込んだ画像をBitMap化
-            in.close();
+            if(imgSetting.equals("null.jpg")){
+                Resources r = getResources();
+                img = BitmapFactory.decodeResource(r, R.drawable.normal_shadow);
+            }
+            else {
+                in = openFileInput(imgSetting);//画像の名前からファイル開いて読み込み
+                img = BitmapFactory.decodeStream(in);//読み込んだ画像をBitMap化
+                in.close();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -289,6 +311,8 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
 
             img = Bitmap.createBitmap(pct,0,0, pctWidth, pctHeight,mat, true);
 
+            small_img= Bitmap.createScaledBitmap(img,pctWidth/4,pctHeight/4,false);
+
             //BitMapを表示
             user_view.setImageBitmap(img);
         } catch (Exception e) {}
@@ -306,12 +330,22 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
 
         //保存する画像の名前の決定
         img_name = String.valueOf(imgye) + String.valueOf(imgmo) + String.valueOf(imgda) + String.valueOf(imgho) + String.valueOf(imgmi) + String.valueOf(imgse);
+        small_img_name ="small_"+ String.valueOf(imgye) + String.valueOf(imgmo) + String.valueOf(imgda) + String.valueOf(imgho) + String.valueOf(imgmi) + String.valueOf(imgse);
 
-        //TODO　何故、画像回転が成功したのでしょう
+        //TODO　加工前のオリジナルの画像imgが保存できません
         //ローカルファイルへ保存
+        FileOutputStream out;
         try {
-            final FileOutputStream out = openFileOutput(img_name + ".jpg", Context.MODE_WORLD_READABLE);//.jpgつけてちょ
+            out = this.openFileOutput(img_name + ".jpg", Context.MODE_PRIVATE);//.jpgつけてちょ
             img.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //TODO こっちの画質の粗いsmall_imgは保存できます
+        try {
+            out = this.openFileOutput(small_img_name + ".jpg", Context.MODE_PRIVATE);//.jpgつけてちょ
+            small_img.compress(Bitmap.CompressFormat.JPEG, 100, out);
             out.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -340,6 +374,8 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
                     edit_name.setFocusable(false);
                     edit_name.setFocusableInTouchMode(false);
                     edit_name.requestFocus();
+
+                    keyBoad=false;
 
                     // エディットテキストのテキストを全選択します
                     edit_name.selectAll();
@@ -676,14 +712,15 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
                 temporary_month = monthOfYear;
                 temporary_day = dayOfMonth;
 
+                temporary_month++;
+
                 //それぞれ代入
                 birthYear=temporary_year;
-                birthMonth=temporary_month+1;
+                birthMonth=temporary_month;
                 birthDay=temporary_day;
 
                 //描画
                 drawBirthAndOld();
-
             }
         };
         // 日付設定ダイアログの作成・リスナの登録
@@ -797,6 +834,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
                 if(checked==true) {
                     switch (flag){
                         case 0:
+                            //年齢不詳
                             tamura_flag = 1;
                             user_birthday.setText(birthMonth + "/" + birthDay);
                             user_yearsold.setText("不明");
@@ -930,13 +968,13 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
 
     public void AllRegist() {
         //キーボードが表示されてるかどうか判定
-        if(keyBoad==true) {
+        if (keyBoad == true) {
             //キーボード絶対堕とすマン
             inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
         }
         //sqlに保存
         //Data型の宣言
-        Data allData =new Data();
+        Data allData = new Data();
         //Data型にデータをセット
         allData.setName(edit_name.getText().toString());
         allData.setKana(edit_pho.getText().toString());
@@ -945,46 +983,52 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         allData.setDay(birthDay);
         allData.setCategory(user_category);
 
-        twitter_id=edit_twitter.getText().toString();//現在のedit_twitterに表示されてる文字列を取得
-
-        if(twitter_id.charAt(0)=='@'){//一文字目を取得して@が付いてたらそれだけ消して取得
-            twitter_id=twitter_id.substring(1);
+        twitter_id = edit_twitter.getText().toString();//現在のedit_twitterに表示されてる文字列を取得
+        if (twitter_id.length() != 0) {
+            if (twitter_id.charAt(0) == '@') {//一文字目を取得して@が付いてたらそれだけ消して取得
+                twitter_id = twitter_id.substring(1);
+            }
         }
         allData.setTwitterID(twitter_id);
 
         allData.setMemo(edit_memo.getText().toString());
-        allData.setImage(img_name+".jpg");
-        allData.setSmallImage(img_name+".jpg");
+        allData.setImage(img_name + ".jpg");
+        allData.setSmallImage(small_img_name + ".jpg");
         allData.setYukarin(tamura_flag);
         allData.setNotif_yest(yesterday_flag);
         allData.setNotif_today(today_flag);
         allData.setNotif_day(days_ago);
         allData.setNotif_recy(reptition_loop);
         //dbに書き込み
-        dbAssist.insertData(allData,this);
+        if(id==0) {
+            dbAssist.insertData(allData, this);
+        }
+        else{
+            dbAssist.updateData(id,allData,this);
+        }
 
         // プレファレンスに保存
-        saveArray(arraylist,"StringItem");
+        saveArray(arraylist, "StringItem");
 
         //新規作成か編集かによって画面切り替え場所の変更
-        if(id==0) {
+        if (id == 0) {
             //MainへGo!
             Intent intent = new Intent(this, GestureDecActivity.class);
             startActivity(intent);
-        }
-        else {
+        } else {
             //DetailへGo!
-            Intent intent = new Intent(this, UserDetailActivity.class);
-            startActivity(intent);
+            finish();
         }
         ALLLOG();
-    }
+        }
+
 
     //Log
     public void ALLLOG() {
+        Log.d("ALLLOG",String.valueOf(id));
         Log.d("ALLLOG",edit_name.getText().toString());
         Log.d("ALLLOG",edit_pho.getText().toString());
-        Log.d("ALLLOG",String.valueOf(birthYear+birthMonth+birthDay));
+        Log.d("ALLLOG",String.valueOf(birthYear)+String.valueOf(birthMonth)+String.valueOf(birthDay));
         Log.d("ALLLOG",user_category);
         Log.d("ALLLOG",edit_twitter.getText().toString());
         Log.d("ALLLOG",edit_memo.getText().toString());
