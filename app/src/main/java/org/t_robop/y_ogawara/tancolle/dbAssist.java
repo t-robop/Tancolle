@@ -41,7 +41,7 @@ public class dbAssist {
         cv.put("category", data.getCategory());
         cv.put("twitterID", data.getTwitterID());
         cv.put("memo", data.getMemo());
-        cv.put("image", data.getTwitterID());
+        cv.put("image", data.getImage());
         cv.put("smallImage", data.getSmallImage());
         cv.put("presentFlag", data.isPresentFlag());
         cv.put("yukarin", data.isYukarin());
@@ -270,7 +270,7 @@ public class dbAssist {
             cv.put("memo", data.getMemo());
         }
         if (data.getImage()!=null){
-            cv.put("image", data.getTwitterID());
+            cv.put("image", data.getImage());
         }
         if (data.getSmallImage()!=null){
             cv.put("smallImage", data.getSmallImage());
