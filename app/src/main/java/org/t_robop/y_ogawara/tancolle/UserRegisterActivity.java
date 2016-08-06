@@ -39,6 +39,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -309,8 +310,9 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             //画像回転メソッド
             ViewRotate();
 
+            //画像設定
             img = Bitmap.createBitmap(pct,0,0, pctWidth, pctHeight,mat, true);
-
+            //小さい画像の作成
             small_img= Bitmap.createScaledBitmap(img,pctWidth/4,pctHeight/4,false);
 
             //BitMapを表示
@@ -329,22 +331,30 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         imgse = calendar.get(Calendar.SECOND);//秒
 
         //保存する画像の名前の決定
-        img_name = String.valueOf(imgye) + String.valueOf(imgmo) + String.valueOf(imgda) + String.valueOf(imgho) + String.valueOf(imgmi) + String.valueOf(imgse);
-        small_img_name ="small_"+ String.valueOf(imgye) + String.valueOf(imgmo) + String.valueOf(imgda) + String.valueOf(imgho) + String.valueOf(imgmi) + String.valueOf(imgse);
+        img_name
+                = String.valueOf(imgye)
+                + String.valueOf(imgmo)
+                + String.valueOf(imgda)
+                + String.valueOf(imgho)
+                + String.valueOf(imgmi)
+                + String.valueOf(imgse);
+        small_img_name ="small_"+ img_name;
 
-        //TODO　加工前のオリジナルの画像imgが保存できません
         //ローカルファイルへ保存
         FileOutputStream out;
         try {
+            //作成するデータの名前と設定
             out = this.openFileOutput(img_name + ".jpg", Context.MODE_PRIVATE);//.jpgつけてちょ
+            //画像の保存（フォーマット設定,品質,設定データ）
             img.compress(Bitmap.CompressFormat.JPEG, 100, out);
             out.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //TODO こっちの画質の粗いsmall_imgは保存できます
         try {
+            //作成するデータの名前と設定
             out = this.openFileOutput(small_img_name + ".jpg", Context.MODE_PRIVATE);//.jpgつけてちょ
+            //画像の保存（フォーマット設定,品質,設定データ）
             small_img.compress(Bitmap.CompressFormat.JPEG, 100, out);
             out.close();
         } catch (IOException e) {
@@ -1001,9 +1011,11 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         allData.setNotif_recy(reptition_loop);
         //dbに書き込み
         if(id==0) {
+            //新規作成の場合はSQLの追加
             dbAssist.insertData(allData, this);
         }
         else{
+            //編集の場合はSQLの変更
             dbAssist.updateData(id,allData,this);
         }
 
