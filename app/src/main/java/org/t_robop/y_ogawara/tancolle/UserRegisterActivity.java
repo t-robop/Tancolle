@@ -39,6 +39,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -198,10 +199,15 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             spinnerRepetition.setSelection(idDate.getNotif_recy());
             imgSetting = idDate.getImage();
 
-            //誕生年月日の初期値を現年月日へ
+            //誕生年月日の初期値を設定年月日へ
             birthYear=idDate.getYear();
             birthMonth=idDate.getMonth();
+            birthMonth--;
             birthDay=idDate.getDay();
+
+            temporary_year=birthYear;
+            temporary_month=birthMonth;
+            temporary_day=birthDay;
 
             //読み込んだ段階でデータからフラグを適用
             CheckBoxChange(tamura_check, tamura_flag);
@@ -304,8 +310,9 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             //画像回転メソッド
             ViewRotate();
 
+            //画像設定
             img = Bitmap.createBitmap(pct,0,0, pctWidth, pctHeight,mat, true);
-
+            //小さい画像の作成
             small_img= Bitmap.createScaledBitmap(img,pctWidth/4,pctHeight/4,false);
 
             //BitMapを表示
@@ -324,20 +331,32 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         imgse = calendar.get(Calendar.SECOND);//秒
 
         //保存する画像の名前の決定
-        img_name = String.valueOf(imgye) + String.valueOf(imgmo) + String.valueOf(imgda) + String.valueOf(imgho) + String.valueOf(imgmi) + String.valueOf(imgse);
-        small_img_name ="small_"+ String.valueOf(imgye) + String.valueOf(imgmo) + String.valueOf(imgda) + String.valueOf(imgho) + String.valueOf(imgmi) + String.valueOf(imgse);
+        img_name
+                = String.valueOf(imgye)
+                + String.valueOf(imgmo)
+                + String.valueOf(imgda)
+                + String.valueOf(imgho)
+                + String.valueOf(imgmi)
+                + String.valueOf(imgse);
+        small_img_name ="small_"+ img_name;
 
-        //TODO　何故、画像回転が成功したのでしょう
         //ローカルファイルへ保存
+        FileOutputStream out;
         try {
-            final FileOutputStream out = openFileOutput(img_name + ".jpg", Context.MODE_WORLD_READABLE);//.jpgつけてちょ
+            //作成するデータの名前と設定
+            out = this.openFileOutput(img_name + ".jpg", Context.MODE_PRIVATE);//.jpgつけてちょ
+            //画像の保存（フォーマット設定,品質,設定データ）
             img.compress(Bitmap.CompressFormat.JPEG, 100, out);
             out.close();
-
-            final FileOutputStream small_out = openFileOutput(small_img_name + ".jpg", Context.MODE_WORLD_READABLE);//.jpgつけてちょ
-            small_img.compress(Bitmap.CompressFormat.JPEG, 100, small_out);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            //作成するデータの名前と設定
+            out = this.openFileOutput(small_img_name + ".jpg", Context.MODE_PRIVATE);//.jpgつけてちょ
+            //画像の保存（フォーマット設定,品質,設定データ）
+            small_img.compress(Bitmap.CompressFormat.JPEG, 100, out);
             out.close();
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -703,14 +722,15 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
                 temporary_month = monthOfYear;
                 temporary_day = dayOfMonth;
 
+                temporary_month++;
+
                 //それぞれ代入
                 birthYear=temporary_year;
-                birthMonth=temporary_month+1;
+                birthMonth=temporary_month;
                 birthDay=temporary_day;
 
                 //描画
                 drawBirthAndOld();
-
             }
         };
         // 日付設定ダイアログの作成・リスナの登録
@@ -990,7 +1010,14 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         allData.setNotif_day(days_ago);
         allData.setNotif_recy(reptition_loop);
         //dbに書き込み
-        dbAssist.insertData(allData, this);
+        if(id==0) {
+            //新規作成の場合はSQLの追加
+            dbAssist.insertData(allData, this);
+        }
+        else{
+            //編集の場合はSQLの変更
+            dbAssist.updateData(id,allData,this);
+        }
 
         // プレファレンスに保存
         saveArray(arraylist, "StringItem");
@@ -1010,9 +1037,10 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
 
     //Log
     public void ALLLOG() {
+        Log.d("ALLLOG",String.valueOf(id));
         Log.d("ALLLOG",edit_name.getText().toString());
         Log.d("ALLLOG",edit_pho.getText().toString());
-        Log.d("ALLLOG",String.valueOf(birthYear+birthMonth+birthDay));
+        Log.d("ALLLOG",String.valueOf(birthYear)+String.valueOf(birthMonth)+String.valueOf(birthDay));
         Log.d("ALLLOG",user_category);
         Log.d("ALLLOG",edit_twitter.getText().toString());
         Log.d("ALLLOG",edit_memo.getText().toString());
