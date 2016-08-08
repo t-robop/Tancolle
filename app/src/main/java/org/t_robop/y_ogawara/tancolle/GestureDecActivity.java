@@ -8,6 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Display;
 import android.view.GestureDetector;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -322,6 +325,36 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
             slideLimitFlg = SCROLL_NONE;
         }
         return false;
+    }
+
+
+    //ここでmenuを作る
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.gesturedec_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+    //ActionBarにあるボタン関連
+    //@menuにあるやつから持ってきてる
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                // User chose the "Settings" item, show the app settings UI...
+                return true;
+
+            case R.id.action_search:
+                Intent intent = new Intent(this,SearchActivity.class);
+                startActivity(intent);
+                return true;
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
+        }
     }
 
     /***
