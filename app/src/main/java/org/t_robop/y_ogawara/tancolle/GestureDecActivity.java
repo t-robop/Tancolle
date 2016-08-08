@@ -3,6 +3,7 @@ package org.t_robop.y_ogawara.tancolle;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -18,6 +19,7 @@ import android.view.WindowManager;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -197,7 +199,7 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
                 public void onClick(View view) {
                     Intent intent = new Intent(GestureDecActivity.this, UserRegisterActivity.class);
 
-                    intent.putExtra("month", page+1);//Todo 初期"月"設定テスト(修復時：消せ)
+                    intent.putExtra("month", page + 1);//Todo 初期"月"設定テスト(修復時：消せ)
 
                     startActivity(intent);
 //                    Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -205,36 +207,36 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
                 }
             });
 
-        // GestureDetectorの生成
-        gestureDetector = new GestureDetector(getApplicationContext(), this);
+            // GestureDetectorの生成
+            gestureDetector = new GestureDetector(getApplicationContext(), this);
 
-        horizontalScrollView = (HorizontalScrollView) findViewById(R.id.hsv_main);
-        horizontalScrollView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                // GestureDetectorにイベントを委譲する
-                boolean result = gestureDetector.onTouchEvent(event);
+            horizontalScrollView = (HorizontalScrollView) findViewById(R.id.hsv_main);
+            horizontalScrollView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    // GestureDetectorにイベントを委譲する
+                    boolean result = gestureDetector.onTouchEvent(event);
 
-                // スクロールが発生した後に画面から指を離した時
-                if ((event.getAction() == MotionEvent.ACTION_UP) && scrollFlg) {
-                    switch (slideLimitFlg) {
-                        case SCROLL_NONE:
-                            break;
-                        case SCROLL_LEFT:
-                            setPage(true);
-                            break;
-                        case SCROLL_RIGHT:
-                            setPage(false);
-                            break;
+                    // スクロールが発生した後に画面から指を離した時
+                    if ((event.getAction() == MotionEvent.ACTION_UP) && scrollFlg) {
+                        switch (slideLimitFlg) {
+                            case SCROLL_NONE:
+                                break;
+                            case SCROLL_LEFT:
+                                setPage(true);
+                                break;
+                            case SCROLL_RIGHT:
+                                setPage(false);
+                                break;
+                        }
+                        // 指定ページへスクロールする
+                        horizontalScrollView.scrollTo(page * displayWidth,
+                                displayHeight);
                     }
-                    // 指定ページへスクロールする
-                    horizontalScrollView.scrollTo(page * displayWidth,
-                            displayHeight);
+                    return result;
                 }
-                return result;
-            }
-        });
-    }
+            });
+        }
         Log.d("onResume", "onResume");
         super.onResume();
     }
@@ -305,11 +307,11 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
                             float distanceX, float distanceY) {
         Log.d("onScroll", "onScroll");
         scrollFlg = true;
-        int rangeX=0;
+        int rangeX = 0;
         //envent1がnullの時(１月データの時に12月に行こうとするとでる)
-        if (envent1 == null){
+        if (envent1 == null) {
             rangeX = (int) (0 - envent2.getRawX());
-        }else{
+        } else {
             // スライド距離の計算
             rangeX = (int) (envent1.getRawX() - envent2.getRawX());
         }
@@ -335,6 +337,7 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
         inflater.inflate(R.menu.gesturedec_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
+
     //ActionBarにあるボタン関連
     //@menuにあるやつから持ってきてる
     @Override
@@ -345,7 +348,7 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
                 return true;
 
             case R.id.action_search:
-                Intent intent = new Intent(this,SearchActivity.class);
+                Intent intent = new Intent(this, SearchActivity.class);
                 startActivity(intent);
                 return true;
 
@@ -354,6 +357,26 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
                 // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
 
+        }
+    }
+
+    //戻るキーで終了するやつ(コピペ)
+    //たぶんhandlerでflagを変えているだけ
+    private boolean FinishFlag;
+
+    @Override
+    public void onBackPressed() {
+        if (FinishFlag) {
+            finish();
+        } else {
+            Toast.makeText(this, "もう一度押すと終了します", Toast.LENGTH_SHORT).show();
+            FinishFlag = true;
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    FinishFlag = false;
+                }
+            }, 2000);
         }
     }
 
