@@ -664,20 +664,16 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
                 String item = (String) spinner.getSelectedItem();
 
                 //それぞれの選択肢が選択された時の処理
-                if (item.equals(spinnerRepetitionItems[1]))
-                {
+                if (item.equals(spinnerRepetitionItems[1])) {
                     reptition_loop=1;
                 }
-                else if (item.equals(spinnerRepetitionItems[2]))
-                {
+                else if (item.equals(spinnerRepetitionItems[2])) {
                     reptition_loop=2;
                 }
-                else if (item.equals(spinnerRepetitionItems[3]))
-                {
+                else if (item.equals(spinnerRepetitionItems[3])) {
                     reptition_loop=3;
                 }
-                else //初期値
-                {
+                else {//初期値
                     reptition_loop=0;
                 }
             }
