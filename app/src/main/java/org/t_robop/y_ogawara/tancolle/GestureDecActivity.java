@@ -131,8 +131,8 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
 //            testData.setYukarin(1);
 //            testData.setNotif_yest(1);
 //            testData.setNotif_today(1);
-//            testData.setNotif_day(3);
-//            testData.setNotif_recy(3);
+//            testData.setNotif_month(3);
+//            testData.setNotif_week(3);
 //            //dbに書き込み
 //            dbAssist.insertData(testData, this);
 //        }

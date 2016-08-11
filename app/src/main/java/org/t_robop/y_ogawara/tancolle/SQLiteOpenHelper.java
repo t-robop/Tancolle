@@ -72,8 +72,11 @@ class MySQLiteOpenHelper extends SQLiteOpenHelper {
                 +"yukarin INTEGER,"
                 +"notif_yest INTEGER,"
                 +"notif_today INTEGER,"
-                +"notif_day INTEGER,"
-                +"notif_recy INTEGER"
+                +"notif_month INTEGER,"
+                +"notif_week INTEGER,"
+                +"notif_cus1 INTEGER,"
+                +"notif_cus2 INTEGER,"
+                +"notif_cus3 INTEGER"
                 + ");";
         db.execSQL(sql);
     }

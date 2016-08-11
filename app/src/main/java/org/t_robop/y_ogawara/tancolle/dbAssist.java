@@ -47,8 +47,12 @@ public class dbAssist {
         cv.put("yukarin", data.isYukarin());
         cv.put("notif_yest", data.isNotif_today());
         cv.put("notif_today", data.isNotif_today());
-        cv.put("notif_day", data.getNotif_day());
-        cv.put("notif_recy", data.getNotif_recy());
+        cv.put("notif_month", data.getNotif_month());
+        cv.put("notif_week", data.getNotif_week());
+        cv.put("notif_cus1", data.getNotif_cus1());
+        cv.put("notif_cus2", data.getNotif_cus2());
+        cv.put("notif_cus3", data.getNotif_cus3());
+
 
         sqldb.insert(TABLE_NAME, null, cv);
         sqldb.close();
@@ -78,8 +82,11 @@ public class dbAssist {
             data.setYukarin(cursor.getInt(13));
             data.setNotif_yest(cursor.getInt(14));
             data.setNotif_today(cursor.getInt(15));
-            data.setNotif_day(cursor.getInt(16));
-            data.setNotif_recy(cursor.getInt(17));
+            data.setNotif_month(cursor.getInt(16));
+            data.setNotif_week(cursor.getInt(17));
+            data.setNotif_cus1(cursor.getInt(18));
+            data.setNotif_cus2(cursor.getInt(19));
+            data.setNotif_cus3(cursor.getInt(20));
             DataArray.add(data);
         }
         sqldb.close();
@@ -114,8 +121,11 @@ public class dbAssist {
             data.setYukarin(cursor.getInt(13));
             data.setNotif_yest(cursor.getInt(14));
             data.setNotif_today(cursor.getInt(15));
-            data.setNotif_day(cursor.getInt(16));
-            data.setNotif_recy(cursor.getInt(17));
+            data.setNotif_month(cursor.getInt(16));
+            data.setNotif_week(cursor.getInt(17));
+            data.setNotif_cus1(cursor.getInt(18));
+            data.setNotif_cus2(cursor.getInt(19));
+            data.setNotif_cus3(cursor.getInt(20));
             DataArray.add(data);
         }
         sqldb.close();
@@ -151,8 +161,11 @@ public class dbAssist {
             data.setYukarin(cursor.getInt(13));
             data.setNotif_yest(cursor.getInt(14));
             data.setNotif_today(cursor.getInt(15));
-            data.setNotif_day(cursor.getInt(16));
-            data.setNotif_recy(cursor.getInt(17));
+            data.setNotif_month(cursor.getInt(16));
+            data.setNotif_week(cursor.getInt(17));
+            data.setNotif_cus1(cursor.getInt(18));
+            data.setNotif_cus2(cursor.getInt(19));
+            data.setNotif_cus3(cursor.getInt(20));
             DataArray.add(data);
         }
         sqldb.close();
@@ -188,8 +201,11 @@ public class dbAssist {
         data.setYukarin(cursor.getInt(13));
         data.setNotif_yest(cursor.getInt(14));
         data.setNotif_today(cursor.getInt(15));
-        data.setNotif_day(cursor.getInt(16));
-        data.setNotif_recy(cursor.getInt(17));
+        data.setNotif_month(cursor.getInt(16));
+        data.setNotif_week(cursor.getInt(17));
+        data.setNotif_cus1(cursor.getInt(18));
+        data.setNotif_cus2(cursor.getInt(19));
+        data.setNotif_cus3(cursor.getInt(20));
         sqldb.close();
         return data;
     }
@@ -219,8 +235,14 @@ public class dbAssist {
             data.setYukarin(cursor.getInt(13));
             data.setNotif_yest(cursor.getInt(14));
             data.setNotif_today(cursor.getInt(15));
-            data.setNotif_day(cursor.getInt(16));
-            data.setNotif_recy(cursor.getInt(17));
+            data.setNotif_month(cursor.getInt(16));
+            data.setNotif_week(cursor.getInt(17));
+            data.setNotif_cus1(cursor.getInt(18));
+            data.setNotif_cus2(cursor.getInt(19));
+            data.setNotif_cus3(cursor.getInt(20));
+
+
+
             DataArray.add(data);
         }
         sqldb.close();
@@ -287,12 +309,24 @@ public class dbAssist {
         if (data.isNotif_today()!=Integer.MIN_VALUE){
             cv.put("notif_today", data.isNotif_today());
         }
-        if (data.getNotif_day()!=Integer.MIN_VALUE){
-            cv.put("notif_day", data.getNotif_day());
+        if (data.getNotif_month()!=Integer.MIN_VALUE){
+            cv.put("notif_month", data.getNotif_month());
         }
-        if (data.getNotif_recy()!=Integer.MIN_VALUE){
-            cv.put("notif_recy", data.getNotif_recy());
+        if (data.getNotif_week()!=Integer.MIN_VALUE){
+            cv.put("notif_week", data.getNotif_week());
         }
+        if (data.getNotif_cus1()!=Integer.MIN_VALUE){
+            cv.put("notif_cus1", data.getNotif_cus1());
+        }
+
+        if (data.getNotif_cus2()!=Integer.MIN_VALUE){
+            cv.put("notif_cus2", data.getNotif_cus2());
+        }
+
+        if (data.getNotif_cus3()!=Integer.MIN_VALUE){
+            cv.put("notif_cus3", data.getNotif_cus3());
+        }
+
         sqldb.update(TABLE_NAME, cv, "id = "+id, null);
     }
 }

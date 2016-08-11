@@ -39,7 +39,6 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -191,12 +190,12 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             edit_name.setText(idDate.getName());
             edit_pho.setText(idDate.getKana());
             edit_twitter.setText(idDate.getTwitterID());
-            edit_days_ago.setText(String.valueOf(idDate.getNotif_day()));
+            edit_days_ago.setText(String.valueOf(idDate.getNotif_month()));
             edit_memo.setText(idDate.getMemo());
             tamura_flag = idDate.isYukarin();
             yesterday_flag = idDate.isNotif_yest();
             today_flag = idDate.isNotif_today();
-            spinnerRepetition.setSelection(idDate.getNotif_recy());
+            spinnerRepetition.setSelection(idDate.getNotif_week());
             imgSetting = idDate.getImage();
 
             //誕生年月日の初期値を設定年月日へ
@@ -1003,8 +1002,8 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         allData.setYukarin(tamura_flag);
         allData.setNotif_yest(yesterday_flag);
         allData.setNotif_today(today_flag);
-        allData.setNotif_day(days_ago);
-        allData.setNotif_recy(reptition_loop);
+        allData.setNotif_month(days_ago);
+        allData.setNotif_week(reptition_loop);
         //dbに書き込み
         if(id==0) {
             //新規作成の場合はSQLの追加

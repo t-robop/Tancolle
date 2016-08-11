@@ -46,8 +46,8 @@ public class SearchActivity extends Activity implements
 //        testData.setPresentFlag(0);
 //        testData.setNotif_yest(1);
 //        testData.setNotif_today(1);
-//        testData.setNotif_day(3);
-//        testData.setNotif_recy(3);
+//        testData.setNotif_month(3);
+//        testData.setNotif_week(3);
 //        //dbに書き込み
 //        dbAssist.insertData(testData, this);
 //
@@ -68,8 +68,8 @@ public class SearchActivity extends Activity implements
 //        testData1.setPresentFlag(0);
 //        testData1.setNotif_yest(1);
 //        testData1.setNotif_today(1);
-//        testData1.setNotif_day(3);
-//        testData1.setNotif_recy(3);
+//        testData1.setNotif_month(3);
+//        testData1.setNotif_week(3);
 //        //dbに書き込み
 //        dbAssist.insertData(testData1, this);
 //
@@ -90,8 +90,8 @@ public class SearchActivity extends Activity implements
 //        testData2.setPresentFlag(0);
 //        testData2.setNotif_yest(1);
 //        testData2.setNotif_today(1);
-//        testData2.setNotif_day(3);
-//        testData2.setNotif_recy(3);
+//        testData2.setNotif_month(3);
+//        testData2.setNotif_week(3);
 //        //dbに書き込み
 //        dbAssist.insertData(testData2, this);
 
