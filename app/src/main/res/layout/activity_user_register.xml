@@ -236,54 +236,58 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="6"
+                    android:gravity="center_vertical"
+                    android:id="@+id/MonthCheck"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="何日前から："
+                    android:text="一ヶ月前"
+                    android:layout_weight="5"
                     android:textSize="20dp"
-                    android:layout_weight="1.7"
-                    android:gravity="center_vertical"/>
+                    android:gravity="center_vertical" />
 
-                <EditText
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:id="@+id/ago"
-                    android:onClick="EditAgo"
-                    android:inputType="text"
-                    android:focusable="false"
-                    android:textColorHint="#a09f9f"
-                    android:gravity="center_vertical"/>
+                    android:layout_weight="2"/>
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="6"
+                    android:gravity="center_vertical"
+                    android:id="@+id/WeekCheck"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="繰り返し："
+                    android:text="一週間前"
+                    android:layout_weight="5"
                     android:textSize="20dp"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"/>
+                    android:gravity="center_vertical" />
 
-                <Spinner
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:id="@+id/spinner2"
-                    android:gravity="center_vertical">
-                </Spinner>
+                    android:layout_weight="2"/>
 
             </LinearLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -312,10 +316,6 @@
                 android:layout_weight="2"/>
 
         </LinearLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
 
             <LinearLayout
                 android:layout_width="match_parent"
