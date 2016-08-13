@@ -18,7 +18,6 @@ import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
-import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Display;
@@ -61,7 +60,8 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
     CheckBox yesterday_check;
     CheckBox today_check;
     EditText edit_memo;
-    DatePickerDialog datePickerDialog;
+    DatePickerDialog birthPickerDialog;
+    DatePickerDialog cusPickerDialog;
     Calendar calendar;
     Calendar nowCale;
 
@@ -206,6 +206,12 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             //spinnerRepetition.setSelection(idDate.getNotif_week());
             imgSetting = idDate.getImage();
 
+            img_name=idDate.getImage();
+            img_name=CutString(img_name,4);
+
+            small_img_name=idDate.getSmallImage();
+            small_img_name=CutString(small_img_name,4);
+
             //誕生年月日の初期値を設定年月日へ
             birthYear=idDate.getYear();
             birthMonth=idDate.getMonth();
@@ -261,6 +267,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
                 arraylist.add(arrayItem2[n]);
             }
         }
+
     }
 
     //画像をドキュメントから選択からのImageViewセット
@@ -492,7 +499,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
     public void BirthDay(View v) {
         DatePickerSet();
         // 日付設定ダイアログの表示
-        datePickerDialog.show();
+        birthPickerDialog.show();
     }
 
     //カテゴリ追加
@@ -568,18 +575,17 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         }
     }
 
-    //指定されたEditTextの指定文字数から後ろ全てを消すメソッド（("ABCD",2)➝AB）
-    public void EditCutString(EditText edit,int num){
-        int size= (int) edit.getTextSize();
-        String string;
+    //Stringの指定文字数から後ろ全てを消すメソッド（("ABCD",2)➝AB）
+    public String CutString(String string,int num){
+        int size= (int) string.length();
+
+        String sumString;
 
         size=size-num;
 
-        string= String.valueOf(edit.getText());
+        sumString=string.substring(0,size);
 
-        string=string.substring(0,size);
-
-        edit.setText(string);
+        return sumString;
     }
 
     //EditTextのキーボード関連の処理のメソッド
@@ -745,7 +751,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             }
         };
         // 日付設定ダイアログの作成・リスナの登録
-        datePickerDialog = new DatePickerDialog(this, DateSetListener, temporary_year, temporary_month, temporary_day);
+        birthPickerDialog = new DatePickerDialog(this, DateSetListener, temporary_year, temporary_month, temporary_day);
     }
 
     //誕生日と年齢表示
@@ -1056,7 +1062,6 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         }
         ALLLOG();
         }
-
 
     //Log
     public void ALLLOG() {
