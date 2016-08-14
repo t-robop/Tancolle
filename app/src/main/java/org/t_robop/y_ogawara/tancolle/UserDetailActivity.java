@@ -234,7 +234,7 @@ public class UserDetailActivity extends AppCompatActivity {
         //Data presentdate = new Data();
         //presentdate.setPresentFlag(imagecount);
         //dbAssist.updateData(intentId, presentdate, this);
-        Log.d("bbbbbbbb",String.valueOf(imagecount));
+        //Log.d("bbbbbbbb",String.valueOf(imagecount));
 
         Data updateData =new Data();
         //TODO なんかプレゼントフラグ反映されとらんで

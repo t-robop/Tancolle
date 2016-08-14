@@ -135,8 +135,8 @@ public class MainActivity extends AppCompatActivity {
                 testData.setYukarin(1);
                 testData.setNotif_yest(1);
                 testData.setNotif_today(1);
-                testData.setNotif_day(3);
-                testData.setNotif_recy(3);
+                testData.setNotif_month(3);
+                testData.setNotif_week(3);
                 //dbに書き込み
                 dbAssist.insertData(testData,this);
 
@@ -158,8 +158,8 @@ public class MainActivity extends AppCompatActivity {
                 testData1.setYukarin(11);
                 testData1.setNotif_yest(11);
                 testData1.setNotif_today(11);
-                testData1.setNotif_day(31);
-                testData1.setNotif_recy(31);
+                testData1.setNotif_month(31);
+                testData1.setNotif_week(31);
                 //dbに書き込み
                 //引数はData,場所(this)
                 dbAssist.insertData(testData1,this);
@@ -171,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
                 updateData.setName("aaaaa");
                 updateData.setBirthday(19970714);
                 updateData.setNotif_yest(1);
-                updateData.setNotif_recy(0);
+                updateData.setNotif_week(0);
                 //引数はid,data,場所
                 dbAssist.updateData(1,updateData,this);
                 return true;

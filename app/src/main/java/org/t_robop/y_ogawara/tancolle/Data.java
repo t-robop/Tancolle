@@ -43,9 +43,38 @@ public class Data {
     //通知を当日にするか
     private int notif_today = Integer.MIN_VALUE;
     //通知を何日前にするか
-    private int notif_day = Integer.MIN_VALUE;
+    private int notif_month = Integer.MIN_VALUE;
     //通知を何回繰り返すか
-    private int notif_recy = Integer.MIN_VALUE;
+    private int notif_week = Integer.MIN_VALUE;
+
+    private int notif_cus1 = Integer.MIN_VALUE;
+    private int notif_cus2 = Integer.MIN_VALUE;
+    private int notif_cus3 = Integer.MIN_VALUE;
+
+    public int getNotif_cus2() {
+        return notif_cus2;
+    }
+
+    public void setNotif_cus2(int notif_cus2) {
+        this.notif_cus2 = notif_cus2;
+    }
+
+    public int getNotif_cus1() {
+        return notif_cus1;
+    }
+
+    public void setNotif_cus1(int notif_cus1) {
+        this.notif_cus1 = notif_cus1;
+    }
+
+    public int getNotif_cus3() {
+        return notif_cus3;
+    }
+
+    public void setNotif_cus3(int notif_cus3) {
+        this.notif_cus3 = notif_cus3;
+    }
+
 
 
     public int getId() {
@@ -56,12 +85,12 @@ public class Data {
         this.id = id;
     }
 
-    public int getNotif_recy() {
-        return notif_recy;
+    public int getNotif_week() {
+        return notif_week;
     }
 
-    public void setNotif_recy(int notif_recy) {
-        this.notif_recy = notif_recy;
+    public void setNotif_week(int notif_week) {
+        this.notif_week = notif_week;
     }
 
     public String getName() {
@@ -164,12 +193,12 @@ public class Data {
         this.notif_today = notif_today;
     }
 
-    public int getNotif_day() {
-        return notif_day;
+    public int getNotif_month() {
+        return notif_month;
     }
 
-    public void setNotif_day(int notif_day) {
-        this.notif_day = notif_day;
+    public void setNotif_month(int notif_month) {
+        this.notif_month = notif_month;
     }
 
     public int getYear() {

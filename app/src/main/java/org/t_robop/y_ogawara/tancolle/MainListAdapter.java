@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -53,7 +54,9 @@ public class MainListAdapter extends ArrayAdapter<MainAdapterData> {
         TextView nameText1 = ((TextView) convertView.findViewById(R.id.name1));
         nameText1.setText(mainListData.getName(0));
         ((TextView) convertView.findViewById(R.id.birth1)).setText(mainListData.getBirthMonth(0)+"/"+mainListData.getBirthDay(0));
-
+        if (mainListData.getPresentFlag(0)==1) {
+            liner1.setBackgroundResource(R.drawable.ribbon_tra);
+        }
         //ListView用のTextView2(中央)の宣言
         TextView nameText2 = ((TextView) convertView.findViewById(R.id.name2));
         TextView birthText2 = ((TextView) convertView.findViewById(R.id.birth2));
@@ -71,6 +74,9 @@ public class MainListAdapter extends ArrayAdapter<MainAdapterData> {
                         //中央のTextだけ表示させます
                         nameText2.setText(mainListData.getName(1));
                         birthText2.setText(mainListData.getBirthMonth(1)+"/"+mainListData.getBirthDay(1));
+                        if (mainListData.getPresentFlag(1)==1) {
+                            liner2.setBackgroundResource(R.drawable.ribbon_tra);
+                        }
                         break;
                     case 1://二つ無いとき
                         //何も表示させません
@@ -82,11 +88,26 @@ public class MainListAdapter extends ArrayAdapter<MainAdapterData> {
 
               nameText2.setText(mainListData.getName(1));
               birthText2.setText(mainListData.getBirthMonth(1)+"/"+mainListData.getBirthDay(1));
+              if (mainListData.getPresentFlag(1)==1) {
+                  liner2.setBackgroundResource(R.drawable.ribbon_tra);
+              }
 
               nameText3.setText(mainListData.getName(2));
               birthText3.setText(mainListData.getBirthMonth(2)+"/"+mainListData.getBirthDay(2));
+              if (mainListData.getPresentFlag(2)==1) {
+                  liner3.setBackgroundResource(R.drawable.ribbon_tra);
+              }
           }
 
+
+//        else if (mainListData.getPresentFlag(2)==1){
+//            liner2.setBackgroundResource(R.drawable.ribbon_tra);
+//        }
+//        else if (mainListData.getPresentFlag(3)==1) {
+//            liner3.setBackgroundResource(R.drawable.ribbon_tra);
+//        }
+//        else {
+//        }
         //viewを返す
         return convertView;
 
