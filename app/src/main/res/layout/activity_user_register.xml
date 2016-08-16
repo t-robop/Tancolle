@@ -70,7 +70,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="誕生日"
-                android:textSize="20dp"/>
+                android:textSize="20dp"
+                android:textColor="#000000"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -80,7 +81,8 @@
                 android:gravity="center"
                 android:layout_weight="1"
                 android:onClick="BirthDay"
-                android:id="@+id/userbirthday"/>
+                android:id="@+id/userbirthday"
+                android:textColor="#000000"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -93,7 +95,8 @@
                     android:text="年齢："
                     android:textSize="20dp"
                     android:gravity="center_vertical"
-                    android:layout_weight="4"/>
+                    android:layout_weight="4"
+                    android:textColor="#000000"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -102,7 +105,8 @@
                     android:text="年齢"
                     android:textSize="20dp"
                     android:gravity="center_vertical"
-                    android:id="@+id/YearsOld"/>
+                    android:id="@+id/YearsOld"
+                    android:textColor="#000000"/>
 
 
 
@@ -132,7 +136,8 @@
                     android:layout_weight="5.5"
                     android:textSize="20dp"
                     android:gravity="center_vertical"
-                    android:id="@+id/tamura"/>
+                    android:id="@+id/tamura"
+                    android:textColor="#000000"/>
 
 
                 <TextView
@@ -157,7 +162,8 @@
                     android:text="Category："
                     android:textSize="17dp"
                     android:layout_weight="2.4"
-                    android:gravity="center_vertical"/>
+                    android:gravity="center_vertical"
+                    android:textColor="#000000"/>
 
             <Spinner
                 android:layout_width="match_parent"
@@ -197,7 +203,8 @@
                     android:layout_weight="3"
                     android:text="twitter"
                     android:textSize="20dp"
-                    android:gravity="center_vertical"/>
+                    android:gravity="center_vertical"
+                    android:textColor="#000000"/>
 
                 <EditText
                     android:layout_width="match_parent"
@@ -230,7 +237,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="通知設定"
-                android:textSize="25dp"/>
+                android:textSize="25dp"
+                android:textColor="#000000"/>
 
 
             <LinearLayout
@@ -252,7 +260,8 @@
                     android:text="一ヶ月前"
                     android:layout_weight="5"
                     android:textSize="20dp"
-                    android:gravity="center_vertical" />
+                    android:gravity="center_vertical"
+                    android:textColor="#000000"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -280,7 +289,8 @@
                     android:text="一週間前"
                     android:layout_weight="5"
                     android:textSize="20dp"
-                    android:gravity="center_vertical" />
+                    android:gravity="center_vertical"
+                    android:textColor="#000000"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -308,7 +318,8 @@
                 android:text="前日"
                 android:layout_weight="5.5"
                 android:textSize="20dp"
-                android:gravity="center_vertical" />
+                android:gravity="center_vertical"
+                android:textColor="#000000"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -336,7 +347,8 @@
                     android:text="当日"
                     android:layout_weight="5.5"
                     android:textSize="20dp"
-                    android:gravity="center_vertical" />
+                    android:gravity="center_vertical"
+                    android:textColor="#000000"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -360,15 +372,19 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="カスタム"
-                    android:layout_weight="5.5"
+                    android:text="通知日を追加"
+                    android:layout_weight="5"
                     android:textSize="20dp"
-                    android:gravity="center_vertical" />
+                    android:gravity="center_vertical"
+                    android:textColor="#a0a0a0"
+                    android:onClick="cusText"
+                    android:tag="0"
+                    android:id="@+id/cusText1"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="2"/>
+                    android:layout_weight="4"/>
             </LinearLayout>
 
             <LinearLayout
@@ -387,15 +403,19 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="カスタム"
-                    android:layout_weight="5.5"
+                    android:text="通知日を追加"
+                    android:layout_weight="5"
                     android:textSize="20dp"
-                    android:gravity="center_vertical" />
+                    android:gravity="center_vertical"
+                    android:textColor="#a0a0a0"
+                    android:onClick="cusText"
+                    android:tag="1"
+                    android:id="@+id/cusText2"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="2"/>
+                    android:layout_weight="4"/>
             </LinearLayout>
 
             <LinearLayout
@@ -414,15 +434,19 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="カスタム"
-                    android:layout_weight="5.5"
+                    android:text="通知日を追加"
+                    android:layout_weight="5"
                     android:textSize="20dp"
-                    android:gravity="center_vertical" />
+                    android:gravity="center_vertical"
+                    android:textColor="#a0a0a0"
+                    android:onClick="cusText"
+                    android:tag="2"
+                    android:id="@+id/cusText3"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="2"/>
+                    android:layout_weight="4"/>
             </LinearLayout>
 
             <TextView
@@ -443,7 +467,8 @@
                     android:text="メモ"
                     android:textSize="20dp"
                     android:gravity="center_vertical"
-                    android:layout_weight="3"/>
+                    android:layout_weight="3"
+                    android:textColor="#000000"/>
 
                 <TextView
                     android:layout_width="match_parent"
