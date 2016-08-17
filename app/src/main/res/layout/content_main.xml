@@ -40,7 +40,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ViewFlipperTest"
+        android:text="AlarmActivity"
         android:id="@+id/button5"
         android:onClick="ViewFlipperTestActivityBtn" />
     <Button

@@ -251,7 +251,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void ViewFlipperTestActivityBtn(View view) {
-        Intent intent = new Intent(this,ViewFlipperTestActivity.class);
+        int rabbit=1;
+        Intent intent = new Intent(this,AlarmActivity.class);
+        intent.putExtra("usagi",rabbit);
         startActivity(intent);
     }
 
