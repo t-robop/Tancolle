@@ -1,10 +1,16 @@
 package org.t_robop.y_ogawara.tancolle;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Display;
@@ -47,6 +53,39 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
         setContentView(R.layout.activity_gesture_dec);
         setViewSize();
 
+
+        // Android6.0以降でのPermissionの確認
+        if (ContextCompat.checkSelfPermission(
+                this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            // 許可されている時の処理
+            Log.d("Accept", "Accept");
+        } else {
+            //拒否されている時の処理
+            Log.d("Deny", "Deny");
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                //拒否された時 Permissionが必要な理由を表示して再度許可を求めたり、機能を無効にしたりします。
+                Log.d("Alert", "Alert");
+                //AlertDialog
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+                //alertDialog.setTitle("");          //タイトル
+                alertDialog.setMessage("顔写真を追加する際にストレージへのアクセスが必要です。次の画面で許可を押してください。");      //内容
+                alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Log.d("AlertDialog", "Positive which :" + which);
+                        ActivityCompat.requestPermissions(GestureDecActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
+                    }
+                });
+                alertDialog.create();
+                alertDialog.show();
+
+            } else {
+                //まだ許可を求める前の時、許可を求めるダイアログを表示します。
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
+                Log.d("else", "else");
+            }
+        }
+
+        // FloatingActionButton
         FloatingActionButton add = (FloatingActionButton) findViewById(R.id.add);
         if (add != null) {
             add.setOnClickListener(new View.OnClickListener() {
