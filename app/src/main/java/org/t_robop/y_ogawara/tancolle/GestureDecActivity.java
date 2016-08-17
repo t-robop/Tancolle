@@ -1,10 +1,16 @@
 package org.t_robop.y_ogawara.tancolle;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Display;
@@ -47,6 +53,39 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
         setContentView(R.layout.activity_gesture_dec);
         setViewSize();
 
+
+        // Android6.0以降でのPermissionの確認
+        if (ContextCompat.checkSelfPermission(
+                this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            // 許可されている時の処理
+            Log.d("Accept", "Accept");
+        } else {
+            //拒否されている時の処理
+            Log.d("Deny", "Deny");
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                //拒否された時 Permissionが必要な理由を表示して再度許可を求めたり、機能を無効にしたりします。
+                Log.d("Alert", "Alert");
+                //AlertDialog
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+                //alertDialog.setTitle("");          //タイトル
+                alertDialog.setMessage("顔写真を追加する際にストレージへのアクセスが必要です。次の画面で許可を押してください。");      //内容
+                alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Log.d("AlertDialog", "Positive which :" + which);
+                        ActivityCompat.requestPermissions(GestureDecActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
+                    }
+                });
+                alertDialog.create();
+                alertDialog.show();
+
+            } else {
+                //まだ許可を求める前の時、許可を求めるダイアログを表示します。
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
+                Log.d("else", "else");
+            }
+        }
+
+        // FloatingActionButton
         FloatingActionButton add = (FloatingActionButton) findViewById(R.id.add);
         if (add != null) {
             add.setOnClickListener(new View.OnClickListener() {
@@ -110,33 +149,6 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
         listView[10] = (ListView) findViewById(R.id.list11).findViewById(R.id.listView1);
         listView[11] = (ListView) findViewById(R.id.list12).findViewById(R.id.listView1);
 
-        ///////////////////////////////////////////////////////////////
-//        Data testData = new Data();
-//
-//        for (int i =0;i<20;i++){
-//
-//            //Data型にデータをセット
-//            testData.setName("西村1111");
-//            testData.setKana("にしむら");
-//            testData.setBirthday(19970616);
-//            testData.setYear(1997);
-//            testData.setMonth(1);
-//            testData.setDay(16);
-//            testData.setCategory("友達");
-//            testData.setTwitterID("Taiga_Natto");
-//            testData.setMemo("教科書を見て実装して欲しい");
-//            testData.setImage("Imageデータ");
-//            testData.setSmallImage("Imageデータ");
-//            testData.setPresentFlag(0);
-//            testData.setYukarin(1);
-//            testData.setNotif_yest(1);
-//            testData.setNotif_today(1);
-//            testData.setNotif_month(3);
-//            testData.setNotif_week(3);
-//            //dbに書き込み
-//            dbAssist.insertData(testData, this);
-//        }
-
         //12ヶ月分セットするために12回ループさせます。
         for (int fullReturn = 0; fullReturn < 12; fullReturn++) {
 
@@ -189,53 +201,6 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
             //listView.setEmptyView(findViewById(R.id.listView));
             listView[fullReturn].setAdapter(adapter);
 
-        }
-
-
-        FloatingActionButton add = (FloatingActionButton) findViewById(R.id.add);
-        if (add != null) {
-            add.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(GestureDecActivity.this, UserRegisterActivity.class);
-
-                    intent.putExtra("month", page + 1);//Todo 初期"月"設定テスト(修復時：消せ)
-
-                    startActivity(intent);
-//                    Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                            .setAction("Action", null).show();
-                }
-            });
-
-            // GestureDetectorの生成
-            gestureDetector = new GestureDetector(getApplicationContext(), this);
-
-            horizontalScrollView = (HorizontalScrollView) findViewById(R.id.hsv_main);
-            horizontalScrollView.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    // GestureDetectorにイベントを委譲する
-                    boolean result = gestureDetector.onTouchEvent(event);
-
-                    // スクロールが発生した後に画面から指を離した時
-                    if ((event.getAction() == MotionEvent.ACTION_UP) && scrollFlg) {
-                        switch (slideLimitFlg) {
-                            case SCROLL_NONE:
-                                break;
-                            case SCROLL_LEFT:
-                                setPage(true);
-                                break;
-                            case SCROLL_RIGHT:
-                                setPage(false);
-                                break;
-                        }
-                        // 指定ページへスクロールする
-                        horizontalScrollView.scrollTo(page * displayWidth,
-                                displayHeight);
-                    }
-                    return result;
-                }
-            });
         }
         Log.d("onResume", "onResume");
         super.onResume();
