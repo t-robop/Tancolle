@@ -28,7 +28,7 @@ public class AlarmActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm);
         Intent intent = getIntent();
-        intentId = intent.getIntExtra("id", 1);
+        intentId = intent.getIntExtra("usagi", 1);
 
         calendar = Calendar.getInstance();
         year = calendar.get(Calendar.YEAR);

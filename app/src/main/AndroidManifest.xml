@@ -19,7 +19,8 @@
         <activity android:name=".UserDetailActivity">
         </activity>
         <activity android:name=".GestureDecActivity">
-
+        </activity>
+        <activity android:name=".AlarmActivity">
         </activity>
         <activity
             android:name=".HomeActivity">
