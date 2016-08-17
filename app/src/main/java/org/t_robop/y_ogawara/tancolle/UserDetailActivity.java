@@ -56,10 +56,9 @@ public class UserDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_detail);
+
         Intent intent = getIntent();
         intentId = intent.getIntExtra("id", 1);
-
-
         nameTV = (TextView) findViewById(R.id.Name);
         kanaTV = (TextView) findViewById(R.id.Kana);
         birthTV = (TextView) findViewById(R.id.Birthay);
@@ -114,12 +113,12 @@ public class UserDetailActivity extends AppCompatActivity {
         int birthyear = data.getYear();
         int birthmonth = data.getMonth();
         int birthday = data.getDay();
-        int sqlDay;
+        //int sqlDay;
+        //sqlDay = a % 100; //誕生日の日付を割り出す
 
 
         a = birthmonth * 100 + birthday;  //誕生日を７月１４日を→７１４みたいな形に
         b = month * 100 + day; //現在の日付を６月１５日→６１５みたいな形に
-        sqlDay = a % 100; //誕生日の日付を割り出す
         if (a > b) {  //もし誕生日の方の数値が大きかったら（まだ今年の誕生日がきてなかったら）
             age = year - birthyear - 1;   //今年ー誕生年から更に１才ひく
         } else {    //今年の誕生日がきていたら
@@ -135,7 +134,7 @@ public class UserDetailActivity extends AppCompatActivity {
         // 日付を作成します。
         try {
             //TODO ココらへんで今年の誕生日が過ぎていたら、来年の誕生日で計算させる
-            dateFrom = sdf.parse(year + "/" + month + "/" + day);
+            dateFrom = sdf.parse(year + "/" + month + "/" + day); //現在の日付
             //指定フォーマットでデータを入力
             if (a < b) {  //誕生日より今日の日にちが大きかったら（もう誕生日がきていたら
                 int num;
@@ -160,6 +159,8 @@ public class UserDetailActivity extends AppCompatActivity {
         long dayDiff = (dateTimeTo - dateTimeFrom) / (1000 * 60 * 60 * 24);
         //int型に変換
         int remDay = (int) dayDiff;
+
+
 
 
         nameTV.setText(name);

@@ -45,7 +45,7 @@ public class dbAssist {
         cv.put("smallImage", data.getSmallImage());
         cv.put("presentFlag", data.isPresentFlag());
         cv.put("yukarin", data.isYukarin());
-        cv.put("notif_yest", data.isNotif_today());
+        cv.put("notif_yest", data.isNotif_yest());
         cv.put("notif_today", data.isNotif_today());
         cv.put("notif_month", data.getNotif_month());
         cv.put("notif_week", data.getNotif_week());
@@ -304,7 +304,7 @@ public class dbAssist {
             cv.put("yukarin", data.isYukarin());
         }
         if (data.isNotif_yest()!=Integer.MIN_VALUE){
-            cv.put("notif_yest", data.isNotif_today());
+            cv.put("notif_yest", data.isNotif_yest());
         }
         if (data.isNotif_today()!=Integer.MIN_VALUE){
             cv.put("notif_today", data.isNotif_today());

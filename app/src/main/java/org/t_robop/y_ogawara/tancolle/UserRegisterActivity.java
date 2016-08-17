@@ -9,6 +9,7 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.os.Build;
@@ -18,7 +19,6 @@ import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
-import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Display;
@@ -51,15 +51,23 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
     EditText edit_name;
     EditText edit_pho;
     EditText edit_twitter;
-    EditText edit_days_ago;
+    //EditText edit_days_ago;
     ImageView user_view;
     TextView user_birthday;
     TextView user_yearsold;
     CheckBox tamura_check;
+    CheckBox month_check;
+    CheckBox week_check;
     CheckBox yesterday_check;
     CheckBox today_check;
+
+    CheckBox cus_check[]=new CheckBox[3];
+
+    TextView cus_text[]=new TextView[3];
+
     EditText edit_memo;
-    DatePickerDialog datePickerDialog;
+    DatePickerDialog PickerDialog;
+    DatePickerDialog cusPickerDialog;
     Calendar calendar;
     Calendar nowCale;
 
@@ -95,10 +103,10 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
 
     //sppinerTest
     private Spinner spinnerCategory;//カテゴリスピナー
-    private Spinner spinnerRepetition;//繰り返し通知スピナー
+    //private Spinner spinnerRepetition;//繰り返し通知スピナー
 
     //繰り返し通知スピナーに並べる文字列群
-    private String spinnerRepetitionItems[] = {"繰り返し通知無し", "毎日", "一週間毎", "一ヶ月毎"};
+    //private String spinnerRepetitionItems[] = {"繰り返し通知無し", "毎日", "一週間毎", "一ヶ月毎"};
 
     //一時的な年月日の保存
     int temporary_year;
@@ -110,13 +118,19 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
     int birthMonth;
     int birthDay;
 
-    int reptition_loop;//繰り返しフラグ
-    int days_ago;//何日前ですかー？
+    //int reptition_loop;//繰り返しフラグ
+    //int days_ago;//何日前ですかー？
 
     //チェックフラグ
     int tamura_flag;
-    int yesterday_flag;
-    int today_flag;
+    int notifMonth_flag;
+    int notifWeek_flag;
+    int notifYesterday_flag;
+    int notifToday_flag;
+    int notifCus_flag[]=new int[3];
+
+    //カスタム用の通知月日の保存
+    int cus_date[]=new int[3];
 
     //idチェック
     int id;
@@ -137,6 +151,9 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
     //キーボードの有無確認
     boolean keyBoad=false;
 
+    //ダイアログでok押された時のリスナー
+    DatePickerDialog.OnDateSetListener DateSetListener;
+
     /////////////////////////Override/////////////////////////
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,14 +163,15 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         //関連付け
         Association();
 
-        //EditText毎に入力制御
-        edit_days_ago.setInputType(InputType.TYPE_CLASS_NUMBER);
+        cus_text[0].setTextColor(Color.GRAY);
+        cus_text[1].setTextColor(Color.GRAY);
+        cus_text[2].setTextColor(Color.GRAY);
 
         // EditText が空のときに表示させるヒントを設定
         edit_name.setHint("Name");
         edit_pho.setHint("Phonetic");
         edit_twitter.setHint("@twitter");
-        edit_days_ago.setHint("Days");
+        //edit_days_ago.setHint("Days");
         edit_memo.setHint("何でも自由に書いてね！");
 
         //画面切り替わり時のid取得
@@ -166,22 +184,26 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
 
         //Spinner設定
         sppinerCategorySet();//カテゴリスピナー設定
-        spinnerRepetitionSet();//繰り返し通知の選択用spinner設定
 
         //EditTextの内容設定
         EditTextSet(edit_pho);
         EditTextSet(edit_twitter);
-        EditTextSet(edit_days_ago);
 
+        //振り仮名自動入力のためのリスナー（謎）
         edit_name.addTextChangedListener(this);
 
         //ImageViewの初期設定
         user_view.setScaleType(ImageView.ScaleType.CENTER_CROP);//CENTER_CROPでViewに合わせて拡大し、画像のはみ出した部分は切り取って、中心にフォーカスする
 
-        //CheckBoxの値を取得
-        CheckJudge(tamura_check,0);
-        CheckJudge(yesterday_check,1);
-        CheckJudge(today_check,2);
+        //全CheckBoxの値を取得
+        for(int i=0;i<3;i++){
+            CheckJudge(cus_check[i],i);
+        }
+        CheckJudge(tamura_check,3);
+        CheckJudge(month_check,4);
+        CheckJudge(week_check,5);
+        CheckJudge(yesterday_check,6);
+        CheckJudge(today_check,7);
 
         //データがある場合（編集として呼ばれた場合）は読み込み
         if (id != 0) {
@@ -190,33 +212,72 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             edit_name.setText(idDate.getName());
             edit_pho.setText(idDate.getKana());
             edit_twitter.setText(idDate.getTwitterID());
-            edit_days_ago.setText(String.valueOf(idDate.getNotif_month()));
             edit_memo.setText(idDate.getMemo());
-            tamura_flag = idDate.isYukarin();
-            yesterday_flag = idDate.isNotif_yest();
-            today_flag = idDate.isNotif_today();
-            spinnerRepetition.setSelection(idDate.getNotif_week());
             imgSetting = idDate.getImage();
+            tamura_flag = idDate.isYukarin();
+            notifMonth_flag=idDate.getNotif_month();
+            notifWeek_flag=idDate.getNotif_week();
+            notifYesterday_flag = idDate.isNotif_yest();
+            notifToday_flag = idDate.isNotif_today();
+            cus_date[0]=idDate.getNotif_cus1();
+            cus_date[1]=idDate.getNotif_cus2();
+            cus_date[2]=idDate.getNotif_cus3();
+
+            //配列に入力するため三回回す
+            for(int i=0;i<3;i++){
+                //最初は0(チェック入ってない物を避けるため)
+                notifCus_flag[i]=0;
+                if(cus_date[i]!=0){
+                    //カスタムに何か入ってる時はフラグ立てる
+                    notifCus_flag[i]=1;
+                    //それの色を黒に
+                    cus_text[i].setTextColor(Color.BLACK);
+                    //何か入ってる時は入ってる日付も出力する
+                    cus_text[i].setText(
+                                    String.valueOf(OutCale(cus_date[i],"year"))+"/"+
+                                    String.valueOf(OutCale(cus_date[i],"month"))+"/"+
+                                    String.valueOf(OutCale(cus_date[i],"day")));
+                }
+            }
+            //画像の名前を読み込みます
+            img_name=idDate.getImage();
+            small_img_name=idDate.getSmallImage();
+            //名前の後ろの「.jpg」のみ取り除きます
+            img_name=CutString(img_name,4);
+            small_img_name=CutString(small_img_name,4);
 
             //誕生年月日の初期値を設定年月日へ
             birthYear=idDate.getYear();
             birthMonth=idDate.getMonth();
             birthMonth--;
             birthDay=idDate.getDay();
-
+            //ダイアログ用変数に代入
             temporary_year=birthYear;
             temporary_month=birthMonth;
             temporary_day=birthDay;
 
-            //読み込んだ段階でデータからフラグを適用
+            //読み込んだ段階でデータから全フラグをチェックボックスに適用
             CheckBoxChange(tamura_check, tamura_flag);
-            CheckBoxChange(yesterday_check, yesterday_flag);
-            CheckBoxChange(today_check, today_flag);
+            CheckBoxChange(month_check,notifMonth_flag);
+            CheckBoxChange(week_check,notifWeek_flag);
+            CheckBoxChange(yesterday_check, notifYesterday_flag);
+            CheckBoxChange(today_check, notifToday_flag);
+            for(int i=0;i<3;i++){
+                CheckBoxChange(cus_check[i],notifCus_flag[i]);
+            }
         } else{//新規作成として呼ばれた場合
-            BirthTodaySet();//新規作成の場合は現在の日時を誕生日欄にセット
-            imgSetting = "null.jpg";//新規作成の場合でも画像の名前を設定しておく
+            //新規作成の場合は現在の日時を誕生日欄にセット
+            temporary_year=getToday("year");
+            temporary_month=getToday("month");
+            temporary_day=getToday("day");
+            temporary_month=monthSetting-1;//Todo 初期"月"設定テスト(修復時：消せ)
+            //それぞれ代入
+            birthYear=temporary_year;
+            birthMonth=temporary_month;
+            birthDay=temporary_day;
+            //新規作成の場合でも画像の名前を設定しておく
+            imgSetting = "null.jpg";
         }
-
         //誕生日と年齢表示
         birthMonth++;
         drawBirthAndOld();
@@ -456,13 +517,13 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         keyBoad=true;
     }
 
-    public void EditAgo(View v) {
-        //フォーカスon
-        EditTextClick(edit_days_ago);
-        //キーボード表示
-        inputMethodManager.showSoftInput(v, InputMethodManager.SHOW_FORCED);
-        keyBoad=true;
-    }
+//    public void EditAgo(View v) {
+//        //フォーカスon
+//        EditTextClick(edit_days_ago);
+//        //キーボード表示
+//        inputMethodManager.showSoftInput(v, InputMethodManager.SHOW_FORCED);
+//        keyBoad=true;
+//    }
 
     //画像クリック時
     public void UserView(View v) {
@@ -480,9 +541,10 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
 
     //誕生日クリック時
     public void BirthDay(View v) {
-        DatePickerSet();
+        DatePickerSet(3);
         // 日付設定ダイアログの表示
-        datePickerDialog.show();
+        PickerDialog = new DatePickerDialog(this, DateSetListener, temporary_year, temporary_month, temporary_day);
+        PickerDialog.show();
     }
 
     //カテゴリ追加
@@ -491,6 +553,21 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         addCategory.show();
     }
 
+    //カスタム用テキストクリック時
+    public void cusText(View v) {
+        String string = String.valueOf(v.getTag());
+        int num = Integer.parseInt(string);
+        if (notifCus_flag[num] == 1) {
+            //ok時の処理の設定
+            DatePickerSet(num);
+            //ダイアログ生成
+            PickerDialog = new DatePickerDialog(this, DateSetListener,
+                    OutCale(cus_date[num], "year"),
+                    OutCale(cus_date[num], "month"),//カレンダーの月がズレるので合わせます
+                    OutCale(cus_date[num], "day"));
+            PickerDialog.show();
+        }
+    }
     //////////////////////////////////////////////////
 
 
@@ -499,7 +576,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
     //関連付けまとめ
     public void Association() {
         //繰り返し通知スピナーの関連付け
-        spinnerRepetition = (Spinner) findViewById(R.id.spinner2);
+        //spinnerRepetition = (Spinner) findViewById(R.id.spinner2);
         //カテゴリスピナーの関連付け
         spinnerCategory = (Spinner) findViewById(R.id.spinner1);
         //年齢表示の関連付け
@@ -513,7 +590,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         //twitterid入力欄の関連付け
         edit_twitter = (EditText) findViewById(R.id.twitter);
         //通知は何日前かの入力欄の関連付け
-        edit_days_ago = (EditText) findViewById(R.id.ago);
+        //edit_days_ago = (EditText) findViewById(R.id.ago);
         //メモ入力欄の関連付け
         edit_memo = (EditText) findViewById(R.id.Memo);
         //キーボード表示を制御（出したり消したり）するためのオブジェクトの関連付け
@@ -522,10 +599,22 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         user_view = (ImageView) findViewById(R.id.userview);
         //田村チェックボックスの関連付け
         tamura_check = (CheckBox) findViewById(R.id.TamuraCheck);
+        //一ヶ月前に通知するかどうかのチェックボックスの関連付け
+        month_check = (CheckBox) findViewById(R.id.MonthCheck);
+        //一週間前に通知するかどうかのチェックボックスの関連付け
+        week_check = (CheckBox) findViewById(R.id.WeekCheck);
         //前日に通知するかどうかのチェックボックスの関連付け
         yesterday_check = (CheckBox) findViewById(R.id.YesterdayCheck);
         //当日に通知するかどうかのチェックボックスの関連付け
         today_check = (CheckBox) findViewById(R.id.TodayCheck);
+        //カスタム通知で通知するかどうかのチェックボックスの関連付け
+        cus_check[0]=(CheckBox)findViewById(R.id.CutomCheck1);
+        cus_check[1]=(CheckBox)findViewById(R.id.CutomCheck2);
+        cus_check[2]=(CheckBox)findViewById(R.id.CutomCheck3);
+        //カスタム通知の日時表示用のテキストの関連付け
+        cus_text[0]=(TextView)findViewById(R.id.cusText1);
+        cus_text[1]=(TextView)findViewById(R.id.cusText2);
+        cus_text[2]=(TextView)findViewById(R.id.cusText3);
         //DiaLog用のxmlとの連携の関連付け
         inflater = LayoutInflater.from(UserRegisterActivity.this);
         viewV = inflater.inflate(R.layout.dialog_user_register, null);
@@ -536,58 +625,40 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
     public void EditSetString(EditText edit,String string) {
         //String型の宣言
         String text;
+        //数値の宣言
+        int num;
         // エディットテキストのテキストを全選択します
         edit.selectAll();
         // エディットテキストのテキストを取得します
         text = edit.getText().toString();
         //editTextの初期化
         edit.getEditableText().clear();
-
         //textの長さが0でない(何か入ってる)場合
         if(text.length()!=0) {
             //textから数値のみ取り出す
-            days_ago = Integer.parseInt(text.replaceAll("[^0-9]",""));
+            num = Integer.parseInt(text.replaceAll("[^0-9]",""));
             //「日前」を加えて表示
-            edit.setText(String.valueOf(days_ago)+string);
+            edit.setText(String.valueOf(num)+string);
         }
     }
 
-    //指定されたEditTextの指定文字数から後ろ全てを消すメソッド（("ABCD",2)➝AB）
-    public void EditCutString(EditText edit,int num){
-        int size= (int) edit.getTextSize();
-        String string;
-
+    //Stringの指定文字数から後ろ全てを消すメソッド（("ABCD",2)➝AB）
+    public String CutString(String string,int num){
+        //指定されたString型・・・①
+        //String型の文字数を取得
+        int size= (int) string.length();
+        //結果用のString型を宣言
+        String sumString;
+        //文字数から指定された分の文字数を引く・・・②
         size=size-num;
-
-        string= String.valueOf(edit.getText());
-
-        string=string.substring(0,size);
-
-        edit.setText(string);
+        //①のString型から前から数えて②の数の分だけ取得
+        sumString=string.substring(0,size);
+        //結果を返す
+        return sumString;
     }
 
     //EditTextのキーボード関連の処理のメソッド
     public void EditTextSet(final EditText edit) {
-
-        //フォーカスが付いた時・外れた時
-        edit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus){
-                    //受け取った時
-
-//                    if(edit_days_ago.getText()!=null) {
-//                        EditCutString(edit_days_ago, 2);
-//                    }
-
-                }else{
-                    //離れた時
-                    //edit_days_ago用処理
-                    EditSetString(edit_days_ago,"日前");
-                }
-            }
-        });
-
         //EditTextにリスナーをセット
         edit.setOnKeyListener(new View.OnKeyListener() {
 
@@ -608,7 +679,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
                     // エディットテキストのテキストを全選択します
                     edit.selectAll();
 
-                    keyBoad=false;
+                    keyBoad=false;//キーボードが閉じてる状態のフラグ
 
                     return true;
                 }
@@ -639,6 +710,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int position, long id) {
                 //処理
+                //String型変数user_categoryに選択されたアイテムを代入
                 user_category=(String) spinnerCategory.getItemAtPosition(position);
             }
             @Override
@@ -648,94 +720,117 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
     }
 
     //繰り返し通知の選択用spinner設定
-    public void spinnerRepetitionSet() {
-        // ArrayAdapterの宣言
-        ArrayAdapter<String> adapter
-                = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, spinnerRepetitionItems);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // spinner に adapter をセット
-        spinnerRepetition.setAdapter(adapter);
-        // リスナーを登録
-        spinnerRepetition.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            //　アイテムが選択された時
-            public void onItemSelected(AdapterView<?> parent, View viw, int arg2, long arg3) {
-                Spinner spinner = (Spinner) parent;
-                String item = (String) spinner.getSelectedItem();
+//    public void spinnerRepetitionSet() {
+//        // ArrayAdapterの宣言
+//        ArrayAdapter<String> adapter
+//                = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, spinnerRepetitionItems);
+//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        // spinner に adapter をセット
+//        spinnerRepetition.setAdapter(adapter);
+//        // リスナーを登録
+//        spinnerRepetition.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            //　アイテムが選択された時
+//            public void onItemSelected(AdapterView<?> parent, View viw, int arg2, long arg3) {
+//                Spinner spinner = (Spinner) parent;
+//                String item = (String) spinner.getSelectedItem();
+//
+//                //それぞれの選択肢が選択された時の処理
+//                if (item.equals(spinnerRepetitionItems[1])) {
+//                    reptition_loop=1;
+//                }
+//                else if (item.equals(spinnerRepetitionItems[2])) {
+//                    reptition_loop=2;
+//                }
+//                else if (item.equals(spinnerRepetitionItems[3])) {
+//                    reptition_loop=3;
+//                }
+//                else {//初期値
+//                    reptition_loop=0;
+//                }
+//            }
+//            //　アイテムが選択されなかった
+//            public void onNothingSelected(AdapterView<?> parent) {
+//            }
+//        });
+//    }
 
-                //それぞれの選択肢が選択された時の処理
-                if (item.equals(spinnerRepetitionItems[1])) {
-                    reptition_loop=1;
-                }
-                else if (item.equals(spinnerRepetitionItems[2])) {
-                    reptition_loop=2;
-                }
-                else if (item.equals(spinnerRepetitionItems[3])) {
-                    reptition_loop=3;
-                }
-                else {//初期値
-                    reptition_loop=0;
-                }
-            }
-            //　アイテムが選択されなかった
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-    }
-
-    //現在の日付の取得
-    public void BirthTodaySet() {
+    //現在の日付の取得("year""month""day"で現在の年月日のどれかを取得)
+    public int getToday(String wantType) {
         ////////// 日付情報の初期設定 //////////
-
+        int year,month,day;
         //現在の年月日の取得と代入
         calendar = Calendar.getInstance();
-        temporary_year = calendar.get(Calendar.YEAR); // 年
-        temporary_month = calendar.get(Calendar.MONTH); // 月
-        temporary_day = calendar.get(Calendar.DAY_OF_MONTH); // 日
+        year = calendar.get(Calendar.YEAR); // 年
+        month = calendar.get(Calendar.MONTH); // 月
+        day = calendar.get(Calendar.DAY_OF_MONTH); // 日
 
-        nowCale=calendar;//現在年月日のカレンダーの作成
+        month++;//ズレ防止
 
-        temporary_month=monthSetting-1;//Todo 初期"月"設定テスト(修復時：消せ)
-
-        //それぞれ代入
-        birthYear=temporary_year;
-        birthMonth=temporary_month;
-        birthDay=temporary_day;
-
+        //年を返す
+        if(wantType.equals("year")){
+            return year;
+        }
+        //月を返す
+        else if(wantType.equals("month")){
+            return month;
+        }
+        //日を返す
+        else if(wantType.equals("day")){
+            return day;
+        }
+        //例外処理
+        else{
+            return 0;
+        }
         ////////////////////////////////////////
     }
 
     //DatePickerの設定
-    public void DatePickerSet() {
+    public void DatePickerSet(final int setType) {
         // 日付設定時のリスナ作成
         //ok押した時の処理
-        DatePickerDialog.OnDateSetListener DateSetListener = new DatePickerDialog.OnDateSetListener() {
+        DateSetListener = new DatePickerDialog.OnDateSetListener() {
             //okボタンを押したときの年月日を取得できる
             public void onDateSet(DatePicker datePicker, int year,
                                   int monthOfYear, int dayOfMonth) {
-                //押されてる日時を変数へ
-                temporary_year = year;
-                temporary_month = monthOfYear;
-                temporary_day = dayOfMonth;
 
-                temporary_month++;
+                if(setType==3) {
+                    //押されてる日時を変数へ
+                    temporary_year = year;
+                    temporary_month = monthOfYear;
+                    temporary_day = dayOfMonth;
 
-                //それぞれ代入
-                birthYear=temporary_year;
-                birthMonth=temporary_month;
-                birthDay=temporary_day;
+                    int moNth=temporary_month+1;//カレンダーのズレを直す
 
-                //描画
-                drawBirthAndOld();
+                    //それぞれ代入
+                    birthYear = temporary_year;
+                    birthMonth = moNth;
+                    birthDay = temporary_day;
+                    //描画
+                    drawBirthAndOld();
+                }
+                else{
+                    //押されてる日時を変数へ
+                    int moNth=monthOfYear+1;//カレンダーのズレを直す
+                    //カスタム通知日として表示
+                    cus_text[setType].setText(
+                                    String.valueOf(year)+ "/"+
+                                    String.valueOf(moNth)+"/"+
+                                    String.valueOf(dayOfMonth));
+                    //カスタム通知日を8桁で代入
+                    cus_date[setType]=OutNum(year,monthOfYear,dayOfMonth);
+                }
             }
         };
-        // 日付設定ダイアログの作成・リスナの登録
-        datePickerDialog = new DatePickerDialog(this, DateSetListener, temporary_year, temporary_month, temporary_day);
     }
 
     //誕生日と年齢表示
     public void drawBirthAndOld(){
         if(tamura_flag==0) {
-            user_birthday.setText(birthYear + "/" + birthMonth + "/" + birthDay);
+            user_birthday.setText(
+                            String.valueOf(birthYear) + "/" +
+                            String.valueOf(birthMonth) + "/" +
+                            String.valueOf(birthDay));
             //年齢表示
             if (YearsOldSet(birthYear, birthMonth, birthDay) > 1000) {
                 user_yearsold.setText("");
@@ -821,7 +916,6 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         else if((birthmonth==nowmonth)&&(birthday>nowday)) {//日が違う場合の処理（例：現年月日2016/1/1で誕生日2015/1/10でも「1歳」と表示されてしまうので）
             yearsold=yearsold-1;//年齢を一歳下げます
         }
-
         //年齢を返す
         return yearsold;
     }
@@ -839,22 +933,51 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
                 if(checked==true) {
                     switch (flag){
                         case 0:
+                        case 1:
+                        case 2:
+                            notifCus_flag[flag] =1;
+                            cus_text[flag].setTextColor(Color.BLACK);
+                            DatePickerSet(flag);
+                            if(cus_date[flag]!=0) {
+                                PickerDialog = new DatePickerDialog(UserRegisterActivity.this, DateSetListener,
+                                        OutCale(cus_date[flag], "year"),
+                                        OutCale(cus_date[flag], "month"),
+                                        OutCale(cus_date[flag], "day"));
+                            }
+                            else{
+                                PickerDialog = new DatePickerDialog(UserRegisterActivity.this, DateSetListener,getToday("year"),getToday("month")-1,getToday("day"));
+                            }
+                            PickerDialog.show();
+                            break;
+                        case 3:
                             //年齢不詳
                             tamura_flag = 1;
                             user_birthday.setText(birthMonth + "/" + birthDay);
                             user_yearsold.setText("不明");
                             break;
-                        case 1:
-                            yesterday_flag =1;
+                        case 4:
+                            notifMonth_flag =1;
                             break;
-                        case 2:
-                            today_flag =1;
+                        case 5:
+                            notifWeek_flag =1;
+                            break;
+                        case 6:
+                            notifYesterday_flag =1;
+                            break;
+                        case 7:
+                            notifToday_flag =1;
                             break;
                     }
                 }
                 else {
                     switch (flag){
                         case 0:
+                        case 1:
+                        case 2:
+                            notifCus_flag[flag] =0;
+                            cus_text[flag].setTextColor(Color.GRAY);
+                            break;
+                        case 3:
                             tamura_flag = 0;
                             user_birthday.setText(birthYear+"/"+birthMonth + "/" + birthDay);
                             //年齢表示
@@ -864,11 +987,17 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
                                 user_yearsold.setText(String.valueOf(YearsOldSet(birthYear, birthMonth, birthDay)) + "歳");//年齢を算出して「歳」を付けて表示
                             }
                             break;
-                        case 1:
-                            yesterday_flag =0;
+                        case 4:
+                            notifMonth_flag =0;
                             break;
-                        case 2:
-                            today_flag =0;
+                        case 5:
+                            notifWeek_flag =0;
+                            break;
+                        case 6:
+                            notifYesterday_flag =0;
+                            break;
+                        case 7:
+                            notifToday_flag =0;
                             break;
                     }
                 }
@@ -883,6 +1012,42 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         }
         else {
             Cb.setChecked(true);
+        }
+    }
+
+    //数値を並べて出す(例：(10,20,30)➝102030)
+    public int OutNum(int year,int month,int day){
+        int cal1,cal2;
+        cal1=year*10000;
+        cal2=month*100;
+        return cal1+cal2+day;
+    }
+
+    //数値を年月日毎に出す
+    public int OutCale(int numDate,String wantType){
+        int year;
+        int month;
+        int day;
+        int cal1,cal2;
+
+        year=numDate/10000;
+        cal1=year*10000;
+        cal2=numDate-cal1;
+        month=cal2/100;
+        cal1=month*100;
+        day=cal2-cal1;
+
+        if(wantType.equals("year")){
+            return year;
+        }
+        else if(wantType.equals("month")){
+            return month;
+        }
+        else if(wantType.equals("day")){
+            return day;
+        }
+        else{
+            return 0;
         }
     }
 
@@ -995,15 +1160,18 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             }
         }
         allData.setTwitterID(twitter_id);
-
         allData.setMemo(edit_memo.getText().toString());
         allData.setImage(img_name + ".jpg");
         allData.setSmallImage(small_img_name + ".jpg");
         allData.setYukarin(tamura_flag);
-        allData.setNotif_yest(yesterday_flag);
-        allData.setNotif_today(today_flag);
-        allData.setNotif_month(days_ago);
-        allData.setNotif_week(reptition_loop);
+        allData.setNotif_month(notifMonth_flag);
+        allData.setNotif_week(notifWeek_flag);
+        allData.setNotif_yest(notifYesterday_flag);
+        allData.setNotif_today(notifToday_flag);
+        allData.setNotif_cus1(cus_date[0]);
+        allData.setNotif_cus2(cus_date[1]);
+        allData.setNotif_cus3(cus_date[2]);
+
         //dbに書き込み
         if(id==0) {
             //新規作成の場合はSQLの追加
@@ -1029,7 +1197,6 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         ALLLOG();
         }
 
-
     //Log
     public void ALLLOG() {
         Log.d("ALLLOG",String.valueOf(id));
@@ -1042,9 +1209,12 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         Log.d("ALLLOG",img_name+".jpg");
         Log.d("ALLLOG",img_name+".jpg");
         Log.d("ALLLOG",String.valueOf(tamura_flag));
-        Log.d("ALLLOG",String.valueOf(yesterday_flag));
-        Log.d("ALLLOG",String.valueOf(today_flag));
-        Log.d("ALLLOG",String.valueOf(days_ago));
-        Log.d("ALLLOG",String.valueOf(reptition_loop));
+        Log.d("ALLLOG",String.valueOf(notifMonth_flag));
+        Log.d("ALLLOG",String.valueOf(notifWeek_flag));
+        Log.d("ALLLOG",String.valueOf(notifYesterday_flag));
+        Log.d("ALLLOG",String.valueOf(notifToday_flag));
+        Log.d("ALLLOG",String.valueOf(cus_date[0]));
+        Log.d("ALLLOG",String.valueOf(cus_date[1]));
+        Log.d("ALLLOG",String.valueOf(cus_date[2]));
     }
 }
