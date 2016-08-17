@@ -110,33 +110,6 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
         listView[10] = (ListView) findViewById(R.id.list11).findViewById(R.id.listView1);
         listView[11] = (ListView) findViewById(R.id.list12).findViewById(R.id.listView1);
 
-        ///////////////////////////////////////////////////////////////
-//        Data testData = new Data();
-//
-//        for (int i =0;i<20;i++){
-//
-//            //Data型にデータをセット
-//            testData.setName("西村1111");
-//            testData.setKana("にしむら");
-//            testData.setBirthday(19970616);
-//            testData.setYear(1997);
-//            testData.setMonth(1);
-//            testData.setDay(16);
-//            testData.setCategory("友達");
-//            testData.setTwitterID("Taiga_Natto");
-//            testData.setMemo("教科書を見て実装して欲しい");
-//            testData.setImage("Imageデータ");
-//            testData.setSmallImage("Imageデータ");
-//            testData.setPresentFlag(0);
-//            testData.setYukarin(1);
-//            testData.setNotif_yest(1);
-//            testData.setNotif_today(1);
-//            testData.setNotif_month(3);
-//            testData.setNotif_week(3);
-//            //dbに書き込み
-//            dbAssist.insertData(testData, this);
-//        }
-
         //12ヶ月分セットするために12回ループさせます。
         for (int fullReturn = 0; fullReturn < 12; fullReturn++) {
 
@@ -189,53 +162,6 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
             //listView.setEmptyView(findViewById(R.id.listView));
             listView[fullReturn].setAdapter(adapter);
 
-        }
-
-
-        FloatingActionButton add = (FloatingActionButton) findViewById(R.id.add);
-        if (add != null) {
-            add.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(GestureDecActivity.this, UserRegisterActivity.class);
-
-                    intent.putExtra("month", page + 1);//Todo 初期"月"設定テスト(修復時：消せ)
-
-                    startActivity(intent);
-//                    Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                            .setAction("Action", null).show();
-                }
-            });
-
-            // GestureDetectorの生成
-            gestureDetector = new GestureDetector(getApplicationContext(), this);
-
-            horizontalScrollView = (HorizontalScrollView) findViewById(R.id.hsv_main);
-            horizontalScrollView.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    // GestureDetectorにイベントを委譲する
-                    boolean result = gestureDetector.onTouchEvent(event);
-
-                    // スクロールが発生した後に画面から指を離した時
-                    if ((event.getAction() == MotionEvent.ACTION_UP) && scrollFlg) {
-                        switch (slideLimitFlg) {
-                            case SCROLL_NONE:
-                                break;
-                            case SCROLL_LEFT:
-                                setPage(true);
-                                break;
-                            case SCROLL_RIGHT:
-                                setPage(false);
-                                break;
-                        }
-                        // 指定ページへスクロールする
-                        horizontalScrollView.scrollTo(page * displayWidth,
-                                displayHeight);
-                    }
-                    return result;
-                }
-            });
         }
         Log.d("onResume", "onResume");
         super.onResume();
