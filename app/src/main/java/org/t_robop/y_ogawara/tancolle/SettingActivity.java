@@ -9,58 +9,70 @@ import android.widget.CheckBox;
 
 public class SettingActivity extends AppCompatActivity {
 
+    //全体通知設定用チェックボックスの宣言
     CheckBox allNotif;
-    Boolean allNotifType=false;
-
+    //全体通知設定のフラグ(初期はonで)
+    Boolean allNotifType=true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
-
+        //全体通知設定用チェックボックスの関連付け
         allNotif=(CheckBox)findViewById(R.id.allnotif);
-
+        //チェックボックスのリスナー設定
         checkBoxSet();
-
+        //preferenceの「Setting」をプライベートモードで開く
         SharedPreferences pref = getSharedPreferences("Setting", MODE_PRIVATE);
-        allNotifType = pref.getBoolean("allNotifType", false);
-
+        //開いたpreferenceの中の「allNotifType」の値を取得（保存されてない時はtrueを取得）
+        allNotifType = pref.getBoolean("allNotifType", true);
+        //取得したBoolean型に応じてチェックを変更
         allNotif.setChecked(allNotifType);
     }
-
+    //表示設定クリック時
     public void drawsetting(View v){
-        Intent intent = new Intent(this, SettingDrawActivity.class);
-        startActivity(intent);
+        //表示設定用Activityに飛ぶ
+            Intent intent = new Intent(this, SettingDrawActivity.class);
+            startActivity(intent);
+        /////
     }
+    //カテゴリ設定クリック時
+    public void categorysetting(View v){
 
+    }
+    //ライセンスクリック時
     public void license(View v){
 
     }
-
-    //バックしたときの処理
+    //端末のバックボタンクリック時
     @Override
     public void onBackPressed() {
-
         //allNotifType(通知設定)の保存
-        SharedPreferences preferAllNotif;
-        preferAllNotif = getSharedPreferences("Setting", MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferAllNotif.edit();
-        editor.putBoolean("allNotifType", allNotifType);
-        editor.commit();
-
+            //preferenceの宣言
+            SharedPreferences preferAllNotif;
+            //preferenceの中の「Setting」をプライベートモードで開く
+            preferAllNotif = getSharedPreferences("Setting", MODE_PRIVATE);
+            //preferenceEditorの宣言
+            SharedPreferences.Editor editor = preferAllNotif.edit();
+            //開いたpreferenceの中の「allNotifType」の値を変更する
+            editor.putBoolean("allNotifType", allNotifType);
+            //editor終了
+            editor.commit();
+        /////
+        //Activity終了
         finish();
     }
-
+    //チェックボックスのリスナー登録
     public void checkBoxSet(){
-        // チェックボックスがクリックされた時に呼び出されるコールバックリスナーを登録します
-        allNotif.setOnClickListener(new View.OnClickListener() {
-            @Override
-            // チェックボックスがクリックされた時に呼び出されます
-            public void onClick(View v) {
-
-                // チェックボックスのチェック状態を取得します
-                allNotifType=allNotif.isChecked();
-
-            }
-        });
+        //チェックボックスがクリックされた時に呼び出されるコールバックリスナーを登録します
+            allNotif.setOnClickListener(new View.OnClickListener() {
+                @Override
+                // チェックボックスがクリックされた時
+                    public void onClick(View v) {
+                        // チェックボックスのチェック状態を取得します
+                        allNotifType=allNotif.isChecked();
+                    }
+                /////
+            });
+        /////
     }
 }
