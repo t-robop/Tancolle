@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".GestureDecActivity"
+    tools:showIn="@layout/activity_main">
+
+        <HorizontalScrollView
+            android:id="@+id/hsv_main"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <LinearLayout
+                android:id="@+id/ll_main"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <include
+                    android:id="@+id/list1"
+                    layout="@layout/activity_main_list" />
+
+                <include
+                    android:id="@+id/list2"
+                    layout="@layout/activity_main_list"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginLeft="100dp" />
+
+                <include
+                    android:id="@+id/list3"
+                    layout="@layout/activity_main_list" />
+
+                <include
+                    android:id="@+id/list4"
+                    layout="@layout/activity_main_list" />
+
+                <include
+                    android:id="@+id/list5"
+                    layout="@layout/activity_main_list" />
+
+                <include
+                    android:id="@+id/list6"
+                    layout="@layout/activity_main_list" />
+
+                <include
+                    android:id="@+id/list7"
+                    layout="@layout/activity_main_list" />
+
+                <include
+                    android:id="@+id/list8"
+                    layout="@layout/activity_main_list" />
+
+                <include
+                    android:id="@+id/list9"
+                    layout="@layout/activity_main_list" />
+
+                <include
+                    android:id="@+id/list10"
+                    layout="@layout/activity_main_list" />
+
+                <include
+                    android:id="@+id/list11"
+                    layout="@layout/activity_main_list" />
+
+                <include
+                    android:id="@+id/list12"
+                    layout="@layout/activity_main_list" />
+
+
+            </LinearLayout>
+
+        </HorizontalScrollView>
+</RelativeLayout>
