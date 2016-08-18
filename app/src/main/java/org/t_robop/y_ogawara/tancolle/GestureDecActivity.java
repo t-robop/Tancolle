@@ -68,7 +68,7 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
                 //AlertDialog
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
                 //alertDialog.setTitle("");          //タイトル
-                alertDialog.setMessage("顔写真を追加する際にストレージへのアクセスが必要です。次の画面で許可を押してください。");      //内容
+                alertDialog.setMessage("顔写真を追加する際にストレージへのアクセスが必要です。" + "\n" + "次の画面で許可を押してください。");      //内容
                 alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         Log.d("AlertDialog", "Positive which :" + which);
