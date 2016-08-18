@@ -23,8 +23,8 @@ public class Notifier extends BroadcastReceiver {
             //通知オブジェクトの生成
             Notification noti = new NotificationCompat.Builder(content)
                     .setTicker(AlarmActivity.text)
-                    .setContentTitle("通知")
-                    .setContentText("設定した時間がきました")
+                    .setContentTitle("たんこれ！")
+                    .setContentText(AlarmActivity.text)
                     .setSmallIcon(R.mipmap.ic_launcher)
                     .setVibrate(new long[]{0, 200, 100, 200, 100, 200})
                     .setAutoCancel(true)
