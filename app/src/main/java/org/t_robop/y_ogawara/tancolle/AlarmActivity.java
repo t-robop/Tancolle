@@ -16,6 +16,7 @@ import java.util.Date;
 public class AlarmActivity extends AppCompatActivity {
     static String text;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -91,7 +92,7 @@ public class AlarmActivity extends AppCompatActivity {
         long dateTimeFrom = dateFrom.getTime(); //現在の日付のミリ秒
 
 
-//TODO てすとおおおおおおおおおぶおおおおおおおおおおおおおおおおおおおおおおお日付単位じゃなくて分単位！！
+//TODO てすとおおおおおおおおおぶおおおおおおおおおおおおおおおおおおおおおお
         if(Mnotif==1){ //一ヶ月前にチェックがついていたら
             Calendar nextBirth = Calendar.getInstance(); //カレンダー型の宣言
             if(num==0){ //numを使ってなければ（まだ誕生日が来てなければ）
@@ -237,7 +238,8 @@ public class AlarmActivity extends AppCompatActivity {
             int custum3day=(int)cus3day;
             Calendar triggerTime = Calendar.getInstance();
             triggerTime.add(Calendar.MINUTE, custum3day);
-            text =String.valueOf(birthmonth)+"/"+String.valueOf(birthday)+"は"+(name)+"さんの誕生日です";
+            text = "にゃあああああああ";
+            //text =String.valueOf(birthmonth)+"/"+String.valueOf(birthday)+"は"+(name)+"さんの誕生日です";
             //設定した日時で発行するIntentを生成
             Intent alarmCus3 = new Intent(AlarmActivity.this, Notifier.class);
             PendingIntent sender = PendingIntent.getBroadcast(AlarmActivity.this, 6, alarmCus3, PendingIntent.FLAG_UPDATE_CURRENT);
