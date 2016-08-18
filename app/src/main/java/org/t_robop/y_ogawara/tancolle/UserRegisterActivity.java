@@ -18,6 +18,7 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -138,6 +139,8 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_register);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         //関連付け
         Association();
         //初期のカスタムテキストの色の設定
@@ -530,14 +533,6 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         keyBoad=true;
     }
 
-//    public void EditAgo(View v) {
-//        //フォーカスon
-//        EditTextClick(edit_days_ago);
-//        //キーボード表示
-//        inputMethodManager.showSoftInput(v, InputMethodManager.SHOW_FORCED);
-//        keyBoad=true;
-//    }
-
     //画像クリック時
     public void UserView(View v) {
         if (Build.VERSION.SDK_INT < 19) {
@@ -731,41 +726,6 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             }
         });
     }
-
-    //繰り返し通知の選択用spinner設定
-//    public void spinnerRepetitionSet() {
-//        // ArrayAdapterの宣言
-//        ArrayAdapter<String> adapter
-//                = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, spinnerRepetitionItems);
-//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        // spinner に adapter をセット
-//        spinnerRepetition.setAdapter(adapter);
-//        // リスナーを登録
-//        spinnerRepetition.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            //　アイテムが選択された時
-//            public void onItemSelected(AdapterView<?> parent, View viw, int arg2, long arg3) {
-//                Spinner spinner = (Spinner) parent;
-//                String item = (String) spinner.getSelectedItem();
-//
-//                //それぞれの選択肢が選択された時の処理
-//                if (item.equals(spinnerRepetitionItems[1])) {
-//                    reptition_loop=1;
-//                }
-//                else if (item.equals(spinnerRepetitionItems[2])) {
-//                    reptition_loop=2;
-//                }
-//                else if (item.equals(spinnerRepetitionItems[3])) {
-//                    reptition_loop=3;
-//                }
-//                else {//初期値
-//                    reptition_loop=0;
-//                }
-//            }
-//            //　アイテムが選択されなかった
-//            public void onNothingSelected(AdapterView<?> parent) {
-//            }
-//        });
-//    }
 
     //現在の日付の取得("year""month""day"で現在の年月日のどれかを取得)
     public int getToday(String wantType) {
