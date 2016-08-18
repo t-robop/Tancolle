@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.t_robop.y_ogawara.tancolle">
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/tancole_icon"
@@ -34,5 +36,6 @@
         <activity android:name=".ViewFlipperTestActivity">
 
         </activity>
+        <receiver android:name="Notifier"></receiver>
     </application>
 </manifest>

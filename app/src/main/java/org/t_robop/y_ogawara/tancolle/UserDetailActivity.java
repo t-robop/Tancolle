@@ -52,10 +52,14 @@ public class UserDetailActivity extends AppCompatActivity {
     Bitmap bitmap;
 
     @Override
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_detail);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
 
         Intent intent = getIntent();
         intentId = intent.getIntExtra("id", 1);
@@ -326,6 +330,5 @@ public class UserDetailActivity extends AppCompatActivity {
                 })
                 .show();
     }
-
 
 }
