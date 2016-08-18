@@ -14,7 +14,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class AlarmActivity extends AppCompatActivity {
-
+    static String text;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +39,7 @@ public class AlarmActivity extends AppCompatActivity {
         month = calendar.get(Calendar.MONTH) + 1; //0から11だから１個足す
         day = calendar.get(Calendar.DAY_OF_MONTH);
 
+
         Data data = dbAssist.idSelect(intentId, this); //データの取得
         birthyear = data.getYear();
         birthmonth = data.getMonth();
@@ -51,6 +52,7 @@ public class AlarmActivity extends AppCompatActivity {
         Log.d(String.valueOf(custum1),"test");
         custum2 = data.getNotif_cus2();
         custum3 = data.getNotif_cus3();
+        String name = data.getName();
         int num =0; //numの初期値を０にする
 
 
@@ -112,6 +114,8 @@ public class AlarmActivity extends AppCompatActivity {
             int Mday=(int)Mmsday;
             Calendar triggerTime = Calendar.getInstance();
             triggerTime.add(Calendar.MINUTE, Mday);	//
+
+            text = (name) + "さんの誕生日まで残り１ヶ月です";
             //設定した日時で発行するIntentを生成
             Intent alarmMonth = new Intent(AlarmActivity.this, Notifier.class);
             PendingIntent sender = PendingIntent.getBroadcast(AlarmActivity.this, 0, alarmMonth, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -128,6 +132,7 @@ public class AlarmActivity extends AppCompatActivity {
             //呼び出す日時を設定する
             Calendar triggerTime = Calendar.getInstance();
             triggerTime.add(Calendar.MINUTE, Wday);	//
+            text = (name) + "さんの誕生日まで残り１週間です";
             //設定した日時で発行するIntentを生成
             Intent alarmWeek = new Intent(AlarmActivity.this, Notifier.class);
             PendingIntent sender = PendingIntent.getBroadcast(AlarmActivity.this, 1, alarmWeek, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -144,6 +149,7 @@ public class AlarmActivity extends AppCompatActivity {
             //呼び出す日時を設定する
             Calendar triggerTime = Calendar.getInstance();
             triggerTime.add(Calendar.MINUTE, Yday);	//
+            text = (name) + "さんの誕生日まで残り１日です";
             //設定した日時で発行するIntentを生成
             Intent alarmYest= new Intent(AlarmActivity.this, Notifier.class);
             PendingIntent sender = PendingIntent.getBroadcast(AlarmActivity.this, 2, alarmYest, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -160,6 +166,7 @@ public class AlarmActivity extends AppCompatActivity {
             //呼び出す日時を設定する
             Calendar triggerTime = Calendar.getInstance();
             triggerTime.add(Calendar.MINUTE, Tday);	//
+            text = "今日は" + (name) + "さんの誕生日です!";
             //設定した日時で発行するIntentを生成
             Intent alarmToday = new Intent(AlarmActivity.this, Notifier.class);
             PendingIntent sender = PendingIntent.getBroadcast(AlarmActivity.this, 3, alarmToday, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -169,7 +176,7 @@ public class AlarmActivity extends AppCompatActivity {
         }
         if(custum1>0){
             int aaa=custum1/10000;
-            int bbb=custum1%10000;
+            int bbb=custum1%10000/100;
             int ccc=custum1%100;
             try{
                 datecus1 = sdf.parse(aaa + "/" + bbb + "/" + ccc); //1ヶ月前の日付を作る
@@ -179,8 +186,10 @@ public class AlarmActivity extends AppCompatActivity {
             long dateTimeCus1 = datecus1.getTime();//ミリ秒に変換
             long cus1day = (dateTimeCus1-dateTimeFrom)/(ms);
             int custum1day=(int)cus1day;
+            Log.d(String.valueOf(custum1day),"mikopero");
             Calendar triggerTime = Calendar.getInstance();
             triggerTime.add(Calendar.MINUTE, custum1day);	//
+            text =String.valueOf(birthmonth)+"/"+String.valueOf(birthday)+"は"+(name)+"さんの誕生日です";
             //設定した日時で発行するIntentを生成
             Intent alarmCus1 = new Intent(AlarmActivity.this, Notifier.class);
             PendingIntent sender = PendingIntent.getBroadcast(AlarmActivity.this, 4, alarmCus1, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -192,7 +201,7 @@ public class AlarmActivity extends AppCompatActivity {
 
         if(custum2>0){
             int aaa=custum2/10000;
-            int bbb=custum2%10000;
+            int bbb=custum2%10000/100;
             int ccc=custum2%100;
             try{
                 datecus2 = sdf.parse(aaa + "/" + bbb + "/" + ccc); //日付を作る
@@ -204,6 +213,7 @@ public class AlarmActivity extends AppCompatActivity {
             int custum2day=(int)cus2day;
             Calendar triggerTime = Calendar.getInstance();
             triggerTime.add(Calendar.MINUTE, custum2day);	//
+            text =String.valueOf(birthmonth)+"/"+String.valueOf(birthday)+"は"+(name)+"さんの誕生日です";
             //設定した日時で発行するIntentを生成
             Intent alarmCus2 = new Intent(AlarmActivity.this, Notifier.class);
             PendingIntent sender = PendingIntent.getBroadcast(AlarmActivity.this, 5, alarmCus2, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -215,7 +225,7 @@ public class AlarmActivity extends AppCompatActivity {
 
         if(custum3>0){
             int aaa=custum3/10000;
-            int bbb=custum3%10000;
+            int bbb=custum3%10000/100;
             int ccc=custum3%100;
             try{
                 datecus3 = sdf.parse(aaa + "/" + bbb + "/" + ccc); //1ヶ月前の日付を作る
@@ -227,6 +237,7 @@ public class AlarmActivity extends AppCompatActivity {
             int custum3day=(int)cus3day;
             Calendar triggerTime = Calendar.getInstance();
             triggerTime.add(Calendar.MINUTE, custum3day);
+            text =String.valueOf(birthmonth)+"/"+String.valueOf(birthday)+"は"+(name)+"さんの誕生日です";
             //設定した日時で発行するIntentを生成
             Intent alarmCus3 = new Intent(AlarmActivity.this, Notifier.class);
             PendingIntent sender = PendingIntent.getBroadcast(AlarmActivity.this, 6, alarmCus3, PendingIntent.FLAG_UPDATE_CURRENT);
