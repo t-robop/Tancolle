@@ -37,7 +37,10 @@ public class SettingActivity extends AppCompatActivity {
     }
     //カテゴリ設定クリック時
     public void categorysetting(View v){
-
+        //カテゴリ設定用Activityに飛ぶ
+            Intent intent = new Intent(this, SettingCategoryActivity.class);
+            startActivity(intent);
+        /////
     }
     //ライセンスクリック時
     public void license(View v){

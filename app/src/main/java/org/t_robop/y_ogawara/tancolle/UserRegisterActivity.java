@@ -1256,22 +1256,9 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         /////
         //プレファレンスにカテゴリの保存
         saveArray(categorylist, "StringItem");
-        //新規作成か編集かによって画面切り替え場所の変更
-            //新規作成の時
-                if (id == 0) {
-                    //MainへGo!
-                        Intent intent = new Intent(this, GestureDecActivity.class);
-                        startActivity(intent);
-                    /////
-                }
-            /////
-            //編集の時
-                else {
-                    //DetailへGo!
-                    finish();
-                }
-            /////
-        /////
+        //Activity消す
+        finish();
+
         ALLLOG();
         }
 
