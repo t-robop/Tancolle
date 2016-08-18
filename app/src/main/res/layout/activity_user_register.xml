@@ -24,10 +24,16 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <ScrollView
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="0dp">
+        android:paddingTop="60dp">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -505,5 +511,6 @@
 
     </ScrollView>
 
+    </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>
