@@ -92,44 +92,43 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(GestureDecActivity.this, UserRegisterActivity.class);
-
-                    intent.putExtra("month", page + 1);//Todo 初期"月"設定テスト(修復時：消せ)
-
+                    intent.putExtra("month", page + 1);
                     startActivity(intent);
                 }
             });
-
-            // GestureDetectorの生成
-            gestureDetector = new GestureDetector(getApplicationContext(), this);
-
-            horizontalScrollView = (HorizontalScrollView) findViewById(R.id.hsv_main);
-            horizontalScrollView.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    // GestureDetectorにイベントを委譲する
-                    boolean result = gestureDetector.onTouchEvent(event);
-
-                    // スクロールが発生した後に画面から指を離した時
-                    if ((event.getAction() == MotionEvent.ACTION_UP) && scrollFlg) {
-                        switch (slideLimitFlg) {
-                            case SCROLL_NONE:
-                                break;
-                            case SCROLL_LEFT:
-                                setPage(true);
-                                break;
-                            case SCROLL_RIGHT:
-                                setPage(false);
-                                break;
-                        }
-                        // 指定ページへスクロールする
-                        horizontalScrollView.scrollTo(page * displayWidth,
-                                displayHeight);
-                    }
-                    return result;
-                }
-            });
         }
+
+        // GestureDetectorの生成
+        gestureDetector = new GestureDetector(getApplicationContext(), this);
+
+        horizontalScrollView = (HorizontalScrollView) findViewById(R.id.hsv_main);
+        horizontalScrollView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                // GestureDetectorにイベントを委譲する
+                boolean result = gestureDetector.onTouchEvent(event);
+
+                // スクロールが発生した後に画面から指を離した時
+                if ((event.getAction() == MotionEvent.ACTION_UP) && scrollFlg) {
+                    switch (slideLimitFlg) {
+                        case SCROLL_NONE:
+                            break;
+                        case SCROLL_LEFT:
+                            setPage(true);
+                            break;
+                        case SCROLL_RIGHT:
+                            setPage(false);
+                            break;
+                    }
+                    // 指定ページへスクロールする
+                    horizontalScrollView.scrollTo(page * displayWidth,
+                            displayHeight);
+                }
+                return result;
+            }
+        });
     }
+
 
     @Override
     protected void onResume() {
