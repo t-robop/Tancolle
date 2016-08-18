@@ -798,46 +798,54 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         ////////////////////////////////////////
     }
 
-    //DatePickerの設定
+    //DatePicker(日付設定)のリスナー登録
     public void DatePickerSet(final int setType) {
-        // 日付設定時のリスナ作成
-        //ok押した時の処理
-        DateSetListener = new DatePickerDialog.OnDateSetListener() {
-            //okボタンを押したときの年月日を取得できる
-            public void onDateSet(DatePicker datePicker, int year,
-                                  int monthOfYear, int dayOfMonth) {
-
-                if(setType==3) {
-                    //押されてる日時を変数へ
-                    temporary_year = year;
-                    temporary_month = monthOfYear;
-                    temporary_day = dayOfMonth;
-
-                    int moNth=temporary_month+1;//カレンダーのズレを直す
-
-                    //それぞれ代入
-                    userBirthYear = temporary_year;
-                    userBirthMonth = moNth;
-                    userBirthDay = temporary_day;
-                    //描画
-                    drawBirthAndOld();
-                }
-                else{
-                    //押されてる日時を変数へ
-                    int moNth=monthOfYear+1;//カレンダーのズレを直す
-                    //カスタム通知日として表示
-                    textCus[setType].setText(
-                                    String.valueOf(year)+ "/"+
-                                    String.valueOf(moNth)+"/"+
-                                    String.valueOf(dayOfMonth));
-                    //カスタム通知日を8桁で代入
-                    userNotifCus[setType]=OutNum(year,moNth,dayOfMonth);
-                    Log.d("TeSt", String.valueOf(userNotifCus[setType]));
-                }
-            }
-        };
+        //ok押した時に処理するリスナーの登録
+            DateSetListener = new DatePickerDialog.OnDateSetListener() {
+                //okボタンを押した時（その時点で選択されてる年月日を取得できる）
+                    public void onDateSet(DatePicker datePicker, int year,
+                                          int monthOfYear, int dayOfMonth) {
+                        //誕生日セットの時の処理
+                            if(setType==3) {
+                                //押されてる日時をカレンダー生成用の変数へ
+                                    temporary_year = year;
+                                    temporary_month = monthOfYear;
+                                    temporary_day = dayOfMonth;
+                                /////
+                                //カレンダーのズレを直す
+                                int moNth=temporary_month+1;
+                                //誕生日変数に代入
+                                    userBirthYear = temporary_year;
+                                    userBirthMonth = moNth;
+                                    userBirthDay = temporary_day;
+                                /////
+                                //描画
+                                drawBirthAndOld();
+                            }
+                        /////
+                        //カスタム通知日セットの時の処理
+                            else{
+                                //カレンダーのズレを直した変数の作成
+                                int moNth=monthOfYear+1;
+                                //カスタム通知日として描画
+                                    textCus[setType].setText(
+                                                    String.valueOf(year)+ "/"+
+                                                    String.valueOf(moNth)+"/"+
+                                                    String.valueOf(dayOfMonth));
+                                /////
+                                //カスタム通知日を8桁で代入
+                                userNotifCus[setType]=OutNum(year,moNth,dayOfMonth);
+                                //okが押された時なのでチェックボックスをonに
+                                checkCus[setType].setChecked(true);
+                                //okが押された時なのでTextの色を黒に
+                                textCus[setType].setTextColor(Color.BLACK);
+                            }
+                        /////
+                    }
+                /////
+            };
+        /////
     }
-
     //誕生日と年齢表示
     public void drawBirthAndOld(){
         if(flagTamura ==0) {
@@ -934,89 +942,150 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         return yearsold;
     }
 
-    //CheckBox判定処理（tamura:0,yesterday:1,today:2）
+    //CheckBoxリスナー登録（cus:0~2,tamura:3,month:4,week:5,yesterday:6,today:7）
     public void CheckJudge(final CheckBox check, final int flag) {
         // チェックボックスがクリックされた時に呼び出されるコールバックリスナーを登録します
         check.setOnClickListener(new View.OnClickListener() {
             @Override
-            // チェックボックスがクリックされた時に呼び出されます
+            // チェックボックスがクリックされた時
             public void onClick(View v) {
                 // チェックボックスのチェック状態を取得します
                 boolean checked = check.isChecked();
-
-                if(checked==true) {
-                    switch (flag){
-                        case 0:
-                        case 1:
-                        case 2:
-                            flagNotifCus[flag] =1;
-                            textCus[flag].setTextColor(Color.BLACK);
-                            DatePickerSet(flag);
-                            if(userNotifCus[flag]!=0) {
-                                PickerDialog = new DatePickerDialog(UserRegisterActivity.this, DateSetListener,
-                                        OutCale(userNotifCus[flag], "year"),
-                                        OutCale(userNotifCus[flag], "month")-1,
-                                        OutCale(userNotifCus[flag], "day"));
+                //チェックがtrue(押された事でtrueになった)時
+                    if(checked==true) {
+                        //指定されたフラグによる処理群
+                            switch (flag){
+                                //0~1のどれか(カスタム通知用処理)だった時
+                                    case 0:
+                                    case 1:
+                                    case 2:
+                                        //押されたカスタム通知のフラグを立てる
+                                        flagNotifCus[flag] =1;
+                                        //キャンセル対策のため一旦チェックを外す
+                                        checkCus[flag].setChecked(false);
+                                        //ok押された時のリスナー登録
+                                        DatePickerSet(flag);
+                                        //現在の日時を初期値としたDatePickerDialogの設定
+                                            PickerDialog = new DatePickerDialog(UserRegisterActivity.this, DateSetListener,
+                                                    getToday("year"),
+                                                    getToday("month")-1,
+                                                    getToday("day"));
+                                        /////
+                                        //DatePickerDialogの表示
+                                        PickerDialog.show();
+                                        //switch抜ける
+                                        break;
+                                /////
+                                //年齢不詳チェック処理
+                                    case 3:
+                                        //フラグ立てる
+                                        flagTamura = 1;
+                                        //誕生日表記から年を取り除く
+                                        textBirthday.setText(userBirthMonth + "/" + userBirthDay);
+                                        //年齢を不詳へ
+                                        textYearsOld.setText("不明");
+                                        //switch抜ける
+                                        break;
+                                /////
+                                //毎月通知チェック処理
+                                    case 4:
+                                        //フラグ立てる
+                                        flagNotifMonth =1;
+                                        //switch抜ける
+                                        break;
+                                /////
+                                //毎週通知チェック処理
+                                    case 5:
+                                        //フラグ立てる
+                                        flagNotifWeek =1;
+                                        //switch抜ける
+                                        break;
+                                /////
+                                //昨日通知チェック処理
+                                    case 6:
+                                        //フラグ立てる
+                                        flagNotifYesterday =1;
+                                        //switch抜ける
+                                        break;
+                                /////
+                                //当日通知チェック処理
+                                    case 7:
+                                        //フラグ立てる
+                                        flagNotifToday =1;
+                                        //switch抜ける
+                                        break;
+                                /////
                             }
-                            else{
-                                PickerDialog = new DatePickerDialog(UserRegisterActivity.this, DateSetListener,getToday("year"),getToday("month")-1,getToday("day"));
-                            }
-                            PickerDialog.show();
-                            break;
-                        case 3:
-                            //年齢不詳
-                            flagTamura = 1;
-                            textBirthday.setText(userBirthMonth + "/" + userBirthDay);
-                            textYearsOld.setText("不明");
-                            break;
-                        case 4:
-                            flagNotifMonth =1;
-                            break;
-                        case 5:
-                            flagNotifWeek =1;
-                            break;
-                        case 6:
-                            flagNotifYesterday =1;
-                            break;
-                        case 7:
-                            flagNotifToday =1;
-                            break;
+                            /////
                     }
-                }
+                /////
+                //チェックがfalse(押された事でfalseになった)時
                 else {
+                    //指定されたフラグによる処理群
                     switch (flag){
+                        //0~1のどれか(カスタム通知用処理)だった時
                         case 0:
                         case 1:
                         case 2:
+                            //フラグをしまう
                             flagNotifCus[flag] =0;
+                            //テキストの色を灰色に
                             textCus[flag].setTextColor(Color.GRAY);
+                            //カスタム通知日を無登録扱いの0に
+                            userNotifCus[flag]=0;
+                            //テキストを初期状態に戻す
+                            textCus[flag].setText("通知日を追加");
+                            //switch抜けます
                             break;
+                        /////
                         case 3:
+                            //フラグをしまう
                             flagTamura = 0;
+                            //誕生日を通常の表記（年も含めた表記）にする
                             textBirthday.setText(userBirthYear +"/"+ userBirthMonth + "/" + userBirthDay);
                             //年齢表示
-                            if (YearsOldSet(userBirthYear, userBirthMonth, userBirthDay) > 1000 || YearsOldSet(userBirthYear, userBirthMonth, userBirthDay) < 0) {//バグとか、通常はありえない数値の場合は空白をセット
-                                textYearsOld.setText("");
-                            } else {
-                                textYearsOld.setText(String.valueOf(YearsOldSet(userBirthYear, userBirthMonth, userBirthDay)) + "歳");//年齢を算出して「歳」を付けて表示
-                            }
+                                //バグとかで通常はありえない数値(1000歳以上とか年齢が負の数とか)の時
+                                    if (YearsOldSet(userBirthYear, userBirthMonth, userBirthDay) > 1000 || YearsOldSet(userBirthYear, userBirthMonth, userBirthDay) < 0) {
+                                        //空白をセット
+                                        textYearsOld.setText("");
+                                    }
+                                /////
+                                //正常な年齢の時
+                                    else {
+                                        //年齢を算出して「歳」を付けて表示
+                                        textYearsOld.setText(String.valueOf(YearsOldSet(userBirthYear, userBirthMonth, userBirthDay)) + "歳");
+                                    }
+                                /////
+                            /////
+                            //switch抜けます
                             break;
                         case 4:
+                            //フラグをしまう
                             flagNotifMonth =0;
+                            //switch抜けます
                             break;
                         case 5:
+                            //フラグをしまう
                             flagNotifWeek =0;
+                            //switch抜けます
                             break;
                         case 6:
+                            //フラグをしまう
                             flagNotifYesterday =0;
+                            //switch抜けます
                             break;
                         case 7:
+                            //フラグをしまう
                             flagNotifToday =0;
+                            //switch抜けます
                             break;
                     }
                 }
+                /////
             }
+            /////
         });
+        /////
     }
 
     //checkboxの中身を判断してtruefalse変更

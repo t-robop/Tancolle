@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.t_robop.y_ogawara.tancolle">
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/tancole_icon"
@@ -10,29 +12,21 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".UserRegisterActivity"
-            android:label="@string/app_name">
-        </activity>
-        <activity android:name=".SearchActivity">
-
-        </activity>
-        <activity android:name=".UserDetailActivity">
-        </activity>
-        <activity android:name=".GestureDecActivity">
-        </activity>
-        <activity android:name=".AlarmActivity">
-        </activity>
-        <activity
-            android:name=".HomeActivity">
-
-            </activity>
+            android:label="@string/app_name"></activity>
+        <activity android:name=".SearchActivity"></activity>
+        <activity android:name=".UserDetailActivity"></activity>
+        <activity android:name=".GestureDecActivity"></activity>
+        <activity android:name=".AlarmActivity"></activity>
+        <activity android:name=".HomeActivity"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ViewFlipperTestActivity">
-
-        </activity>
+        <activity android:name=".ViewFlipperTestActivity"></activity>
+        <activity android:name=".SettingCategoryActivity"></activity>
     </application>
+
 </manifest>
