@@ -9,7 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 
-
+//TODO マニフェストのレシーバーうまく設定されとらんで！！！！！！！！！！
 public class Notifier extends BroadcastReceiver {
 
         @Override
@@ -108,6 +108,7 @@ public class Notifier extends BroadcastReceiver {
 
 
         }
+
 //            //通知オブジェクトの生成
 //            if(AlarmActivity.Mnotif==1) {
 //                Notification noti = new NotificationCompat.Builder(content)
@@ -189,3 +190,14 @@ public class Notifier extends BroadcastReceiver {
 //
 //        }
     }
+
+class BootCompletedReceiver extends BroadcastReceiver {
+
+    @Override
+    public void onReceive(Context context, Intent intent){
+        if(Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())){
+            // Boot completed!
+        }
+    }
+
+}
