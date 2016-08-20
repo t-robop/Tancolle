@@ -31,13 +31,16 @@ public class SettingActivity extends AppCompatActivity {
     //表示設定クリック時
     public void drawsetting(View v){
         //表示設定用Activityに飛ぶ
-            Intent intent = new Intent(this, SettingDrawActivity.class);
+            Intent intent = new Intent(SettingActivity.this, SettingDrawActivity.class);
             startActivity(intent);
         /////
     }
     //カテゴリ設定クリック時
     public void categorysetting(View v){
-
+        //カテゴリ設定用Activityに飛ぶ
+            Intent intent = new Intent(SettingActivity.this, SettingCategoryActivity.class);
+            startActivity(intent);
+        /////
     }
     //ライセンスクリック時
     public void license(View v){
