@@ -4,18 +4,21 @@ import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Display;
 import android.view.GestureDetector;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -23,12 +26,17 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class GestureDecActivity extends AppCompatActivity implements GestureDetector.OnGestureListener {
     //横スクロールの宣言
@@ -46,6 +54,10 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
     private static final int SCROLL_LEFT = 2; //
     private static final int SCROLL_RIGHT = 1; //
     private int slideLimitFlg = SCROLL_NONE; // スライドの状態判定
+
+    final int MONTH =  Calendar.getInstance().get(Calendar.MONTH); //端末の月
+
+
     static int num2;
 
     @Override
@@ -103,8 +115,8 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
 
         // GestureDetectorの生成
         gestureDetector = new GestureDetector(getApplicationContext(), this);
-
         horizontalScrollView = (HorizontalScrollView) findViewById(R.id.hsv_main);
+        horizontalScrollView.scrollTo(MONTH * displayWidth,displayHeight);
         horizontalScrollView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -124,17 +136,21 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
                             break;
                     }
                     // 指定ページへスクロールする
-                    horizontalScrollView.scrollTo(page * displayWidth,
-                            displayHeight);
+                    horizontalScrollView.scrollTo(page * displayWidth,displayHeight);
+                    TextView textView = (TextView) findViewById(R.id.current_month);
+                    textView.setText(String.valueOf(page + 1) + "月");
                 }
                 return result;
             }
         });
+
     }
 
 
     @Override
     protected void onResume() {
+        TextView textView = (TextView) findViewById(R.id.current_month);
+        textView.setText(String.valueOf(page + 1 +"月"));
 
         //配列で12ヶ月分のlistView作ります
         ListView[] listView = new ListView[12];
@@ -204,8 +220,22 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
             listView[fullReturn].setAdapter(adapter);
 
         }
+
+
+
+
         Log.d("onResume", "onResume");
         super.onResume();
+    }
+
+    private String[] getArray(String PrefKey){
+        SharedPreferences prefs2 = getSharedPreferences("Array", Context.MODE_PRIVATE);
+        String stringItem = prefs2.getString(PrefKey,"");
+        if(stringItem != null && stringItem.length() != 0){
+            return stringItem.split(",");
+        }else{
+            return null;
+        }
     }
 
     // ページ設定用 true;次のページ false:前のページ
@@ -332,7 +362,6 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
     //戻るキーで終了するやつ(コピペ)
     //たぶんhandlerでflagを変えているだけ
     private boolean FinishFlag;
-
     @Override
     public void onBackPressed() {
         if (FinishFlag) {
