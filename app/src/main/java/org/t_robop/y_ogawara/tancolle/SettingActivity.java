@@ -38,7 +38,7 @@ public class SettingActivity extends AppCompatActivity {
     //カテゴリ設定クリック時
     public void categorysetting(View v){
         //カテゴリ設定用Activityに飛ぶ
-            Intent intent = new Intent(SettingActivity.this, SettingCategoryTestActivity.class);
+            Intent intent = new Intent(SettingActivity.this, SettingCategoryActivity.class);
             startActivity(intent);
         /////
     }

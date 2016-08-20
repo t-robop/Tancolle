@@ -44,9 +44,6 @@ public class SettingCategoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting_category);
 
-        //カテゴリ一覧用リストの関連付け
-        listCategory=(ListView)findViewById(R.id.list_category);
-
         //カテゴリを表示するリストの初期設定
         listCategory=new ListView(this);
         //カテゴリを保存するリストの初期設定
@@ -54,18 +51,14 @@ public class SettingCategoryActivity extends AppCompatActivity {
         //カテゴリを格納するアダプターの初期設定
         categoryAdapter= new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
 
-        listCategory.setAdapter(categoryAdapter);
+        //カテゴリ一覧用リストの関連付け
+        listCategory=(ListView)findViewById(R.id.list_category);
+
         //DiaLog用のxmlとの連携の関連付け
             inflaterDialog = LayoutInflater.from(SettingCategoryActivity.this);
             viewDialog = inflaterDialog.inflate(R.layout.dialog_user_register, null);
             editDialog = (EditText) viewDialog.findViewById(R.id.editText1);
         /////
-        //カテゴリを表示するリストの初期設定
-        listCategory=new ListView(this);
-        //カテゴリを保存するリストの初期設定
-        categorylist=new ArrayList<>();
-        //カテゴリを格納するアダプターの初期設定
-        categoryAdapter= new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
         //preference読み込んでアダプターにセット
         loadPreference();
         //追加ボタンセットとアダプターをリストに反映
@@ -298,7 +291,6 @@ public class SettingCategoryActivity extends AppCompatActivity {
             if (listCategory != null) {
                 //listCategoryにadaptorセット
                 listCategory.setAdapter(categoryAdapter);
-                //Log.d("asdfghj",String.valueOf(categoryAdapter));
             }
         /////
     }
