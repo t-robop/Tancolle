@@ -66,12 +66,14 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
     Calendar calendar;
     //キーボード制御
     InputMethodManager inputMethodManager;
+
     //EditText用変数群
-    View viewV;
+    View viewDialog;
     //DiaLog用xmlから来るやつ
-    LayoutInflater inflater;
+    LayoutInflater inflaterDialog;
     //DiaLog用xmlのEditText
-    EditText editText;
+    EditText editDialog;
+
     //カテゴリ用arraylist&arrayadapter
     ArrayAdapter<String> categoryAdapter;
     //カテゴリのList
@@ -624,9 +626,9 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         textCus[1]=(TextView)findViewById(R.id.cusText2);
         textCus[2]=(TextView)findViewById(R.id.cusText3);
         //DiaLog用のxmlとの連携の関連付け
-        inflater = LayoutInflater.from(UserRegisterActivity.this);
-        viewV = inflater.inflate(R.layout.dialog_user_register, null);
-        editText = (EditText) viewV.findViewById(R.id.editText1);
+        inflaterDialog = LayoutInflater.from(UserRegisterActivity.this);
+        viewDialog = inflaterDialog.inflate(R.layout.dialog_user_register, null);
+        editDialog = (EditText) viewDialog.findViewById(R.id.editText1);
     }
 
     //EditTextに指定した文字列を加えて表示させるメソッド
@@ -833,7 +835,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         {
             addCategoryDialog = new AlertDialog.Builder(UserRegisterActivity.this)
                     .setTitle("カテゴリー入力")//DiaLogタイトル
-                    .setView(viewV)//View指定
+                    .setView(viewDialog)//View指定
                     //DiaLog内の決定を押した時の処理
                     .setPositiveButton("決定", new DialogInterface.OnClickListener() //ボタン作成
                     {
@@ -845,14 +847,14 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
                             String addcategory;
 
                             // エディットテキストのテキストを全選択します
-                            editText.selectAll();
+                            editDialog.selectAll();
 
                             //editTextに何も入力されてない時
-                            if (editText.getText().toString().equals("")) {
+                            if (editDialog.getText().toString().equals("")) {
                                 addcategory = null;
                             } else {
                                 // エディットテキストのテキストを取得します
-                                addcategory = editText.getText().toString();
+                                addcategory = editDialog.getText().toString();
                             }
                             //要素追加
                             //リストとadaptorに入力値を入れる
@@ -864,7 +866,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
                             //adapter更新
                             categoryAdapter.notifyDataSetChanged();
 
-                            editText.getEditableText().clear();//editTextの初期化
+                            editDialog.getEditableText().clear();//editTextの初期化
 
                             spinnerCategory.setSelection(categoryAdapter.getPosition(addcategory));
                         }

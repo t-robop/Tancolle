@@ -12,13 +12,13 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".UserRegisterActivity"
-            android:label="@string/app_name"></activity>
-        <activity android:name=".SearchActivity"></activity>
-        <activity android:name=".UserDetailActivity"></activity>
-        <activity android:name=".GestureDecActivity"></activity>
-        <activity android:name=".AlarmActivity"></activity>
-        <activity android:name=".HomeActivity"></activity>
-        <activity android:name=".SettingActivity"></activity>
+            android:label="@string/app_name" />
+        <activity android:name=".SearchActivity" />
+        <activity android:name=".UserDetailActivity" />
+        <activity android:name=".GestureDecActivity" />
+        <activity android:name=".AlarmActivity" />
+        <activity android:name=".HomeActivity" />
+        <activity android:name=".SettingActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,8 +26,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ViewFlipperTestActivity"></activity>
-        <activity android:name=".SettingCategoryActivity"></activity>
+        <activity android:name=".ViewFlipperTestActivity" />
+        <activity android:name=".SettingCategoryActivity" />
+        <activity android:name=".SettingCategoryTestActivity"></activity>
     </application>
 
 </manifest>
