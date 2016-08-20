@@ -342,7 +342,7 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
         switch (item.getItemId()) {
             case R.id.action_settings:
                 // User chose the "Settings" item, show the app settings UI...
-                Intent intent_setting = new Intent(this, SettingActivity.class);
+                Intent intent_setting = new Intent(GestureDecActivity.this, SettingActivity.class);
                 startActivity(intent_setting);
                 return true;
 
