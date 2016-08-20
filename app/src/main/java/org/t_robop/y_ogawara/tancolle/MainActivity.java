@@ -18,7 +18,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
     public static final int MENU_SELECT_A = 0;
     public static final int MENU_SELECT_B = 1;
-    public static final int MENU_SELECT_C = 2;
+    public static final int MENU_SELECT_C = 2;//
     public static final int MENU_SELECT_D = 3;
     public static final int MENU_SELECT_E = 4;
     public static final int MENU_SELECT_F = 5;
