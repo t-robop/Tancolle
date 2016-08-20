@@ -871,6 +871,13 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
                             spinnerCategory.setSelection(categoryAdapter.getPosition(addcategory));
                         }
                     })
+                    .setNegativeButton("キャンセル", new DialogInterface.OnClickListener(){
+                        //DiaLog内の決定をクリックした時
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    })
                     .create();//初回AddDiaLog制作
         }
     }
