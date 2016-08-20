@@ -17,6 +17,9 @@
             android:layout_height="20dp"
             android:textSize="18sp"
             android:gravity="center_horizontal"
+            android:text="rdtfhjghkk"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
             android:id="@+id/current_month" />
         <LinearLayout
             android:layout_width="fill_parent"
