@@ -28,7 +28,6 @@
         </activity>
         <activity android:name=".ViewFlipperTestActivity" />
         <activity android:name=".SettingCategoryActivity" />
-        <activity android:name=".SettingCategoryTestActivity"></activity>
     </application>
 
 </manifest>
