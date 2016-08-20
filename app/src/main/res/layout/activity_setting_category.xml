@@ -9,4 +9,10 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="org.t_robop.y_ogawara.tancolle.SettingCategoryActivity">
 
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/list_category">
+        </ListView>
+
 </RelativeLayout>
