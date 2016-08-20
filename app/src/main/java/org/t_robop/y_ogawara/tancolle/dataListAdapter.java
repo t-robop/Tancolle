@@ -87,8 +87,6 @@ public class dataListAdapter extends BaseAdapter implements Filterable {
                 e.printStackTrace();
             }
             //画像セット
-            //user_view.setImageBitmap(img);
-            //Picasso.with(context).load(img).into(item_image);
             item_image.setImageBitmap(img);
         }
         //Viewを返す
