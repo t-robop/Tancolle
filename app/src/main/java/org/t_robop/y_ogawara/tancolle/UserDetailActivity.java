@@ -37,6 +37,7 @@ public class UserDetailActivity extends AppCompatActivity {
     TextView ageTV;
     TextView remaTV;
     TextView memoTV;
+    TextView cateTV;
     Calendar calendar;
     int year, month, day; //現在の日付
     int a, b;
@@ -71,6 +72,7 @@ public class UserDetailActivity extends AppCompatActivity {
         ageTV = (TextView) findViewById(R.id.age);
         remaTV = (TextView) findViewById(R.id.nokori);
         memoTV = (TextView) findViewById(R.id.chou);
+        cateTV = (TextView) findViewById(R.id.category);
 
         calendar = Calendar.getInstance();
         year = calendar.get(Calendar.YEAR);
@@ -86,6 +88,7 @@ public class UserDetailActivity extends AppCompatActivity {
         String name = data.getName(); //SQliteからもってくる
         String kana = data.getKana();
         String smallImage = data.getImage(); //TODO
+        String category = data.getCategory();
         TwitterID = data.getTwitterID();
         memo = data.getMemo();
         imagecount = data.isPresentFlag();
@@ -172,6 +175,9 @@ public class UserDetailActivity extends AppCompatActivity {
 
         nameTV.setText(name);
         kanaTV.setText(kana);
+        if(!(category.equals("<未設定>"))){
+            cateTV.setText("#<"+category+">");
+        }
         birthTV.setText(String.valueOf(birthmonth) + "/" + String.valueOf(birthday));
         remaTV.setText("残り" + String.valueOf(remDay) + "日");
         memoTV.setText(memo);

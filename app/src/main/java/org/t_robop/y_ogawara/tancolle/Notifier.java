@@ -32,9 +32,9 @@ public class Notifier extends BroadcastReceiver {
                 //１ヶ月前
                 case 1:
                     Notification noti = new NotificationCompat.Builder(content)
-                            .setTicker(text+"test"+id)
+                            .setTicker(text)
                             .setContentTitle("たんこれ！")
-                            .setContentText(text+"test"+id)
+                            .setContentText(text)
                             .setSmallIcon(R.mipmap.ic_launcher)
                             .setVibrate(new long[]{0, 200, 100, 200, 100, 200})
                             .setAutoCancel(true)
@@ -47,9 +47,9 @@ public class Notifier extends BroadcastReceiver {
                 //1週間前
                 case 2:
                     noti = new NotificationCompat.Builder(content)
-                            .setTicker(text+"test"+id)
+                            .setTicker(text)
                             .setContentTitle("たんこれ！")
-                            .setContentText(text+"test"+id)
+                            .setContentText(text)
                             .setSmallIcon(R.mipmap.ic_launcher)
                             .setVibrate(new long[]{0, 200, 100, 200, 100, 200})
                             .setAutoCancel(true)
@@ -62,9 +62,9 @@ public class Notifier extends BroadcastReceiver {
                 //前日
                 case 3:
                     noti = new NotificationCompat.Builder(content)
-                            .setTicker(text+"test"+id)
+                            .setTicker(text)
                             .setContentTitle("たんこれ！")
-                            .setContentText(text+"test"+id)
+                            .setContentText(text)
                             .setSmallIcon(R.mipmap.ic_launcher)
                             .setVibrate(new long[]{0, 200, 100, 200, 100, 200})
                             .setAutoCancel(true)
@@ -77,9 +77,9 @@ public class Notifier extends BroadcastReceiver {
                 //当日
                 case 4:
                     noti = new NotificationCompat.Builder(content)
-                            .setTicker(text+"test"+id)
+                            .setTicker(text)
                             .setContentTitle("たんこれ！")
-                            .setContentText(text+"test"+id)
+                            .setContentText(text)
                             .setSmallIcon(R.mipmap.ic_launcher)
                             .setVibrate(new long[]{0, 200, 100, 200, 100, 200})
                             .setAutoCancel(true)
@@ -92,9 +92,9 @@ public class Notifier extends BroadcastReceiver {
                 //カスタム
                 case 5:
                     noti = new NotificationCompat.Builder(content)
-                            .setTicker(text+"test"+id)
+                            .setTicker(text)
                             .setContentTitle("たんこれ！")
-                            .setContentText(text+"test"+id)
+                            .setContentText(text)
                             .setSmallIcon(R.mipmap.ic_launcher)
                             .setVibrate(new long[]{0, 200, 100, 200, 100, 200})
                             .setAutoCancel(true)
@@ -108,6 +108,9 @@ public class Notifier extends BroadcastReceiver {
 
 
         }
+
+}
+
 
 //            //通知オブジェクトの生成
 //            if(AlarmActivity.Mnotif==1) {
@@ -189,6 +192,5 @@ public class Notifier extends BroadcastReceiver {
 //            }
 //
 //        }
-    }
 
 
