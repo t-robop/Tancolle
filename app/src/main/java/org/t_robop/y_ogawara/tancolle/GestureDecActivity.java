@@ -256,18 +256,27 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
-
-
-
-
         /********spinnerの設定関連**********/
-        String spinnerItems[] =  PM.getArray("StringItem",this);
-//        spinnerItems[0] = "aa";
+        String spinnerItems[];
+        ArrayAdapter<String> adapter= new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
 
+//        final ArrayAdapter<String> adapter
+//                = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, spinnerItems);
 
-        final ArrayAdapter<String> adapter
-                = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, spinnerItems);
+        // プリファレンスからカテゴリー一覧を取得
+        spinnerItems = PM.getArray("StringItem",this);
+        //何かカテゴリが保存されてる時
+        if(spinnerItems!=null) {
+            //保存されてるカテゴリ数だけループさせます
+            for (int n = 0; n < spinnerItems.length; n++) {
+                //読み込んだカテゴリを追加
+                //list表示用adaptor
+                adapter.add(spinnerItems[n]);
+                /////
+            }
+            /////
+        }
+        /////
 
         Spinner spinner =  (Spinner) toolbar.getChildAt(0);
         spinner.setAdapter(adapter);
