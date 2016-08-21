@@ -139,7 +139,7 @@ public class SettingCategoryActivity extends AppCompatActivity {
                                     /////
                                 });
                             /////
-                            //positiveボタン(今回はok)のリスナー登録
+                            //negativeボタン(今回はキャンセル)のリスナー登録
                             aldialogDeleCategory.setNegativeButton("キャンセル", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
@@ -276,6 +276,13 @@ public class SettingCategoryActivity extends AppCompatActivity {
                                     /////
                                 /////
                             }
+                        })
+                        .setNegativeButton("キャンセル", new DialogInterface.OnClickListener(){
+                                    //DiaLog内の決定をクリックした時
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                    }
                         })
                         .create();//初回AddDiaLog制作
             /////
