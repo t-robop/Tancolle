@@ -51,6 +51,9 @@ public class UserDetailActivity extends AppCompatActivity {
     //画像データを一時的に蓄えるとこ
     Bitmap bitmap;
 
+    //前のpage番号
+    int page;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +68,7 @@ public class UserDetailActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         intentId = intent.getIntExtra("id", 1);
+        page = intent.getIntExtra("page",0);
         nameTV = (TextView) findViewById(R.id.Name);
         kanaTV = (TextView) findViewById(R.id.Kana);
         birthTV = (TextView) findViewById(R.id.Birthay);
