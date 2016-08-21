@@ -37,6 +37,7 @@ public class SettingDrawActivity extends AppCompatActivity {
         }
         //ToolBar関連
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        toolbar.setTitle("表示設定");
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();

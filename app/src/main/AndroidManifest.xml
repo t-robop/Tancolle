@@ -29,6 +29,7 @@
         <activity android:name=".ViewFlipperTestActivity"></activity>
         <activity android:name=".SettingCategoryActivity"></activity>
         <activity android:name=".SettingDrawActivity"></activity>
+        <activity android:name=".LicenseActivity"/>
     </application>
 
 </manifest>
