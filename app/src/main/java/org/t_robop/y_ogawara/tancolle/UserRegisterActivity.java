@@ -1213,14 +1213,13 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
     }
 
     public void AllRegist() {
-        //キーボードが表示されてるかどうか判定
-            //キーボードが表示されてる時
-                if (keyBoad == true) {
-                    //キーボード絶対堕とすマン
-                    inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-                }
-            /////
-        /////
+        /***キーボードが表示されてるかどうか判定***/
+        //キーボードが表示されてる時
+        if (keyBoad == true) {
+            //キーボード絶対堕とすマン
+            inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        }
+        /*****************************************/
         //sqlに保存
             //Data型の宣言
             Data allData = new Data();
