@@ -191,13 +191,4 @@ public class Notifier extends BroadcastReceiver {
 //        }
     }
 
-class BootCompletedReceiver extends BroadcastReceiver {
 
-    @Override
-    public void onReceive(Context context, Intent intent){
-        if(Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())){
-            // Boot completed!
-        }
-    }
-
-}

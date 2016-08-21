@@ -106,22 +106,23 @@ public class UserDetailActivity extends AppCompatActivity {
 
 
 //画像読み込み
-        InputStream in;
-        try {
-            in = openFileInput(smallImage);//画像の名前からファイル開いて読み込み
-            bitmap = BitmapFactory.decodeStream(in);//読み込んだ画像をBitMap化
-        } catch (IOException e) {
-            e.printStackTrace();
+        if(smallImage.equals("null.jpg")){
+            photoImageView.setImageResource(R.drawable.normal_shadow);
+        }else {
+            InputStream in;
+            try {
+                in = openFileInput(smallImage);//画像の名前からファイル開いて読み込み
+                bitmap = BitmapFactory.decodeStream(in);//読み込んだ画像をBitMap化
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            photoImageView.setImageBitmap(bitmap);
         }
-        photoImageView.setImageBitmap(bitmap);
 
         //int birth = data.getBirthday();
         int birthyear = data.getYear();
         int birthmonth = data.getMonth();
         int birthday = data.getDay();
-        //int sqlDay;
-        //sqlDay = a % 100; //誕生日の日付を割り出す
-
 
         a = birthmonth * 100 + birthday;  //誕生日を７月１４日を→７１４みたいな形に
         b = month * 100 + day; //現在の日付を６月１５日→６１５みたいな形に
@@ -336,6 +337,7 @@ public class UserDetailActivity extends AppCompatActivity {
                         Toast toast = Toast.makeText(UserDetailActivity.this, "データを消去しました", Toast.LENGTH_LONG);
                         toast.show();
                         finish();
+
                     }
                 })
                 .setNegativeButton("いいえ", new DialogInterface.OnClickListener() {
