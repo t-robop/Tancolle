@@ -1,23 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".GestureDecActivity"
-    tools:showIn="@layout/activity_main">
-
-        <HorizontalScrollView
-            android:id="@+id/hsv_main"
+    android:orientation="vertical"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:textSize="18sp"
+            android:gravity="center_horizontal"
+            android:text="rdtfhjghkk"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:id="@+id/current_month" />
+        <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
+            android:layout_height="1dp"
+            android:background="@android:color/black">
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <HorizontalScrollView
+            android:id="@+id/hsv_main"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:id="@+id/ll_main"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
+
 
                 <include
                     android:id="@+id/list1"
@@ -74,4 +97,4 @@
             </LinearLayout>
 
         </HorizontalScrollView>
-</RelativeLayout>
+</LinearLayout>
