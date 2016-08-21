@@ -800,6 +800,8 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
                         /////
                         //カスタム通知日セットの時の処理
                             else{
+                                //押されたカスタム通知のフラグを立てる
+                                flagNotifCus[setType] =1;
                                 //カレンダーのズレを直した変数の作成
                                 int moNth=monthOfYear+1;
                                 //カスタム通知日として描画
@@ -941,8 +943,6 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
                                     case 0:
                                     case 1:
                                     case 2:
-                                        //押されたカスタム通知のフラグを立てる
-                                        flagNotifCus[flag] =1;
                                         //キャンセル対策のため一旦チェックを外す
                                         checkCus[flag].setChecked(false);
                                         //ok押された時のリスナー登録
