@@ -33,6 +33,7 @@ public class SettingActivity extends AppCompatActivity {
 
         //ToolBar関連
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        toolbar.setTitle("設定");
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();
@@ -68,7 +69,8 @@ public class SettingActivity extends AppCompatActivity {
     }
     //ライセンスクリック時
     public void license(View v){
-
+        Intent intent = new Intent(SettingActivity.this, LicenseActivity.class);
+        startActivity(intent);
     }
     //端末のバックボタンクリック時
     @Override
