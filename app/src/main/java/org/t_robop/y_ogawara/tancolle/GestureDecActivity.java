@@ -68,12 +68,17 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
 
     static boolean flag;
 
+    //preference用クラス
+    PreferenceMethod PM;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gesture_dec);
         setViewSize();
 
+        //preferenceクラス宣言
+        PM=new PreferenceMethod();
 
         // Android6.0以降でのPermissionの確認
         if (ContextCompat.checkSelfPermission(
@@ -257,7 +262,7 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
 
 
         /********spinnerの設定関連**********/
-        String spinnerItems[] = getArray("StringItem");
+        String spinnerItems[] = PM.getArray("StringItem");
 
         final ArrayAdapter<String> adapter
                 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, spinnerItems);
