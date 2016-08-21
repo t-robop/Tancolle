@@ -3,10 +3,10 @@ package org.t_robop.y_ogawara.tancolle;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.TextView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -126,7 +126,14 @@ public class AlarmActivity extends AppCompatActivity {
 
             //日時と発行するIntentをAlarmManagerにセットします
             AlarmManager manager = (AlarmManager)getSystemService(ALARM_SERVICE);
-            manager.set(AlarmManager.RTC_WAKEUP, triggerTime.getTimeInMillis(), sender);
+
+            //Androidのバージョンが6.0以上(Dozeモードがあるバージョン)以上なら設定時間より15分遅れるかも
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                manager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,triggerTime.getTimeInMillis(),sender);
+            }else{
+                manager.set(AlarmManager.RTC_WAKEUP, triggerTime.getTimeInMillis(), sender);
+            }
+            //manager.set(AlarmManager.RTC_WAKEUP, triggerTime.getTimeInMillis(), sender);
         }
         if(Wnotif==1){ //一週間前のチェックがついていたら
             // 現在から見て何日後＝（次の誕生日のミリ秒ー７日をミリ秒にしたやつー現在のミリ秒）÷日付換算
@@ -146,7 +153,16 @@ public class AlarmActivity extends AppCompatActivity {
             PendingIntent sender = PendingIntent.getBroadcast(AlarmActivity.this, 1, alarmWeek, PendingIntent.FLAG_UPDATE_CURRENT);
 //日時と発行するIntentをAlarmManagerにセットします
             AlarmManager manager = (AlarmManager)getSystemService(ALARM_SERVICE);
-            manager.set(AlarmManager.RTC_WAKEUP, triggerTime.getTimeInMillis(), sender);
+
+            //Androidのバージョンが6.0以上(Dozeモードがあるバージョン)以上なら設定時間より15分遅れるかも
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                manager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,triggerTime.getTimeInMillis(),sender);
+            }else{
+                manager.set(AlarmManager.RTC_WAKEUP, triggerTime.getTimeInMillis(), sender);
+            }
+
+
+
         }
 
         if(Ynotif==1){ //前日にチェックがついていたら
@@ -168,7 +184,13 @@ public class AlarmActivity extends AppCompatActivity {
             PendingIntent sender = PendingIntent.getBroadcast(AlarmActivity.this, 2, alarmYest, PendingIntent.FLAG_UPDATE_CURRENT);
 //日時と発行するIntentをAlarmManagerにセットします
             AlarmManager manager = (AlarmManager)getSystemService(ALARM_SERVICE);
-            manager.set(AlarmManager.RTC_WAKEUP, triggerTime.getTimeInMillis(), sender);
+            //Androidのバージョンが6.0以上(Dozeモードがあるバージョン)以上なら設定時間より15分遅れるかも
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                manager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,triggerTime.getTimeInMillis(),sender);
+            }else{
+                manager.set(AlarmManager.RTC_WAKEUP, triggerTime.getTimeInMillis(), sender);
+            }
+            //manager.set(AlarmManager.RTC_WAKEUP, triggerTime.getTimeInMillis(), sender);
         }
 
         if(Tnotif==1){ //当日にチェックがついていたら
@@ -188,7 +210,13 @@ public class AlarmActivity extends AppCompatActivity {
             PendingIntent sender = PendingIntent.getBroadcast(AlarmActivity.this, 3, alarmToday, PendingIntent.FLAG_UPDATE_CURRENT);
 //日時と発行するIntentをAlarmManagerにセットします
             AlarmManager manager = (AlarmManager)getSystemService(ALARM_SERVICE);
-            manager.set(AlarmManager.RTC_WAKEUP, triggerTime.getTimeInMillis(), sender);
+            //Androidのバージョンが6.0以上(Dozeモードがあるバージョン)以上なら設定時間より15分遅れるかも
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                manager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,triggerTime.getTimeInMillis(),sender);
+            }else{
+                manager.set(AlarmManager.RTC_WAKEUP, triggerTime.getTimeInMillis(), sender);
+            }
+            //manager.set(AlarmManager.RTC_WAKEUP, triggerTime.getTimeInMillis(), sender);
         }
         if(custum1>0){
             int aaa=custum1/10000;
@@ -214,7 +242,13 @@ public class AlarmActivity extends AppCompatActivity {
 
             //日時と発行するIntentをAlarmManagerにセットします
             AlarmManager manager = (AlarmManager)getSystemService(ALARM_SERVICE);
-            manager.set(AlarmManager.RTC_WAKEUP, triggerTime.getTimeInMillis(), sender);
+            //Androidのバージョンが6.0以上(Dozeモードがあるバージョン)以上なら設定時間より15分遅れるかも
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                manager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,triggerTime.getTimeInMillis(),sender);
+            }else{
+                manager.set(AlarmManager.RTC_WAKEUP, triggerTime.getTimeInMillis(), sender);
+            }
+            //manager.set(AlarmManager.RTC_WAKEUP, triggerTime.getTimeInMillis(), sender);
         }
 
         if(custum2>0){
@@ -241,7 +275,13 @@ public class AlarmActivity extends AppCompatActivity {
 
             //日時と発行するIntentをAlarmManagerにセットします
             AlarmManager manager = (AlarmManager)getSystemService(ALARM_SERVICE);
-            manager.set(AlarmManager.RTC_WAKEUP, triggerTime.getTimeInMillis(), sender);
+            //Androidのバージョンが6.0以上(Dozeモードがあるバージョン)以上なら設定時間より15分遅れるかも
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                manager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,triggerTime.getTimeInMillis(),sender);
+            }else{
+                manager.set(AlarmManager.RTC_WAKEUP, triggerTime.getTimeInMillis(), sender);
+            }
+            //manager.set(AlarmManager.RTC_WAKEUP, triggerTime.getTimeInMillis(), sender);
         }
 
         if(custum3>0){
@@ -269,7 +309,13 @@ public class AlarmActivity extends AppCompatActivity {
 
             //日時と発行するIntentをAlarmManagerにセットします
             AlarmManager manager = (AlarmManager)getSystemService(ALARM_SERVICE);
-            manager.set(AlarmManager.RTC_WAKEUP, triggerTime.getTimeInMillis(), sender);
+            //Androidのバージョンが6.0以上(Dozeモードがあるバージョン)以上なら設定時間より15分遅れるかも
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                manager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,triggerTime.getTimeInMillis(),sender);
+            }else{
+                manager.set(AlarmManager.RTC_WAKEUP, triggerTime.getTimeInMillis(), sender);
+            }
+            //manager.set(AlarmManager.RTC_WAKEUP, triggerTime.getTimeInMillis(), sender);
         }
 
     }

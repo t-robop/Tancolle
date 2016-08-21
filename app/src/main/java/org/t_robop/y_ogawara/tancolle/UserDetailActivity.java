@@ -11,7 +11,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -268,14 +267,18 @@ public class UserDetailActivity extends AppCompatActivity {
             Toast toast = Toast.makeText(UserDetailActivity.this, "TwitterIDが登録されていません", Toast.LENGTH_LONG);
             toast.show();
         }else{
-            Intent intent = new Intent();
-            intent.setAction( Intent.ACTION_VIEW );
-            intent.setData( Uri.parse("twitter://user?screen_name="+TwitterID) ); // @skc1210 (アカウントを指定)
+            //TODO IntentがAndroid5.0以上だとこれだけでいけるっぽいので確認してください
+            TwChromeIntent();
+//            Intent intent = new Intent();
+//            intent.setAction( Intent.ACTION_VIEW );
+//            intent.setData( Uri.parse("twitter://user?screen_name="+TwitterID) ); // @skc1210 (アカウントを指定)
             try {
-                startActivity(intent);
+                //startActivity(intent);
             } // Twitterが端末にインストールされていない場合はTwitterインストール画面へ
             catch( ActivityNotFoundException e ) {
-                try { startActivity( new Intent( Intent.ACTION_VIEW, Uri.parse("market://details?id=com.twitter.android") ) );
+                try {
+                    TwChromeIntent();
+                    //startActivity( new Intent( Intent.ACTION_VIEW, Uri.parse("market://details?id=com.twitter.android") ) );
                 } catch ( android.content.ActivityNotFoundException anfe ) {
                     startActivity( new Intent( Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.twitter.android") ) );
                 }
@@ -284,6 +287,15 @@ public class UserDetailActivity extends AppCompatActivity {
         }
 
     }
+
+    //twitterをChromeで開くメソッド
+    private void TwChromeIntent() {
+        String base = "https://twitter.com/"+TwitterID; //URLの文字列
+        Uri uri = Uri.parse(base);//URIにParse
+        Intent i = new Intent(Intent.ACTION_VIEW,uri);//インテントの作成
+        startActivity(i);//アクティビティの起動
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // アクションバー内に使用するメニューアイテムを注入します。
