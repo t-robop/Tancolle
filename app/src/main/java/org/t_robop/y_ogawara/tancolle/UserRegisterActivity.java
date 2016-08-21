@@ -137,6 +137,9 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
     //ダイアログでok押された時のリスナー
     DatePickerDialog.OnDateSetListener DateSetListener;
 
+    //preference用クラス
+    PreferenceMethod PM;
+
     /////////////////////////Override/////////////////////////
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,6 +149,10 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         setSupportActionBar(toolbar);
         //関連付け
         Association();
+
+        //preferenceクラス宣言
+        PM=new PreferenceMethod();
+
         //初期のカスタムテキストの色の設定
             textCus[0].setTextColor(Color.GRAY);
             textCus[1].setTextColor(Color.GRAY);
@@ -186,7 +193,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             CheckJudge(checkToday,7);
         /////
         // プリファレンスからカテゴリー一覧を取得
-        String[] categoryItem = getArray("StringItem");
+        String[] categoryItem = PM.getArray("StringItem");
         //カテゴリー追加処理
             //まず＜未選択＞を追加します
             categoryAdapter.add("<未選択>");
@@ -1109,33 +1116,6 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         }
     }
 
-    // プリファレンス保存
-// aaa,bbb,ccc... の文字列で保存
-    private void saveArray(ArrayList<String> array, String PrefKey){
-        String str = new String("");
-        for (int i =0;i<array.size();i++){
-            str = str + array.get(i);
-            if (i !=array.size()-1){
-                str = str + ",";
-            }
-        }
-        SharedPreferences prefs1 = getSharedPreferences("Array", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs1.edit();
-        editor.putString(PrefKey, str).commit();
-    }
-
-    // プリファレンス取得
-// aaa,bbb,ccc...としたものをsplitして返す
-    private String[] getArray(String PrefKey){
-        SharedPreferences prefs2 = getSharedPreferences("Array", Context.MODE_PRIVATE);
-        String stringItem = prefs2.getString(PrefKey,"");
-        if(stringItem != null && stringItem.length() != 0){
-            return stringItem.split(",");
-        }else{
-            return null;
-        }
-    }
-
     //画像回転用メソッド
     public void ViewRotate() {
         float width;
@@ -1287,7 +1267,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             /////
         /////
         //プレファレンスにカテゴリの保存
-        saveArray(categorylist, "StringItem");
+        PM.saveArray(categorylist, "StringItem");
         //Activity消す
         finish();
 

@@ -39,10 +39,16 @@ public class SettingCategoryActivity extends AppCompatActivity {
     //選択されたカテゴリ名を格納するString型変数
     String choiceCategory;
 
+    //preference用クラス
+    PreferenceMethod PM;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting_category);
+
+        //preferenceクラス宣言
+        PM=new PreferenceMethod();
 
         //カテゴリを表示するリストの初期設定
         listCategory=new ListView(this);
@@ -112,7 +118,7 @@ public class SettingCategoryActivity extends AppCompatActivity {
                                                 }
                                             /////
                                             //プレファレンスに保存用カテゴリを保存
-                                            saveArray(categorylist, "StringItem");
+                                            PM.saveArray(categorylist, "StringItem");
                                             //セット用アダプター・保存用リストに格納されている要素を全て消す
                                                 categoryAdapter.clear();
                                                 categorylist.clear();
@@ -155,37 +161,10 @@ public class SettingCategoryActivity extends AppCompatActivity {
         /////
     }
 
-    // プリファレンス保存
-    // aaa,bbb,ccc... の文字列で保存
-    private void saveArray(ArrayList<String> array, String PrefKey){
-        String str = new String("");
-        for (int i =0;i<array.size();i++){
-            str = str + array.get(i);
-            if (i !=array.size()-1){
-                str = str + ",";
-            }
-        }
-        SharedPreferences prefs1 = getSharedPreferences("Array", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs1.edit();
-        editor.putString(PrefKey, str).commit();
-    }
-
-    // プリファレンス取得
-    // aaa,bbb,ccc...としたものをsplitして返す
-    private String[] getArray(String PrefKey){
-        SharedPreferences prefs2 = getSharedPreferences("Array", Context.MODE_PRIVATE);
-        String stringItem = prefs2.getString(PrefKey,"");
-        if(stringItem != null && stringItem.length() != 0){
-            return stringItem.split(",");
-        }else{
-            return null;
-        }
-    }
-
     //preferenceからカテゴリ一覧を読み込む処理
     public void loadPreference(){
         // プリファレンスからカテゴリー一覧を取得
-        categoryItem = getArray("StringItem");
+        categoryItem = PM.getArray("StringItem");
         //何かカテゴリが保存されてる時
             if(categoryItem!=null) {
                 //保存されてるカテゴリ数だけループさせます
@@ -274,7 +253,7 @@ public class SettingCategoryActivity extends AppCompatActivity {
                                 //追加ボタンセットとlistセット
                                 addBtnListSet();
                                 //プレファレンスにカテゴリの保存
-                                saveArray(categorylist, "StringItem");
+                                PM.saveArray(categorylist, "StringItem");
                             }
                         })
                         .setNegativeButton("キャンセル", new DialogInterface.OnClickListener(){

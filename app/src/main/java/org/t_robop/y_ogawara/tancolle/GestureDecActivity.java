@@ -223,16 +223,6 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
         Log.d("onResume", "onResume");
     }
 
-    private String[] getArray(String PrefKey){
-        SharedPreferences prefs2 = getSharedPreferences("Array", Context.MODE_PRIVATE);
-        String stringItem = prefs2.getString(PrefKey,"");
-        if(stringItem != null && stringItem.length() != 0){
-            return stringItem.split(",");
-        }else{
-            return null;
-        }
-    }
-
     // ページ設定用 true;次のページ false:前のページ
     private void setPage(boolean check) {
         if (check) {

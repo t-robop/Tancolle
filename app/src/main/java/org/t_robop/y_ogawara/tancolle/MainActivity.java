@@ -227,29 +227,6 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void saveArray(ArrayList<String> array, String PrefKey){
-        String str = "";
-        for (int i =0;i<array.size();i++){
-            str = str + array.get(i);
-            if (i !=array.size()-1){
-                str = str + ",";
-            }
-        }
-        SharedPreferences prefs1 = getSharedPreferences("Array", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs1.edit();
-        editor.putString(PrefKey, str).commit();
-    }
-    // aaa,bbb,ccc...としたものをsplitして返す
-    private String[] getArray1(String PrefKey){
-        SharedPreferences prefs2 = getSharedPreferences("Array", Context.MODE_PRIVATE);
-        String stringItem = prefs2.getString(PrefKey,"");
-        if(stringItem != null && stringItem.length() != 0){
-            return stringItem.split(",");
-        }else{
-            return null;
-        }
-    }
-
     public void ViewFlipperTestActivityBtn(View view) {
         int rabbit=1;
         Intent intent = new Intent(this,AlarmActivity.class);
