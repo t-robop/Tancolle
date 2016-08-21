@@ -24,9 +24,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,14 +58,22 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
 
     static int num2;
 
+    //カテゴリの値をいれる箱
+    String Category = "aa";
+
+
+    MainListAdapter[] mainListAdapter;
+
+    ListView[] listView;
+
+    static boolean flag;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gesture_dec);
         setViewSize();
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         // Android6.0以降でのPermissionの確認
         if (ContextCompat.checkSelfPermission(
@@ -148,8 +159,10 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
         TextView textView = (TextView) findViewById(R.id.current_month);
         textView.setText(String.valueOf(page + 1 +"月"));
 
+        mainListAdapter = new MainListAdapter[12];
+
         //配列で12ヶ月分のlistView作ります
-        ListView[] listView = new ListView[12];
+        listView = new ListView[12];
         listView[0] = (ListView) findViewById(R.id.list1).findViewById(R.id.listView1);
         listView[1] = (ListView) findViewById(R.id.list2).findViewById(R.id.listView1);
         listView[2] = (ListView) findViewById(R.id.list3).findViewById(R.id.listView1);
@@ -168,7 +181,25 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
 
             ArrayList<Data> monthTurnData;//ArrayListの宣言
 
-            monthTurnData = dbAssist.birthdaySelect(fullReturn + 1, this);//ArrayListに月検索したデータをぶち込む
+            //:TODO 中里見がspinnerを実装し終わっていないため未検証
+
+            //prefの設定 細かいところはSettingDrawに準じているので不明
+            SharedPreferences pref = getSharedPreferences("Setting", MODE_PRIVATE);
+
+
+
+
+            if (Category == "すべて") {
+                monthTurnData = dbAssist.birthdaySelect(fullReturn + 1, this);//ArrayListに月検索したデータをぶち込む
+            }else{
+                //ArrayListに月とCategory条件の一致したデータを入れる
+                monthTurnData = dbAssist.birthdayAndCategorySelect(fullReturn + 1,Category, this);
+            }
+
+
+//誕生日表示(false)か残日表示(true)かを取得
+            boolean drawType = pref.getBoolean("drawType", false);
+
 
             MainAdapterData Mad;//自分で作成したclassの宣言
 
@@ -211,14 +242,142 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
             }
 
             //Adapterをセット
-            MainListAdapter adapter = new MainListAdapter(this, 0, adapterData);
+            mainListAdapter[fullReturn] = new MainListAdapter(this, 0, adapterData);
             //listView.setEmptyView(findViewById(R.id.listView));
-            listView[fullReturn].setAdapter(adapter);
+            listView[fullReturn].setAdapter(mainListAdapter[fullReturn]);
 
         }
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
 
+
+
+
+
+        /********spinnerの設定関連**********/
+        String spinnerItems[] = getArray("StringItem");
+
+        final ArrayAdapter<String> adapter
+                = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, spinnerItems);
+
+        Spinner spinner =  (Spinner) toolbar.getChildAt(0);
+        spinner.setAdapter(adapter);
+
+        // リスナーを登録
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            //　アイテムが選択された時
+            public void onItemSelected(AdapterView<?> parent, View viw, int arg2, long arg3) {
+                Spinner spinner = (Spinner) parent;
+                Category = (String) spinner.getSelectedItem();
+
+// 画面セットしなおし
+
+
+                //12ヶ月分セットするために12回ループさせます。
+                for (int fullReturn = 0; fullReturn < 12; fullReturn++) {
+                    mainListAdapter[fullReturn].clear();
+                    mainListAdapter[fullReturn].notifyDataSetChanged();
+
+
+                    ArrayList<Data> monthTurnData;//ArrayListの宣言
+
+                    //:TODO 中里見がspinnerを実装し終わっていないため未検証
+
+                    //prefの設定 細かいところはSettingDrawに準じているので不明
+                    SharedPreferences pref = getSharedPreferences("Setting", MODE_PRIVATE);
+
+
+
+
+                    if (Category == "すべて") {
+                        monthTurnData = dbAssist.birthdaySelect(fullReturn + 1, getApplicationContext());//ArrayListに月検索したデータをぶち込む
+                    }else{
+                        //ArrayListに月とCategory条件の一致したデータを入れる
+                        monthTurnData = dbAssist.birthdayAndCategorySelect(fullReturn + 1,Category, getApplicationContext());
+                    }
+
+
+//誕生日表示(false)か残日表示(true)かを取得
+                    boolean drawType = pref.getBoolean("drawType", false);
+
+
+                    MainAdapterData Mad;//自分で作成したclassの宣言
+
+                    ArrayList<MainAdapterData> adapterData = new ArrayList<>();//classのArrayListの作成
+
+
+                    int num = monthTurnData.size();//int型変数numにmonthTurnDataの配列数を入れる
+
+                    //欠番している数
+                    num2 = 3 - (num % 3);
+
+                    //読み込んだ月のデータの数だけ回す。（3分の1でいいのと、後述のListデータの取得に使うため+3）
+                    for (int j = 0; j < monthTurnData.size(); j = j + 3) {
+                        //三人分だけ保存するため3回回す。
+                        // Mad.startMad();//クラスの変数の初期化
+                        Mad = new MainAdapterData();//自分で作成したclassの宣言
+
+                        for (int i = 0; i < 3; i++) {
+                            Data getData;//monthTurnData取得用のデータ型
+
+                            Log.d("aaaa", String.valueOf(i + j));
+
+                            if (i + j + 1 <= num)//iとnumを比較してiの方が低い時だけ（データ無いのに取得しようとして落ちるやつの修正）
+                            {
+                                getData = monthTurnData.get(i + j);//読み込んだListの要素を取得
+
+                                Mad.setId(i, getData.getId());//idのセット
+                                Mad.setName(i, getData.getName());//名前のセット
+                                Mad.setBirthMonth(i, getData.getMonth());//誕生月のセット
+                                Mad.setBirthDay(i, getData.getDay());//誕生日のセット
+                                Mad.setPresentFlag(i, getData.isPresentFlag());//プレゼントフラグのセット
+                            }
+                        }
+
+                        //この辺に書き込み処理書いてくらさい。
+
+                        Mad.setAllSize(num);
+                        adapterData.add(Mad);//三人のデータの追加
+
+                    }
+
+                    //Adapterをセット
+                    mainListAdapter[fullReturn].addAll(adapterData);
+                    //listView.setEmptyView(findViewById(R.id.listView));
+
+
+                    // アダプターに通知する
+                    //mainListAdapter.notifyDataSetChanged();
+                    //配列で12ヶ月分のlistView作ります
+//                ListView[] listView = new ListView[12];
+//                listView[0] = (ListView) findViewById(R.id.list1).findViewById(R.id.listView1);
+//                listView[1] = (ListView) findViewById(R.id.list2).findViewById(R.id.listView1);
+//                listView[2] = (ListView) findViewById(R.id.list3).findViewById(R.id.listView1);
+//                listView[3] = (ListView) findViewById(R.id.list4).findViewById(R.id.listView1);
+//                listView[4] = (ListView) findViewById(R.id.list5).findViewById(R.id.listView1);
+//                listView[5] = (ListView) findViewById(R.id.list6).findViewById(R.id.listView1);
+//                listView[6] = (ListView) findViewById(R.id.list7).findViewById(R.id.listView1);
+//                listView[7] = (ListView) findViewById(R.id.list8).findViewById(R.id.listView1);
+//                listView[8] = (ListView) findViewById(R.id.list9).findViewById(R.id.listView1);
+//                listView[9] = (ListView) findViewById(R.id.list10).findViewById(R.id.listView1);
+//                listView[10] = (ListView) findViewById(R.id.list11).findViewById(R.id.listView1);
+//                listView[11] = (ListView) findViewById(R.id.list12).findViewById(R.id.listView1);
+                    //listView[fullReturn].setAdapter(mainListAdapter);
+                    flag = true;
+                    mainListAdapter[fullReturn].notifyDataSetChanged();
+
+                    //listView[fullReturn].invalidateViews();
+                }
+            }
+
+            //　アイテムが選択されなかった
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        /********spinnerの設定　終わり************/
 
         Log.d("onResume", "onResume");
     }
@@ -407,4 +566,5 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
             startActivity(intent);
         }
     }
+
 }
