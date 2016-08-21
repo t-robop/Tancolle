@@ -80,8 +80,7 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gesture_dec);
         setViewSize();
-        MONTH =  Calendar.getInstance().get(Calendar.MONTH);
-        page = MONTH;
+
 
         //preferenceクラス宣言
         PM=new PreferenceMethod();
@@ -140,7 +139,8 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
     @Override
     protected void onStart() {
         super.onStart();
-
+        MONTH =  Calendar.getInstance().get(Calendar.MONTH);
+        page = MONTH;
         //idの関連付け
         idSet();
 
@@ -214,8 +214,9 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
             //listView.setEmptyView(findViewById(R.id.listView));
             listView[fullReturn].setAdapter(mainListAdapter[fullReturn]);
             SpinnerSetting();
+            horizontalScrollView.scrollTo(page * displayWidth,displayHeight);
+
         }
-        //horizontalScrollView.scrollTo(page * displayWidth,displayHeight);
 
     }
     public void SpinnerSetting(){
@@ -373,7 +374,6 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
         TextView textView = (TextView) findViewById(R.id.current_month);
         textView.setText(String.valueOf(page + 1 +"月"));
 
-        horizontalScrollView.scrollTo(page * displayWidth,displayHeight);
     }
 
 
@@ -578,8 +578,8 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
             intent.putExtra("id", numData);
 
             //page番号を保存
-            SharedPreferences.Editor editor = pref.edit();
-            editor.putInt("page", page).apply();
+            //SharedPreferences.Editor editor = pref.edit();
+            //editor.putInt("page", page).apply();
             //intent.putExtra("page",page);
             startActivity(intent);
         }
@@ -636,4 +636,14 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
         listView[11] = (ListView) findViewById(R.id.list12).findViewById(R.id.listView1);
 
     }
+    public void onResume(){
+        super.onResume();
+        //horizontalScrollView.scrollTo(page * displayWidth,displayHeight);
+        horizontalScrollView.post(new Runnable() {
+            public void run() {
+                horizontalScrollView.scrollTo(page * displayWidth,displayHeight);
+            }
+        });
+    }
+
 }
