@@ -262,7 +262,7 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
 
 
         /********spinnerの設定関連**********/
-        String spinnerItems[] = PM.getArray("StringItem");
+        String spinnerItems[] = PM.getArray("StringItem",this);
 
         final ArrayAdapter<String> adapter
                 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, spinnerItems);
@@ -571,5 +571,4 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
             startActivity(intent);
         }
     }
-
 }

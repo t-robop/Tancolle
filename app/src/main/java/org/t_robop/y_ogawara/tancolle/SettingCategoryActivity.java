@@ -118,7 +118,7 @@ public class SettingCategoryActivity extends AppCompatActivity {
                                                 }
                                             /////
                                             //プレファレンスに保存用カテゴリを保存
-                                            PM.saveArray(categorylist, "StringItem");
+                                            PM.saveArray(categorylist, "StringItem",SettingCategoryActivity.this);
                                             //セット用アダプター・保存用リストに格納されている要素を全て消す
                                                 categoryAdapter.clear();
                                                 categorylist.clear();
@@ -164,7 +164,7 @@ public class SettingCategoryActivity extends AppCompatActivity {
     //preferenceからカテゴリ一覧を読み込む処理
     public void loadPreference(){
         // プリファレンスからカテゴリー一覧を取得
-        categoryItem = PM.getArray("StringItem");
+        categoryItem = PM.getArray("StringItem",this);
         //何かカテゴリが保存されてる時
             if(categoryItem!=null) {
                 //保存されてるカテゴリ数だけループさせます
@@ -253,7 +253,7 @@ public class SettingCategoryActivity extends AppCompatActivity {
                                 //追加ボタンセットとlistセット
                                 addBtnListSet();
                                 //プレファレンスにカテゴリの保存
-                                PM.saveArray(categorylist, "StringItem");
+                                PM.saveArray(categorylist, "StringItem",SettingCategoryActivity.this);
                             }
                         })
                         .setNegativeButton("キャンセル", new DialogInterface.OnClickListener(){

@@ -193,7 +193,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             CheckJudge(checkToday,7);
         /////
         // プリファレンスからカテゴリー一覧を取得
-        String[] categoryItem = PM.getArray("StringItem");
+        String[] categoryItem = PM.getArray("StringItem",this);
         //カテゴリー追加処理
             //まず＜未選択＞を追加します
             categoryAdapter.add("<未選択>");
@@ -1267,7 +1267,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             /////
         /////
         //プレファレンスにカテゴリの保存
-        PM.saveArray(categorylist, "StringItem");
+        PM.saveArray(categorylist, "StringItem",this);
         //Activity消す
         finish();
 
