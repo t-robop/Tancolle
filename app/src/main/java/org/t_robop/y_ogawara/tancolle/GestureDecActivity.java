@@ -60,7 +60,7 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
     static int num2;
 
     //カテゴリの値をいれる箱
-    String Category = "aa";
+    String Category;
 
 
     MainListAdapter[] mainListAdapter;
