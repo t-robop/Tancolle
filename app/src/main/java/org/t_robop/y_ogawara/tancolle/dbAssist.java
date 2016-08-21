@@ -173,6 +173,48 @@ public class dbAssist {
         return DataArray;
     }
 
+    //何月かとカテゴリで検索する機能
+    public static ArrayList birthdayAndCategorySelect(int month,String category, Context context){
+        String sqlStr = "select *"
+                +"from users_table "
+                + "where category like" +"'"+category+"'"
+                +" AND"
+                + " month ="+month
+                + " order by day asc";
+        ArrayList <Data> DataArray=new ArrayList<>();
+        sqLiteOpenHelper = new MySQLiteOpenHelper(context);
+        sqldb = sqLiteOpenHelper.getWritableDatabase();
+        cursor = sqldb.rawQuery(sqlStr,null);
+        while(cursor.moveToNext()) {
+            Data data = new Data();
+            data.setId(cursor.getInt(0));
+            data.setName(cursor.getString(cursor.getColumnIndex("name")));
+            data.setKana(cursor.getString(cursor.getColumnIndex("kana")));
+            data.setBirthday(cursor.getInt(3));
+            data.setYear(cursor.getInt(4));
+            data.setMonth(cursor.getInt(5));
+            data.setDay(cursor.getInt(6));
+            data.setCategory(cursor.getString(cursor.getColumnIndex("category")));
+            data.setTwitterID(cursor.getString(cursor.getColumnIndex("twitterID")));
+            data.setMemo(cursor.getString(cursor.getColumnIndex("memo")));
+            data.setImage(cursor.getString(cursor.getColumnIndex("image")));
+            data.setSmallImage(cursor.getString(cursor.getColumnIndex("smallImage")));
+            data.setPresentFlag(cursor.getInt(12));
+            data.setYukarin(cursor.getInt(13));
+            data.setNotif_yest(cursor.getInt(14));
+            data.setNotif_today(cursor.getInt(15));
+            data.setNotif_month(cursor.getInt(16));
+            data.setNotif_week(cursor.getInt(17));
+            data.setNotif_cus1(cursor.getInt(18));
+            data.setNotif_cus2(cursor.getInt(19));
+            data.setNotif_cus3(cursor.getInt(20));
+            DataArray.add(data);
+        }
+        sqldb.close();
+
+        return DataArray;
+    }
+
 
 
     //idから一つの行を検索するメソッド

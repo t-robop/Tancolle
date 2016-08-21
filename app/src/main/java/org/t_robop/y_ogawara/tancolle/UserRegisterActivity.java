@@ -38,6 +38,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import java.io.FileOutputStream;
@@ -136,6 +137,9 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
     //ダイアログでok押された時のリスナー
     DatePickerDialog.OnDateSetListener DateSetListener;
 
+    //preference用クラス
+    PreferenceMethod PM;
+
     /////////////////////////Override/////////////////////////
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,6 +149,10 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         setSupportActionBar(toolbar);
         //関連付け
         Association();
+
+        //preferenceクラス宣言
+        PM=new PreferenceMethod();
+
         //初期のカスタムテキストの色の設定
             textCus[0].setTextColor(Color.GRAY);
             textCus[1].setTextColor(Color.GRAY);
@@ -184,6 +192,24 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             CheckJudge(checkNotifYesterday,6);
             CheckJudge(checkToday,7);
         /////
+        // プリファレンスからカテゴリー一覧を取得
+        String[] categoryItem = PM.getArray("StringItem");
+        //カテゴリー追加処理
+            //まず＜未選択＞を追加します
+            categoryAdapter.add("<未選択>");
+            //何かカテゴリが保存されてる時
+                if(categoryItem!=null) {
+                    //保存されてるカテゴリ数だけループさせます
+                    for (int n = 0; n < categoryItem.length; n++) {
+                        //読み込んだカテゴリを追加
+                            categoryAdapter.add(categoryItem[n]);
+                            categorylist.add(categoryItem[n]);
+                        /////
+                    }
+                    /////
+                }
+            /////
+        /////
         //データがある場合（編集として呼ばれた場合）は読み込み
             if (id != 0) {
                 //sqlからid毎で取得
@@ -202,60 +228,63 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
                     userNotifCus[0]=idDate.getNotif_cus1();
                     userNotifCus[1]=idDate.getNotif_cus2();
                     userNotifCus[2]=idDate.getNotif_cus3();
-                /////
-                //カスタム通知（CheckBox&TextView）の配列にデータを反映するため三回回す
-                    for(int i=0;i<3;i++){
-                        //最初は0(チェック入ってない物を避けるため)
-                        flagNotifCus[i]=0;
-                        //カスタムに何か入ってる時
-                            if(userNotifCus[i]!=0){
-                                //フラグ立てる
-                                flagNotifCus[i]=1;
-                                //それの色を黒に
-                                textCus[i].setTextColor(Color.BLACK);
-                                //何か入ってる時は入ってる日付も出力する
-                                textCus[i].setText(
-                                                String.valueOf(OutCale(userNotifCus[i],"year"))+"/"+
-                                                String.valueOf(OutCale(userNotifCus[i],"month"))+"/"+
-                                                String.valueOf(OutCale(userNotifCus[i],"day")));
-                            }
+                    userCategory=idDate.getCategory();
+                    //spinnerに指定した文字列があればセット
+                    setSelection(spinnerCategory,userCategory);
+                    //カスタム通知（CheckBox&TextView）の配列にデータを反映するため三回回す
+                        for(int i=0;i<3;i++){
+                            //最初は0(チェック入ってない物を避けるため)
+                            flagNotifCus[i]=0;
+                            //カスタムに何か入ってる時
+                                if(userNotifCus[i]!=0){
+                                    //フラグ立てる
+                                    flagNotifCus[i]=1;
+                                    //それの色を黒に
+                                    textCus[i].setTextColor(Color.BLACK);
+                                    //何か入ってる時は入ってる日付も出力する
+                                    textCus[i].setText(
+                                                    String.valueOf(OutCale(userNotifCus[i],"year"))+"/"+
+                                                    String.valueOf(OutCale(userNotifCus[i],"month"))+"/"+
+                                                    String.valueOf(OutCale(userNotifCus[i],"day")));
+                                }
+                            /////
+                        }
+                    /////
+                    //画像の名前を読み込んでActivityで使える形にする
+                        //画像の名前を読み込みます
+                            userImage =imgStartName;
+                            userImageSmall =idDate.getSmallImage();
                         /////
-                    }
-                /////
-                //画像の名前を読み込んでActivityで使える形にする
-                    //画像の名前を読み込みます
-                        userImage =imgStartName;
-                        userImageSmall =idDate.getSmallImage();
+                        //名前の後ろの「.jpg」のみ取り除きます
+                            userImage =CutString(userImage,4);
+                            userImageSmall =CutString(userImageSmall,4);
+                        /////
                     /////
-                    //名前の後ろの「.jpg」のみ取り除きます
-                        userImage =CutString(userImage,4);
-                        userImageSmall =CutString(userImageSmall,4);
+                    //誕生年月日の初期値を設定年月日へ
+                        //sqlから誕生年を取得
+                        userBirthYear =idDate.getYear();
+                        //sqlから誕生月を取得
+                        userBirthMonth =idDate.getMonth();
+                        //月取得時のズレを亡くす
+                        userBirthMonth--;
+                        //sqlから誕生日を取得
+                        userBirthDay =idDate.getDay();
                     /////
-                /////
-                //誕生年月日の初期値を設定年月日へ
-                    //sqlから誕生年を取得
-                    userBirthYear =idDate.getYear();
-                    //sqlから誕生月を取得
-                    userBirthMonth =idDate.getMonth();
-                    //月取得時のズレを亡くす
-                    userBirthMonth--;
-                    //sqlから誕生日を取得
-                    userBirthDay =idDate.getDay();
-                /////
-                //ダイアログ用変数に代入
-                    temporary_year= userBirthYear;
-                    temporary_month= userBirthMonth;
-                    temporary_day= userBirthDay;
-                /////
-                //読み込んだ段階でデータから全フラグをチェックボックスに適用
-                    CheckBoxChange(checkTamura, flagTamura);
-                    CheckBoxChange(checkNotifMonth, flagNotifMonth);
-                    CheckBoxChange(checkNotifWeek, flagNotifWeek);
-                    CheckBoxChange(checkNotifYesterday, flagNotifYesterday);
-                    CheckBoxChange(checkToday, flagNotifToday);
-                    for(int i=0;i<3;i++){
-                        CheckBoxChange(checkCus[i], flagNotifCus[i]);
-                    }
+                    //ダイアログ用変数に代入
+                        temporary_year= userBirthYear;
+                        temporary_month= userBirthMonth;
+                        temporary_day= userBirthDay;
+                    /////
+                    //読み込んだ段階でデータから全フラグをチェックボックスに適用
+                        CheckBoxChange(checkTamura, flagTamura);
+                        CheckBoxChange(checkNotifMonth, flagNotifMonth);
+                        CheckBoxChange(checkNotifWeek, flagNotifWeek);
+                        CheckBoxChange(checkNotifYesterday, flagNotifYesterday);
+                        CheckBoxChange(checkToday, flagNotifToday);
+                        for(int i=0;i<3;i++){
+                            CheckBoxChange(checkCus[i], flagNotifCus[i]);
+                        }
+                    /////
                 /////
             }
         /////
@@ -308,23 +337,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         /////
         //BitMapから画像をImageViewにセット
         imageUser.setImageBitmap(img);
-        // プリファレンスからカテゴリー一覧を取得
-        String[] categoryItem = getArray("StringItem");
-        // カテゴリー追加処理
-        //まず＜未選択＞を追加します
-        categoryAdapter.add("<未選択>");
-        //何かカテゴリが保存されてる時
-            if(categoryItem!=null) {
-                //保存されてるカテゴリ数だけループさせます
-                    for (int n = 0; n < categoryItem.length; n++) {
-                        //読み込んだカテゴリを追加
-                            categoryAdapter.add(categoryItem[n]);
-                            categorylist.add(categoryItem[n]);
-                        /////
-                    }
-                /////
-            }
-        /////
+
     }
     //画像をドキュメントから選択からのImageViewセット
     @Override
@@ -871,6 +884,13 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
                             spinnerCategory.setSelection(categoryAdapter.getPosition(addcategory));
                         }
                     })
+                    .setNegativeButton("キャンセル", new DialogInterface.OnClickListener(){
+                        //DiaLog内の決定をクリックした時
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    })
                     .create();//初回AddDiaLog制作
         }
     }
@@ -1096,33 +1116,6 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         }
     }
 
-    // プリファレンス保存
-// aaa,bbb,ccc... の文字列で保存
-    private void saveArray(ArrayList<String> array, String PrefKey){
-        String str = new String("");
-        for (int i =0;i<array.size();i++){
-            str = str + array.get(i);
-            if (i !=array.size()-1){
-                str = str + ",";
-            }
-        }
-        SharedPreferences prefs1 = getSharedPreferences("Array", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs1.edit();
-        editor.putString(PrefKey, str).commit();
-    }
-
-    // プリファレンス取得
-// aaa,bbb,ccc...としたものをsplitして返す
-    private String[] getArray(String PrefKey){
-        SharedPreferences prefs2 = getSharedPreferences("Array", Context.MODE_PRIVATE);
-        String stringItem = prefs2.getString(PrefKey,"");
-        if(stringItem != null && stringItem.length() != 0){
-            return stringItem.split(",");
-        }else{
-            return null;
-        }
-    }
-
     //画像回転用メソッド
     public void ViewRotate() {
         float width;
@@ -1181,15 +1174,32 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         }
     }
 
+    //spinnerの中から文字列を探してセットするメソッド
+    public static void setSelection(Spinner spinner, String item) {
+        //spinnerにセットされてるadaptorを取得
+        SpinnerAdapter adapter = spinner.getAdapter();
+        //position取得用変数の宣言
+        int index = 0;
+        //adaptorの要素数だけ回す
+        for (int i = 0; i < adapter.getCount(); i++) {
+            //adaptorの要素に指定された文字列があった時
+            if (adapter.getItem(i).equals(item)) {
+                //positionを取得してbreak
+                index = i; break;
+            }
+        }
+        //取得したpositionの要素をspinnerにセット
+        spinner.setSelection(index);
+    }
+
     public void AllRegist() {
-        //キーボードが表示されてるかどうか判定
-            //キーボードが表示されてる時
-                if (keyBoad == true) {
-                    //キーボード絶対堕とすマン
-                    inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-                }
-            /////
-        /////
+        /***キーボードが表示されてるかどうか判定***/
+        //キーボードが表示されてる時
+        if (keyBoad == true) {
+            //キーボード絶対堕とすマン
+            inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        }
+        /*****************************************/
         //sqlに保存
             //Data型の宣言
             Data allData = new Data();
@@ -1257,7 +1267,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             /////
         /////
         //プレファレンスにカテゴリの保存
-        saveArray(categorylist, "StringItem");
+        PM.saveArray(categorylist, "StringItem");
         //Activity消す
         finish();
 
