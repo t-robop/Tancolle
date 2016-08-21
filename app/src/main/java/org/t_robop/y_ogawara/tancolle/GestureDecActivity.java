@@ -578,8 +578,8 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
             intent.putExtra("id", numData);
 
             //page番号を保存
-            SharedPreferences.Editor editor = pref.edit();
-            editor.putInt("page", page).apply();
+//            SharedPreferences.Editor editor = pref.edit();
+//            editor.putInt("page", page).apply();
             //intent.putExtra("page",page);
             startActivity(intent);
         }
