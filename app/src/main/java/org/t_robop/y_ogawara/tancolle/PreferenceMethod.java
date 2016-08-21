@@ -11,13 +11,9 @@ import java.util.ArrayList;
  */
 public class PreferenceMethod extends AppCompatActivity {
 
-    public PreferenceMethod(){
-
-    }
-
     // プリファレンス保存
     // aaa,bbb,ccc... の文字列で保存
-    public void saveArray(ArrayList<String> array, String PrefKey ,Context context){
+    public void saveArray(ArrayList<String> array, String PrefKey,Context context){
         String str = new String("");
         for (int i =0;i<array.size();i++){
             str = str + array.get(i);

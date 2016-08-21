@@ -571,5 +571,4 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
             startActivity(intent);
         }
     }
-
 }
