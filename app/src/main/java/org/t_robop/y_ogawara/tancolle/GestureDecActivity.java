@@ -80,7 +80,7 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gesture_dec);
         setViewSize();
-        MONTH =  Calendar.getInstance().get(Calendar.MONTH)+1;
+        MONTH =  Calendar.getInstance().get(Calendar.MONTH);
         page = MONTH;
 
         //preferenceクラス宣言
@@ -105,7 +105,6 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
         // GestureDetectorの生成
         gestureDetector = new GestureDetector(getApplicationContext(), this);
         horizontalScrollView = (HorizontalScrollView) findViewById(R.id.hsv_main);
-        horizontalScrollView.scrollTo(page * displayWidth,displayHeight);
         horizontalScrollView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -216,10 +215,7 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
             listView[fullReturn].setAdapter(mainListAdapter[fullReturn]);
             SpinnerSetting();
         }
-
-
-
-
+        //horizontalScrollView.scrollTo(page * displayWidth,displayHeight);
 
     }
     public void SpinnerSetting(){
@@ -372,7 +368,7 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
 
         Log.d("onResume", "onResume");
         pref = getSharedPreferences("temp", Context.MODE_PRIVATE);
-        page = pref.getInt("page",0);
+        //page = pref.getInt("page",0);
 
         TextView textView = (TextView) findViewById(R.id.current_month);
         textView.setText(String.valueOf(page + 1 +"月"));
