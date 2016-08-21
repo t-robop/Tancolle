@@ -139,7 +139,7 @@ public class SettingCategoryActivity extends AppCompatActivity {
                                     /////
                                 });
                             /////
-                            //positiveボタン(今回はok)のリスナー登録
+                            //negativeボタン(今回はキャンセル)のリスナー登録
                             aldialogDeleCategory.setNegativeButton("キャンセル", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
@@ -241,6 +241,22 @@ public class SettingCategoryActivity extends AppCompatActivity {
                                     else {
                                         //editTextのテキストを取得します
                                         addcategory = editDialog.getText().toString();
+                                        //読み込んだカテゴリの数の取得
+                                            //カテゴリに何かある時
+                                            if(categoryItem!=null) {
+                                                //配列数からカテゴリ数を取得
+                                                numCategory = categoryItem.length;
+                                                //今増やした分
+                                                numCategory++;
+                                            }
+                                            /////
+                                            //カテゴリが何も無い時
+                                            else{
+                                                //今追加した分を加算
+                                                numCategory=1;
+                                            }
+                                            /////
+                                        /////
                                     }
                                 /////
                                 //入力された
@@ -259,23 +275,14 @@ public class SettingCategoryActivity extends AppCompatActivity {
                                 addBtnListSet();
                                 //プレファレンスにカテゴリの保存
                                 saveArray(categorylist, "StringItem");
-                                //読み込んだカテゴリの数の取得
-                                    //カテゴリに何かある時
-                                        if(categoryItem!=null) {
-                                            //配列数からカテゴリ数を取得
-                                            numCategory = categoryItem.length;
-                                            //今増やした分
-                                            numCategory++;
-                                        }
-                                    /////
-                                    //カテゴリが何も無い時
-                                        else{
-                                            //今追加した分を加算
-                                            numCategory=1;
-                                        }
-                                    /////
-                                /////
                             }
+                        })
+                        .setNegativeButton("キャンセル", new DialogInterface.OnClickListener(){
+                                    //DiaLog内の決定をクリックした時
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                    }
                         })
                         .create();//初回AddDiaLog制作
             /////
