@@ -17,7 +17,7 @@ public class PreferenceMethod extends AppCompatActivity {
 
     // プリファレンス保存
     // aaa,bbb,ccc... の文字列で保存
-    public void saveArray(ArrayList<String> array, String PrefKey){
+    public void saveArray(ArrayList<String> array, String PrefKey ,Context context){
         String str = new String("");
         for (int i =0;i<array.size();i++){
             str = str + array.get(i);
@@ -25,15 +25,15 @@ public class PreferenceMethod extends AppCompatActivity {
                 str = str + ",";
             }
         }
-        SharedPreferences prefs1 = getSharedPreferences("Array", Context.MODE_PRIVATE);
+        SharedPreferences prefs1 = context.getSharedPreferences("Array", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs1.edit();
         editor.putString(PrefKey, str).commit();
     }
 
     // プリファレンス取得
     // aaa,bbb,ccc...としたものをsplitして返す
-    public String[] getArray(String PrefKey){
-        SharedPreferences prefs2 = getSharedPreferences("Array", Context.MODE_PRIVATE);
+    public String[] getArray(String PrefKey,Context context){
+        SharedPreferences prefs2 = context.getSharedPreferences("Array", Context.MODE_PRIVATE);
         String stringItem = prefs2.getString(PrefKey,"");
         if(stringItem != null && stringItem.length() != 0){
             return stringItem.split(",");
