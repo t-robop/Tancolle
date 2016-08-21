@@ -1,14 +1,11 @@
 package org.t_robop.y_ogawara.tancolle;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -26,6 +23,8 @@ public class MainListAdapter extends ArrayAdapter<MainAdapterData> {
                 Context.LAYOUT_INFLATER_SERVICE
         );
     }
+
+
 
     //viewを使い回すのにinflaterを使う(お決まりのやつ)
     @Override
@@ -67,7 +66,7 @@ public class MainListAdapter extends ArrayAdapter<MainAdapterData> {
 
 
         //listの行数が最終行だったとき
-          if (position == mainListData.getAllSize() / 3) {
+          if (position == (mainListData.getAllSize()-1) / 3) {
               //いくつ余ってるかの分岐
                 switch (mainListData.getAllSize()%3) {
                     case 2://一つ無いとき
@@ -79,13 +78,33 @@ public class MainListAdapter extends ArrayAdapter<MainAdapterData> {
                         }
                         break;
                     case 1://二つ無いとき
+                        //if (GestureDecActivity.flag == true) {
+                            liner2.setVisibility(View.INVISIBLE);
+                            liner3.setVisibility(View.INVISIBLE);
+                        //}
                         //何も表示させません
+                        break;
+                    case 0:
+                        liner2.setVisibility(View.VISIBLE);
+                        liner3.setVisibility(View.VISIBLE);
+                        nameText2.setText(mainListData.getName(1));
+                        birthText2.setText(mainListData.getBirthMonth(1)+"/"+mainListData.getBirthDay(1));
+                        if (mainListData.getPresentFlag(1)==1) {
+                            liner2.setBackgroundResource(R.drawable.ribbon_tra);
+                        }
+
+                        nameText3.setText(mainListData.getName(2));
+                        birthText3.setText(mainListData.getBirthMonth(2)+"/"+mainListData.getBirthDay(2));
+                        if (mainListData.getPresentFlag(2)==1) {
+                            liner3.setBackgroundResource(R.drawable.ribbon_tra);
+                        }
                         break;
                 }
             }
         else{
               //最終行ではないので全て表示させます
-
+              liner2.setVisibility(View.VISIBLE);
+              liner3.setVisibility(View.VISIBLE);
               nameText2.setText(mainListData.getName(1));
               birthText2.setText(mainListData.getBirthMonth(1)+"/"+mainListData.getBirthDay(1));
               if (mainListData.getPresentFlag(1)==1) {
@@ -97,6 +116,7 @@ public class MainListAdapter extends ArrayAdapter<MainAdapterData> {
               if (mainListData.getPresentFlag(2)==1) {
                   liner3.setBackgroundResource(R.drawable.ribbon_tra);
               }
+
           }
 
 
