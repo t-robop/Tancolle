@@ -30,6 +30,7 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -269,17 +270,26 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
         if(spinnerItems!=null) {
             //保存されてるカテゴリ数だけループさせます
             for (int n = 0; n < spinnerItems.length; n++) {
-                //読み込んだカテゴリを追加
-                //list表示用adaptor
+                //adaptorに読み込んだカテゴリを追加
                 adapter.add(spinnerItems[n]);
                 /////
             }
             /////
         }
         /////
-
         Spinner spinner =  (Spinner) toolbar.getChildAt(0);
         spinner.setAdapter(adapter);
+        /*****選択されてたカテゴリの読み込みとセット*****/
+        //"Setting"をプライベートモードで開く
+        SharedPreferences pref = getSharedPreferences("Setting", MODE_PRIVATE);
+        //String型に"choiseCategory"の文字列を代入(何も保存されてない時はnull)
+        String choiseCategory = pref.getString("choiseCategory", null);
+        //nullでない(何か保存されてる)時
+        if(choiseCategory!=null){
+            //spinnerに取得したカテゴリをセット
+            setSelection(spinner,choiseCategory);
+        }
+        /********************/
 
         // リスナーを登録
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -287,6 +297,17 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
             public void onItemSelected(AdapterView<?> parent, View viw, int arg2, long arg3) {
                 Spinner spinner = (Spinner) parent;
                 Category = (String) spinner.getSelectedItem();
+
+                /*****選択したカテゴリの保存*****/
+                SharedPreferences preferCategory;
+                //"Setting"をプライベートモードで開く
+                preferCategory = getSharedPreferences("Setting", MODE_PRIVATE);
+                //editorを展開
+                SharedPreferences.Editor editor = preferCategory.edit();
+                //"choiseCategory"に選択されたカテゴリを保存
+                editor.putString("choiseCategory", Category);
+                editor.commit();
+                /********************/
 
 // 画面セットしなおし
 
@@ -396,6 +417,24 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
         /********spinnerの設定　終わり************/
 
         Log.d("onResume", "onResume");
+    }
+
+    //spinnerの中から文字列を探してセットするメソッド
+    public static void setSelection(Spinner spinner, String item) {
+        //spinnerにセットされてるadaptorを取得
+        SpinnerAdapter adapter = spinner.getAdapter();
+        //position取得用変数の宣言
+        int index = 0;
+        //adaptorの要素数だけ回す
+        for (int i = 0; i < adapter.getCount(); i++) {
+            //adaptorの要素に指定された文字列があった時
+            if (adapter.getItem(i).equals(item)) {
+                //positionを取得してbreak
+                index = i; break;
+            }
+        }
+        //取得したpositionの要素をspinnerにセット
+        spinner.setSelection(index);
     }
 
     // ページ設定用 true;次のページ false:前のページ
