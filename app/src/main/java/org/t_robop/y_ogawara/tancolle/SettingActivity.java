@@ -2,8 +2,11 @@ package org.t_robop.y_ogawara.tancolle;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 
@@ -27,8 +30,29 @@ public class SettingActivity extends AppCompatActivity {
         allNotifType = pref.getBoolean("allNotifType", true);
         //取得したBoolean型に応じてチェックを変更
         allNotif.setChecked(allNotifType);
+
+        //ToolBar関連
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
     }
-    //表示設定クリック時
+
+    //MenuItem(戻るボタン)の選択
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    //設定クリック時
     public void drawsetting(View v){
         //表示設定用Activityに飛ぶ
             Intent intent = new Intent(SettingActivity.this, SettingDrawActivity.class);
