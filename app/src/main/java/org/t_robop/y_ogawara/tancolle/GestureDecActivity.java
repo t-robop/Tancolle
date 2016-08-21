@@ -74,13 +74,15 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
     //データ読み書き
     SharedPreferences pref;
 
+    //onCreateから来たのか判別するflag
+    boolean onCreateFlag;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gesture_dec);
         setViewSize();
-
+        onCreateFlag = true;
 
         //preferenceクラス宣言
         PM=new PreferenceMethod();
@@ -94,6 +96,7 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
             add.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    pageSave();
                     Intent intent = new Intent(GestureDecActivity.this, UserRegisterActivity.class);
                     intent.putExtra("month", page + 1);
                     startActivity(intent);
@@ -154,10 +157,10 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
             //:TODO 中里見がspinnerを実装し終わっていないため未検証
 
             //prefの設定 細かいところはSettingDrawに準じているので不明
-            SharedPreferences pref = getSharedPreferences("Setting", MODE_PRIVATE);
+            pref = getSharedPreferences("Setting", MODE_PRIVATE);
 
 
-            if (Category == "すべて") {
+            if (Category.equals("すべて")) {
                 monthTurnData = dbAssist.birthdaySelect(fullReturn + 1, this);//ArrayListに月検索したデータをぶち込む
             }else{
                 //ArrayListに月とCategory条件の一致したデータを入れる
@@ -498,12 +501,14 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_settings:
+                pageSave();
                 // User chose the "Settings" item, show the app settings UI...
                 Intent intent_setting = new Intent(GestureDecActivity.this, SettingActivity.class);
                 startActivity(intent_setting);
                 return true;
 
             case R.id.action_search:
+                pageSave();
                 Intent intent = new Intent(this, SearchActivity.class);
                 startActivity(intent);
                 return true;
@@ -574,6 +579,7 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
 
         if (numData != 0) {
             //Intentで飛ばす＆idをキーにする
+            pageSave();
             Intent intent = new Intent(GestureDecActivity.this, UserDetailActivity.class);
             intent.putExtra("id", numData);
 
@@ -639,11 +645,29 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
     public void onResume(){
         super.onResume();
         //horizontalScrollView.scrollTo(page * displayWidth,displayHeight);
+
+        //onCreateから来たかどうか
+        if (onCreateFlag == false){
+            page = pref.getInt("page",MONTH);
+
+        }else {
+            page = MONTH;
+        }
         horizontalScrollView.post(new Runnable() {
             public void run() {
-                horizontalScrollView.scrollTo(page * displayWidth,displayHeight);
+                //ここでズレを吸収してる、なんで直ったか不明
+                horizontalScrollView.scrollTo((page+1) * displayWidth,displayHeight);
             }
         });
+        TextView textView = (TextView) findViewById(R.id.current_month);
+        textView.setText(String.valueOf(page + 1) + "月");
+
+    }
+    public void pageSave(){
+        onCreateFlag = false;
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putInt("page",page);
+        editor.apply();
     }
 
 }
