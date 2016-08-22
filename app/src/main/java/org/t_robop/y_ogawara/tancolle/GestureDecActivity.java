@@ -60,7 +60,7 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
     static int num2;
 
     //カテゴリの値をいれる箱
-    String Category;
+    String Category= "";
 
 
     MainListAdapter[] mainListAdapter;
@@ -668,6 +668,9 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
         SharedPreferences.Editor editor = pref.edit();
         editor.putInt("page",page);
         editor.apply();
+
     }
+
+
 
 }
