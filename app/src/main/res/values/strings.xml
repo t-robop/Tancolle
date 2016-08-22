@@ -4,4 +4,5 @@
     <string name="action_search">検索</string>
     <string name="action_save">保存</string>
     <string name="action_add">追加</string>
+    <string name="action_mode_del">選択削除</string>
 </resources>

@@ -2,17 +2,17 @@ package org.t_robop.y_ogawara.tancolle;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -32,6 +32,8 @@ public class SettingCategoryActivity extends AppCompatActivity {
     ArrayList<String> categorylist;
     //カテゴリ追加ダイアログ
     AlertDialog addCategoryDialog;
+    //カテゴリ数
+    int numCategory;
     //EditText用変数群
     View viewDialog;
     //DiaLog用xmlから来るやつ
@@ -44,22 +46,43 @@ public class SettingCategoryActivity extends AppCompatActivity {
     //preference用クラス
     PreferenceMethod PM;
 
+    FloatingActionButton floatingBoth;
+    //FloatingActionButtonの切り替えフラグ(false：追加モード,true：削除モード)
+    boolean flagFloatingBtn;
+
+    //キーボード制御
+    InputMethodManager inputMethodManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting_category);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        //ToolBar関連
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        toolbar.setTitle("表示設定");
         setSupportActionBar(toolbar);
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
+        //FloatingActionButtonの宣言
+        floatingBoth = (FloatingActionButton) findViewById(R.id.floating_both);
 
         //preferenceクラス宣言
         PM=new PreferenceMethod();
+
+        //キーボード表示を制御（出したり消したり）するためのオブジェクトの関連付け
+        inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
         //カテゴリを表示するリストの初期設定
         listCategory=new ListView(this);
         //カテゴリを保存するリストの初期設定
         categorylist=new ArrayList<>();
         //カテゴリを格納するアダプターの初期設定
-        categoryAdapter= new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
+        categoryAdapter= new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice);
 
         //カテゴリ一覧用リストの関連付け
         listCategory=(ListView)findViewById(R.id.list_category);
@@ -77,80 +100,143 @@ public class SettingCategoryActivity extends AppCompatActivity {
             listCategory.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 public void onItemClick(final AdapterView<?> parent,
                                         View view, final int position, long id) {
-                    //削除処理
-                            //選んだカテゴリの名前を取得
-                            choiceCategory = String.valueOf(parent.getItemAtPosition(position));
-                            //このアクティビティに表示する削除確認ダイアログの宣言
-                            AlertDialog.Builder aldialogDeleCategory=new AlertDialog.Builder(SettingCategoryActivity.this);
-                            //ダイアログタイトルの決定
-                            aldialogDeleCategory.setTitle(choiceCategory+"を削除しますか？");
-                            //positiveボタン(今回はok)のリスナー登録
-                                aldialogDeleCategory.setPositiveButton("決定", new DialogInterface.OnClickListener() {
-                                    //削除用ダイアログ内のokボタン押した時
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            //選択されたカテゴリ名の要素をセット用アダプター・保存用リストから取り除く
-                                                categoryAdapter.remove(choiceCategory);
-                                                categorylist.remove(choiceCategory);
-                                            /////
-                                            //listCategoryが空でない時（エラー回避）
-                                                if (listCategory != null) {
-                                                    //表示用リストにセット用アダプターをセット
-                                                    listCategory.setAdapter(categoryAdapter);
-                                                }
-                                            /////
-                                            //プレファレンスに保存用カテゴリを保存
-                                            PM.saveArray(categorylist, "StringItem",SettingCategoryActivity.this);
-                                            //セット用アダプター・保存用リストに格納されている要素を全て消す
-                                                categoryAdapter.clear();
-                                                categorylist.clear();
-                                            /////
-                                            //preference読み込んでアダプターにセット
-                                            loadPreference();
-                                            //追加ボタンセットとlistセット
-                                            addBtnListSet();
-                                        }
-                                    /////
-                                });
-                            /////
-                            //negativeボタン(今回はキャンセル)のリスナー登録
-                            aldialogDeleCategory.setNegativeButton("キャンセル", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
 
-                                        }
-                                    });
-                            //設定したダイアログの表示
-                            aldialogDeleCategory.show();
-                    /////
+                    int cntFloating=0;
+                    for (int i = 0; i < numCategory; i++) {
+                        // 指定したアイテムがチェックされているか確認
+                        boolean listCheck;
+                        listCheck=listCategory.isItemChecked(i);
+                        if(listCheck==true){
+                            //ゴミ箱に
+                            floatingBoth.setImageResource(R.drawable.ic_delete_white_48dp);
+                            flagFloatingBtn=true;
+                        }
+                        else{
+                            cntFloating++;
+                        }
+                    }
+                    if(cntFloating==numCategory){
+                        //+に
+                        floatingBoth.setImageResource(R.drawable.ic_add_white_48dp);
+                        flagFloatingBtn=false;
+                    }
+
                 }
+
             });
         /////
-    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // アクションバー内に使用するメニューアイテムを注入します。
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.setting_category_menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
+        // FloatingActionButton
+        if (floatingBoth != null) {
+            floatingBoth.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //追加モード時(true)
+                    if(!flagFloatingBtn) {
+                        //キーボード表示
+                        inputMethodManager.showSoftInput(viewDialog, InputMethodManager.SHOW_FORCED);
+                        //カテゴリ追加用ダイアログの作成
+                        CategoryAdd();
+                        //作成したダイアログの表示
+                        addCategoryDialog.show();
+                    }
+                    //削除モード時
+                    else{
+                        //このアクティビティに表示する削除確認ダイアログの宣言
+                        AlertDialog.Builder aldialogDeleCategory=new AlertDialog.Builder(SettingCategoryActivity.this);
+                        //ダイアログタイトルの決定
+                        aldialogDeleCategory.setTitle("選択されたカテゴリを削除しますか");
+                        //positiveボタン(今回はok)のリスナー登録
+                        aldialogDeleCategory.setPositiveButton("決定", new DialogInterface.OnClickListener() {
+                            //削除用ダイアログ内のokボタン押した時
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
 
-    //アクションバー処理
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // アクションバーアイテム上の押下を処理します。
-        switch (item.getItemId()) {
-            case R.id.action_add:
-                //カテゴリ追加用ダイアログの作成
-                CategoryAdd();
-                //作成したダイアログの表示
-                addCategoryDialog.show();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+                                int num=numCategory;
+                                for (int i = 0; i < num; i++) {
+
+                                        boolean listCheck;
+                                        listCheck = listCategory.isItemChecked(i);
+
+                                    String itemName=categoryAdapter.getItem(i);
+
+                                    //true
+                                        if (listCheck) {
+
+                                            //最後のやつ以外
+                                            if(i==numCategory-1&&i==0) {
+                                                categorylist.clear();
+                                                categoryAdapter.clear();
+                                            }
+                                            else{
+                                                //選択されたカテゴリ名の要素をセット用アダプター・保存用リストから取り除く
+                                                categorylist.remove(itemName);
+                                                categoryAdapter.remove(itemName);
+                                                /////
+                                                i--;
+                                                num--;
+                                            }
+                                        }
+
+                                }
+                                //listCategoryが空でない時（エラー回避）
+                                if (listCategory != null) {
+                                    //表示用リストにセット用アダプターをセット
+                                    listCategory.setAdapter(categoryAdapter);
+                                }
+                                /////
+                                    //プレファレンスに保存用カテゴリを保存
+                                    PM.saveArray(categorylist, "StringItem", SettingCategoryActivity.this);
+                                    //セット用アダプター・保存用リストに格納されている要素を全て消す
+                                    categoryAdapter.clear();
+                                    categorylist.clear();
+                                    /////
+                                    //preference読み込んでアダプターにセット
+                                    loadPreference();
+                                    //追加ボタンセットとlistセット
+                                    addBtnListSet();
+
+                                //+に
+                                floatingBoth.setImageResource(R.drawable.ic_add_white_48dp);
+                                flagFloatingBtn=false;
+
+                                /////
+                            }
+                        });
+                        /////
+                        //negativeボタン(今回はキャンセル)のリスナー登録
+                        aldialogDeleCategory.setNegativeButton("キャンセル", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+                        //設定したダイアログの表示
+                        aldialogDeleCategory.show();
+                        /////
+                    }
+                }
+            });
         }
     }
+
+    //MenuItem(戻るボタン)の選択
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            //フラグの保存
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    //端末のバックボタンクリック時
+    @Override
+    public void onBackPressed() {
+        //Activity終了
+        finish();
+    }
+
 
     //preferenceからカテゴリ一覧を読み込む処理
     public void loadPreference(){
@@ -158,8 +244,9 @@ public class SettingCategoryActivity extends AppCompatActivity {
         categoryItem = PM.getArray("StringItem",this);
         //何かカテゴリが保存されてる時
             if(categoryItem!=null) {
+                numCategory=categoryItem.length;
                 //保存されてるカテゴリ数だけループさせます
-                    for (int n = 0; n < categoryItem.length; n++) {
+                    for (int n = 0; n < numCategory; n++) {
                         //読み込んだカテゴリを追加
                             //list表示用adaptor
                             categoryAdapter.add(categoryItem[n]);
@@ -169,6 +256,9 @@ public class SettingCategoryActivity extends AppCompatActivity {
                     }
                 /////
             }
+            else{
+                    numCategory=0;
+                }
         /////
     }
 
@@ -182,7 +272,7 @@ public class SettingCategoryActivity extends AppCompatActivity {
                         //このアクティビティに表示
                         new AlertDialog.Builder(SettingCategoryActivity.this)
                         //DiaLogタイトル
-                        .setTitle("カテゴリー入力")
+                        .setTitle("カテゴリを追加")
                         //設定したダイアログ用xmlのView指定
                         .setView(viewDialog)
                         //ボタン作成
@@ -229,6 +319,8 @@ public class SettingCategoryActivity extends AppCompatActivity {
                                 addBtnListSet();
                                 //プレファレンスにカテゴリの保存
                                 PM.saveArray(categorylist, "StringItem",SettingCategoryActivity.this);
+
+                                numCategory++;
                             }
                         })
                         .setNegativeButton("キャンセル", new DialogInterface.OnClickListener(){
