@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -40,101 +39,97 @@ public class SettingCategoryActivity extends AppCompatActivity {
     LayoutInflater inflaterDialog;
     //DiaLog用xmlのEditText
     EditText editDialog;
-    //選択されたカテゴリ名を格納するString型変数
-    String choiceCategory;
-
     //preference用クラス
     PreferenceMethod PM;
-
+    //FloatingActionButtonの宣言
     FloatingActionButton floatingBoth;
     //FloatingActionButtonの切り替えフラグ(false：追加モード,true：削除モード)
     boolean flagFloatingBtn;
-
-    //キーボード制御
-    InputMethodManager inputMethodManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting_category);
 
-        //ToolBar関連
+        /*****ToolBar関連*****/
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
-        toolbar.setTitle("表示設定");
+        if (toolbar != null) {
+            toolbar.setTitle("表示設定");
+        }
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-
+        /********************/
         //FloatingActionButtonの宣言
         floatingBoth = (FloatingActionButton) findViewById(R.id.floating_both);
-
         //preferenceクラス宣言
-        PM=new PreferenceMethod();
-
-        //キーボード表示を制御（出したり消したり）するためのオブジェクトの関連付け
-        inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-
+        PM = new PreferenceMethod();
         //カテゴリを表示するリストの初期設定
         listCategory=new ListView(this);
+        //カテゴリ一覧用リストの関連付け
+        listCategory=(ListView)findViewById(R.id.list_category);
         //カテゴリを保存するリストの初期設定
         categorylist=new ArrayList<>();
         //カテゴリを格納するアダプターの初期設定
         categoryAdapter= new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice);
-
-        //カテゴリ一覧用リストの関連付け
-        listCategory=(ListView)findViewById(R.id.list_category);
-
-        //DiaLog用のxmlとの連携の関連付け
-            inflaterDialog = LayoutInflater.from(SettingCategoryActivity.this);
-            viewDialog = inflaterDialog.inflate(R.layout.dialog_user_register, null);
-            editDialog = (EditText) viewDialog.findViewById(R.id.editText1);
-        /////
+        /*****DiaLog用のxmlとの連携の関連付け*****/
+        inflaterDialog = LayoutInflater.from(SettingCategoryActivity.this);
+        viewDialog = inflaterDialog.inflate(R.layout.dialog_user_register, null);
+        editDialog = (EditText) viewDialog.findViewById(R.id.editText1);
+        /********************/
         //preference読み込んでアダプターにセット
         loadPreference();
-        //追加ボタンセットとアダプターをリストに反映
+        //アダプターをリストに反映
         addBtnListSet();
-        // アイテムクリック時のイベントを追加
+        /*****アイテムクリック時*****/
             listCategory.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 public void onItemClick(final AdapterView<?> parent,
                                         View view, final int position, long id) {
-
+                    /*****FloatingActionButtonの表示切替*****/
+                    //チェック無しをカウントするための変数の宣言
                     int cntFloating=0;
+                    //リストの要素の数だけループ
                     for (int i = 0; i < numCategory; i++) {
-                        // 指定したアイテムがチェックされているか確認
+                        //要素のチェック状況取得用変数
                         boolean listCheck;
+                        //指定したアイテムがチェック状態を取得
                         listCheck=listCategory.isItemChecked(i);
-                        if(listCheck==true){
-                            //ゴミ箱に
+                        //チェックが入っていた時(true)
+                        if(listCheck){
+                            //ゴミ箱アイコンに変える
                             floatingBoth.setImageResource(R.drawable.ic_delete_white_48dp);
+                            //FloatingActionButtonのアイコン状況をtrueに
                             flagFloatingBtn=true;
                         }
+                        //チェックが入ってなかった時(false)
                         else{
+                            //チェック無しをカウント
                             cntFloating++;
                         }
                     }
+                    //チェックが入ってなかった要素が全要素数と同じ時(全てチェック無しの時)
                     if(cntFloating==numCategory){
-                        //+に
+                        //+アイコンに変える
                         floatingBoth.setImageResource(R.drawable.ic_add_white_48dp);
+                        //FloatingActionButtonのアイコン状況をfalseに
                         flagFloatingBtn=false;
                     }
-
+                    /********************/
                 }
-
             });
-        /////
+        /********************/
 
-        // FloatingActionButton
+        /*****FloatingActionButtonの設定*****/
         if (floatingBoth != null) {
             floatingBoth.setOnClickListener(new View.OnClickListener() {
+                //クリックされた時
                 @Override
                 public void onClick(View view) {
                     //追加モード時(true)
                     if(!flagFloatingBtn) {
-                        //キーボード表示
-                        inputMethodManager.showSoftInput(viewDialog, InputMethodManager.SHOW_FORCED);
                         //カテゴリ追加用ダイアログの作成
                         CategoryAdd();
                         //作成したダイアログの表示
@@ -145,26 +140,26 @@ public class SettingCategoryActivity extends AppCompatActivity {
                         //このアクティビティに表示する削除確認ダイアログの宣言
                         AlertDialog.Builder aldialogDeleCategory=new AlertDialog.Builder(SettingCategoryActivity.this);
                         //ダイアログタイトルの決定
-                        aldialogDeleCategory.setTitle("選択されたカテゴリを削除しますか");
+                        aldialogDeleCategory.setTitle("選択したカテゴリを削除しますか");
                         //positiveボタン(今回はok)のリスナー登録
                         aldialogDeleCategory.setPositiveButton("決定", new DialogInterface.OnClickListener() {
                             //削除用ダイアログ内のokボタン押した時
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-
+                                //ループ用変数に現在の要素数を代入
                                 int num=numCategory;
+                                int cnt=0;
+                                //要素を上から数えるためのループ
                                 for (int i = 0; i < num; i++) {
-
-                                        boolean listCheck;
-                                        listCheck = listCategory.isItemChecked(i);
-
+                                    //要素のチェック状況を取得
+                                    boolean listCheck=listCategory.isItemChecked(i+cnt);
+                                    //要素名を取得
                                     String itemName=categoryAdapter.getItem(i);
-
-                                    //true
-                                        if (listCheck) {
-
-                                            //最後のやつ以外
+                                    //チェック入ってる時
+                                    if (listCheck) {
+                                            //最後の要素の場合
                                             if(i==numCategory-1&&i==0) {
+                                                //
                                                 categorylist.clear();
                                                 categoryAdapter.clear();
                                             }
@@ -175,6 +170,7 @@ public class SettingCategoryActivity extends AppCompatActivity {
                                                 /////
                                                 i--;
                                                 num--;
+                                                cnt++;
                                             }
                                         }
 
@@ -218,6 +214,7 @@ public class SettingCategoryActivity extends AppCompatActivity {
                 }
             });
         }
+        /********************/
     }
 
     //MenuItem(戻るボタン)の選択
