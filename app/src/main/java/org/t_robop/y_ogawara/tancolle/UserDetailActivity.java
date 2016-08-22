@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -51,12 +52,20 @@ public class UserDetailActivity extends AppCompatActivity {
     //画像データを一時的に蓄えるとこ
     Bitmap bitmap;
 
+    //前のpage番号
+    int page;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_detail);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
     }
 
     @Override
@@ -65,6 +74,7 @@ public class UserDetailActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         intentId = intent.getIntExtra("id", 1);
+        page = intent.getIntExtra("page",0);
         nameTV = (TextView) findViewById(R.id.Name);
         kanaTV = (TextView) findViewById(R.id.Kana);
         birthTV = (TextView) findViewById(R.id.Birthay);
@@ -314,6 +324,9 @@ public class UserDetailActivity extends AppCompatActivity {
                 return true;
             case R.id.delete_button:
                 Delete();
+                return true;
+            case android.R.id.home:
+                finish();
                 return true;
 
             default:

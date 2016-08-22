@@ -54,7 +54,7 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
     private static final int SCROLL_RIGHT = 1; //
     private int slideLimitFlg = SCROLL_NONE; // スライドの状態判定
 
-    final int MONTH =  Calendar.getInstance().get(Calendar.MONTH); //端末の月
+    int MONTH; //端末の月
 
 
     static int num2;
@@ -71,46 +71,24 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
 
     //preference用クラス
     PreferenceMethod PM;
+    //データ読み書き
+    SharedPreferences pref;
+
+    //onCreateから来たのか判別するflag
+    boolean onCreateFlag;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gesture_dec);
         setViewSize();
+        onCreateFlag = true;
 
         //preferenceクラス宣言
         PM=new PreferenceMethod();
 
-        // Android6.0以降でのPermissionの確認
-        if (ContextCompat.checkSelfPermission(
-                this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-            // 許可されている時の処理
-            Log.d("Accept", "Accept");
-        } else {
-            //拒否されている時の処理
-            Log.d("Deny", "Deny");
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                //拒否された時 Permissionが必要な理由を表示して再度許可を求めたり、機能を無効にしたりします。
-                Log.d("Alert", "Alert");
-                //AlertDialog
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-                //alertDialog.setTitle("");          //タイトル
-                alertDialog.setMessage("顔写真を追加する際にストレージへのアクセスが必要です。" + "\n" + "次の画面で許可を押してください。");      //内容
-                alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        Log.d("AlertDialog", "Positive which :" + which);
-                        ActivityCompat.requestPermissions(GestureDecActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
-                    }
-                });
-                alertDialog.create();
-                alertDialog.show();
-
-            } else {
-                //まだ許可を求める前の時、許可を求めるダイアログを表示します。
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
-                Log.d("else", "else");
-            }
-        }
+        //Permission確認 Android6.0以上
+        permissionAcquisition();
 
         // FloatingActionButton
         FloatingActionButton add = (FloatingActionButton) findViewById(R.id.add);
@@ -118,6 +96,7 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
             add.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    pageSave();
                     Intent intent = new Intent(GestureDecActivity.this, UserRegisterActivity.class);
                     intent.putExtra("month", page + 1);
                     startActivity(intent);
@@ -128,7 +107,6 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
         // GestureDetectorの生成
         gestureDetector = new GestureDetector(getApplicationContext(), this);
         horizontalScrollView = (HorizontalScrollView) findViewById(R.id.hsv_main);
-        horizontalScrollView.scrollTo(MONTH * displayWidth,displayHeight);
         horizontalScrollView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -159,28 +137,17 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
     }
 
 
+
+
     @Override
     protected void onStart() {
         super.onStart();
-        TextView textView = (TextView) findViewById(R.id.current_month);
-        textView.setText(String.valueOf(page + 1 +"月"));
+        MONTH =  Calendar.getInstance().get(Calendar.MONTH);
+        page = MONTH;
+        //idの関連付け
+        idSet();
 
-        mainListAdapter = new MainListAdapter[12];
 
-        //配列で12ヶ月分のlistView作ります
-        listView = new ListView[12];
-        listView[0] = (ListView) findViewById(R.id.list1).findViewById(R.id.listView1);
-        listView[1] = (ListView) findViewById(R.id.list2).findViewById(R.id.listView1);
-        listView[2] = (ListView) findViewById(R.id.list3).findViewById(R.id.listView1);
-        listView[3] = (ListView) findViewById(R.id.list4).findViewById(R.id.listView1);
-        listView[4] = (ListView) findViewById(R.id.list5).findViewById(R.id.listView1);
-        listView[5] = (ListView) findViewById(R.id.list6).findViewById(R.id.listView1);
-        listView[6] = (ListView) findViewById(R.id.list7).findViewById(R.id.listView1);
-        listView[7] = (ListView) findViewById(R.id.list8).findViewById(R.id.listView1);
-        listView[8] = (ListView) findViewById(R.id.list9).findViewById(R.id.listView1);
-        listView[9] = (ListView) findViewById(R.id.list10).findViewById(R.id.listView1);
-        listView[10] = (ListView) findViewById(R.id.list11).findViewById(R.id.listView1);
-        listView[11] = (ListView) findViewById(R.id.list12).findViewById(R.id.listView1);
 
         //12ヶ月分セットするために12回ループさせます。
         for (int fullReturn = 0; fullReturn < 12; fullReturn++) {
@@ -190,12 +157,10 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
             //:TODO 中里見がspinnerを実装し終わっていないため未検証
 
             //prefの設定 細かいところはSettingDrawに準じているので不明
-            SharedPreferences pref = getSharedPreferences("Setting", MODE_PRIVATE);
+            pref = getSharedPreferences("Setting", MODE_PRIVATE);
 
 
-
-
-            if (Category == "すべて") {
+            if (Category.equals("すべて")) {
                 monthTurnData = dbAssist.birthdaySelect(fullReturn + 1, this);//ArrayListに月検索したデータをぶち込む
             }else{
                 //ArrayListに月とCategory条件の一致したデータを入れる
@@ -251,12 +216,15 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
             mainListAdapter[fullReturn] = new MainListAdapter(this, 0, adapterData);
             //listView.setEmptyView(findViewById(R.id.listView));
             listView[fullReturn].setAdapter(mainListAdapter[fullReturn]);
+            SpinnerSetting();
+            horizontalScrollView.scrollTo(page * displayWidth,displayHeight);
 
         }
 
+    }
+    public void SpinnerSetting(){
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         /********spinnerの設定関連**********/
         String spinnerItems[];
         ArrayAdapter<String> adapter= new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
@@ -297,6 +265,10 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
             public void onItemSelected(AdapterView<?> parent, View viw, int arg2, long arg3) {
                 Spinner spinner = (Spinner) parent;
                 Category = (String) spinner.getSelectedItem();
+                //
+                if (Category.equals("すべて") ){
+
+                }
 
                 /*****選択したカテゴリの保存*****/
                 SharedPreferences preferCategory;
@@ -328,7 +300,7 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
 
 
 
-                    if (Category == "すべて") {
+                    if (Category.equals("すべて")) {
                         monthTurnData = dbAssist.birthdaySelect(fullReturn + 1, getApplicationContext());//ArrayListに月検索したデータをぶち込む
                     }else{
                         //ArrayListに月とCategory条件の一致したデータを入れる
@@ -384,24 +356,6 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
                     mainListAdapter[fullReturn].addAll(adapterData);
                     //listView.setEmptyView(findViewById(R.id.listView));
 
-
-                    // アダプターに通知する
-                    //mainListAdapter.notifyDataSetChanged();
-                    //配列で12ヶ月分のlistView作ります
-//                ListView[] listView = new ListView[12];
-//                listView[0] = (ListView) findViewById(R.id.list1).findViewById(R.id.listView1);
-//                listView[1] = (ListView) findViewById(R.id.list2).findViewById(R.id.listView1);
-//                listView[2] = (ListView) findViewById(R.id.list3).findViewById(R.id.listView1);
-//                listView[3] = (ListView) findViewById(R.id.list4).findViewById(R.id.listView1);
-//                listView[4] = (ListView) findViewById(R.id.list5).findViewById(R.id.listView1);
-//                listView[5] = (ListView) findViewById(R.id.list6).findViewById(R.id.listView1);
-//                listView[6] = (ListView) findViewById(R.id.list7).findViewById(R.id.listView1);
-//                listView[7] = (ListView) findViewById(R.id.list8).findViewById(R.id.listView1);
-//                listView[8] = (ListView) findViewById(R.id.list9).findViewById(R.id.listView1);
-//                listView[9] = (ListView) findViewById(R.id.list10).findViewById(R.id.listView1);
-//                listView[10] = (ListView) findViewById(R.id.list11).findViewById(R.id.listView1);
-//                listView[11] = (ListView) findViewById(R.id.list12).findViewById(R.id.listView1);
-                    //listView[fullReturn].setAdapter(mainListAdapter);
                     flag = true;
                     mainListAdapter[fullReturn].notifyDataSetChanged();
 
@@ -417,7 +371,14 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
         /********spinnerの設定　終わり************/
 
         Log.d("onResume", "onResume");
+        pref = getSharedPreferences("temp", Context.MODE_PRIVATE);
+        //page = pref.getInt("page",0);
+
+        TextView textView = (TextView) findViewById(R.id.current_month);
+        textView.setText(String.valueOf(page + 1 +"月"));
+
     }
+
 
     //spinnerの中から文字列を探してセットするメソッド
     public static void setSelection(Spinner spinner, String item) {
@@ -540,12 +501,14 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_settings:
+                pageSave();
                 // User chose the "Settings" item, show the app settings UI...
                 Intent intent_setting = new Intent(GestureDecActivity.this, SettingActivity.class);
                 startActivity(intent_setting);
                 return true;
 
             case R.id.action_search:
+                pageSave();
                 Intent intent = new Intent(this, SearchActivity.class);
                 startActivity(intent);
                 return true;
@@ -616,9 +579,95 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
 
         if (numData != 0) {
             //Intentで飛ばす＆idをキーにする
+            pageSave();
             Intent intent = new Intent(GestureDecActivity.this, UserDetailActivity.class);
             intent.putExtra("id", numData);
+
+            //page番号を保存
+            //SharedPreferences.Editor editor = pref.edit();
+            //editor.putInt("page", page).apply();
+            //intent.putExtra("page",page);
             startActivity(intent);
         }
     }
+    private void permissionAcquisition() {
+
+        // Android6.0以降でのPermissionの確認
+        if (ContextCompat.checkSelfPermission(
+                this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            // 許可されている時の処理
+            Log.d("Accept", "Accept");
+        } else {
+            //拒否されている時の処理
+            Log.d("Deny", "Deny");
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                //拒否された時 Permissionが必要な理由を表示して再度許可を求めたり、機能を無効にしたりします。
+                Log.d("Alert", "Alert");
+                //AlertDialog
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+                //alertDialog.setTitle("");          //タイトル
+                alertDialog.setMessage("顔写真を追加する際にストレージへのアクセスが必要です。" + "\n" + "次の画面で許可を押してください。");      //内容
+                alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Log.d("AlertDialog", "Positive which :" + which);
+                        ActivityCompat.requestPermissions(GestureDecActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
+                    }
+                });
+                alertDialog.create();
+                alertDialog.show();
+
+            } else {
+                //まだ許可を求める前の時、許可を求めるダイアログを表示します。
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
+                Log.d("else", "else");
+            }
+        }
+    }
+    private void idSet() {
+        mainListAdapter = new MainListAdapter[12];
+
+        //配列で12ヶ月分のlistView作ります
+        listView = new ListView[12];
+        listView[0] = (ListView) findViewById(R.id.list1).findViewById(R.id.listView1);
+        listView[1] = (ListView) findViewById(R.id.list2).findViewById(R.id.listView1);
+        listView[2] = (ListView) findViewById(R.id.list3).findViewById(R.id.listView1);
+        listView[3] = (ListView) findViewById(R.id.list4).findViewById(R.id.listView1);
+        listView[4] = (ListView) findViewById(R.id.list5).findViewById(R.id.listView1);
+        listView[5] = (ListView) findViewById(R.id.list6).findViewById(R.id.listView1);
+        listView[6] = (ListView) findViewById(R.id.list7).findViewById(R.id.listView1);
+        listView[7] = (ListView) findViewById(R.id.list8).findViewById(R.id.listView1);
+        listView[8] = (ListView) findViewById(R.id.list9).findViewById(R.id.listView1);
+        listView[9] = (ListView) findViewById(R.id.list10).findViewById(R.id.listView1);
+        listView[10] = (ListView) findViewById(R.id.list11).findViewById(R.id.listView1);
+        listView[11] = (ListView) findViewById(R.id.list12).findViewById(R.id.listView1);
+
+    }
+    public void onResume(){
+        super.onResume();
+        //horizontalScrollView.scrollTo(page * displayWidth,displayHeight);
+
+        //onCreateから来たかどうか
+        if (onCreateFlag == false){
+            page = pref.getInt("page",MONTH);
+
+        }else {
+            page = MONTH;
+        }
+        horizontalScrollView.post(new Runnable() {
+            public void run() {
+                //ここでズレを吸収してる、なんで直ったか不明
+                horizontalScrollView.scrollTo((page+1) * displayWidth,displayHeight);
+            }
+        });
+        TextView textView = (TextView) findViewById(R.id.current_month);
+        textView.setText(String.valueOf(page + 1) + "月");
+
+    }
+    public void pageSave(){
+        onCreateFlag = false;
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putInt("page",page);
+        editor.apply();
+    }
+
 }
