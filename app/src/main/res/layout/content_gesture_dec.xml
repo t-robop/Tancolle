@@ -50,8 +50,7 @@
                     android:id="@+id/list2"
                     layout="@layout/activity_main_list"
                     android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:layout_marginLeft="100dp" />
+                    android:layout_height="fill_parent" />
 
                 <include
                     android:id="@+id/list3"

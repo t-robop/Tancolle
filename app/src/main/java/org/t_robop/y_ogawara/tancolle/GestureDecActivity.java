@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -125,8 +126,17 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
                             setPage(false);
                             break;
                     }
-                    // 指定ページへスクロールする
-                    horizontalScrollView.scrollTo(page * displayWidth,displayHeight);
+                    //スクロール位置を戻す
+                    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB_MR2) {
+                        horizontalScrollView.setScrollX((page) * displayWidth);
+                    } else {
+                        //horizontalScrollView.post(new Runnable() {
+                        //  @Override
+                        //public void run() {
+                        horizontalScrollView.scrollTo((page) * displayWidth, displayHeight);
+                        // }
+                        //});
+                    }
                     TextView textView = (TextView) findViewById(R.id.current_month);
                     textView.setText(String.valueOf(page + 1) + "月");
                 }
@@ -217,7 +227,14 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
             //listView.setEmptyView(findViewById(R.id.listView));
             listView[fullReturn].setAdapter(mainListAdapter[fullReturn]);
             SpinnerSetting();
-            horizontalScrollView.scrollTo(page * displayWidth,displayHeight);
+//            // 指定ページへスクロールする
+//            horizontalScrollView.post(new Runnable() {
+//                public void run() {
+//                    //ここでズレを吸収してる、なんで直ったか不明
+//                    horizontalScrollView.scrollTo((page) * displayWidth,displayHeight);
+//                }
+//            });
+            //horizontalScrollView.scrollTo(page * displayWidth,displayHeight);
 
         }
 
@@ -358,7 +375,12 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
 
                     flag = true;
                     mainListAdapter[fullReturn].notifyDataSetChanged();
-
+                    horizontalScrollView.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            horizontalScrollView.scrollTo((page) * displayWidth, displayHeight);
+                        }
+                    });
                     //listView[fullReturn].invalidateViews();
                 }
             }
@@ -490,6 +512,12 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
     //ここでmenuを作る
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+//        horizontalScrollView.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                horizontalScrollView.scrollTo((page) * displayWidth, displayHeight);
+//            }
+//        });
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.gesturedec_menu, menu);
         return super.onCreateOptionsMenu(menu);
@@ -653,12 +681,23 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
         }else {
             page = MONTH;
         }
-        horizontalScrollView.post(new Runnable() {
-            public void run() {
-                //ここでズレを吸収してる、なんで直ったか不明
-                horizontalScrollView.scrollTo((page+1) * displayWidth,displayHeight);
-            }
-        });
+//        //スクロール位置を戻す
+//        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB_MR2) {
+//            horizontalScrollView.setScrollX((page) * displayWidth);
+//        } else {
+            horizontalScrollView.post(new Runnable() {
+                @Override
+                public void run() {
+                    horizontalScrollView.scrollTo((page) * displayWidth, displayHeight);
+                }
+            });
+//        }
+//        horizontalScrollView.post(new Runnable() {
+//            public void run() {
+//                //ここでズレを吸収してる、なんで直ったか不明
+//                horizontalScrollView.scrollTo((page) * displayWidth,displayHeight);
+//            }
+//        });
         TextView textView = (TextView) findViewById(R.id.current_month);
         textView.setText(String.valueOf(page + 1) + "月");
 
