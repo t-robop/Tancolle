@@ -136,7 +136,6 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
     boolean keyBoad=false;
     //ダイアログでok押された時のリスナー
     DatePickerDialog.OnDateSetListener DateSetListener;
-
     //preference用クラス
     PreferenceMethod PM;
 
