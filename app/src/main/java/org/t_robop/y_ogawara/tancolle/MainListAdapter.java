@@ -1,6 +1,7 @@
 package org.t_robop.y_ogawara.tancolle;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,7 +9,11 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by iris on 2016/07/01.
@@ -16,9 +21,11 @@ import java.util.ArrayList;
 public class MainListAdapter extends ArrayAdapter<MainAdapterData> {
 
     private LayoutInflater layoutInflater;
+    Context context;
 
     public MainListAdapter(Context c, int id, ArrayList<MainAdapterData> MainListArray) {
         super(c, id, MainListArray);
+        context=c;
         this.layoutInflater = (LayoutInflater) c.getSystemService(
                 Context.LAYOUT_INFLATER_SERVICE
         );
@@ -52,7 +59,7 @@ public class MainListAdapter extends ArrayAdapter<MainAdapterData> {
         //一つ目（左端）は桁が表示されれば絶対表示されるので固定
         TextView nameText1 = ((TextView) convertView.findViewById(R.id.name1));
         nameText1.setText(mainListData.getName(0));
-        ((TextView) convertView.findViewById(R.id.birth1)).setText(mainListData.getBirthMonth(0)+"/"+mainListData.getBirthDay(0));
+        ((TextView) convertView.findViewById(R.id.birth1)).setText(remainingDay(mainListData.getBirthMonth(0),mainListData.getBirthDay(0)));
         if (mainListData.getPresentFlag(0)==1) {
             liner1.setBackgroundResource(R.drawable.ribbon_tra);
         }
@@ -72,7 +79,9 @@ public class MainListAdapter extends ArrayAdapter<MainAdapterData> {
                     case 2://一つ無いとき
                         //中央のTextだけ表示させます
                         nameText2.setText(mainListData.getName(1));
-                        birthText2.setText(mainListData.getBirthMonth(1)+"/"+mainListData.getBirthDay(1));
+                        //birthText2.setText(mainListData.getBirthMonth(1)+"/"+mainListData.getBirthDay(1));
+                        birthText2.setText(remainingDay(mainListData.getBirthMonth(1),mainListData.getBirthDay(1)));
+
                         if (mainListData.getPresentFlag(1)==1) {
                             liner2.setBackgroundResource(R.drawable.ribbon_tra);
                         }
@@ -88,13 +97,13 @@ public class MainListAdapter extends ArrayAdapter<MainAdapterData> {
                         liner2.setVisibility(View.VISIBLE);
                         liner3.setVisibility(View.VISIBLE);
                         nameText2.setText(mainListData.getName(1));
-                        birthText2.setText(mainListData.getBirthMonth(1)+"/"+mainListData.getBirthDay(1));
+                        birthText2.setText(remainingDay(mainListData.getBirthMonth(1),mainListData.getBirthDay(1)));
                         if (mainListData.getPresentFlag(1)==1) {
                             liner2.setBackgroundResource(R.drawable.ribbon_tra);
                         }
 
                         nameText3.setText(mainListData.getName(2));
-                        birthText3.setText(mainListData.getBirthMonth(2)+"/"+mainListData.getBirthDay(2));
+                        birthText3.setText(remainingDay(mainListData.getBirthMonth(2),mainListData.getBirthDay(2)));
                         if (mainListData.getPresentFlag(2)==1) {
                             liner3.setBackgroundResource(R.drawable.ribbon_tra);
                         }
@@ -106,13 +115,13 @@ public class MainListAdapter extends ArrayAdapter<MainAdapterData> {
               liner2.setVisibility(View.VISIBLE);
               liner3.setVisibility(View.VISIBLE);
               nameText2.setText(mainListData.getName(1));
-              birthText2.setText(mainListData.getBirthMonth(1)+"/"+mainListData.getBirthDay(1));
+              birthText2.setText(remainingDay(mainListData.getBirthMonth(1),mainListData.getBirthDay(1)));
               if (mainListData.getPresentFlag(1)==1) {
                   liner2.setBackgroundResource(R.drawable.ribbon_tra);
               }
 
               nameText3.setText(mainListData.getName(2));
-              birthText3.setText(mainListData.getBirthMonth(2)+"/"+mainListData.getBirthDay(2));
+              birthText3.setText(remainingDay(mainListData.getBirthMonth(2),mainListData.getBirthDay(2)));
               if (mainListData.getPresentFlag(2)==1) {
                   liner3.setBackgroundResource(R.drawable.ribbon_tra);
               }
@@ -131,6 +140,62 @@ public class MainListAdapter extends ArrayAdapter<MainAdapterData> {
         //viewを返す
         return convertView;
 
+    }
+    public String remainingDay(int sqlMonth,int sqlDay){
+        SharedPreferences pref = context.getSharedPreferences("Setting", Context.MODE_PRIVATE);
+        boolean drawType = pref.getBoolean("drawType", false);
+
+        if (drawType == true){
+            //残日計算
+            int MONTH =  Calendar.getInstance().get(Calendar.MONTH);
+            int day = Calendar.getInstance().get(Calendar.DATE);
+            //今の日付
+            int currentMonthDay =  Integer.parseInt(String.valueOf(MONTH)+String.valueOf(day));
+            int sqlMinthDay = Integer.parseInt(String.valueOf(sqlMonth)+String.valueOf(sqlDay));
+
+            //現在の日付よりもsqlの日付が後の場合 2016年
+            if (currentMonthDay<sqlMinthDay) {
+                return String.valueOf(dayTo(sqlMonth,sqlDay,false)+"日");
+
+            }else {
+                return String.valueOf(dayTo(sqlMonth,sqlDay,true))+"日";
+            }
+            //sqliteデータの日付
+        }else{
+            return sqlMonth+"/"+sqlDay;
+
+
+        }
+    }
+    //boolean testは現在の年数かどうかの判定 flaseなら2016 trueなら2017
+    int dayTo(int sqlMonth,int sqlDay,boolean test){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        Date dateTo = null;
+        Date dateFrom = null;
+        int year = Calendar.getInstance().get(Calendar.YEAR);
+        int month =  Calendar.getInstance().get(Calendar.MONTH);
+        int day = Calendar.getInstance().get(Calendar.DATE);
+        // 日付を作成します。
+        try {
+            dateFrom = sdf.parse(year+"/"+(month+1)+"/"+day);
+            if (test == true) {
+                dateTo = sdf.parse(year+1+"/"+sqlMonth+"/"+sqlDay);
+            }
+            else {
+                dateTo = sdf.parse(year+"/"+sqlMonth+"/"+sqlDay);
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        // 日付をlong値に変換します。
+        long dateTimeTo = dateTo.getTime();
+        long dateTimeFrom = dateFrom.getTime();
+
+        // 差分の日数を算出します。
+        int dayDiff = (int) (( dateTimeTo - dateTimeFrom  ) / (1000 * 60 * 60 * 24 ));
+        return dayDiff;
     }
 
 }

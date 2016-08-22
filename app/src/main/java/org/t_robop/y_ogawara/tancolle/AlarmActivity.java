@@ -2,11 +2,14 @@ package org.t_robop.y_ogawara.tancolle;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.TextView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -14,22 +17,20 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class AlarmActivity extends AppCompatActivity {
-    static String monthText,weekText,yestText,todayText,custumText;
-    static int Mnotif,Wnotif,Ynotif,Tnotif; //通知が１ヶ月前１週間前１日前当日のフラグ
-    static int custum1,custum2,custum3;
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         Calendar calendar;
         int intentId;
+        int Mnotif,Wnotif,Ynotif,Tnotif; //通知が１ヶ月前１週間前１日前当日のフラグ
+        int custum1,custum2,custum3;
         int year, month, day; //現在の年月日
-        int birthyear, birthmonth,birthday; //誕生日の年月日
+        int birthmonth,birthday; //誕生日の年月日
         int cat,dog; //月日を４桁にするやつ（現在の日付と誕生日）
         int ms = 1000*60*60*24; //１日をミリ秒にしたやつ
+
+        //String Image;
 
 
         super.onCreate(savedInstanceState);
@@ -37,14 +38,13 @@ public class AlarmActivity extends AppCompatActivity {
         Intent intent = getIntent();
         intentId = intent.getIntExtra("usagi", 1);
 
-        calendar = Calendar.getInstance();
+        calendar = Calendar.getInstance(); //今日の年月日
         year = calendar.get(Calendar.YEAR);
         month = calendar.get(Calendar.MONTH) + 1; //0から11だから１個足す
         day = calendar.get(Calendar.DAY_OF_MONTH);
 
 
         Data data = dbAssist.idSelect(intentId, this); //データの取得
-        birthyear = data.getYear();
         birthmonth = data.getMonth();
         birthday = data.getDay();
         Mnotif = data.getNotif_month();  //フラグ
@@ -52,11 +52,19 @@ public class AlarmActivity extends AppCompatActivity {
         Ynotif = data.isNotif_yest();
         Tnotif = data.isNotif_today();
         custum1 = data.getNotif_cus1();
-        Log.d(String.valueOf(custum1),"test");
+       // Log.d(String.valueOf(custum1),"test");
         custum2 = data.getNotif_cus2();
         custum3 = data.getNotif_cus3();
         String name = data.getName();
         int num =0; //numの初期値を０にする
+
+
+        /******テスト用*********/
+        /*TextView testTV = (TextView) findViewById(R.id.cat);
+        Image=data.getImage();
+        testTV.setText(Image);*/
+
+
 
 
 
@@ -95,6 +103,7 @@ public class AlarmActivity extends AppCompatActivity {
 
 
     //TODO てすとおおおおおおおおおぶおおおおおおおおおおおおおおおおおおおおおお
+
         if(Mnotif==1){ //一ヶ月前にチェックがついていたら
             Calendar nextBirth = Calendar.getInstance(); //カレンダー型の宣言
             if(num==0){ //numを使ってなければ（まだ誕生日が来てなければ）
@@ -118,9 +127,11 @@ public class AlarmActivity extends AppCompatActivity {
             Calendar triggerTime = Calendar.getInstance();
             triggerTime.add(Calendar.MINUTE, Mday);	//
 
-            monthText = (name) + "さんの誕生日まで残り１ヶ月です";
+            //monthText = (name) + "さんの誕生日まで残り１ヶ月です";
             //設定した日時で発行するIntentを生成
             Intent alarmMonth = new Intent(AlarmActivity.this, Notifier.class);
+            alarmMonth.putExtra("intentId",1);
+            alarmMonth.putExtra("intentString",(name) + "さんの誕生日まで残り１ヶ月です");
             PendingIntent sender = PendingIntent.getBroadcast(AlarmActivity.this, 0, alarmMonth, PendingIntent.FLAG_UPDATE_CURRENT);
 
             //日時と発行するIntentをAlarmManagerにセットします
@@ -134,6 +145,7 @@ public class AlarmActivity extends AppCompatActivity {
             }
             //manager.set(AlarmManager.RTC_WAKEUP, triggerTime.getTimeInMillis(), sender);
         }
+
         if(Wnotif==1){ //一週間前のチェックがついていたら
             // 現在から見て何日後＝（次の誕生日のミリ秒ー７日をミリ秒にしたやつー現在のミリ秒）÷日付換算
             long Wmsday = (dateTimeTo - 7*ms - dateTimeFrom) / (ms);
@@ -141,10 +153,14 @@ public class AlarmActivity extends AppCompatActivity {
             int Wday = (int) Wmsday;
             //呼び出す日時を設定する
             Calendar triggerTime = Calendar.getInstance();
-            triggerTime.add(Calendar.MINUTE, Wday);	//
-            weekText = (name) + "さんの誕生日まで残り１週間です";
+            triggerTime.add(Calendar.SECOND, Wday);	//
+            //weekText = (name) + "さんの誕生日まで残り１週間です";
             //設定した日時で発行するIntentを生成
             Intent alarmWeek = new Intent(AlarmActivity.this, Notifier.class);
+            alarmWeek.putExtra("intentId",2);
+            alarmWeek.putExtra("intentString",(name) + "さんの誕生日まで残り１週間です");
+
+
             PendingIntent sender = PendingIntent.getBroadcast(AlarmActivity.this, 1, alarmWeek, PendingIntent.FLAG_UPDATE_CURRENT);
 //日時と発行するIntentをAlarmManagerにセットします
             AlarmManager manager = (AlarmManager)getSystemService(ALARM_SERVICE);
@@ -167,10 +183,15 @@ public class AlarmActivity extends AppCompatActivity {
             int Yday = (int) Ymsday;
             //呼び出す日時を設定する
             Calendar triggerTime = Calendar.getInstance();
-            triggerTime.add(Calendar.MINUTE, Yday);	//
-            yestText = (name) + "さんの誕生日まで残り１日です";
+            triggerTime.add(Calendar.SECOND, Yday);	//
+            //yestText = (name) + "さんの誕生日まで残り１日です";
             //設定した日時で発行するIntentを生成
             Intent alarmYest= new Intent(AlarmActivity.this, Notifier.class);
+            alarmYest.putExtra("intentId",3);
+            alarmYest.putExtra("intentString",(name) + "さんの誕生日まで残り１日です");
+
+
+
             PendingIntent sender = PendingIntent.getBroadcast(AlarmActivity.this, 2, alarmYest, PendingIntent.FLAG_UPDATE_CURRENT);
 //日時と発行するIntentをAlarmManagerにセットします
             AlarmManager manager = (AlarmManager)getSystemService(ALARM_SERVICE);
@@ -190,10 +211,13 @@ public class AlarmActivity extends AppCompatActivity {
             int Tday = (int) Tmsday;
             //呼び出す日時を設定する
             Calendar triggerTime = Calendar.getInstance();
-            triggerTime.add(Calendar.MINUTE, Tday);	//
-            todayText = "今日は" + (name) + "さんの誕生日です!";
+            triggerTime.add(Calendar.SECOND, Tday);	//
+            //todayText = "今日は" + (name) + "さんの誕生日です!";
             //設定した日時で発行するIntentを生成
             Intent alarmToday = new Intent(AlarmActivity.this, Notifier.class);
+            alarmToday.putExtra("intentId",4);
+            alarmToday.putExtra("intentString","今日は" + (name) + "さんの誕生日です!");
+
             PendingIntent sender = PendingIntent.getBroadcast(AlarmActivity.this, 3, alarmToday, PendingIntent.FLAG_UPDATE_CURRENT);
 //日時と発行するIntentをAlarmManagerにセットします
             AlarmManager manager = (AlarmManager)getSystemService(ALARM_SERVICE);
@@ -205,6 +229,7 @@ public class AlarmActivity extends AppCompatActivity {
             }
             //manager.set(AlarmManager.RTC_WAKEUP, triggerTime.getTimeInMillis(), sender);
         }
+
         if(custum1>0){
             int aaa=custum1/10000;
             int bbb=custum1%10000/100;
@@ -217,12 +242,14 @@ public class AlarmActivity extends AppCompatActivity {
             long dateTimeCus1 = datecus1.getTime();//ミリ秒に変換
             long cus1day = (dateTimeCus1-dateTimeFrom)/(ms);
             int custum1day=(int)cus1day;
-            Log.d(String.valueOf(custum1day),"mikopero");
             Calendar triggerTime = Calendar.getInstance();
             triggerTime.add(Calendar.MINUTE, custum1day);	//
-            custumText =String.valueOf(birthmonth)+"/"+String.valueOf(birthday)+"は"+(name)+"さんの誕生日です";
+            //custumText =String.valueOf(birthmonth)+"/"+String.valueOf(birthday)+"は"+(name)+"さんの誕生日です";
             //設定した日時で発行するIntentを生成
             Intent alarmCus1 = new Intent(AlarmActivity.this, Notifier.class);
+            alarmCus1.putExtra("intentId",5);
+            alarmCus1.putExtra("intentString",String.valueOf(birthmonth)+"/"+String.valueOf(birthday)+"は"+(name)+"さんの誕生日です");
+
             PendingIntent sender = PendingIntent.getBroadcast(AlarmActivity.this, 4, alarmCus1, PendingIntent.FLAG_UPDATE_CURRENT);
 
             //日時と発行するIntentをAlarmManagerにセットします
@@ -250,9 +277,12 @@ public class AlarmActivity extends AppCompatActivity {
             int custum2day=(int)cus2day;
             Calendar triggerTime = Calendar.getInstance();
             triggerTime.add(Calendar.MINUTE, custum2day);	//
-            custumText =String.valueOf(birthmonth)+"/"+String.valueOf(birthday)+"は"+(name)+"さんの誕生日です";
+            //custumText =String.valueOf(birthmonth)+"/"+String.valueOf(birthday)+"は"+(name)+"さんの誕生日です";
             //設定した日時で発行するIntentを生成
             Intent alarmCus2 = new Intent(AlarmActivity.this, Notifier.class);
+            alarmCus2.putExtra("intentId",5);
+            alarmCus2.putExtra("intentString",String.valueOf(birthmonth)+"/"+String.valueOf(birthday)+"は"+(name)+"さんの誕生日です");
+
             PendingIntent sender = PendingIntent.getBroadcast(AlarmActivity.this, 5, alarmCus2, PendingIntent.FLAG_UPDATE_CURRENT);
 
             //日時と発行するIntentをAlarmManagerにセットします
@@ -280,13 +310,19 @@ public class AlarmActivity extends AppCompatActivity {
             int custum3day=(int)cus3day;
             Calendar triggerTime = Calendar.getInstance();
             triggerTime.add(Calendar.MINUTE, custum3day);
-            custumText =String.valueOf(birthmonth)+"/"+String.valueOf(birthday)+"は"+(name)+"さんの誕生日です";
+            //custumText =String.valueOf(birthmonth)+"/"+String.valueOf(birthday)+"は"+(name)+"さんの誕生日です";
             //設定した日時で発行するIntentを生成
             Intent alarmCus3 = new Intent(AlarmActivity.this, Notifier.class);
+            alarmCus3.putExtra("intentId",5);
+            alarmCus3.putExtra("intentString",String.valueOf(birthmonth)+"/"+String.valueOf(birthday)+"は"+(name)+"さんの誕生日です");
+
+
             PendingIntent sender = PendingIntent.getBroadcast(AlarmActivity.this, 6, alarmCus3, PendingIntent.FLAG_UPDATE_CURRENT);
 
             //日時と発行するIntentをAlarmManagerにセットします
             AlarmManager manager = (AlarmManager)getSystemService(ALARM_SERVICE);
+
+
             //Androidのバージョンが6.0以上(Dozeモードがあるバージョン)以上なら設定時間より15分遅れるかも
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 manager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,triggerTime.getTimeInMillis(),sender);
@@ -297,4 +333,15 @@ public class AlarmActivity extends AppCompatActivity {
         }
 
     }
+}
+class BootCompletedReceiver extends BroadcastReceiver {
+
+    @Override
+    public void onReceive(Context context, Intent intent){
+        if(Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())){
+            // Boot completed!
+
+        }
+    }
+
 }
