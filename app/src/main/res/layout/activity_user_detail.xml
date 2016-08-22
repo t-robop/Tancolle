@@ -60,7 +60,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:text="@string/category"
+                        android:text="category"
                         android:id="@+id/category"
                         android:layout_weight="3"
                         android:layout_gravity="bottom"

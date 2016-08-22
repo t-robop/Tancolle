@@ -30,7 +30,7 @@ public class AlarmActivity extends AppCompatActivity {
         int cat,dog; //月日を４桁にするやつ（現在の日付と誕生日）
         int ms = 1000*60*60*24; //１日をミリ秒にしたやつ
 
-        String Image;
+        //String Image;
 
 
         super.onCreate(savedInstanceState);

@@ -183,8 +183,11 @@ public class UserDetailActivity extends AppCompatActivity {
 
         nameTV.setText(name);
         kanaTV.setText(kana);
-        if(!(category.equals("<未選択>"))){
+        if(category.equals("<未選択>")){
+            cateTV.setText("#"+category);
+        }else{
             cateTV.setText("#<"+category+">");
+
         }
         birthTV.setText(String.valueOf(birthmonth) + "/" + String.valueOf(birthday));
         remaTV.setText("残り" + String.valueOf(remDay) + "日");
