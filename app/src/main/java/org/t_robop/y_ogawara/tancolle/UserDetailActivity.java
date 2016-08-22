@@ -96,6 +96,13 @@ public class UserDetailActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        setContentView(R.layout.activity_user_detail);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
         Intent intent = getIntent();
         intentId = intent.getIntExtra("id", 1);
