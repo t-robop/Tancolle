@@ -6,8 +6,12 @@ import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -26,8 +30,6 @@ public class SettingCategoryActivity extends AppCompatActivity {
     ArrayAdapter<String> categoryAdapter;
     //カテゴリ保存用のリスト
     ArrayList<String> categorylist;
-    //カテゴリ数
-    int numCategory=1;
     //カテゴリ追加ダイアログ
     AlertDialog addCategoryDialog;
     //EditText用変数群
@@ -46,6 +48,8 @@ public class SettingCategoryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting_category);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         //preferenceクラス宣言
         PM=new PreferenceMethod();
@@ -69,33 +73,11 @@ public class SettingCategoryActivity extends AppCompatActivity {
         loadPreference();
         //追加ボタンセットとアダプターをリストに反映
         addBtnListSet();
-        //読み込んだカテゴリの数の取得
-            //カテゴリに何か入ってる時限定
-                if(categoryItem!=null) {
-                    //カテゴリ一覧の配列数からカテゴリ数を取得
-                    numCategory = categoryItem.length;
-                }
-            /////
-            //カテゴリが何もない時（表示されてるのが「カテゴリの追加」のみの場合）
-                else{
-                    //この処理を書かないとnullになってしまうので
-                    numCategory=0;
-                }
-        /////
         // アイテムクリック時のイベントを追加
             listCategory.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 public void onItemClick(final AdapterView<?> parent,
                                         View view, final int position, long id) {
-                    //追加ボタンクリック時
-                        if(position==numCategory){
-                            //カテゴリ追加用ダイアログの作成
-                            CategoryAdd();
-                            //作成したダイアログの表示
-                            addCategoryDialog.show();
-                        }
-                    /////
-                    //他の要素クリック時(削除処理)
-                        else{
+                    //削除処理
                             //選んだカテゴリの名前を取得
                             choiceCategory = String.valueOf(parent.getItemAtPosition(position));
                             //このアクティビティに表示する削除確認ダイアログの宣言
@@ -127,20 +109,6 @@ public class SettingCategoryActivity extends AppCompatActivity {
                                             loadPreference();
                                             //追加ボタンセットとlistセット
                                             addBtnListSet();
-                                            //読み込んだカテゴリの数の取得
-                                                //カテゴリに何か入ってる時限定
-                                                    if(categoryItem!=null) {
-                                                        //カテゴリ一覧の配列数からカテゴリ数を取得
-                                                        numCategory = categoryItem.length;
-                                                    }
-                                                /////
-                                                //カテゴリが何もない時（表示されてるのが「カテゴリの追加」のみの場合）
-                                                    else{
-                                                        //この処理を書かないとnullになってしまうので
-                                                        numCategory=0;
-                                                    }
-                                                /////
-                                            /////
                                         }
                                     /////
                                 });
@@ -154,11 +122,34 @@ public class SettingCategoryActivity extends AppCompatActivity {
                                     });
                             //設定したダイアログの表示
                             aldialogDeleCategory.show();
-                        }
                     /////
                 }
             });
         /////
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // アクションバー内に使用するメニューアイテムを注入します。
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.setting_category_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    //アクションバー処理
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // アクションバーアイテム上の押下を処理します。
+        switch (item.getItemId()) {
+            case R.id.action_add:
+                //カテゴリ追加用ダイアログの作成
+                CategoryAdd();
+                //作成したダイアログの表示
+                addCategoryDialog.show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     //preferenceからカテゴリ一覧を読み込む処理
@@ -220,22 +211,6 @@ public class SettingCategoryActivity extends AppCompatActivity {
                                     else {
                                         //editTextのテキストを取得します
                                         addcategory = editDialog.getText().toString();
-                                        //読み込んだカテゴリの数の取得
-                                            //カテゴリに何かある時
-                                            if(categoryItem!=null) {
-                                                //配列数からカテゴリ数を取得
-                                                numCategory = categoryItem.length;
-                                                //今増やした分
-                                                numCategory++;
-                                            }
-                                            /////
-                                            //カテゴリが何も無い時
-                                            else{
-                                                //今追加した分を加算
-                                                numCategory=1;
-                                            }
-                                            /////
-                                        /////
                                     }
                                 /////
                                 //入力された
@@ -271,8 +246,6 @@ public class SettingCategoryActivity extends AppCompatActivity {
 
     //追加ボタンセットとlistセット
     public void addBtnListSet(){
-        //「カテゴリを追加」を追加します
-        categoryAdapter.add("カテゴリを追加");
         //listCategoryが空でない時（エラー回避）
             if (listCategory != null) {
                 //listCategoryにadaptorセット
