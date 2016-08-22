@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:paddingBottom="0dp"
-    android:paddingLeft="0dp"
-    android:paddingRight="0dp"
-    android:paddingTop="0dp"
-    tools:context="org.t_robop.y_ogawara.tancolle.SettingCategoryActivity">
+    android:fitsSystemWindows="true"
+    tools:context=".SettingCategoryActivity">
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
@@ -26,11 +23,15 @@
 
         </android.support.design.widget.AppBarLayout>
 
-        <ListView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingTop="60dp"
-            android:id="@+id/list_category">
-        </ListView>
+        <include layout="@layout/activity_sup_setting_category" />
 
-</RelativeLayout>
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/floating_both"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/fab_margin"
+            android:src="@android:drawable/ic_input_add"
+            app:backgroundTint="@android:color/black" />
+
+</android.support.design.widget.CoordinatorLayout>

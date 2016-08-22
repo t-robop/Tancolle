@@ -47,10 +47,20 @@ public class SettingActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
+            //フラグの保存
+            saveFlag();
             finish();
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+    //端末のバックボタンクリック時
+    @Override
+    public void onBackPressed() {
+        //フラグの保存
+        saveFlag();
+        //Activity終了
+        finish();
     }
 
     //設定クリック時
@@ -72,24 +82,6 @@ public class SettingActivity extends AppCompatActivity {
         Intent intent = new Intent(SettingActivity.this, LicenseActivity.class);
         startActivity(intent);
     }
-    //端末のバックボタンクリック時
-    @Override
-    public void onBackPressed() {
-        //allNotifType(通知設定)の保存
-            //preferenceの宣言
-            SharedPreferences preferAllNotif;
-            //preferenceの中の「Setting」をプライベートモードで開く
-            preferAllNotif = getSharedPreferences("Setting", MODE_PRIVATE);
-            //preferenceEditorの宣言
-            SharedPreferences.Editor editor = preferAllNotif.edit();
-            //開いたpreferenceの中の「allNotifType」の値を変更する
-            editor.putBoolean("allNotifType", allNotifType);
-            //editor終了
-            editor.commit();
-        /////
-        //Activity終了
-        finish();
-    }
     //チェックボックスのリスナー登録
     public void checkBoxSet(){
         //チェックボックスがクリックされた時に呼び出されるコールバックリスナーを登録します
@@ -102,6 +94,22 @@ public class SettingActivity extends AppCompatActivity {
                     }
                 /////
             });
+        /////
+    }
+
+    //設定の保存
+    public void saveFlag(){
+        //allNotifType(通知設定)の保存
+        //preferenceの宣言
+        SharedPreferences preferAllNotif;
+        //preferenceの中の「Setting」をプライベートモードで開く
+        preferAllNotif = getSharedPreferences("Setting", MODE_PRIVATE);
+        //preferenceEditorの宣言
+        SharedPreferences.Editor editor = preferAllNotif.edit();
+        //開いたpreferenceの中の「allNotifType」の値を変更する
+        editor.putBoolean("allNotifType", allNotifType);
+        //editor終了
+        editor.commit();
         /////
     }
 }
