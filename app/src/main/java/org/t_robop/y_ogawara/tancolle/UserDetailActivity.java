@@ -38,6 +38,7 @@ public class UserDetailActivity extends AppCompatActivity {
     TextView ageTV;
     TextView remaTV;
     TextView memoTV;
+    TextView cateTV;
     Calendar calendar;
     int year, month, day; //現在の日付
     int a, b;
@@ -65,6 +66,27 @@ public class UserDetailActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+        Intent intent = getIntent();
+        intentId = intent.getIntExtra("id", 1);
+        Data data = dbAssist.idSelect(intentId, this);
+        String category = data.getCategory();
+        //初期設定
+        PreferenceMethod PM;
+        PM=new PreferenceMethod();
+        //配列を読み込み (保存のkey,場所)
+        String[] categoryItem = PM.getArray("StringItem",this);
+        int count = 0;
+        for(int i = 0; i<categoryItem.length; i++) { //0からカテゴリリストの最大値まで繰り返す
+            if (!(categoryItem[i].equals(category))) { //もしもカテゴリリストのi個目と今読み込んだカテゴリの名前が一致しなかったら
+                count++; //カウントを足していく
+            }
+        if(count==categoryItem.length) { //もし一致しなかった数＝カテゴリの最大値だったら（一個も一致しない 存在しなかったら）
+            Data updateData = new Data(); //そのカテゴリは存在しないのでSQLに未選択で書き換える
+            updateData.setCategory("<未選択>");
+            dbAssist.updateData(intentId, updateData, this);
+            }
+        }
+
 
     }
 
@@ -81,6 +103,7 @@ public class UserDetailActivity extends AppCompatActivity {
         ageTV = (TextView) findViewById(R.id.age);
         remaTV = (TextView) findViewById(R.id.nokori);
         memoTV = (TextView) findViewById(R.id.chou);
+        cateTV = (TextView) findViewById(R.id.category);
 
         calendar = Calendar.getInstance();
         year = calendar.get(Calendar.YEAR);
@@ -96,6 +119,7 @@ public class UserDetailActivity extends AppCompatActivity {
         String name = data.getName(); //SQliteからもってくる
         String kana = data.getKana();
         String smallImage = data.getImage(); //TODO
+        String category = data.getCategory();
         TwitterID = data.getTwitterID();
         memo = data.getMemo();
         imagecount = data.isPresentFlag();
@@ -116,22 +140,23 @@ public class UserDetailActivity extends AppCompatActivity {
 
 
 //画像読み込み
-        InputStream in;
-        try {
-            in = openFileInput(smallImage);//画像の名前からファイル開いて読み込み
-            bitmap = BitmapFactory.decodeStream(in);//読み込んだ画像をBitMap化
-        } catch (IOException e) {
-            e.printStackTrace();
+        if(smallImage.equals("null.jpg")){
+            photoImageView.setImageResource(R.drawable.normal_shadow);
+        }else {
+            InputStream in;
+            try {
+                in = openFileInput(smallImage);//画像の名前からファイル開いて読み込み
+                bitmap = BitmapFactory.decodeStream(in);//読み込んだ画像をBitMap化
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            photoImageView.setImageBitmap(bitmap);
         }
-        photoImageView.setImageBitmap(bitmap);
 
         //int birth = data.getBirthday();
         int birthyear = data.getYear();
         int birthmonth = data.getMonth();
         int birthday = data.getDay();
-        //int sqlDay;
-        //sqlDay = a % 100; //誕生日の日付を割り出す
-
 
         a = birthmonth * 100 + birthday;  //誕生日を７月１４日を→７１４みたいな形に
         b = month * 100 + day; //現在の日付を６月１５日→６１５みたいな形に
@@ -177,10 +202,14 @@ public class UserDetailActivity extends AppCompatActivity {
         int remDay = (int) dayDiff;
 
 
-
-
         nameTV.setText(name);
         kanaTV.setText(kana);
+        if(category.equals("<未選択>")){
+            cateTV.setText("#"+category);
+        }else{
+            cateTV.setText("#<"+category+">");
+
+        }
         birthTV.setText(String.valueOf(birthmonth) + "/" + String.valueOf(birthday));
         remaTV.setText("残り" + String.valueOf(remDay) + "日");
         memoTV.setText(memo);
@@ -349,6 +378,7 @@ public class UserDetailActivity extends AppCompatActivity {
                         Toast toast = Toast.makeText(UserDetailActivity.this, "データを消去しました", Toast.LENGTH_LONG);
                         toast.show();
                         finish();
+
                     }
                 })
                 .setNegativeButton("いいえ", new DialogInterface.OnClickListener() {
