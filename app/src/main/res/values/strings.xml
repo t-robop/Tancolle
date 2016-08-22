@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">たんこれ！</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">設定</string>
     <string name="action_search">検索</string>
+    <string name="action_save">保存</string>
+    <string name="action_add">追加</string>
 </resources>
