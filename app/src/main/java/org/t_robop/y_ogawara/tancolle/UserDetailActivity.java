@@ -171,11 +171,9 @@ public class UserDetailActivity extends AppCompatActivity {
         int remDay = (int) dayDiff;
 
 
-
-
         nameTV.setText(name);
         kanaTV.setText(kana);
-        if(!(category.equals("<未設定>"))){
+        if(!(category.equals("<未選択>"))){
             cateTV.setText("#<"+category+">");
         }
         birthTV.setText(String.valueOf(birthmonth) + "/" + String.valueOf(birthday));
