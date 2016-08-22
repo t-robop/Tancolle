@@ -3,6 +3,7 @@ package org.t_robop.y_ogawara.tancolle;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -12,11 +13,11 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class SearchActivity extends Activity implements
-        SearchView.OnQueryTextListener {
+public class SearchActivity extends Activity implements SearchView.OnQueryTextListener {
 
     ListView listView;
     SearchView searchView;
+    View view;
 
     //ArrayList<ListItem> items;
     dataListAdapter adapter;
@@ -25,6 +26,10 @@ public class SearchActivity extends Activity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+
 
         listView = (ListView) findViewById(R.id.listView);
         searchView = (SearchView) findViewById(R.id.searchView);

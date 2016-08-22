@@ -3,8 +3,6 @@
     package="org.t_robop.y_ogawara.tancolle">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-
 
     <application
         android:allowBackup="true"
@@ -20,7 +18,7 @@
         <activity android:name=".GestureDecActivity"></activity>
         <activity android:name=".AlarmActivity"></activity>
         <activity android:name=".HomeActivity"></activity>
-        <activity android:name="SettingActivity"></activity>
+        <activity android:name=".SettingActivity"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,10 +28,8 @@
         </activity>
         <activity android:name=".ViewFlipperTestActivity"></activity>
         <activity android:name=".SettingCategoryActivity"></activity>
-
-        <receiver android:name="Notifier"></receiver>
-
-
+        <activity android:name=".SettingDrawActivity"></activity>
+        <activity android:name=".LicenseActivity"/>
     </application>
 
 </manifest>
