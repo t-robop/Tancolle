@@ -76,14 +76,16 @@ public class UserDetailActivity extends AppCompatActivity {
         //配列を読み込み (保存のkey,場所)
         String[] categoryItem = PM.getArray("StringItem",this);
         int count = 0;
-        for(int i = 0; i<categoryItem.length; i++) { //0からカテゴリリストの最大値まで繰り返す
-            if (!(categoryItem[i].equals(category))) { //もしもカテゴリリストのi個目と今読み込んだカテゴリの名前が一致しなかったら
-                count++; //カウントを足していく
-            }
-        if(count==categoryItem.length) { //もし一致しなかった数＝カテゴリの最大値だったら（一個も一致しない 存在しなかったら）
-            Data updateData = new Data(); //そのカテゴリは存在しないのでSQLに未選択で書き換える
-            updateData.setCategory("<未選択>");
-            dbAssist.updateData(intentId, updateData, this);
+        if(categoryItem==null){
+            for(int i = 0; i<categoryItem.length; i++) { //0からカテゴリリストの最大値まで繰り返す
+                if (!(categoryItem[i].equals(category))) { //もしもカテゴリリストのi個目と今読み込んだカテゴリの名前が一致しなかったら
+                    count++; //カウントを足していく
+                }
+                if(count==categoryItem.length) { //もし一致しなかった数＝カテゴリの最大値だったら（一個も一致しない 存在しなかったら）
+                    Data updateData = new Data(); //そのカテゴリは存在しないのでSQLに未選択で書き換える
+                    updateData.setCategory("<未選択>");
+                    dbAssist.updateData(intentId, updateData, this);
+                }
             }
         }
 
