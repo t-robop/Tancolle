@@ -30,8 +30,8 @@
 
 
 
-
     <include layout="@layout/content_gesture_dec" />
+
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/add"
