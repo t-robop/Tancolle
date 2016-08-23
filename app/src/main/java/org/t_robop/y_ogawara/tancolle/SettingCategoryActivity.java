@@ -67,6 +67,7 @@ public class SettingCategoryActivity extends AppCompatActivity {
         floatingBoth = (FloatingActionButton) findViewById(R.id.floating_both);
         //preferenceクラス宣言
         PM = new PreferenceMethod();
+        
         //カテゴリを表示するリストの初期設定
         listCategory=new ListView(this);
         //カテゴリ一覧用リストの関連付け

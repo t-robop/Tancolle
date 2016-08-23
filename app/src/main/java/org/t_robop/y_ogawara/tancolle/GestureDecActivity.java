@@ -30,6 +30,7 @@ import android.widget.ArrayAdapter;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
@@ -76,6 +77,8 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
     //onCreateから来たのか判別するflag
     boolean onCreateFlag;
 
+    LinearLayout progressLoad;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +88,8 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
 
         //preferenceクラス宣言
         PM=new PreferenceMethod();
+
+        progressLoad=(LinearLayout) findViewById(R.id.load_progress) ;
 
         //Permission確認 Android6.0以上
         permissionAcquisition();
@@ -132,7 +137,9 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
                     }
                     //月Textの表示
                     TextView textView = (TextView) findViewById(R.id.current_month);
-                    textView.setText(String.valueOf(page + 1) + "月");
+                    if (textView != null) {
+                        textView.setText(String.valueOf(page + 1) + "月");
+                    }
                 }
                 return result;
             }
@@ -142,6 +149,9 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
     @Override
     protected void onStart() {
         super.onStart();
+
+        progressLoad.setVisibility(View.VISIBLE);
+
         MONTH =  Calendar.getInstance().get(Calendar.MONTH);
         //idの関連付け
         idSet();
@@ -233,7 +243,10 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
             /////
         }
         /////
-        Spinner spinner =  (Spinner) toolbar.getChildAt(0);
+        Spinner spinner = null;
+        if (toolbar != null) {
+            spinner = (Spinner) toolbar.getChildAt(0);
+        }
         spinner.setAdapter(adapter);
         /*****選択されてたカテゴリの読み込みとセット*****/
         //"Setting"をプライベートモードで開く
@@ -262,7 +275,7 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
                 SharedPreferences.Editor editor = preferCategory.edit();
                 //"choiseCategory"に選択されたカテゴリを保存
                 editor.putString("choiseCategory", Category);
-                editor.commit();
+                editor.apply();
                 /********************/
 
                 /***** 画面セットしなおし *****/
@@ -276,7 +289,7 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
                     //:TODO 中里見がspinnerを実装し終わっていないため未検証
 
                     //prefの設定 細かいところはSettingDrawに準じているので不明
-                    SharedPreferences pref = getSharedPreferences("Setting", MODE_PRIVATE);
+                    //SharedPreferences pref = getSharedPreferences("Setting", MODE_PRIVATE);
 
                     if (Category.equals("すべて")) {
                         monthTurnData = dbAssist.birthdaySelect(fullReturn + 1, getApplicationContext());//ArrayListに月検索したデータをぶち込む
@@ -286,7 +299,7 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
                         monthTurnData = dbAssist.birthdayAndCategorySelect(fullReturn + 1,Category, getApplicationContext());
                     }
                     //誕生日表示(false)か残日表示(true)かを取得
-                    boolean drawType = pref.getBoolean("drawType", false);
+                    //boolean drawType = pref.getBoolean("drawType", false);
 
                     MainAdapterData Mad;//自分で作成したclassの宣言
 
@@ -321,7 +334,6 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
                         }
 
                         //この辺に書き込み処理書いてくらさい。
-
                         Mad.setAllSize(num);
                         adapterData.add(Mad);//三人のデータの追加
                     }
@@ -346,8 +358,6 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
         });
 
         /********spinnerの設定　終わり************/
-        //pref = getSharedPreferences("temp", Context.MODE_PRIVATE);
-
         TextView textView = (TextView) findViewById(R.id.current_month);
         if (textView != null) {
             textView.setText(String.valueOf(page + 1 +"月"));
@@ -406,7 +416,9 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
         ViewGroup layout = (ViewGroup) findViewById(R.id.ll_main);
 
         // ページ数の設定
-        pageCount = layout.getChildCount() - 1;
+        if (layout != null) {
+            pageCount = layout.getChildCount() - 1;
+        }
 
         for (int i = 0; i <= pageCount; i++) {
             layout.getChildAt(i).setLayoutParams(layoutParam);
@@ -502,7 +514,7 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
     }
 
     /***
-     * 今回未使用のOnGestureListener関連イベント
+     * * 今回未使用のOnGestureListener関連イベント
      *********************/
     @Override
     public boolean onDown(MotionEvent envent) {
@@ -525,13 +537,12 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
     public void onLongPress(MotionEvent envent) {
         Log.d("onLongPress", "onLongPress");
     }
-
     /*******************************************************************/
     //リストをクリックした時のイベント
     public void listClick(View view) {
         Log.d("hello", String.valueOf(view.getTag()));
 
-        int numData = new Integer((Integer) view.getTag());
+        int numData = (Integer) view.getTag();
 
         if (numData != 0) {
             //Intentで飛ばす＆idをキーにする
@@ -577,7 +588,6 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
     }
     private void idSet() {
         mainListAdapter = new MainListAdapter[12];
-
         //配列で12ヶ月分のlistView作ります
         listView = new ListView[12];
         listView[0] = (ListView) findViewById(R.id.list1).findViewById(R.id.listView1);
@@ -592,14 +602,11 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
         listView[9] = (ListView) findViewById(R.id.list10).findViewById(R.id.listView1);
         listView[10] = (ListView) findViewById(R.id.list11).findViewById(R.id.listView1);
         listView[11] = (ListView) findViewById(R.id.list12).findViewById(R.id.listView1);
-
     }
     public void onResume(){
         super.onResume();
-        //horizontalScrollView.scrollTo(page * displayWidth,displayHeight);
-
-        //onCreateから来たかどうか
-        if (onCreateFlag == false){
+        //onCreateから来たかどうか(false)
+        if (!onCreateFlag){
             page = pref.getInt("page",MONTH);
         }else {
             page = MONTH;
@@ -611,10 +618,17 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
             }
         });
         TextView textView = (TextView) findViewById(R.id.current_month);
-        textView.setText(String.valueOf(page + 1) + "月");
-
+        if (textView != null) {
+            textView.setText(String.valueOf(page + 1) + "月");
+        }
         onCreateFlag=false;
     }
+
+    public void onPostResume(){
+        super.onPostResume();
+        progressLoad.setVisibility(View.GONE);
+    }
+
     public void pageSave(){
         onCreateFlag = false;
         SharedPreferences.Editor editor = pref.edit();
