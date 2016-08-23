@@ -1,15 +1,17 @@
 package org.t_robop.y_ogawara.tancolle;
 
+import android.content.Context;
 import android.content.DialogInterface;
-import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -52,7 +54,7 @@ public class SettingCategoryActivity extends AppCompatActivity {
         /*****ToolBar関連*****/
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         if (toolbar != null) {
-            toolbar.setTitle("カテゴリ設定");
+            toolbar.setTitle("カテゴリ管理");
         }
         setSupportActionBar(toolbar);
 
