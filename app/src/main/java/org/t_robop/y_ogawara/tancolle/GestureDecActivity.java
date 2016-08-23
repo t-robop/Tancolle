@@ -179,7 +179,7 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
 
 
 //誕生日表示(false)か残日表示(true)かを取得
-            boolean drawType = pref.getBoolean("drawType", false);
+            //boolean drawType = pref.getBoolean("drawType", false);
 
 
             MainAdapterData Mad;//自分で作成したclassの宣言
