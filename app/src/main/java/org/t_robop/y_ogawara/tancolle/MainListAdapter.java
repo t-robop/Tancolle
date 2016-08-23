@@ -169,7 +169,7 @@ public class MainListAdapter extends ArrayAdapter<MainAdapterData> {
         }
     }
     //boolean testは現在の年数かどうかの判定 flaseなら2016 trueなら2017
-    int dayTo(int sqlMonth,int sqlDay,boolean test){
+    public int dayTo(int sqlMonth,int sqlDay,boolean test){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
         Date dateTo = null;
         Date dateFrom = null;

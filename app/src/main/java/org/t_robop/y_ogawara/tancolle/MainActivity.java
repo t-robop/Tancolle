@@ -222,6 +222,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
 
     }
+    public void ReUserDetailActivityBtn(View view) {
+        Intent intent = new Intent(this,ReUserDetailActivity.class);
+        startActivity(intent);
+
+    }
     public void SearchActivityBtn(View view) {
         Intent intent = new Intent(this,SearchActivity.class);
         startActivity(intent);

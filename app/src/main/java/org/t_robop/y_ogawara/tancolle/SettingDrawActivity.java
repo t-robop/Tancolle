@@ -154,6 +154,4 @@ public class SettingDrawActivity extends AppCompatActivity {
         //editor終了
         editor.apply();
     }
-
-
 }
