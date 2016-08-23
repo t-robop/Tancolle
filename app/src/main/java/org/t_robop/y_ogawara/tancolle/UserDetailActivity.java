@@ -89,6 +89,12 @@ public class UserDetailActivity extends AppCompatActivity {
             }
 
 
+        }else{
+            if(!category.equals("<未選択>")){
+                Data updateData = new Data(); //そのカテゴリは存在しないのでSQLに未選択で書き換える
+                updateData.setCategory("<未選択>");
+                dbAssist.updateData(intentId, updateData, this);
+            }
         }
 
     }

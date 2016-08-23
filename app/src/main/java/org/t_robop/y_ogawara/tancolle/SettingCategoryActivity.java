@@ -54,7 +54,7 @@ public class SettingCategoryActivity extends AppCompatActivity {
         /*****ToolBar関連*****/
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         if (toolbar != null) {
-            toolbar.setTitle("カテゴリ管理");
+            toolbar.setTitle("表示設定");
         }
         setSupportActionBar(toolbar);
 
