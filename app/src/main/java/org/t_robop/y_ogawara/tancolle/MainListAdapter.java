@@ -78,6 +78,7 @@ public class MainListAdapter extends ArrayAdapter<MainAdapterData> {
                 switch (mainListData.getAllSize()%3) {
                     case 2://一つ無いとき
                         //中央のTextだけ表示させます
+                        liner3.setVisibility(View.INVISIBLE);
                         nameText2.setText(mainListData.getName(1));
                         //birthText2.setText(mainListData.getBirthMonth(1)+"/"+mainListData.getBirthDay(1));
                         birthText2.setText(remainingDay(mainListData.getBirthMonth(1),mainListData.getBirthDay(1)));
