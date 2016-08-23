@@ -1,19 +1,28 @@
 package org.t_robop.y_ogawara.tancolle;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by iris on 2016/08/23.
@@ -45,10 +54,62 @@ public class ReUserDetailActivity extends AppCompatActivity {
 
     //前のpage番号
     int page;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_scrolling);
+
+        //Toolbar関連
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+        actionBar.setTitle("title");
+
+//        // 文字色(縮小時)
+//        toolbarLayout.setCollapsedTitleTextColor("");
+//        // 文字色(展開時)
+//        toolbarLayout.setExpandedTitleColor(文字色(展開時));
+
+        Intent intent = getIntent();
+        intentId = intent.getIntExtra("id", 1);
+        Data data = dbAssist.idSelect(intentId, this);
+        String category = data.getCategory();
+
+        //初期設定
+        PreferenceMethod PM;
+        PM = new PreferenceMethod();
+        //配列を読み込み (保存のkey,場所)
+        String[] categoryItem = PM.getArray("StringItem", this);
+        int count = 0;
+        if (categoryItem != null) {
+            for (int i = 0; i < categoryItem.length; i++) { //0からカテゴリリストの最大値まで繰り返す
+                if (!(categoryItem[i].equals(category))) { //もしもカテゴリリストのi個目と今読み込んだカテゴリの名前が一致しなかったら
+                    count++; //カウントを足していく
+                }
+                if (count == categoryItem.length) { //もし一致しなかった数＝カテゴリの最大値だったら（一個も一致しない 存在しなかったら）
+                    Data updateData = new Data(); //そのカテゴリは存在しないのでSQLに未選択で書き換える
+                    updateData.setCategory("<未選択>");
+                    dbAssist.updateData(intentId, updateData, this);
+                }
+            }
+
+        } else {
+            if (!category.equals("<未選択>")) {
+                Data updateData = new Data(); //そのカテゴリは存在しないのでSQLに未選択で書き換える
+                updateData.setCategory("<未選択>");
+                dbAssist.updateData(intentId, updateData, this);
+            }
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         setContentView(R.layout.activity_scrolling);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -56,24 +117,139 @@ public class ReUserDetailActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+
+        Intent intent = getIntent();
+        intentId = intent.getIntExtra("id", 1);
+        page = intent.getIntExtra("page",0);
+        nameTV = (TextView) findViewById(R.id.Name);
+        kanaTV = (TextView) findViewById(R.id.Kana);
+        birthTV = (TextView) findViewById(R.id.Birthay);
+        ageTV = (TextView) findViewById(R.id.age);
+        remaTV = (TextView) findViewById(R.id.nokori);
+        memoTV = (TextView) findViewById(R.id.chou);
+        cateTV = (TextView) findViewById(R.id.category);
+
+        calendar = Calendar.getInstance();
+        year = calendar.get(Calendar.YEAR);
+        month = calendar.get(Calendar.MONTH) + 1; //0から11までしかないから１個足す
+        day = calendar.get(Calendar.DAY_OF_MONTH);
+
+
+
+
+        Data data = dbAssist.idSelect(intentId, this);
+        String name = data.getName(); //SQliteからもってくる
+        String kana = data.getKana();
+        String smallImage = data.getImage(); //TODO
+        String category = data.getCategory();
+        TwitterID = data.getTwitterID();
+        memo = data.getMemo();
+        imagecount = data.isPresentFlag();
+        yukarin = data.isYukarin();
+        Log.d("aaaaaa",String.valueOf(imagecount));
+        if (imagecount == Integer.MIN_VALUE) {
+            imagecount = 0;
+
+        }
+
+        //データを読みだして、その値でセットする画像を変える
+
+        if(imagecount==0){
+            image.setImageResource(R.drawable.ao);
+        }else{
+            image.setImageResource(R.drawable.ribon);
+        }
+
+
+//画像読み込み
+        if(smallImage.equals("null.jpg")){
+            photoImageView.setImageResource(R.drawable.normal_shadow);
+        }else {
+            InputStream in;
+            try {
+                in = openFileInput(smallImage);//画像の名前からファイル開いて読み込み
+                bitmap = BitmapFactory.decodeStream(in);//読み込んだ画像をBitMap化
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            photoImageView.setImageBitmap(bitmap);
+        }
+
+        //int birth = data.getBirthday();
+        int birthyear = data.getYear();
+        int birthmonth = data.getMonth();
+        int birthday = data.getDay();
+
+        a = birthmonth * 100 + birthday;  //誕生日を７月１４日を→７１４みたいな形に
+        b = month * 100 + day; //現在の日付を６月１５日→６１５みたいな形に
+        if (a > b) {  //もし誕生日の方の数値が大きかったら（まだ今年の誕生日がきてなかったら）
+            age = year - birthyear - 1;   //今年ー誕生年から更に１才ひく
+        } else {    //今年の誕生日がきていたら
+            age = year - birthyear;  //そのまんま今年から誕生年をひく
+        }
+
+        //データのフォーマット
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        //date型の宣言
+        Date dateTo = null;
+        Date dateFrom = null;
+
+        // 日付を作成します。
+        try {
+            //TODO ココらへんで今年の誕生日が過ぎていたら、来年の誕生日で計算させる
+            dateFrom = sdf.parse(year + "/" + month + "/" + day); //現在の日付
+            //指定フォーマットでデータを入力
+            if (a < b) {  //誕生日より今日の日にちが大きかったら（もう誕生日がきていたら
+                int num;
+                num = year + 1; //＋１して来年の誕生日の数値を割り出す
+
+                dateTo = sdf.parse(num + "/" + birthmonth + "/" + birthday);
+            } else {  //まだ誕生日がきていなかったら
+
+                dateTo = sdf.parse(year + "/" + birthmonth + "/" + birthday); //今年の誕生日を作る
+            }
+
+            //エラーが起きた時
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        // 日付をlong値に変換します。
+        long dateTimeTo = dateTo.getTime();
+        long dateTimeFrom = dateFrom.getTime();
+
+        // 差分の日数を算出します。
+        long dayDiff = (dateTimeTo - dateTimeFrom) / (1000 * 60 * 60 * 24);
+        //int型に変換
+        int remDay = (int) dayDiff;
+
+
+        nameTV.setText(name);
+        kanaTV.setText(kana);
+        if(category.equals("<未選択>")){
+            cateTV.setText("#"+category);
+        }else{
+            cateTV.setText("#<"+category+">");
+
+        }
+        birthTV.setText(String.valueOf(birthmonth) + "/" + String.valueOf(birthday));
+        remaTV.setText("残り" + String.valueOf(remDay) + "日");
+        memoTV.setText(memo);
+        if(yukarin==0){
+            ageTV.setText(String.valueOf(age) + "才");
+        }else{
+            ageTV.setText("XX才");
+        }
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_scrolling, menu);
-//        return true;
-//    }
-
+    //MenuItem(戻るボタン)の選択
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == android.R.id.home) {
+            finish();
             return true;
         }
         return super.onOptionsItemSelected(item);

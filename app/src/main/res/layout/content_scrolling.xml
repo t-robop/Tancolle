@@ -8,10 +8,45 @@
     tools:context=".ReUserDetailActivity"
     tools:showIn="@layout/activity_scrolling">
 
-    <TextView
-        android:layout_width="wrap_content"
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
-        android:text="hoiewhoiehoiwahehapiehihgorehoea" />
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/day"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Birthday"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+        <TextView
+            android:id="@+id/Current"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Current"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+        <TextView
+            android:id="@+id/Remaining"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Remaining"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+        <TextView
+            android:id="@+id/Memo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Memo"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+        <TextView
+            android:id="@+id/chou"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:onClick="memoclick"
+            android:text="あああああ"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+    </LinearLayout>
+
 
 </android.support.v4.widget.NestedScrollView>
