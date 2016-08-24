@@ -34,6 +34,13 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="ReUserRegisterActivity(UserRegisterなおしてる)"
+        android:id="@+id/button11"
+        android:onClick="ReUserRegisterActivityBtn" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="UserRegisterActivity(西村画面)"
         android:id="@+id/button3"
         android:onClick="UserRegisterActivityBtn" />

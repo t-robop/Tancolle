@@ -162,8 +162,6 @@ public class UserDetailActivity extends AppCompatActivity {
         photoImageView = (ImageView)findViewById(R.id.imageView);
         image = (ImageView) this.findViewById(R.id.present);
 
-
-
         Data data = dbAssist.idSelect(intentId, this);
         String name = data.getName(); //SQliteからもってくる
         String kana = data.getKana();
@@ -402,7 +400,6 @@ public class UserDetailActivity extends AppCompatActivity {
     }
 
     public void memoclick(View view) {
-
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = LayoutInflater.from(this);

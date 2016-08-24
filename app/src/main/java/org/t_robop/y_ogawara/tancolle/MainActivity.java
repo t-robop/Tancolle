@@ -213,6 +213,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void ReUserRegisterActivityBtn(View view){
+        Intent intent = new Intent(this,ReUserRegisterActivity.class);
+        startActivity(intent);
+    }
+
     public void UserRegisterActivityBtn(View view) {
         Intent intent = new Intent(this,UserRegisterActivity.class);
         startActivity(intent);

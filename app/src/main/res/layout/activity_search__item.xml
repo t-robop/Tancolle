@@ -4,7 +4,7 @@
     android:layout_height="fill_parent"
     android:orientation="horizontal">
 
-    <ImageView
+    <org.t_robop.y_ogawara.tancolle.CircleImageView
         android:id="@+id/item_image"
         android:layout_width="70dp"
         android:layout_height="match_parent"

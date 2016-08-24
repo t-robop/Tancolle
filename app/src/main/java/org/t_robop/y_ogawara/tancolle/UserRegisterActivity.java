@@ -42,6 +42,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -67,6 +68,11 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
     EditText editMemo;
     DatePickerDialog PickerDialog;
     Calendar calendar;
+    TextView textOldUnknown;
+    TextView textMnotif;
+    TextView textWnotif;
+    TextView textYnotif;
+    TextView textTnotif;
     //キーボード制御
     InputMethodManager inputMethodManager;
 
@@ -151,7 +157,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_register);
+        setContentView(R.layout.activity_user_register_re);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         //関連付け
@@ -167,12 +173,6 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             textCus[0].setTextColor(Color.GRAY);
             textCus[1].setTextColor(Color.GRAY);
             textCus[2].setTextColor(Color.GRAY);
-        /////
-        // EditText が空のときに表示させるヒントを設定
-            editName.setHint("Name");
-            editPho.setHint("Phonetic");
-            editTwitter.setHint("@twitter");
-            editMemo.setHint("何でも自由に書いてね！");
         /////
         //画面切り替わり時のid取得
             Intent intent = getIntent();
@@ -288,13 +288,13 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
                         temporary_day= userBirthDay;
                     /////
                     //読み込んだ段階でデータから全フラグをチェックボックスに適用
-                        CheckBoxChange(checkTamura, flagTamura);
-                        CheckBoxChange(checkNotifMonth, flagNotifMonth);
-                        CheckBoxChange(checkNotifWeek, flagNotifWeek);
-                        CheckBoxChange(checkNotifYesterday, flagNotifYesterday);
-                        CheckBoxChange(checkToday, flagNotifToday);
+                        CheckBoxChange(checkTamura,textOldUnknown, flagTamura);
+                        CheckBoxChange(checkNotifMonth,textMnotif, flagNotifMonth);
+                        CheckBoxChange(checkNotifWeek,textWnotif, flagNotifWeek);
+                        CheckBoxChange(checkNotifYesterday,textYnotif, flagNotifYesterday);
+                        CheckBoxChange(checkToday,textTnotif, flagNotifToday);
                         for(int i=0;i<3;i++){
-                            CheckBoxChange(checkCus[i], flagNotifCus[i]);
+                            CheckBoxChange(checkCus[i],null, flagNotifCus[i]);
                         }
                     /////
                 /////
@@ -319,6 +319,11 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
                 imgStartName = "null.jpg";
                 //編集済フラグ
                 registJudge=true;
+                textOldUnknown.setTextColor(Color.GRAY);
+                textMnotif.setTextColor(Color.GRAY);
+                textWnotif.setTextColor(Color.GRAY);
+                textYnotif.setTextColor(Color.GRAY);
+                textTnotif.setTextColor(Color.GRAY);
             }
         /////
         //誕生日と年齢表示
@@ -453,7 +458,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             //画像設定
             img = Bitmap.createBitmap(pct,0,0, pctWidth, pctHeight,mat, true);
             //小さい画像の作成
-            small_img= Bitmap.createScaledBitmap(img,pctWidth/4,pctHeight/4,false);
+            small_img= Bitmap.createScaledBitmap(img,pctWidth/2,pctHeight/2,false);
             //BitMapを表示
             imageUser.setImageBitmap(img);
         }
@@ -552,9 +557,16 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // アクションバー内に使用するメニューアイテムを注入します。
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.user_register_menu, menu);
-        return super.onCreateOptionsMenu(menu);
+        if(id!=0) {
+            MenuInflater inflater = getMenuInflater();
+            inflater.inflate(R.menu.user_register_menu_cus, menu);
+            return super.onCreateOptionsMenu(menu);
+        }
+        else{
+            MenuInflater inflater = getMenuInflater();
+            inflater.inflate(R.menu.user_register_menu_new, menu);
+            return super.onCreateOptionsMenu(menu);
+        }
     }
 
     //アクションバー処理
@@ -562,8 +574,13 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
     public boolean onOptionsItemSelected(MenuItem item) {
         // アクションバーアイテム上の押下を処理します。
         switch (item.getItemId()) {
-            case R.id.action_button:
+            case R.id.action_save:
+                //保存
                 AllRegist();
+                return true;
+            case R.id.action_del:
+                //削除
+                Delete();
                 return true;
             //toolbarの戻るボタン
             case android.R.id.home:
@@ -734,6 +751,12 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         inflaterDialog = LayoutInflater.from(UserRegisterActivity.this);
         viewDialog = inflaterDialog.inflate(R.layout.dialog_user_register, null);
         editDialog = (EditText) viewDialog.findViewById(R.id.editText1);
+        //色変えText群
+        textOldUnknown=(TextView)findViewById(R.id.tamura);
+        textMnotif=(TextView)findViewById(R.id.m_notif);
+        textWnotif=(TextView)findViewById(R.id.w_notif);
+        textYnotif=(TextView)findViewById(R.id.y_notif);
+        textTnotif=(TextView)findViewById(R.id.t_notif);
     }
 
     //EditTextに指定した文字列を加えて表示させるメソッド
@@ -825,7 +848,6 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int position, long id) {
                 //処理
-
                 //セットした要素が変わった時
                 if(position!=positionSpinner){
                     //編集済フラグ
@@ -933,7 +955,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
                             String.valueOf(userBirthMonth) + "/" +
                             String.valueOf(userBirthDay));
             //年齢表示
-            if (YearsOldSet(userBirthYear, userBirthMonth, userBirthDay) > 1000) {
+            if (YearsOldSet(userBirthYear, userBirthMonth, userBirthDay) > 1000 || YearsOldSet(userBirthYear, userBirthMonth, userBirthDay) < 0) {
                 textYearsOld.setText("");
             } else {
                 textYearsOld.setText(String.valueOf(YearsOldSet(userBirthYear, userBirthMonth, userBirthDay)) + "歳");
@@ -942,7 +964,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         else{
             textBirthday.setText(userBirthMonth + "/" + userBirthDay);
             //年齢表示
-            textYearsOld.setText("不明");
+            textYearsOld.setText("");
         }
     }
 
@@ -1069,7 +1091,8 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
                                         //誕生日表記から年を取り除く
                                         textBirthday.setText(userBirthMonth + "/" + userBirthDay);
                                         //年齢を不詳へ
-                                        textYearsOld.setText("不明");
+                                        textYearsOld.setText("");
+                                        textOldUnknown.setTextColor(Color.BLACK);
                                         //switch抜ける
                                         break;
                                 /////
@@ -1077,6 +1100,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
                                     case 4:
                                         //フラグ立てる
                                         flagNotifMonth =1;
+                                        textMnotif.setTextColor(Color.BLACK);
                                         //switch抜ける
                                         break;
                                 /////
@@ -1084,6 +1108,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
                                     case 5:
                                         //フラグ立てる
                                         flagNotifWeek =1;
+                                        textWnotif.setTextColor(Color.BLACK);
                                         //switch抜ける
                                         break;
                                 /////
@@ -1091,6 +1116,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
                                     case 6:
                                         //フラグ立てる
                                         flagNotifYesterday =1;
+                                        textYnotif.setTextColor(Color.BLACK);
                                         //switch抜ける
                                         break;
                                 /////
@@ -1098,6 +1124,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
                                     case 7:
                                         //フラグ立てる
                                         flagNotifToday =1;
+                                        textTnotif.setTextColor(Color.BLACK);
                                         //switch抜ける
                                         break;
                                 /////
@@ -1143,26 +1170,31 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
                                     }
                                 /////
                             /////
+                            textOldUnknown.setTextColor(Color.GRAY);
                             //switch抜けます
                             break;
                         case 4:
                             //フラグをしまう
                             flagNotifMonth =0;
+                            textMnotif.setTextColor(Color.GRAY);
                             //switch抜けます
                             break;
                         case 5:
                             //フラグをしまう
                             flagNotifWeek =0;
+                            textWnotif.setTextColor(Color.GRAY);
                             //switch抜けます
                             break;
                         case 6:
                             //フラグをしまう
                             flagNotifYesterday =0;
+                            textYnotif.setTextColor(Color.GRAY);
                             //switch抜けます
                             break;
                         case 7:
                             //フラグをしまう
                             flagNotifToday =0;
+                            textTnotif.setTextColor(Color.GRAY);
                             //switch抜けます
                             break;
                     }
@@ -1177,12 +1209,18 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
     }
 
     //checkboxの中身を判断してtruefalse変更
-    public void CheckBoxChange(CheckBox Cb,int check) {
+    public void CheckBoxChange(CheckBox Cb,TextView tV,int check) {
         if(check==0) {
             Cb.setChecked(false);
+            if(tV!=null) {
+                tV.setTextColor(Color.GRAY);
+            }
         }
         else {
             Cb.setChecked(true);
+            if(tV!=null) {
+                tV.setTextColor(Color.BLACK);
+            }
         }
     }
 
@@ -1325,6 +1363,32 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         });
         //設定したダイアログの表示
         aldialogDeleCategory.show();
+    }
+
+    //削除処理
+    public void Delete(){
+        new AlertDialog.Builder(UserRegisterActivity.this)
+                .setMessage("本当に削除してもいいですか？")
+                .setCancelable(false)
+                .setPositiveButton("はい", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int idlog) {
+                        dbAssist.deleteData(id,getApplicationContext());
+
+                        //widget更新
+                        WidgetProvider.upDateWidget(UserRegisterActivity.this);
+
+                        Toast toast = Toast.makeText(UserRegisterActivity.this, "データを消去しました", Toast.LENGTH_LONG);
+                        toast.show();
+                        finish();
+
+                    }
+                })
+                .setNegativeButton("いいえ", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                })
+                .show();
     }
 
     public void AllRegist() {
