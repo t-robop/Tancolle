@@ -153,6 +153,10 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
     //指定されてるspinnerのposition保存
     int positionSpinner=0;
 
+    //alarmを鳴らすようのIdを格納
+    int alarmId;
+
+
     /////////////////////////Override/////////////////////////
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -574,6 +578,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
     public boolean onOptionsItemSelected(MenuItem item) {
         // アクションバーアイテム上の押下を処理します。
         switch (item.getItemId()) {
+
             case R.id.action_save:
                 //保存
                 AllRegist();
@@ -582,6 +587,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
                 //削除
                 Delete();
                 return true;
+
             //toolbarの戻るボタン
             case android.R.id.home:
                 //編集されてた時
@@ -1471,16 +1477,31 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         /*****通知セット*****/
         //何も無かったら「名前がありません」として保存
         String name=MainListAdapter.setNullName(editName.getText().toString());
-        //id取得のためのData型の宣言
-        Data dataId = new Data();
-        int numId=dataId.getId();
+
+        ArrayList<Data> datas = new ArrayList<>();
+        datas = dbAssist.allSelect(this);
+        Data data = new Data();
+        //データベースが存在しない場合
+        if (datas.get(0)==null){
+            alarmId = 1;
+        }
+
+         else if (id ==0){
+            //データベースの最後のid
+            data = datas.get(datas.size()-1);
+            alarmId =data.getId();
+            //編集で飛んできた時
+        }else {
+            alarmId = id;
+        }
+
         //設定値から通知をセット
         Notifier.alarm(
-                numId,
+                alarmId,
                 name,
-                getToday("Year"),
-                getToday("Month"),
-                getToday("Day"),
+                getToday("year"),
+                getToday("month"),
+                getToday("day"),
                 userBirthMonth,
                 userBirthDay,
                 flagNotifMonth,
