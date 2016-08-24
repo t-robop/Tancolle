@@ -8,12 +8,18 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
+import android.widget.Toast;
 
 //TODO マニフェストのレシーバーうまく設定されとらんで！！！！！！！！！！
 public class Notifier extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context content, Intent intent) {
+            if(Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())){
+                Log.d("ファック","ふぁっきん！！！！！！！！！！！！！！！");
+                Toast.makeText(content, "テスト", Toast.LENGTH_LONG).show();
+            }
 
             int id = intent.getIntExtra("intentId", 0);
             String text = intent.getStringExtra("intentString");

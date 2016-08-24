@@ -17,8 +17,8 @@ public class notifierDbAssist {
     static Cursor cursor;
 
     //orderで並び順を指定 ASCで昇順  DESCで降順
-    static String openDB = "select * from users_table order by id asc";
-    final static String TABLE_NAME = "users_table";
+    static String openDB = "select * from notifier_table order by id asc";
+    final static String TABLE_NAME = "notifier_table";
 
 
     public notifierDbAssist(Context context) {
