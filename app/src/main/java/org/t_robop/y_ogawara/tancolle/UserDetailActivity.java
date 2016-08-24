@@ -42,7 +42,6 @@ public class UserDetailActivity extends AppCompatActivity {
     TextView cateTV;
     Calendar calendar;
     int year, month, day; //現在の日付
-    int a, b;
     int age;//年齢の計算結果を入れる箱
     ImageView image;
     int imagecount; //プレゼントボタンの判定
@@ -231,7 +230,7 @@ public class UserDetailActivity extends AppCompatActivity {
             //TODO ココらへんで今年の誕生日が過ぎていたら、来年の誕生日で計算させる
             dateFrom = sdf.parse(year + "/" + month + "/" + day); //現在の日付
             //指定フォーマットでデータを入力
-            if (a < b) {  //誕生日より今日の日にちが大きかったら（もう誕生日がきていたら
+            if (birthmonth * 100 + birthday < month * 100 + day) {  //誕生日より今日の日にちが大きかったら（もう誕生日がきていたら
                 int num;
                 num = year + 1; //＋１して来年の誕生日の数値を割り出す
 
