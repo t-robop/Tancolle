@@ -1414,19 +1414,25 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
 
         ArrayList<Data> datas = new ArrayList<>();
         datas = dbAssist.allSelect(this);
-
-        int alarmId;
+        Data data = new Data();
         //データベースが存在しない場合
         if (datas.get(0)==null){
             alarmId = 1;
         }
-        //データベースの最後のid
-        Data data = datas.get(datas.size()-1);
-        alarmId =data.getId();
+
+         else if (id ==0){
+            //データベースの最後のid
+            data = datas.get(datas.size()-1);
+            alarmId =data.getId();
+            //編集で飛んできた時
+        }else {
+            alarmId = id;
+        }
+
         //設定値から通知をセット
         Notifier.alarm(
                 alarmId,
-                data.getName(),
+                name,
                 getToday("year"),
                 getToday("month"),
                 getToday("day"),
