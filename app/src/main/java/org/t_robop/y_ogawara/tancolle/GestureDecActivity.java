@@ -30,7 +30,6 @@ import android.widget.ArrayAdapter;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
@@ -84,6 +83,11 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gesture_dec);
         setViewSize();
+        permissionAcquisition();
+
+        //Log.d("OriginalId",String.valueOf(Notifier.makeOriginalId(1)));
+        //Log.d("id",String.valueOf(Notifier.originalIdToId(Notifier.makeOriginalId(1))));
+        //originalIdToId
         onCreateFlag = true;
 
         //preferenceクラス宣言
@@ -92,7 +96,6 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
         progressLoad=(LinearLayout) findViewById(R.id.load_progress) ;
 
         //Permission確認 Android6.0以上
-        permissionAcquisition();
 
         // FloatingActionButton
         FloatingActionButton add = (FloatingActionButton) findViewById(R.id.add);
