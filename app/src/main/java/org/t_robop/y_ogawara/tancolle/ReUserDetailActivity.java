@@ -7,14 +7,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -213,7 +209,7 @@ public class ReUserDetailActivity extends AppCompatActivity {
 
 //画像読み込み
         if(smallImage.equals("null.jpg")){
-            photoImageView.setImageResource(R.drawable.normal_shadow);
+            photoImageView.setImageResource(R.drawable.noimagedetail);
         }else {
             InputStream in;
             try {
