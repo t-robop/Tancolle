@@ -59,7 +59,10 @@ public class MainListAdapter extends ArrayAdapter<MainAdapterData> {
         //ListView用のTextView1(左端)の宣言
         //一つ目（左端）は桁が表示されれば絶対表示されるので固定
         TextView nameText1 = ((TextView) convertView.findViewById(R.id.name1));
-        nameText1.setText(mainListData.getName(0));
+
+        //（左）に表示する名前をセット
+        nameText1.setText(setNullName(mainListData.getName(0)));
+
         ((TextView) convertView.findViewById(R.id.birth1)).setText(remainingDay(mainListData.getBirthMonth(0),mainListData.getBirthDay(0)));
         if (mainListData.getPresentFlag(0)==1) {
             liner1.setBackgroundResource(R.drawable.ribbon);
@@ -83,7 +86,8 @@ public class MainListAdapter extends ArrayAdapter<MainAdapterData> {
                     case 2://一つ無いとき
                         //中央のTextだけ表示させます
                         liner3.setVisibility(View.INVISIBLE);
-                        nameText2.setText(mainListData.getName(1));
+                        //（中央）にセットする名前をセット
+                        nameText2.setText(setNullName(mainListData.getName(1)));
                         //birthText2.setText(mainListData.getBirthMonth(1)+"/"+mainListData.getBirthDay(1));
                         birthText2.setText(remainingDay(mainListData.getBirthMonth(1),mainListData.getBirthDay(1)));
 
@@ -101,13 +105,14 @@ public class MainListAdapter extends ArrayAdapter<MainAdapterData> {
                     case 0:
                         liner2.setVisibility(View.VISIBLE);
                         liner3.setVisibility(View.VISIBLE);
-                        nameText2.setText(mainListData.getName(1));
+                        //（中央）にセットする名前をセット
+                        nameText2.setText(setNullName(mainListData.getName(1)));
                         birthText2.setText(remainingDay(mainListData.getBirthMonth(1),mainListData.getBirthDay(1)));
                         if (mainListData.getPresentFlag(1)==1) {
                             liner2.setBackgroundResource(R.drawable.ribbon);
                         }
-
-                        nameText3.setText(mainListData.getName(2));
+                        //（右）にセットする名前をセット
+                        nameText3.setText(setNullName(mainListData.getName(2)));
                         birthText3.setText(remainingDay(mainListData.getBirthMonth(2),mainListData.getBirthDay(2)));
                         if (mainListData.getPresentFlag(2)==1) {
                             liner3.setBackgroundResource(R.drawable.ribbon);
@@ -119,13 +124,15 @@ public class MainListAdapter extends ArrayAdapter<MainAdapterData> {
               //最終行ではないので全て表示させます
               liner2.setVisibility(View.VISIBLE);
               liner3.setVisibility(View.VISIBLE);
-              nameText2.setText(mainListData.getName(1));
+              //（中央）にセットする名前をセット
+              nameText2.setText(setNullName(mainListData.getName(1)));
               birthText2.setText(remainingDay(mainListData.getBirthMonth(1),mainListData.getBirthDay(1)));
               if (mainListData.getPresentFlag(1)==1) {
                   liner2.setBackgroundResource(R.drawable.ribbon);
               }
 
-              nameText3.setText(mainListData.getName(2));
+              //（右）にセットする名前をセット
+              nameText3.setText(setNullName(mainListData.getName(2)));
               birthText3.setText(remainingDay(mainListData.getBirthMonth(2),mainListData.getBirthDay(2)));
               if (mainListData.getPresentFlag(2)==1) {
                   liner3.setBackgroundResource(R.drawable.ribbon);
@@ -207,6 +214,14 @@ public class MainListAdapter extends ArrayAdapter<MainAdapterData> {
         // 差分の日数を算出します。
         int dayDiff = (int) (( dateTimeTo - dateTimeFrom  ) / (1000 * 60 * 60 * 24 ));
         return dayDiff;
+    }
+
+    //Stringに何も入ってなかったら「名前がありません」
+    public String setNullName(String name){
+        if(name.length()==0){
+            name="名前がありません";
+        }
+        return name;
     }
 
 }
