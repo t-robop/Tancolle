@@ -3,8 +3,11 @@ package org.t_robop.y_ogawara.tancolle;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -13,7 +16,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class SearchActivity extends Activity implements SearchView.OnQueryTextListener {
+public class SearchActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
     ListView listView;
     SearchView searchView;
@@ -28,7 +31,11 @@ public class SearchActivity extends Activity implements SearchView.OnQueryTextLi
         setContentView(R.layout.activity_search);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
 
         listView = (ListView) findViewById(R.id.listView);
@@ -92,6 +99,20 @@ public class SearchActivity extends Activity implements SearchView.OnQueryTextLi
     @Override
     public boolean onQueryTextSubmit(String query) {
         return false;
+    }
+
+    //アクションバー処理
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // アクションバーアイテム上の押下を処理します。
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 

@@ -2,23 +2,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context="org.t_robop.y_ogawara.tancolle.SearchActivity">
 
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/tool_bar"
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="@android:style/Theme.DeviceDefault.Light.NoActionBar">
-
+        app:popupTheme="@style/AppTheme.PopupOverlay"
+        android:textColor="@android:color/white">
         <SearchView
             android:id="@+id/searchView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true">
+            android:layout_alignParentTop="true"
+            android:textColor="@android:color/white">
 
         </SearchView>
     </android.support.v7.widget.Toolbar>
