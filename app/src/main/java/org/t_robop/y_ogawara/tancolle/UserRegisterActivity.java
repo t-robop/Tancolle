@@ -140,6 +140,12 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
     //preference用クラス
     PreferenceMethod PM;
 
+    //編集したかどうかの確認(true：編集済)
+    boolean registJudge;
+
+    //指定されてるspinnerのposition保存
+    int positionSpinner=0;
+
     /////////////////////////Override/////////////////////////
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,6 +155,9 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         setSupportActionBar(toolbar);
         //関連付け
         Association();
+
+        //編集済かどうかの初期設定
+        registJudge=false;
 
         //preferenceクラス宣言
         PM=new PreferenceMethod();
@@ -195,8 +204,8 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         // プリファレンスからカテゴリー一覧を取得
         String[] categoryItem = PM.getArray("StringItem",this);
         //カテゴリー追加処理
-            //まず＜未選択＞を追加します
-            categoryAdapter.add("<未選択>");
+            //まず[カテゴリ無し]を追加します
+            categoryAdapter.add("[カテゴリ無し]");
             //何かカテゴリが保存されてる時
                 if(categoryItem!=null) {
                     //保存されてるカテゴリ数だけループさせます
@@ -303,6 +312,8 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
                 /////
                 //新規作成の場合でも画像の名前を設定しておく
                 imgStartName = "null.jpg";
+                //編集済フラグ
+                registJudge=true;
             }
         /////
         //誕生日と年齢表示
@@ -337,7 +348,6 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         /////
         //BitMapから画像をImageViewにセット
         imageUser.setImageBitmap(img);
-
     }
     //画像をドキュメントから選択からのImageViewセット
     @Override
@@ -412,7 +422,9 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
                 //取得した画像をBitMap化
                 Bitmap pct = BitmapFactory.decodeStream(in);
                 //InputStreamを閉じる
-                in.close();
+                if (in != null) {
+                    in.close();
+                }
             /////
 
             //作られたBitMapから横幅を取得
@@ -433,7 +445,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             //BitMapを表示
             imageUser.setImageBitmap(img);
         }
-        catch (Exception e) {}
+        catch (Exception ignored) {}
         //画像保存時の名前用の現在日時取得
             calendar = Calendar.getInstance();//現在日時を取得
             int imgye, imgmo, imgda, imgho, imgmi, imgse;
@@ -546,6 +558,21 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         }
     }
 
+    //端末のバックボタンクリック時
+    @Override
+    public void onBackPressed() {
+        //編集されてた時
+        if(registJudge==true) {
+            //保存最終確認ダイアログ表示
+            finishRegstDialog();
+        }
+        //未編集時
+        else {
+            //Activity終了
+            finish();
+        }
+    }
+
     ////////////////////////////////////////////////////////////
 
 
@@ -557,6 +584,8 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         //キーボード表示
         inputMethodManager.showSoftInput(v, InputMethodManager.SHOW_FORCED);
         keyBoad=true;
+        //編集済フラグ
+        registJudge=true;
     }
 
     public void EditPho(View v) {
@@ -565,6 +594,8 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         //キーボード表示
         inputMethodManager.showSoftInput(v, InputMethodManager.SHOW_FORCED);
         keyBoad=true;
+        //編集済フラグ
+        registJudge=true;
     }
 
     public void EditTwitter(View v) {
@@ -573,6 +604,8 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         //キーボード表示
         inputMethodManager.showSoftInput(v, InputMethodManager.SHOW_FORCED);
         keyBoad=true;
+        //編集済フラグ
+        registJudge=true;
     }
 
     //画像クリック時
@@ -581,14 +614,18 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
             intent.setType("image/jpeg");
             //startActivityForResult(Intent.createChooser(intent, "選べよ"), 0);
-            startActivity(intent);
+            //startActivity(intent);
+            startActivityForResult(intent, 0);
         } else {
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
             intent.addCategory(Intent.CATEGORY_OPENABLE);
             intent.setType("image/jpeg");
             //startActivityForResult(Intent.createChooser(intent, "選べよ"), 1);
-            startActivity(intent);
+            //startActivity(intent);
+            startActivityForResult(intent, 1);
         }
+        //編集済フラグ
+        registJudge=true;
     }
 
     //誕生日クリック時
@@ -762,8 +799,16 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int position, long id) {
                 //処理
+
+                //セットした要素が変わった時
+                if(position!=positionSpinner){
+                    //編集済フラグ
+                    registJudge=true;
+                }
                 //String型変数user_categoryに選択されたアイテムを代入
                 userCategory =(String) spinnerCategory.getItemAtPosition(position);
+                //現在のpositionを取得
+                positionSpinner=position;
             }
             @Override
             public void onNothingSelected(AdapterView<?> arg0) {
@@ -847,6 +892,8 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
                                 textCus[setType].setTextColor(Color.BLACK);
                             }
                         /////
+                        //編集済フラグ
+                        registJudge=true;
                     }
                 /////
             };
@@ -913,13 +960,15 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
                             editDialog.getEditableText().clear();//editTextの初期化
 
                             spinnerCategory.setSelection(categoryAdapter.getPosition(addcategory));
+
+                            //編集済フラグ
+                            registJudge=true;
                         }
                     })
                     .setNegativeButton("キャンセル", new DialogInterface.OnClickListener(){
                         //DiaLog内の決定をクリックした時
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-
                         }
                     })
                     .create();//初回AddDiaLog制作
@@ -1093,6 +1142,8 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
                     }
                 }
                 /////
+                //編集済フラグ
+                registJudge=true;
             }
             /////
         });
@@ -1219,6 +1270,35 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         }
         //取得したpositionの要素をspinnerにセット
         spinner.setSelection(index);
+    }
+
+    //編集するかしないかの最終確認ダイアログ
+    public void finishRegstDialog(){
+        //このアクティビティに表示する削除確認ダイアログの宣言
+        AlertDialog.Builder aldialogDeleCategory=new AlertDialog.Builder(UserRegisterActivity.this);
+        //ダイアログタイトルの決定
+        aldialogDeleCategory.setTitle("編集内容を保存しますか");
+        //positiveボタン(今回はok)のリスナー登録
+        aldialogDeleCategory.setPositiveButton("決定", new DialogInterface.OnClickListener() {
+            //削除用ダイアログ内のokボタン押した時
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //保存
+                AllRegist();
+                //Activity終了
+                finish();
+            }
+        });
+        //negativeボタン(今回はキャンセル)のリスナー登録
+        aldialogDeleCategory.setNegativeButton("キャンセル", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //Activity終了
+                finish();
+            }
+        });
+        //設定したダイアログの表示
+        aldialogDeleCategory.show();
     }
 
     public void AllRegist() {
