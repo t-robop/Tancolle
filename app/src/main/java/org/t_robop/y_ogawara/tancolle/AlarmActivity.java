@@ -35,6 +35,26 @@ public class AlarmActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm);
+
+
+//        alarmData alarmData = new alarmData();
+//        alarmData.setDay(111);
+//        notifierDbAssist.insertData(alarmData,this);
+//        ArrayList<alarmData> alarmDatas =  notifierDbAssist.allSelect(this);
+        //////////////////////////////////
+//        //Data型の宣言
+//        alarmData alarmData =new alarmData();
+//        //Data型にデータをセット
+//        alarmData.setDay(1);
+//        alarmData.setMonth(7);
+//        alarmData.setDay(16);
+//        //dbに書き込み
+//        notifierDbAssist.insertData(alarmData,this);
+//
+
+
+
+        /////////////////////////////////
         Intent intent = getIntent();
         intentId = intent.getIntExtra("usagi", 1);
 
