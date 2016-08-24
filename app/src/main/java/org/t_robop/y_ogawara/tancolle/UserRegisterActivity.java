@@ -1344,15 +1344,11 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         cautionDig.setTitle("名前を入力してください");
         //positiveボタン(今回はok)のリスナー登録
         cautionDig.setPositiveButton("はい", new DialogInterface.OnClickListener() {
-            //削除用ダイアログ内のokボタン押した時
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
             }
         });
-
-        //設定したダイアログの表示
-        cautionDig.show();
+        cautionDig.show(); //設定したダイアログの表示
     }
 
     public void AllRegist() {
