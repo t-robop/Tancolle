@@ -7,11 +7,7 @@ import android.content.Context;
 import android.os.Build;
 import android.util.TypedValue;
 import android.widget.RemoteViews;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 /**
  * Created by taiga on 2016/08/23.
@@ -41,11 +37,11 @@ public class WidgetProvider extends AppWidgetProvider {
             //何か登録されてる時
             if(monthData.size()!=0){
                 //今より前の残日を取得
-                int n=dayTo(monthData.get(0).getMonth(), monthData.get(0).getDay(), false);
+                int n=MainListAdapter.dayTo(monthData.get(0).getMonth(), monthData.get(0).getDay(), false);
                 //マイナス値なら
                 if(n<0){
                     //今より先の残日を取得
-                    n=dayTo(monthData.get(0).getMonth(), monthData.get(0).getDay(), true);
+                    n=MainListAdapter.dayTo(monthData.get(0).getMonth(), monthData.get(0).getDay(), true);
                 }
                 //今まで読み込んだ月より小さい場合
                 if(num>n){
@@ -84,7 +80,7 @@ public class WidgetProvider extends AppWidgetProvider {
             //テキストフィールドに残日を表示
             remoteViews.setTextViewText(R.id.widget_remain, "あと" + num + "日");
         }
-        //カウントダウンMAX!(何も登録されてない！)
+        //カウントダウンMAX!(一つも登録されてない時)
         else {
             //TextSize変更
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -121,11 +117,11 @@ public class WidgetProvider extends AppWidgetProvider {
             //何か登録されてる時
             if(monthData.size()!=0){
                 //今より前の残日を取得
-                int n=dayTo(monthData.get(0).getMonth(), monthData.get(0).getDay(), false);
+                int n=MainListAdapter.dayTo(monthData.get(0).getMonth(), monthData.get(0).getDay(), false);
                 //マイナス値なら
                 if(n<0){
                     //今より先の残日を取得
-                    n=dayTo(monthData.get(0).getMonth(), monthData.get(0).getDay(), true);
+                    n=MainListAdapter.dayTo(monthData.get(0).getMonth(), monthData.get(0).getDay(), true);
                 }
                 //今まで読み込んだ月より小さい場合
                 if(num>n){
@@ -164,7 +160,7 @@ public class WidgetProvider extends AppWidgetProvider {
             //テキストフィールドに残日を表示
             remoteViews.setTextViewText(R.id.widget_remain, "あと" + num + "日");
         }
-        //カウントダウンMAX!(何も登録されてない！)
+        //カウントダウンMAX!(一つも登録されてない時)
         else {
             //TextSize変更
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -184,34 +180,4 @@ public class WidgetProvider extends AppWidgetProvider {
         manager.updateAppWidget(myWidget, remoteViews);
     }
 
-    //boolean testは現在の年数かどうかの判定 flaseなら2016 trueなら2017
-    public int dayTo(int sqlMonth,int sqlDay,boolean test){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-        Date dateTo = null;
-        Date dateFrom = null;
-        int year = Calendar.getInstance().get(Calendar.YEAR);
-        int month =  Calendar.getInstance().get(Calendar.MONTH);
-        int day = Calendar.getInstance().get(Calendar.DATE);
-        // 日付を作成します。
-        try {
-            dateFrom = sdf.parse(year+"/"+(month+1)+"/"+day);
-            if (test == true) {
-                dateTo = sdf.parse(year+1+"/"+sqlMonth+"/"+sqlDay);
-            }
-            else {
-                dateTo = sdf.parse(year+"/"+sqlMonth+"/"+sqlDay);
-            }
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        // 日付をlong値に変換します。
-        long dateTimeTo = dateTo.getTime();
-        long dateTimeFrom = dateFrom.getTime();
-
-        // 差分の日数を算出します。
-        int dayDiff = (int) (( dateTimeTo - dateTimeFrom  ) / (1000 * 60 * 60 * 24 ));
-        return dayDiff;
-    }
 }
