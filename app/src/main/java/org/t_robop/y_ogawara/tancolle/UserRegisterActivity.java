@@ -1404,6 +1404,28 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         //プレファレンスにカテゴリの保存
         PM.saveArray(categorylist, "StringItem",this);
 
+        /*****通知セット*****/
+        //何も無かったら「名前がありません」として保存
+        String name=MainListAdapter.setNullName(editName.getText().toString());
+        //設定値から通知をセット
+        Notifier.alarm(
+                id,
+                name,
+                getToday("Year"),
+                getToday("Month"),
+                getToday("Day"),
+                userBirthMonth,
+                userBirthDay,
+                flagNotifMonth,
+                flagNotifWeek,
+                flagNotifYesterday,
+                flagNotifToday,
+                userNotifCus[0],
+                userNotifCus[1],
+                userNotifCus[2],
+                this);
+        /********************/
+
         //widget更新
         WidgetProvider.upDateWidget(this);
 
