@@ -567,8 +567,12 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         // アクションバーアイテム上の押下を処理します。
         switch (item.getItemId()) {
             case R.id.action_button:
-                AllRegist();
-                return true;
+                if((editName.getText().toString()).equals("")){
+                    cautionDialog();
+                }else{
+                    AllRegist();
+                    return true;
+                }
             //toolbarの戻るボタン
             case android.R.id.home:
                 //編集されてた時
@@ -1329,6 +1333,24 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         });
         //設定したダイアログの表示
         aldialogDeleCategory.show();
+    }
+
+    public void cautionDialog(){
+        //このアクティビティに表示する削除確認ダイアログの宣言
+        AlertDialog.Builder cautionDig=new AlertDialog.Builder(UserRegisterActivity.this);
+        //ダイアログタイトルの決定
+        cautionDig.setTitle("名前を入力してください");
+        //positiveボタン(今回はok)のリスナー登録
+        cautionDig.setPositiveButton("はい", new DialogInterface.OnClickListener() {
+            //削除用ダイアログ内のokボタン押した時
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        //設定したダイアログの表示
+        cautionDig.show();
     }
 
     public void AllRegist() {
