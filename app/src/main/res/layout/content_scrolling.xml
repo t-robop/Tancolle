@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".ReUserDetailActivity"
+    tools:showIn="@layout/activity_scrolling">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+
+        <org.t_robop.y_ogawara.tancolle.AutoshrinkTextView
+            android:id="@+id/category"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom"
+            android:layout_weight="3"
+            android:gravity="center_vertical"
+            android:text="category"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <ImageButton
+            android:id="@+id/tweet"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom"
+            android:layout_weight="1"
+            android:background="#00000000"
+            android:onClick="tweetClick"
+            android:scaleType="fitCenter"
+            android:src="@drawable/twitterlogo" />
+
+
+        <org.t_robop.y_ogawara.tancolle.AutoshrinkTextView
+            android:id="@+id/Kana"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="bottom"
+            android:layout_weight="1"
+            android:gravity="bottom"
+            android:text="とうかいたろう"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <org.t_robop.y_ogawara.tancolle.AutoshrinkTextView
+            android:id="@+id/Name"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="top"
+            android:layout_weight="2"
+            android:gravity="top"
+            android:text="東海太郎"
+
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="45dp" />
+
+        <TextView
+            android:id="@+id/day"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Birthday"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <org.t_robop.y_ogawara.tancolle.AutoshrinkTextView
+            android:id="@+id/Birthay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="00/00"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="72dp"
+
+            />
+
+
+        <TextView
+            android:id="@+id/Current"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Current"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <org.t_robop.y_ogawara.tancolle.AutoshrinkTextView
+            android:id="@+id/age"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="00才"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="40dp" />
+
+        <TextView
+            android:id="@+id/Remaining"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Remaining"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+
+        <org.t_robop.y_ogawara.tancolle.AutoshrinkTextView
+            android:id="@+id/nokori"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="残り000日"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="40dp"
+
+            />
+
+        <TextView
+            android:id="@+id/Memo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Memo"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+
+        <TextView
+            android:id="@+id/chou"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:onClick="memoclick"
+            android:text="あああああ"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <ImageButton
+            android:id="@+id/present"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:background="#00000000"
+            android:onClick="presentClick"
+            android:scaleType="fitXY" />
+
+    </LinearLayout>
+
+
+</android.support.v4.widget.NestedScrollView>

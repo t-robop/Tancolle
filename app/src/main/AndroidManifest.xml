@@ -11,11 +11,18 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <receiver android:name=".Notifier" android:process=":remote">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
         <activity
             android:name=".UserRegisterActivity"
             android:label="@string/app_name"></activity>
         <activity android:name=".SearchActivity"></activity>
         <activity android:name=".UserDetailActivity"></activity>
+        <activity android:name=".ReUserDetailActivity"/>
         <activity android:name=".GestureDecActivity"></activity>
         <activity android:name=".AlarmActivity"></activity>
         <activity android:name=".HomeActivity"></activity>
@@ -31,6 +38,17 @@
         <activity android:name=".SettingCategoryActivity"></activity>
         <activity android:name=".SettingDrawActivity"></activity>
         <activity android:name=".LicenseActivity"/>
+
+        <receiver android:name=".WidgetProvider" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_provider" />
+        </receiver>
+
     </application>
 
 </manifest>

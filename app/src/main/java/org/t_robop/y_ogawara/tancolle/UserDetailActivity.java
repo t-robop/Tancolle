@@ -1,10 +1,12 @@
 package org.t_robop.y_ogawara.tancolle;
 
+import android.app.DatePickerDialog;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -17,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -52,6 +55,26 @@ public class UserDetailActivity extends AppCompatActivity {
     ImageView photoImageView;
     //画像データを一時的に蓄えるとこ
     Bitmap bitmap;
+
+    CheckBox checkNotifMonth;
+    CheckBox checkNotifWeek;
+    CheckBox checkNotifYesterday;
+    CheckBox checkToday;
+    CheckBox checkCus[]=new CheckBox[3];
+    TextView textCus[]=new TextView[3];
+    DatePickerDialog PickerDialog;
+    //チェックフラグ
+    int flagNotifMonth;
+    int flagNotifWeek;
+    int flagNotifYesterday;
+    int flagNotifToday;
+    int flagNotifCus[]=new int[3];
+    /////
+    //カスタム用の通知月日の保存
+    int userNotifCus[]=new int[3];
+
+    DatePickerDialog.OnDateSetListener DateSetListener;
+
 
     //前のpage番号
     int page;
@@ -120,6 +143,19 @@ public class UserDetailActivity extends AppCompatActivity {
         remaTV = (TextView) findViewById(R.id.nokori);
         memoTV = (TextView) findViewById(R.id.chou);
         cateTV = (TextView) findViewById(R.id.category);
+        //TODO チェックボックスのXMLの結びつけ
+        checkNotifMonth = (CheckBox) findViewById(R.id.MonthCheck);
+        checkNotifWeek = (CheckBox) findViewById(R.id.WeekCheck);
+        checkNotifYesterday = (CheckBox) findViewById(R.id.YesterdayCheck);
+        checkToday = (CheckBox) findViewById(R.id.TodayCheck);
+        //カスタム通知で通知するかどうかのチェックボックスの関連付け
+        checkCus[0]=(CheckBox)findViewById(R.id.CutomCheck1);
+        checkCus[1]=(CheckBox)findViewById(R.id.CutomCheck2);
+        checkCus[2]=(CheckBox)findViewById(R.id.CutomCheck3);
+        //カスタム通知の日時表示用のテキストの関連付け
+        textCus[0]=(TextView)findViewById(R.id.cusText1);
+        textCus[1]=(TextView)findViewById(R.id.cusText2);
+        textCus[2]=(TextView)findViewById(R.id.cusText3);
 
         calendar = Calendar.getInstance();
         year = calendar.get(Calendar.YEAR);
@@ -140,10 +176,14 @@ public class UserDetailActivity extends AppCompatActivity {
         memo = data.getMemo();
         imagecount = data.isPresentFlag();
         yukarin = data.isYukarin();
-        Log.d("aaaaaa",String.valueOf(imagecount));
+        //TODO 通知のカスタム
+        flagNotifMonth =data.getNotif_month();
+        flagNotifWeek =data.getNotif_week();
+        flagNotifYesterday = data.isNotif_yest();
+        flagNotifToday = data.isNotif_today();
+
         if (imagecount == Integer.MIN_VALUE) {
             imagecount = 0;
-
         }
 
         //データを読みだして、その値でセットする画像を変える
@@ -174,9 +214,9 @@ public class UserDetailActivity extends AppCompatActivity {
         int birthmonth = data.getMonth();
         int birthday = data.getDay();
 
-        a = birthmonth * 100 + birthday;  //誕生日を７月１４日を→７１４みたいな形に
-        b = month * 100 + day; //現在の日付を６月１５日→６１５みたいな形に
-        if (a > b) {  //もし誕生日の方の数値が大きかったら（まだ今年の誕生日がきてなかったら）
+        //誕生日を７月１４日を→７１４みたいな形に
+        //現在の日付を６月１５日→６１５みたいな形に
+        if (birthmonth * 100 + birthday > month * 100 + day) {  //もし誕生日の方の数値が大きかったら（まだ今年の誕生日がきてなかったら）
             age = year - birthyear - 1;   //今年ー誕生年から更に１才ひく
         } else {    //今年の誕生日がきていたら
             age = year - birthyear;  //そのまんま今年から誕生年をひく
@@ -234,6 +274,134 @@ public class UserDetailActivity extends AppCompatActivity {
         }else{
             ageTV.setText("XX才");
         }
+
+        /*for(int i=0;i<3;i++){
+            CheckJudge(checkCus[i],i);
+        }*/
+        CheckJudge(checkNotifMonth,4);
+        CheckJudge(checkNotifWeek,5);
+        CheckJudge(checkNotifYesterday,6);
+        CheckJudge(checkToday,7);
+        CheckBoxChange(checkNotifMonth, flagNotifMonth);
+        CheckBoxChange(checkNotifWeek, flagNotifWeek);
+        CheckBoxChange(checkNotifYesterday, flagNotifYesterday);
+        CheckBoxChange(checkToday, flagNotifToday);
+        /*for(int i=0;i<3;i++){
+            CheckBoxChange(checkCus[i], flagNotifCus[i]);
+        }*/
+
+
+
+        //Log.d("bbbbbbb",String.valueOf(flagNotifMonth));
+
+
+        //TODO カスタム通知の通知日をセット
+        /*data.setNotif_cus1(userNotifCus[0]);
+        data.setNotif_cus2(userNotifCus[1]);
+        Data.setNotif_cus3(userNotifCus[2]);*/
+
+    }
+
+    public void CheckJudge(final CheckBox check, final int flag) {
+        // チェックボックスがクリックされた時に呼び出されるコールバックリスナーを登録します
+        check.setOnClickListener(new View.OnClickListener() {
+            @Override
+            // チェックボックスがクリックされた時
+            public void onClick(View v) {
+                Data updateData =new Data();
+                // チェックボックスのチェック状態を取得します
+                boolean checked = check.isChecked();
+                //チェックがtrue(押された事でtrueになった)時
+                if(checked==true) {
+                    //指定されたフラグによる処理群
+                    switch (flag){
+                        //0~1のどれか(カスタム通知用処理)だった時
+                        case 0:
+                        case 1:
+                        case 2:
+                            /*キャンセル対策のため一旦チェックを外す
+                            checkCus[flag].setChecked(false);
+                            //ok押された時のリスナー登録
+                            DatePickerSet(flag);
+                            //現在の日時を初期値としたDatePickerDialogの設定
+                            PickerDialog = new DatePickerDialog(UserRegisterActivity.this, DateSetListener,
+                                    getToday("year"),
+                                    getToday("month")-1,
+                                    getToday("day"));
+                            /////
+                            //DatePickerDialogの表示
+                            PickerDialog.show();
+                            //switch抜ける*/
+                            break;
+                        /////
+                        case 3:
+                            break;
+
+                        //毎月通知チェック処理
+                        case 4:
+                            flagNotifMonth =1; //毎月通知チェック処理
+                            break;
+                        case 5:
+                            flagNotifWeek =1; //毎週通知チェック処理
+                            break;
+                        case 6:
+                            flagNotifYesterday =1; //昨日通知チェック処理
+                            break;
+                        case 7:
+                            flagNotifToday =1; //当日通知チェック処理
+                            break;
+                    }
+                }else{ //チェックがfalse(押された事でfalseになった)時
+                    //指定されたフラグによる処理群
+                    switch (flag){
+                        //0~1のどれか(カスタム通知用処理)だった時
+                        case 0:
+                        case 1:
+                        case 2:
+                            /*
+                            //フラグをしまう
+                            flagNotifCus[flag] =0;
+                            //テキストの色を灰色に
+                            textCus[flag].setTextColor(Color.GRAY);
+                            //カスタム通知日を無登録扱いの0に
+                            userNotifCus[flag]=0;
+                            //テキストを初期状態に戻す
+                            textCus[flag].setText("通知日を追加");
+                            //switch抜けます*/
+                            break;
+                        case 3:
+                            break;
+                        case 4:
+                            flagNotifMonth =0; //フラグをしまう
+                            break;
+                        case 5:
+                            flagNotifWeek =0; //フラグをしまう
+                            break;
+                        case 6:
+                            flagNotifYesterday =0; //フラグをしまう
+                            break;
+                        case 7:
+                            flagNotifToday =0; //フラグをしまう
+                            break;
+                    }
+                }
+                updateData.setNotif_month(flagNotifMonth); //毎月通知チェックのフラグをセット
+                updateData.setNotif_week(flagNotifWeek); //毎週通知チェックのフラグをセット
+                updateData.setNotif_yest(flagNotifYesterday); //前日通知チェックのフラグをセット
+                updateData.setNotif_today(flagNotifToday); //当日通知チェックのフラグをセット*/
+                dbAssist.updateData(intentId,updateData,UserDetailActivity.this);
+            }
+        });
+    }
+
+    //checkboxの中身を判断してtruefalse変更///
+    public void CheckBoxChange(CheckBox Cb,int check) {
+        if(check==0) {
+            Cb.setChecked(false);
+        }
+        else {
+            Cb.setChecked(true);
+        }
     }
 
     public void memoclick(View view) {
@@ -269,10 +437,6 @@ public class UserDetailActivity extends AppCompatActivity {
                                 Data data = dbAssist.idSelect(intentId, UserDetailActivity.this);
                                 memo = data.getMemo(); //SQliteからもってくる
                                 memoTV.setText(memo);
-
-
-
-                                //Log.d("sssss",string);
                             }
                         })
                 .setNegativeButton("キャンセル", new DialogInterface.OnClickListener() {
@@ -287,33 +451,21 @@ public class UserDetailActivity extends AppCompatActivity {
         //ダイアログ画面外をタッチされても消えないようにする。
         myDialog.show();
         //ダイアログ表示
-
     }
 
 
     public void presentClick(View view) { //プレゼントボタンをおした時
-        //Data presentdate = new Data();
-        //presentdate.setPresentFlag(imagecount);
-        //dbAssist.updateData(intentId, presentdate, this);
-        //Log.d("bbbbbbbb",String.valueOf(imagecount));
-
         Data updateData =new Data();
-        //TODO なんかプレゼントフラグ反映されとらんで
         if (imagecount == 0) {
             imagecount = 1;
             updateData.setPresentFlag(imagecount);
             dbAssist.updateData(intentId,updateData,this);
             image.setImageResource(R.drawable.ribon);
-            Log.d("ccccccc",String.valueOf(imagecount));
-
-        } else {
+        }else{
             imagecount = 0;
             updateData.setPresentFlag(imagecount);
             dbAssist.updateData(intentId,updateData,this);
             image.setImageResource(R.drawable.ao);
-            Log.d("ddddddd",String.valueOf(imagecount));
-
-
         }
     }
 
@@ -391,6 +543,10 @@ public class UserDetailActivity extends AppCompatActivity {
                 .setPositiveButton("はい", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dbAssist.deleteData(intentId,getApplicationContext());
+
+                        //widget更新
+                        WidgetProvider.upDateWidget(UserDetailActivity.this);
+
                         Toast toast = Toast.makeText(UserDetailActivity.this, "データを消去しました", Toast.LENGTH_LONG);
                         toast.show();
                         finish();
