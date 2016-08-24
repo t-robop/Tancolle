@@ -1378,15 +1378,16 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
                 .setCancelable(false)
                 .setPositiveButton("はい", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int idlog) {
+                        //idから削除
                         dbAssist.deleteData(id,getApplicationContext());
-
                         //widget更新
                         WidgetProvider.upDateWidget(UserRegisterActivity.this);
-
+                        //トースト展開
                         Toast toast = Toast.makeText(UserRegisterActivity.this, "データを消去しました", Toast.LENGTH_LONG);
                         toast.show();
-                        finish();
-
+                        //削除したら帰る場所が無くなるから自然(ホーム画面)に還す
+                        Intent intent = new Intent(UserRegisterActivity.this, GestureDecActivity.class);
+                        startActivity(intent);
                     }
                 })
                 .setNegativeButton("いいえ", new DialogInterface.OnClickListener() {
