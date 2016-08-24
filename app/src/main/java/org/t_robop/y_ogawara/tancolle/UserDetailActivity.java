@@ -543,6 +543,10 @@ public class UserDetailActivity extends AppCompatActivity {
                 .setPositiveButton("はい", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dbAssist.deleteData(intentId,getApplicationContext());
+
+                        //widget更新
+                        WidgetProvider.upDateWidget(UserDetailActivity.this);
+
                         Toast toast = Toast.makeText(UserDetailActivity.this, "データを消去しました", Toast.LENGTH_LONG);
                         toast.show();
                         finish();

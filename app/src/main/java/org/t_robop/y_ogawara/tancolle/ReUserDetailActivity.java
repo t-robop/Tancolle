@@ -1,5 +1,6 @@
 package org.t_robop.y_ogawara.tancolle;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,12 +9,16 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -154,26 +159,26 @@ public class ReUserDetailActivity extends AppCompatActivity {
 
         //データを読みだして、その値でセットする画像を変える
 
-        if(imagecount==0){
-            image.setImageResource(R.drawable.ao);
-        }else{
-            image.setImageResource(R.drawable.ribon);
-        }
+//        if(imagecount==0){
+//            image.setImageResource(R.drawable.ao);
+//        }else{
+//            image.setImageResource(R.drawable.ribon);
+//        }
 
 
 //画像読み込み
-        if(smallImage.equals("null.jpg")){
-            photoImageView.setImageResource(R.drawable.normal_shadow);
-        }else {
-            InputStream in;
-            try {
-                in = openFileInput(smallImage);//画像の名前からファイル開いて読み込み
-                bitmap = BitmapFactory.decodeStream(in);//読み込んだ画像をBitMap化
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            photoImageView.setImageBitmap(bitmap);
-        }
+//        if(smallImage.equals("null.jpg")){
+//            photoImageView.setImageResource(R.drawable.normal_shadow);
+//        }else {
+//            InputStream in;
+//            try {
+//                in = openFileInput(smallImage);//画像の名前からファイル開いて読み込み
+//                bitmap = BitmapFactory.decodeStream(in);//読み込んだ画像をBitMap化
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//            photoImageView.setImageBitmap(bitmap);
+//        }
 
         //int birth = data.getBirthday();
         int birthyear = data.getYear();
@@ -242,16 +247,93 @@ public class ReUserDetailActivity extends AppCompatActivity {
         }
     }
 
+    public void memoclick(View view) {
+
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = LayoutInflater.from(this);
+        final View dialog_view = inflater.inflate(R.layout.dialog_layout, null);
+        //editTextを生成
+        final EditText editText = new EditText(this);
+        //EditTextの中身を指定
+        editText.setText(memo);
+        //レイアウトファイルからビューを取得
+
+        //レイアウト、題名、OKボタンとキャンセルボタンをつけてダイアログ作成
+        builder.setView(dialog_view)
+                .setTitle("Memo")
+                //ここで値をセットする
+                .setView(editText)
+                .setPositiveButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                    /*OKのときの処理内容*/
+
+                                String string = editText.getText().toString();
+                                Data updateData =new Data();
+                                updateData.setMemo(string);
+                                //引数はid,data,場所
+                                dbAssist.updateData(intentId,updateData,ReUserDetailActivity.this);
+
+                                //memo画面の更新
+                                Data data = dbAssist.idSelect(intentId, ReUserDetailActivity.this);
+                                memo = data.getMemo(); //SQLiteからもってくる
+                                memoTV.setText(memo);
+
+
+
+                                //Log.d("sssss",string);
+                            }
+                        })
+                .setNegativeButton("キャンセル", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    /*キャンセルされたときの処理*/
+                    }
+                });
+
+        AlertDialog myDialog = builder.create();
+        myDialog.setCanceledOnTouchOutside(false);
+        //ダイアログ画面外をタッチされても消えないようにする。
+        myDialog.show();
+        //ダイアログ表示
+
+    }
+
+    //ここでmenuを作る
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.re_user_detail_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
     //MenuItem(戻るボタン)の選択
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == android.R.id.home) {
-            finish();
-            return true;
+        switch (id) {
+            case R.id.action_settings:
+                // User chose the "Settings" item, show the app settings UI...
+                Intent intent_setting = new Intent(ReUserDetailActivity.this, SettingActivity.class);
+                startActivity(intent_setting);
+                return true;
+
+            case R.id.action_edits:
+                Intent intent = new Intent(ReUserDetailActivity.this, UserRegisterActivity.class);
+                intent.putExtra("IdNum",intentId);
+                startActivity(intent);
+                return true;
+            case android.R.id.home:
+                finish();
+                return true;
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
+
 }
