@@ -1407,9 +1407,12 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         /*****通知セット*****/
         //何も無かったら「名前がありません」として保存
         String name=MainListAdapter.setNullName(editName.getText().toString());
+        //id取得のためのData型の宣言
+        Data dataId = new Data();
+        int numId=dataId.getId();
         //設定値から通知をセット
         Notifier.alarm(
-                id,
+                numId,
                 name,
                 getToday("Year"),
                 getToday("Month"),
