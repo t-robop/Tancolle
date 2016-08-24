@@ -1266,6 +1266,10 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         /////
         //プレファレンスにカテゴリの保存
         PM.saveArray(categorylist, "StringItem",this);
+
+        //widget更新
+        WidgetProvider.upDateWidget(this);
+
         //Activity消す
         finish();
 
