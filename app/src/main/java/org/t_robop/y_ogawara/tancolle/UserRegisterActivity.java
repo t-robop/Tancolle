@@ -335,7 +335,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
                         //端末内からデータを取得するためのリソースの宣言
                         Resources r = getResources();
                         //端末内の指定データをbitmap化
-                        img = BitmapFactory.decodeResource(r, R.drawable.normal_shadow);
+                        img = BitmapFactory.decodeResource(r, R.drawable.noimageregister);
                     }
                 /////
                 //読み込んだデータが「null.jpg」(つまり新規作成)でない時
