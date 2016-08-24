@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#66000000">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="〇〇〇〇さんの誕生日まで"
+        android:textColor="@color/White"
+        android:layout_weight="2"
+        android:id="@+id/widget_name"
+        android:gravity="left"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textSize="20dp"
+        android:textColor="@color/White"
+        android:layout_weight="1"
+        android:id="@+id/widget_remain"
+        android:gravity="left"/>
+
+</LinearLayout>
