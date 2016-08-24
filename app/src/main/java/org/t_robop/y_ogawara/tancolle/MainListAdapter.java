@@ -61,7 +61,7 @@ public class MainListAdapter extends ArrayAdapter<MainAdapterData> {
         nameText1.setText(mainListData.getName(0));
         ((TextView) convertView.findViewById(R.id.birth1)).setText(remainingDay(mainListData.getBirthMonth(0),mainListData.getBirthDay(0)));
         if (mainListData.getPresentFlag(0)==1) {
-            liner1.setBackgroundResource(R.drawable.ribbon_tra);
+            liner1.setBackgroundResource(R.drawable.ribbon);
         }
         //ListView用のTextView2(中央)の宣言
         TextView nameText2 = ((TextView) convertView.findViewById(R.id.name2));
@@ -84,7 +84,7 @@ public class MainListAdapter extends ArrayAdapter<MainAdapterData> {
                         birthText2.setText(remainingDay(mainListData.getBirthMonth(1),mainListData.getBirthDay(1)));
 
                         if (mainListData.getPresentFlag(1)==1) {
-                            liner2.setBackgroundResource(R.drawable.ribbon_tra);
+                            liner2.setBackgroundResource(R.drawable.ribbon);
                         }
                         break;
                     case 1://二つ無いとき
@@ -100,13 +100,13 @@ public class MainListAdapter extends ArrayAdapter<MainAdapterData> {
                         nameText2.setText(mainListData.getName(1));
                         birthText2.setText(remainingDay(mainListData.getBirthMonth(1),mainListData.getBirthDay(1)));
                         if (mainListData.getPresentFlag(1)==1) {
-                            liner2.setBackgroundResource(R.drawable.ribbon_tra);
+                            liner2.setBackgroundResource(R.drawable.ribbon);
                         }
 
                         nameText3.setText(mainListData.getName(2));
                         birthText3.setText(remainingDay(mainListData.getBirthMonth(2),mainListData.getBirthDay(2)));
                         if (mainListData.getPresentFlag(2)==1) {
-                            liner3.setBackgroundResource(R.drawable.ribbon_tra);
+                            liner3.setBackgroundResource(R.drawable.ribbon);
                         }
                         break;
                 }
@@ -118,23 +118,23 @@ public class MainListAdapter extends ArrayAdapter<MainAdapterData> {
               nameText2.setText(mainListData.getName(1));
               birthText2.setText(remainingDay(mainListData.getBirthMonth(1),mainListData.getBirthDay(1)));
               if (mainListData.getPresentFlag(1)==1) {
-                  liner2.setBackgroundResource(R.drawable.ribbon_tra);
+                  liner2.setBackgroundResource(R.drawable.ribbon);
               }
 
               nameText3.setText(mainListData.getName(2));
               birthText3.setText(remainingDay(mainListData.getBirthMonth(2),mainListData.getBirthDay(2)));
               if (mainListData.getPresentFlag(2)==1) {
-                  liner3.setBackgroundResource(R.drawable.ribbon_tra);
+                  liner3.setBackgroundResource(R.drawable.ribbon);
               }
 
           }
 
 
 //        else if (mainListData.getPresentFlag(2)==1){
-//            liner2.setBackgroundResource(R.drawable.ribbon_tra);
+//            liner2.setBackgroundResource(R.drawable.ribbon);
 //        }
 //        else if (mainListData.getPresentFlag(3)==1) {
-//            liner3.setBackgroundResource(R.drawable.ribbon_tra);
+//            liner3.setBackgroundResource(R.drawable.ribbon);
 //        }
 //        else {
 //        }
