@@ -573,6 +573,8 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
                     AllRegist();
                     return true;
                 }
+                
+
             //toolbarの戻るボタン
             case android.R.id.home:
                 //編集されてた時
