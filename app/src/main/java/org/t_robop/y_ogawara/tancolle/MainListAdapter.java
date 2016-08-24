@@ -77,9 +77,9 @@ public class MainListAdapter extends ArrayAdapter<MainAdapterData> {
 
         //listの行数が最終行だったとき
           if (position == (mainListData.getAllSize()-1) / 3) {
-              liner1.setBackgroundResource(0);
-              liner2.setBackgroundResource(0);
-              liner3.setBackgroundResource(0);
+              liner1.setBackgroundResource(R.drawable.waooooooon1);
+              liner2.setBackgroundResource(R.drawable.waooooooon1);
+              liner3.setBackgroundResource(R.drawable.waooooooon1);
               //いくつ余ってるかの分岐
                 switch (mainListData.getAllSize()%3) {
                     case 2://一つ無いとき
