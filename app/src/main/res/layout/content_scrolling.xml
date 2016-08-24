@@ -10,146 +10,469 @@
 
 
     <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-
-        <ImageView
-            android:id="@+id/imageView"
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:id="@+id/a"
+            android:layout_weight="0.25">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_weight="1">
 
 
-        <org.t_robop.y_ogawara.tancolle.AutoshrinkTextView
-            android:id="@+id/category"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="bottom"
-            android:layout_weight="3"
-            android:gravity="center_vertical"
-            android:text="category"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="144dp"
+                    android:id="@+id/imageView"
+                    android:layout_weight="0.5"/>
 
-        <ImageButton
-            android:id="@+id/tweet"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="bottom"
-            android:layout_weight="1"
-            android:background="#00000000"
-            android:onClick="tweetClick"
-            android:scaleType="fitCenter"
-            android:src="@drawable/twitterlogo" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_weight="0.5">
 
 
-        <org.t_robop.y_ogawara.tancolle.AutoshrinkTextView
-            android:id="@+id/Kana"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_gravity="bottom"
-            android:layout_weight="1"
-            android:gravity="bottom"
-            android:text="とうかいたろう"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_gravity="bottom|center"
+                        android:layout_weight="0.25"
+                        android:gravity="bottom">
 
-        <org.t_robop.y_ogawara.tancolle.AutoshrinkTextView
-            android:id="@+id/Name"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_gravity="top"
-            android:layout_weight="2"
-            android:gravity="top"
-            android:text="東海太郎"
+                        <org.t_robop.y_ogawara.tancolle.AutoshrinkTextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:text="category"
+                            android:id="@+id/category"
+                            android:layout_weight="3"
+                            android:layout_gravity="bottom"
+                            android:gravity="center_vertical" />
 
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textSize="45dp" />
+                        <ImageButton
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:id="@+id/tweet"
+                            android:onClick="tweetClick"
+                            android:src="@drawable/twitterlogo"
+                            android:scaleType="fitCenter"
+                            android:background="#00000000"
+                            android:layout_gravity="bottom"
+                            android:layout_weight="1" />
+                    </LinearLayout>
 
-        <TextView
-            android:id="@+id/day"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Birthday"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.75">
 
-        <org.t_robop.y_ogawara.tancolle.AutoshrinkTextView
-            android:id="@+id/Birthay"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="00/00"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textSize="72dp"
+                        <org.t_robop.y_ogawara.tancolle.AutoshrinkTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="とうかいたろう"
+                            android:gravity="bottom"
+                            android:id="@+id/Kana"
+                            android:layout_gravity="fill_vertical" />
 
-            />
+                        <org.t_robop.y_ogawara.tancolle.AutoshrinkTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:text="東海太郎"
+                            android:id="@+id/Name"
+                            android:textSize="45dp"
 
-
-        <TextView
-            android:id="@+id/Current"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Current"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-        <org.t_robop.y_ogawara.tancolle.AutoshrinkTextView
-            android:id="@+id/age"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="00才"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textSize="40dp" />
-
-        <TextView
-            android:id="@+id/Remaining"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Remaining"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+                            android:gravity="top"
+                            android:layout_gravity="top" />
+                    </LinearLayout>
 
 
-        <org.t_robop.y_ogawara.tancolle.AutoshrinkTextView
-            android:id="@+id/nokori"
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="残り000日"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textSize="40dp"
+            android:id="@+id/b"
+            android:layout_weight="0.25">
 
-            />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="1">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Birthday"
+                    android:id="@+id/day" />
 
-        <TextView
-            android:id="@+id/Memo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Memo"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+                <org.t_robop.y_ogawara.tancolle.AutoshrinkTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="00/00"
+                    android:id="@+id/Birthay"
+                    android:layout_weight="1"
+                    android:textSize="72dp"
+                    android:gravity="center"
+
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="1">
 
 
-        <TextView
-            android:id="@+id/chou"
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Current"
+                    android:id="@+id/Current" />
+
+                <org.t_robop.y_ogawara.tancolle.AutoshrinkTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="00才"
+                    android:id="@+id/age"
+                    android:layout_weight="1"
+                    android:textSize="40dp"
+                    android:gravity="center"
+                    />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Remaining"
+                    android:id="@+id/Remaining"
+                    />
+
+
+
+                <org.t_robop.y_ogawara.tancolle.AutoshrinkTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="残り000日"
+                    android:id="@+id/nokori"
+                    android:layout_weight="1"
+                    android:textSize="40dp"
+                    android:gravity="center"
+
+                    />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:onClick="memoclick"
-            android:text="あああああ"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:id="@+id/c"
+            android:layout_weight="0.25"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-        <ImageButton
-            android:id="@+id/present"
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="通知設定"
+                    android:textSize="25dp"
+                    android:textColor="#000000"/>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <CheckBox
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="6"
+                        android:gravity="center_vertical"
+                        android:id="@+id/MonthCheck"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="一ヶ月前"
+                        android:layout_weight="5"
+                        android:textSize="20dp"
+                        android:gravity="center_vertical"
+                        android:textColor="#000000"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <CheckBox
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="6"
+                        android:gravity="center_vertical"
+                        android:id="@+id/WeekCheck"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="一週間前"
+                        android:layout_weight="5"
+                        android:textSize="20dp"
+                        android:gravity="center_vertical"
+                        android:textColor="#000000"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <CheckBox
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="6"
+                        android:gravity="center_vertical"
+                        android:id="@+id/YesterdayCheck"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="前日"
+                        android:layout_weight="5.5"
+                        android:textSize="20dp"
+                        android:gravity="center_vertical"
+                        android:textColor="#000000"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <CheckBox
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="6"
+                        android:gravity="center_vertical"
+                        android:id="@+id/TodayCheck"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="当日"
+                        android:layout_weight="5.5"
+                        android:textSize="20dp"
+                        android:gravity="center_vertical"
+                        android:textColor="#000000"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <CheckBox
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="6"
+                        android:gravity="center_vertical"
+                        android:id="@+id/CutomCheck1"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="通知日を追加"
+                        android:layout_weight="5"
+                        android:textSize="20dp"
+                        android:gravity="center_vertical"
+                        android:textColor="#a0a0a0"
+                        android:onClick="cusText"
+                        android:tag="0"
+                        android:id="@+id/cusText1"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="4"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <CheckBox
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="6"
+                        android:gravity="center_vertical"
+                        android:id="@+id/CutomCheck2"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="通知日を追加"
+                        android:layout_weight="5"
+                        android:textSize="20dp"
+                        android:gravity="center_vertical"
+                        android:textColor="#a0a0a0"
+                        android:onClick="cusText"
+                        android:tag="1"
+                        android:id="@+id/cusText2"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="4"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <CheckBox
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="6"
+                        android:gravity="center_vertical"
+                        android:id="@+id/CutomCheck3"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="通知日を追加"
+                        android:layout_weight="5"
+                        android:textSize="20dp"
+                        android:gravity="center_vertical"
+                        android:textColor="#a0a0a0"
+                        android:onClick="cusText"
+                        android:tag="2"
+                        android:id="@+id/cusText3"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="4"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="3"
-            android:background="#00000000"
-            android:onClick="presentClick"
-            android:scaleType="fitXY" />
+            android:id="@+id/d"
+            android:layout_weight="0.25"
+            >
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="0.2">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Memo"
+                    android:id="@+id/Memo" />
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.8">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="156dp"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="あああああ"
+                        android:id="@+id/chou"
+                        android:layout_weight="1"
+                        android:onClick="memoclick"/>
+
+                    <ImageButton
+                        android:layout_width="match_parent"
+                        android:layout_height="156dp"
+                        android:id="@+id/present"
+                        android:layout_weight="3"
+                        android:src="@drawable/ao"
+                        android:onClick="presentClick"
+                        android:scaleType="fitXY"
+                        android:background="#00000000"
+                        />
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
     </LinearLayout>
-
 
 </android.support.v4.widget.NestedScrollView>
