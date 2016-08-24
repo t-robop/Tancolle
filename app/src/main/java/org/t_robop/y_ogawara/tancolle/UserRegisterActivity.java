@@ -581,13 +581,15 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
             intent.setType("image/jpeg");
             //startActivityForResult(Intent.createChooser(intent, "選べよ"), 0);
-            startActivity(intent);
+            //startActivity(intent);
+            startActivityForResult(intent, 0);
         } else {
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
             intent.addCategory(Intent.CATEGORY_OPENABLE);
             intent.setType("image/jpeg");
             //startActivityForResult(Intent.createChooser(intent, "選べよ"), 1);
-            startActivity(intent);
+            //startActivity(intent);
+            startActivityForResult(intent, 1);
         }
     }
 
