@@ -17,6 +17,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -152,7 +153,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_register);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
         //関連付け
         Association();
 
@@ -221,6 +222,8 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         /////
         //データがある場合（編集として呼ばれた場合）は読み込み
             if (id != 0) {
+                //toolbarの表示変更
+                toolbar.setTitle("編集");
                 //sqlからid毎で取得
                 idDate = dbAssist.idSelect(id, this);
                 //取得したデータの読み込み
@@ -299,6 +302,8 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         /////
         //新規作成として呼ばれた場合
             else{
+                //toolbarの表示変更
+                toolbar.setTitle("登録");
                 //現在の日時を誕生日欄にセット
                     temporary_year=getToday("year");
                     temporary_month=getToday("month");
@@ -348,6 +353,13 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         /////
         //BitMapから画像をImageViewにセット
         imageUser.setImageBitmap(img);
+
+        //toolbarをセット
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
     }
     //画像をドキュメントから選択からのImageViewセット
     @Override
@@ -553,10 +565,24 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             case R.id.action_button:
                 AllRegist();
                 return true;
+            //toolbarの戻るボタン
+            case android.R.id.home:
+                //編集されてた時
+                if(registJudge==true) {
+                    //保存最終確認ダイアログ表示
+                    finishRegstDialog();
+                }
+                //未編集時
+                else {
+                    //Activity終了
+                    finish();
+                }
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+
 
     //端末のバックボタンクリック時
     @Override
@@ -1279,7 +1305,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         //ダイアログタイトルの決定
         aldialogDeleCategory.setTitle("編集内容を保存しますか");
         //positiveボタン(今回はok)のリスナー登録
-        aldialogDeleCategory.setPositiveButton("決定", new DialogInterface.OnClickListener() {
+        aldialogDeleCategory.setPositiveButton("はい", new DialogInterface.OnClickListener() {
             //削除用ダイアログ内のokボタン押した時
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -1290,7 +1316,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             }
         });
         //negativeボタン(今回はキャンセル)のリスナー登録
-        aldialogDeleCategory.setNegativeButton("キャンセル", new DialogInterface.OnClickListener() {
+        aldialogDeleCategory.setNegativeButton("いいえ", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //Activity終了
