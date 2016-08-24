@@ -76,7 +76,7 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
     //onCreateから来たのか判別するflag
     boolean onCreateFlag;
 
-    LinearLayout progressLoad;
+    //LinearLayout progressLoad;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -93,7 +93,7 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
         //preferenceクラス宣言
         PM=new PreferenceMethod();
 
-        progressLoad=(LinearLayout) findViewById(R.id.load_progress) ;
+        //progressLoad=(LinearLayout) findViewById(R.id.load_progress) ;
 
         //Permission確認 Android6.0以上
 
@@ -153,7 +153,7 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
     protected void onStart() {
         super.onStart();
 
-        progressLoad.setVisibility(View.VISIBLE);
+        //progressLoad.setVisibility(View.VISIBLE);
 
         MONTH =  Calendar.getInstance().get(Calendar.MONTH);
         //idの関連付け
@@ -412,7 +412,8 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
         Display display = wm.getDefaultDisplay();
 
         displayWidth = display.getWidth();
-        displayHeight = display.getHeight();
+        //TODO これしないとそもそも一番下までスクロールされない
+        displayHeight = display.getHeight()-(display.getHeight()/4);
 
         LinearLayout.LayoutParams layoutParam = new LinearLayout.LayoutParams(
                 displayWidth, displayHeight);
@@ -629,7 +630,7 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
 
     public void onPostResume(){
         super.onPostResume();
-        progressLoad.setVisibility(View.GONE);
+        //progressLoad.setVisibility(View.GONE);
     }
 
     public void pageSave(){

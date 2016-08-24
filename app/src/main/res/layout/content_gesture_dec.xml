@@ -28,22 +28,6 @@
         </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:minHeight="?android:attr/listPreferredItemHeight"
-        android:gravity="center"
-        android:id="@+id/load_progress">
-
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical" />
-
-    </LinearLayout>
-
     <HorizontalScrollView
             android:id="@+id/hsv_main"
             android:layout_width="match_parent"
