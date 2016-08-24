@@ -147,6 +147,10 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
     //指定されてるspinnerのposition保存
     int positionSpinner=0;
 
+    //alarmを鳴らすようのIdを格納
+    int alarmId;
+
+
     /////////////////////////Override/////////////////////////
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -1407,13 +1411,25 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         /*****通知セット*****/
         //何も無かったら「名前がありません」として保存
         String name=MainListAdapter.setNullName(editName.getText().toString());
+
+        ArrayList<Data> datas = new ArrayList<>();
+        datas = dbAssist.allSelect(this);
+
+        int alarmId;
+        //データベースが存在しない場合
+        if (datas.get(0)==null){
+            alarmId = 1;
+        }
+        //データベースの最後のid
+        Data data = datas.get(datas.size()-1);
+        alarmId =data.getId();
         //設定値から通知をセット
         Notifier.alarm(
-                id,
-                name,
-                getToday("Year"),
-                getToday("Month"),
-                getToday("Day"),
+                alarmId,
+                data.getName(),
+                getToday("year"),
+                getToday("month"),
+                getToday("day"),
                 userBirthMonth,
                 userBirthDay,
                 flagNotifMonth,
