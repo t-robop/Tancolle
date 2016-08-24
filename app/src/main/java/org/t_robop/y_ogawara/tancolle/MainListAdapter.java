@@ -214,11 +214,7 @@ public class MainListAdapter extends ArrayAdapter<MainAdapterData> {
         int dayDiff = (int) (( dateTimeTo - dateTimeFrom  ) / (1000 * 60 * 60 * 24 ));
         return dayDiff;
     }
-    //Stringに何も入ってなかったら「名前がありません」
     static String setNullName(String name){
-        if(name.length()==0){
-            name="名前がありません";
-        }
         return name;
     }
 }
