@@ -123,7 +123,7 @@ public class SettingDrawActivity extends AppCompatActivity {
                     //それぞれの選択肢が選択された時の処理
                     //黒テーマ
                     if (item.equals(spinnerItems[1])) {
-                        //setTheme(R.style.AppThemeBlack);
+                        setTheme(R.style.AppThemeBlack);
                         themeType=1;
                     }
                     //白テーマ

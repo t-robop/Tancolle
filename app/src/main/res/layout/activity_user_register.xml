@@ -50,27 +50,41 @@
                     android:orientation="vertical"
                     android:layout_weight="1">
 
-                    <EditText
+                    <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
-                        android:layout_height="80dp"
-                        android:textSize="10dp"
-                        android:onClick="EditPho"
-                        android:id="@+id/EditPho"
-                        android:inputType="text"
-                        android:focusable="false"
-                        android:textColorHint="#a09f9f"
-                        android:layout_weight="3"/>
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3">
 
-                    <EditText
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="80dp"
+                            android:textSize="10dp"
+                            android:onClick="EditPho"
+                            android:id="@+id/EditPho"
+                            android:inputType="text"
+                            android:focusable="false"
+                            android:textColorHint="#a09f9f"
+                            android:hint="ふりがな"/>
+
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:textSize="30dp"
-                        android:onClick="EditName"
-                        android:id="@+id/EditName"
-                        android:inputType="text"
-                        android:focusable="false"
-                        android:textColorHint="#a09f9f"
-                        android:layout_weight="3"/>
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3">
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:textSize="30dp"
+                            android:hint="登録名"
+                            android:onClick="EditName"
+                            android:id="@+id/EditName"
+                            android:inputType="text"
+                            android:focusable="false"
+                            android:textColorHint="#a09f9f" />
+
+                    </android.support.design.widget.TextInputLayout>
 
                 </LinearLayout>
 
@@ -227,16 +241,23 @@
                     android:gravity="center_vertical"
                     android:textColor="#000000"/>
 
-                <EditText
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="2"
-                    android:id="@+id/twitter"
-                    android:onClick="EditTwitter"
-                    android:inputType="text"
-                    android:focusable="false"
-                    android:textColorHint="#a09f9f"
-                    android:gravity="center_vertical"/>
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2">
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="半角英数字"
+                        android:id="@+id/twitter"
+                        android:onClick="EditTwitter"
+                        android:inputType="text"
+                        android:focusable="false"
+                        android:textColorHint="#a09f9f"
+                        android:gravity="center_vertical"/>
+
+                </android.support.design.widget.TextInputLayout>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -499,12 +520,19 @@
 
             </LinearLayout>
 
-            <EditText
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:id="@+id/Memo"
-                android:gravity="top|left"
-                android:textColorHint="#a09f9f"/>
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:id="@+id/Memo"
+                    android:gravity="top|left"
+                    android:textColorHint="#a09f9f"
+                    android:hint="自由記述"/>
+
+            </android.support.design.widget.TextInputLayout>
 
         </LinearLayout>
 

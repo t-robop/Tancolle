@@ -1,19 +1,27 @@
 package org.t_robop.y_ogawara.tancolle;
 
+import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -52,6 +60,26 @@ public class ReUserDetailActivity extends AppCompatActivity {
     //画像データを一時的に蓄えるとこ
     Bitmap bitmap;
 
+    CheckBox checkNotifMonth;
+    CheckBox checkNotifWeek;
+    CheckBox checkNotifYesterday;
+    CheckBox checkToday;
+    CheckBox checkCus[]=new CheckBox[3];
+    TextView textCus[]=new TextView[3];
+    DatePickerDialog PickerDialog;
+    //チェックフラグ
+    int flagNotifMonth;
+    int flagNotifWeek;
+    int flagNotifYesterday;
+    int flagNotifToday;
+    int flagNotifCus[]=new int[3];
+    /////
+    //カスタム用の通知月日の保存
+    int userNotifCus[]=new int[3];
+
+    DatePickerDialog.OnDateSetListener DateSetListener;
+
+
     //前のpage番号
     int page;
 
@@ -63,6 +91,9 @@ public class ReUserDetailActivity extends AppCompatActivity {
         //Toolbar関連
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        Drawable d = toolbar.getBackground();
+        d.setAlpha(0);
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -79,27 +110,27 @@ public class ReUserDetailActivity extends AppCompatActivity {
         intentId = intent.getIntExtra("id", 1);
         Data data = dbAssist.idSelect(intentId, this);
         String category = data.getCategory();
-
         //初期設定
         PreferenceMethod PM;
-        PM = new PreferenceMethod();
+        PM=new PreferenceMethod();
         //配列を読み込み (保存のkey,場所)
-        String[] categoryItem = PM.getArray("StringItem", this);
+        String[] categoryItem = PM.getArray("StringItem",this);
         int count = 0;
-        if (categoryItem != null) {
-            for (int i = 0; i < categoryItem.length; i++) { //0からカテゴリリストの最大値まで繰り返す
+        if(categoryItem!=null){
+            for(int i = 0; i<categoryItem.length; i++) { //0からカテゴリリストの最大値まで繰り返す
                 if (!(categoryItem[i].equals(category))) { //もしもカテゴリリストのi個目と今読み込んだカテゴリの名前が一致しなかったら
                     count++; //カウントを足していく
                 }
-                if (count == categoryItem.length) { //もし一致しなかった数＝カテゴリの最大値だったら（一個も一致しない 存在しなかったら）
+                if(count==categoryItem.length) { //もし一致しなかった数＝カテゴリの最大値だったら（一個も一致しない 存在しなかったら）
                     Data updateData = new Data(); //そのカテゴリは存在しないのでSQLに未選択で書き換える
                     updateData.setCategory("<未選択>");
                     dbAssist.updateData(intentId, updateData, this);
                 }
             }
 
-        } else {
-            if (!category.equals("<未選択>")) {
+
+        }else{
+            if(!category.equals("<未選択>")){
                 Data updateData = new Data(); //そのカテゴリは存在しないのでSQLに未選択で書き換える
                 updateData.setCategory("<未選択>");
                 dbAssist.updateData(intentId, updateData, this);
@@ -128,12 +159,27 @@ public class ReUserDetailActivity extends AppCompatActivity {
         remaTV = (TextView) findViewById(R.id.nokori);
         memoTV = (TextView) findViewById(R.id.chou);
         cateTV = (TextView) findViewById(R.id.category);
+        //TODO チェックボックスのXMLの結びつけ
+        checkNotifMonth = (CheckBox) findViewById(R.id.MonthCheck);
+        checkNotifWeek = (CheckBox) findViewById(R.id.WeekCheck);
+        checkNotifYesterday = (CheckBox) findViewById(R.id.YesterdayCheck);
+        checkToday = (CheckBox) findViewById(R.id.TodayCheck);
+        //カスタム通知で通知するかどうかのチェックボックスの関連付け
+        checkCus[0]=(CheckBox)findViewById(R.id.CutomCheck1);
+        checkCus[1]=(CheckBox)findViewById(R.id.CutomCheck2);
+        checkCus[2]=(CheckBox)findViewById(R.id.CutomCheck3);
+        //カスタム通知の日時表示用のテキストの関連付け
+        textCus[0]=(TextView)findViewById(R.id.cusText1);
+        textCus[1]=(TextView)findViewById(R.id.cusText2);
+        textCus[2]=(TextView)findViewById(R.id.cusText3);
 
         calendar = Calendar.getInstance();
         year = calendar.get(Calendar.YEAR);
         month = calendar.get(Calendar.MONTH) + 1; //0から11までしかないから１個足す
         day = calendar.get(Calendar.DAY_OF_MONTH);
 
+        photoImageView = (ImageView)findViewById(R.id.imageView);
+        image = (ImageView) this.findViewById(R.id.present);
 
 
 
@@ -146,10 +192,14 @@ public class ReUserDetailActivity extends AppCompatActivity {
         memo = data.getMemo();
         imagecount = data.isPresentFlag();
         yukarin = data.isYukarin();
-        Log.d("aaaaaa",String.valueOf(imagecount));
+        //TODO 通知のカスタム
+        flagNotifMonth =data.getNotif_month();
+        flagNotifWeek =data.getNotif_week();
+        flagNotifYesterday = data.isNotif_yest();
+        flagNotifToday = data.isNotif_today();
+
         if (imagecount == Integer.MIN_VALUE) {
             imagecount = 0;
-
         }
 
         //データを読みだして、その値でセットする画像を変える
@@ -180,9 +230,9 @@ public class ReUserDetailActivity extends AppCompatActivity {
         int birthmonth = data.getMonth();
         int birthday = data.getDay();
 
-        a = birthmonth * 100 + birthday;  //誕生日を７月１４日を→７１４みたいな形に
-        b = month * 100 + day; //現在の日付を６月１５日→６１５みたいな形に
-        if (a > b) {  //もし誕生日の方の数値が大きかったら（まだ今年の誕生日がきてなかったら）
+        //誕生日を７月１４日を→７１４みたいな形に
+        //現在の日付を６月１５日→６１５みたいな形に
+        if (birthmonth * 100 + birthday > month * 100 + day) {  //もし誕生日の方の数値が大きかったら（まだ今年の誕生日がきてなかったら）
             age = year - birthyear - 1;   //今年ー誕生年から更に１才ひく
         } else {    //今年の誕生日がきていたら
             age = year - birthyear;  //そのまんま今年から誕生年をひく
@@ -240,18 +290,223 @@ public class ReUserDetailActivity extends AppCompatActivity {
         }else{
             ageTV.setText("XX才");
         }
+
+        /*for(int i=0;i<3;i++){
+            CheckJudge(checkCus[i],i);
+        }*/
+        CheckJudge(checkNotifMonth,4);
+        CheckJudge(checkNotifWeek,5);
+        CheckJudge(checkNotifYesterday,6);
+        CheckJudge(checkToday,7);
+        CheckBoxChange(checkNotifMonth, flagNotifMonth);
+        CheckBoxChange(checkNotifWeek, flagNotifWeek);
+        CheckBoxChange(checkNotifYesterday, flagNotifYesterday);
+        CheckBoxChange(checkToday, flagNotifToday);
+        /*for(int i=0;i<3;i++){
+            CheckBoxChange(checkCus[i], flagNotifCus[i]);
+        }*/
+
+
+
+        //Log.d("bbbbbbb",String.valueOf(flagNotifMonth));
+
+
+        //TODO カスタム通知の通知日をセット
+        /*data.setNotif_cus1(userNotifCus[0]);
+        data.setNotif_cus2(userNotifCus[1]);
+        Data.setNotif_cus3(userNotifCus[2]);*/
+
     }
 
+    public void memoclick(View view) {
+
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = LayoutInflater.from(this);
+        final View dialog_view = inflater.inflate(R.layout.dialog_layout, null);
+        //editTextを生成
+        final EditText editText = new EditText(this);
+        //EditTextの中身を指定
+        editText.setText(memo);
+        //レイアウトファイルからビューを取得
+
+        //レイアウト、題名、OKボタンとキャンセルボタンをつけてダイアログ作成
+        builder.setView(dialog_view)
+                .setTitle("Memo")
+                //ここで値をセットする
+                .setView(editText)
+                .setPositiveButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                    /*OKのときの処理内容*/
+
+                                String string = editText.getText().toString();
+                                Data updateData =new Data();
+                                updateData.setMemo(string);
+                                //引数はid,data,場所
+                                dbAssist.updateData(intentId,updateData,ReUserDetailActivity.this);
+
+                                //memo画面の更新
+                                Data data = dbAssist.idSelect(intentId, ReUserDetailActivity.this);
+                                memo = data.getMemo(); //SQLiteからもってくる
+                                memoTV.setText(memo);
+
+
+
+                                //Log.d("sssss",string);
+                            }
+                        })
+                .setNegativeButton("キャンセル", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    /*キャンセルされたときの処理*/
+                    }
+                });
+
+        AlertDialog myDialog = builder.create();
+        myDialog.setCanceledOnTouchOutside(false);
+        //ダイアログ画面外をタッチされても消えないようにする。
+        myDialog.show();
+        //ダイアログ表示
+
+    }
+
+    public void CheckJudge(final CheckBox check, final int flag) {
+        // チェックボックスがクリックされた時に呼び出されるコールバックリスナーを登録します
+        check.setOnClickListener(new View.OnClickListener() {
+            @Override
+            // チェックボックスがクリックされた時
+            public void onClick(View v) {
+                Data updateData =new Data();
+                // チェックボックスのチェック状態を取得します
+                boolean checked = check.isChecked();
+                //チェックがtrue(押された事でtrueになった)時
+                if(checked==true) {
+                    //指定されたフラグによる処理群
+                    switch (flag){
+                        //0~1のどれか(カスタム通知用処理)だった時
+                        case 0:
+                        case 1:
+                        case 2:
+                            /*キャンセル対策のため一旦チェックを外す
+                            checkCus[flag].setChecked(false);
+                            //ok押された時のリスナー登録
+                            DatePickerSet(flag);
+                            //現在の日時を初期値としたDatePickerDialogの設定
+                            PickerDialog = new DatePickerDialog(UserRegisterActivity.this, DateSetListener,
+                                    getToday("year"),
+                                    getToday("month")-1,
+                                    getToday("day"));
+                            /////
+                            //DatePickerDialogの表示
+                            PickerDialog.show();
+                            //switch抜ける*/
+                            break;
+                        /////
+                        case 3:
+                            break;
+
+                        //毎月通知チェック処理
+                        case 4:
+                            flagNotifMonth =1; //毎月通知チェック処理
+                            break;
+                        case 5:
+                            flagNotifWeek =1; //毎週通知チェック処理
+                            break;
+                        case 6:
+                            flagNotifYesterday =1; //昨日通知チェック処理
+                            break;
+                        case 7:
+                            flagNotifToday =1; //当日通知チェック処理
+                            break;
+                    }
+                }else{ //チェックがfalse(押された事でfalseになった)時
+                    //指定されたフラグによる処理群
+                    switch (flag){
+                        //0~1のどれか(カスタム通知用処理)だった時
+                        case 0:
+                        case 1:
+                        case 2:
+                            /*
+                            //フラグをしまう
+                            flagNotifCus[flag] =0;
+                            //テキストの色を灰色に
+                            textCus[flag].setTextColor(Color.GRAY);
+                            //カスタム通知日を無登録扱いの0に
+                            userNotifCus[flag]=0;
+                            //テキストを初期状態に戻す
+                            textCus[flag].setText("通知日を追加");
+                            //switch抜けます*/
+                            break;
+                        case 3:
+                            break;
+                        case 4:
+                            flagNotifMonth =0; //フラグをしまう
+                            break;
+                        case 5:
+                            flagNotifWeek =0; //フラグをしまう
+                            break;
+                        case 6:
+                            flagNotifYesterday =0; //フラグをしまう
+                            break;
+                        case 7:
+                            flagNotifToday =0; //フラグをしまう
+                            break;
+                    }
+                }
+                updateData.setNotif_month(flagNotifMonth); //毎月通知チェックのフラグをセット
+                updateData.setNotif_week(flagNotifWeek); //毎週通知チェックのフラグをセット
+                updateData.setNotif_yest(flagNotifYesterday); //前日通知チェックのフラグをセット
+                updateData.setNotif_today(flagNotifToday); //当日通知チェックのフラグをセット*/
+                dbAssist.updateData(intentId,updateData,ReUserDetailActivity.this);
+            }
+        });
+    }
+
+    //checkboxの中身を判断してtruefalse変更///
+    public void CheckBoxChange(CheckBox Cb,int check) {
+        if(check==0) {
+            Cb.setChecked(false);
+        }
+        else {
+            Cb.setChecked(true);
+        }
+    }
+
+    //ここでmenuを作る
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.re_user_detail_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
     //MenuItem(戻るボタン)の選択
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == android.R.id.home) {
-            finish();
-            return true;
+        switch (id) {
+            case R.id.action_settings:
+                // User chose the "Settings" item, show the app settings UI...
+                Intent intent_setting = new Intent(ReUserDetailActivity.this, SettingActivity.class);
+                startActivity(intent_setting);
+                return true;
+
+            case R.id.action_edits:
+                Intent intent = new Intent(ReUserDetailActivity.this, UserRegisterActivity.class);
+                intent.putExtra("IdNum",intentId);
+                startActivity(intent);
+                return true;
+            case android.R.id.home:
+                finish();
+                return true;
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
+
 }
