@@ -2,7 +2,6 @@ package org.t_robop.y_ogawara.tancolle;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,7 +64,7 @@ public class MainListAdapter extends ArrayAdapter<MainAdapterData> {
 
         ((TextView) convertView.findViewById(R.id.birth1)).setText(remainingDay(mainListData.getBirthMonth(0),mainListData.getBirthDay(0)));
         if (mainListData.getPresentFlag(0)==1) {
-            liner1.setBackgroundResource(R.drawable.ribbon);
+            liner1.setBackgroundResource(R.drawable.ribbon_tra);
         }
         //ListView用のTextView2(中央)の宣言
         TextView nameText2 = ((TextView) convertView.findViewById(R.id.name2));
@@ -78,9 +77,9 @@ public class MainListAdapter extends ArrayAdapter<MainAdapterData> {
 
         //listの行数が最終行だったとき
           if (position == (mainListData.getAllSize()-1) / 3) {
-              liner1.setBackgroundResource(0);
-              liner2.setBackgroundResource(0);
-              liner3.setBackgroundResource(0);
+              liner1.setBackgroundResource(R.drawable.waooooooon1);
+              liner2.setBackgroundResource(R.drawable.waooooooon1);
+              liner3.setBackgroundResource(R.drawable.waooooooon1);
               //いくつ余ってるかの分岐
                 switch (mainListData.getAllSize()%3) {
                     case 2://一つ無いとき
@@ -92,7 +91,7 @@ public class MainListAdapter extends ArrayAdapter<MainAdapterData> {
                         birthText2.setText(remainingDay(mainListData.getBirthMonth(1),mainListData.getBirthDay(1)));
 
                         if (mainListData.getPresentFlag(1)==1) {
-                            liner2.setBackgroundResource(R.drawable.ribbon);
+                            liner2.setBackgroundResource(R.drawable.ribbon_tra);
                         }
                         break;
                     case 1://二つ無いとき
@@ -109,13 +108,13 @@ public class MainListAdapter extends ArrayAdapter<MainAdapterData> {
                         nameText2.setText(setNullName(mainListData.getName(1)));
                         birthText2.setText(remainingDay(mainListData.getBirthMonth(1),mainListData.getBirthDay(1)));
                         if (mainListData.getPresentFlag(1)==1) {
-                            liner2.setBackgroundResource(R.drawable.ribbon);
+                            liner2.setBackgroundResource(R.drawable.ribbon_tra);
                         }
                         //（右）にセットする名前をセット
                         nameText3.setText(setNullName(mainListData.getName(2)));
                         birthText3.setText(remainingDay(mainListData.getBirthMonth(2),mainListData.getBirthDay(2)));
                         if (mainListData.getPresentFlag(2)==1) {
-                            liner3.setBackgroundResource(R.drawable.ribbon);
+                            liner3.setBackgroundResource(R.drawable.ribbon_tra);
                         }
                         break;
                 }
@@ -128,24 +127,24 @@ public class MainListAdapter extends ArrayAdapter<MainAdapterData> {
               nameText2.setText(setNullName(mainListData.getName(1)));
               birthText2.setText(remainingDay(mainListData.getBirthMonth(1),mainListData.getBirthDay(1)));
               if (mainListData.getPresentFlag(1)==1) {
-                  liner2.setBackgroundResource(R.drawable.ribbon);
+                  liner2.setBackgroundResource(R.drawable.ribbon_tra);
               }
 
               //（右）にセットする名前をセット
               nameText3.setText(setNullName(mainListData.getName(2)));
               birthText3.setText(remainingDay(mainListData.getBirthMonth(2),mainListData.getBirthDay(2)));
               if (mainListData.getPresentFlag(2)==1) {
-                  liner3.setBackgroundResource(R.drawable.ribbon);
+                  liner3.setBackgroundResource(R.drawable.ribbon_tra);
               }
 
           }
 
 
 //        else if (mainListData.getPresentFlag(2)==1){
-//            liner2.setBackgroundResource(R.drawable.ribbon);
+//            liner2.setBackgroundResource(R.drawable.ribbon_tra);
 //        }
 //        else if (mainListData.getPresentFlag(3)==1) {
-//            liner3.setBackgroundResource(R.drawable.ribbon);
+//            liner3.setBackgroundResource(R.drawable.ribbon_tra);
 //        }
 //        else {
 //        }
