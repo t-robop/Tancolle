@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  * Created by yuusuke on 16/08/23.
  */
 public class mySqlNotifierHelper extends SQLiteOpenHelper {
-    static final String DB_NAME = "tancolle.db";  //データベースの名前
+    static final String DB_NAME = "tancolle1.db";  //データベースの名前
     static final int DB_VERSION = 1;             //データベースのバージョン
     static final String DROP = "drop table notifier_table";   //データベースを下ろすSQL文
     /**
@@ -85,7 +85,7 @@ public class mySqlNotifierHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // テーブルの破棄と再作成
-        //db.execSQL("drop table users_table;");
+        //db.execSQL("drop table notifier_table;");
         db.execSQL(DROP);
         onCreate(db);
     }
