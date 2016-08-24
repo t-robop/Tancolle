@@ -2,6 +2,7 @@ package org.t_robop.y_ogawara.tancolle;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -142,30 +143,36 @@ public class MainListAdapter extends ArrayAdapter<MainAdapterData> {
         return convertView;
 
     }
+
+    //残日を返すメソッド
     public String remainingDay(int sqlMonth,int sqlDay){
         SharedPreferences pref = context.getSharedPreferences("Setting", Context.MODE_PRIVATE);
         boolean drawType = pref.getBoolean("drawType", false);
 
+        //残日表示
         if (drawType == true){
-            //残日計算
+            /*****残日計算*****/
+            //今の日付を取得
             int MONTH =  Calendar.getInstance().get(Calendar.MONTH);
             int day = Calendar.getInstance().get(Calendar.DATE);
+            //ズレ直すぅ
+            MONTH++;
             //今の日付
-            int currentMonthDay =  Integer.parseInt(String.valueOf(MONTH)+String.valueOf(day));
-            int sqlMinthDay = Integer.parseInt(String.valueOf(sqlMonth)+String.valueOf(sqlDay));
-
+            int currentMonthDay = (MONTH*100)+day;
+            //sqliteデータの日付
+            int sqlMonthDay = (sqlMonth*100)+sqlDay;
             //現在の日付よりもsqlの日付が後の場合 2016年
-            if (currentMonthDay<sqlMinthDay) {
+            if (currentMonthDay<sqlMonthDay) {
                 return String.valueOf(dayTo(sqlMonth,sqlDay,false)+"日");
-
-            }else {
+            }
+            else {
                 return String.valueOf(dayTo(sqlMonth,sqlDay,true))+"日";
             }
-            //sqliteデータの日付
-        }else{
+            /********************/
+        }
+        //日付表示
+        else{
             return sqlMonth+"/"+sqlDay;
-
-
         }
     }
     //boolean testは現在の年数かどうかの判定 flaseなら2016 trueなら2017
