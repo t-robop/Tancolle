@@ -8,13 +8,16 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
+import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -27,7 +30,7 @@ public class Notifier extends BroadcastReceiver {
                 Log.d("ファック","ふぁっきん！！！！！！！！！！！！！！！");
                 Toast.makeText(content, "テスト", Toast.LENGTH_LONG).show();
                 Calendar calendar;
-                int intentId;
+                int id;
                 int Mnotif,Wnotif,Ynotif,Tnotif; //通知が１ヶ月前１週間前１日前当日のフラグ
                 int custum1,custum2,custum3;
                 int year, month, day; //現在の年月日
@@ -40,20 +43,24 @@ public class Notifier extends BroadcastReceiver {
                 year = calendar.get(Calendar.YEAR);
                 month = calendar.get(Calendar.MONTH) + 1; //0から11だから１個足す
                 day = calendar.get(Calendar.DAY_OF_MONTH);
-                Data data = dbAssist.idSelect(1, content); //データの取得
-                birthmonth = data.getMonth();
-                birthday = data.getDay();
-                Mnotif = data.getNotif_month();  //フラグ
-                Wnotif = data.getNotif_week();
-                Ynotif = data.isNotif_yest();
-                Tnotif = data.isNotif_today();
-                custum1 = data.getNotif_cus1();
-                // Log.d(String.valueOf(custum1),"test");
-                custum2 = data.getNotif_cus2();
-                custum3 = data.getNotif_cus3();
-                String name = data.getName();
-                //通知再セット
-                alarm(name,year,month,day,birthmonth,birthday,Mnotif,Wnotif,Ynotif,Tnotif,custum1,custum2,custum3,content);
+                ArrayList<Data> datas = new ArrayList<>();
+                datas = dbAssist.allSelect(content);
+                for (int i = 0; i<datas.size();i++) {
+                    Data data = datas.get(i); //データの取得
+                    id  = data.getId();
+                    birthmonth = data.getMonth();
+                    birthday = data.getDay();
+                    Mnotif = data.getNotif_month();  //フラグ
+                    Wnotif = data.getNotif_week();
+                    Ynotif = data.isNotif_yest();
+                    Tnotif = data.isNotif_today();
+                    custum1 = data.getNotif_cus1();
+                    custum2 = data.getNotif_cus2();
+                    custum3 = data.getNotif_cus3();
+                    String name = data.getName();
+                    //通知再セット
+                    alarm(id,name,year,month,day,birthmonth,birthday,Mnotif,Wnotif,Ynotif,Tnotif,custum1,custum2,custum3,content);
+                }
 
             }
 //            alarmData alarmData = new alarmData();
@@ -61,13 +68,16 @@ public class Notifier extends BroadcastReceiver {
 //            notifierDbAssist.insertData(alarmData,content);
 //            ArrayList<alarmData> alarmDatas =  notifierDbAssist.allSelect(content);
 
-            int id = intent.getIntExtra("intentId", 0);
+            //絶対にかぶらないID 通知の種類込み　ユーザーID + 9999 + notifId;
+            int OriginalId = intent.getIntExtra("intentId", 99990);
+            //後ろのintentの種類分けのみ
+            int id = originalIdToId(OriginalId);
             String text = intent.getStringExtra("intentString");
 
             //通知がクリックされた時に発行されるIntentの生成
             Intent sendIntent = new Intent(content, AlarmActivity.class);
 
-            PendingIntent sender = PendingIntent.getActivity(content, id, sendIntent, 0);
+            PendingIntent sender = PendingIntent.getActivity(content, OriginalId, sendIntent, 0);
 
             //:todo idでどの通知かflag判定してるよ
             switch (id){
@@ -88,7 +98,8 @@ public class Notifier extends BroadcastReceiver {
                             .build();
 
                     NotificationManager manager = (NotificationManager) content.getSystemService(Context.NOTIFICATION_SERVICE);
-                    manager.notify(0, noti);
+                    manager.notify(OriginalId, noti);
+
                     break;
                 //1週間前
                 case 2:
@@ -103,7 +114,7 @@ public class Notifier extends BroadcastReceiver {
                             .build();
 
                     manager = (NotificationManager) content.getSystemService(Context.NOTIFICATION_SERVICE);
-                    manager.notify(0, noti);
+                    manager.notify(OriginalId, noti);
                     break;
                 //前日
                 case 3:
@@ -118,7 +129,7 @@ public class Notifier extends BroadcastReceiver {
                             .build();
 
                     manager = (NotificationManager) content.getSystemService(Context.NOTIFICATION_SERVICE);
-                    manager.notify(0, noti);
+                    manager.notify(OriginalId, noti);
                     break;
                 //当日
                 case 4:
@@ -133,10 +144,13 @@ public class Notifier extends BroadcastReceiver {
                             .build();
 
                     manager = (NotificationManager) content.getSystemService(Context.NOTIFICATION_SERVICE);
-                    manager.notify(0, noti);
+                    manager.notify(OriginalId, noti);
                     break;
                 //カスタム
                 case 5:
+
+                case 6:
+                case 7:
                     noti = new NotificationCompat.Builder(content)
                             .setTicker(text)
                             .setContentTitle("たんこれ！")
@@ -148,15 +162,20 @@ public class Notifier extends BroadcastReceiver {
                             .build();
 
                     manager = (NotificationManager) content.getSystemService(Context.NOTIFICATION_SERVICE);
-                    manager.notify(0, noti);
+                    manager.notify(OriginalId, noti);
                     break;
+
+
             }
 
 
         }
-    public void alarm(String name, int year, int month,int day,int birthmonth,int birthday,int Mnotif,int Wnotif,int Ynotif,int Tnotif,int custum1,int custum2,int custum3,Context context){
+    public static void alarm(int id, String name, int year, int month,int day,int birthmonth,int birthday,int Mnotif,int Wnotif,int Ynotif,int Tnotif,int custum1,int custum2,int custum3,Context context){
         Calendar calendar;
         int intentId;
+        //IDを動的に生成する
+        intentId = makeOriginalId(id);
+
 
         int cat,dog; //月日を４桁にするやつ（現在の日付と誕生日）
 
@@ -222,9 +241,10 @@ public class Notifier extends BroadcastReceiver {
             //monthText = (name) + "さんの誕生日まで残り１ヶ月です";
             //設定した日時で発行するIntentを生成
             Intent alarmMonth = new Intent(context, Notifier.class);
-            alarmMonth.putExtra("intentId",1);
+            alarmMonth.setData(makeUri(Integer.parseInt(String.valueOf(intentId)+1)));
+            alarmMonth.putExtra("intentId",Integer.parseInt(String.valueOf(intentId)+1));
             alarmMonth.putExtra("intentString",(name) + "さんの誕生日まで残り１ヶ月です");
-            PendingIntent sender = PendingIntent.getBroadcast(context, 0, alarmMonth, PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent sender = PendingIntent.getBroadcast(context, Integer.parseInt(String.valueOf(intentId)+0), alarmMonth, PendingIntent.FLAG_UPDATE_CURRENT);
 
             //日時と発行するIntentをAlarmManagerにセットします
             AlarmManager manager = (AlarmManager)context.getSystemService(context.ALARM_SERVICE);
@@ -250,11 +270,13 @@ public class Notifier extends BroadcastReceiver {
             //weekText = (name) + "さんの誕生日まで残り１週間です";
             //設定した日時で発行するIntentを生成
             Intent alarmWeek = new Intent(context, Notifier.class);
-            alarmWeek.putExtra("intentId",2);
+            alarmWeek.setData(makeUri(Integer.parseInt(String.valueOf(intentId)+2)));
+
+            alarmWeek.putExtra("intentId",Integer.parseInt(String.valueOf(intentId)+2));
             alarmWeek.putExtra("intentString",(name) + "さんの誕生日まで残り１週間です");
 
 
-            PendingIntent sender = PendingIntent.getBroadcast(context, 1, alarmWeek, PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent sender = PendingIntent.getBroadcast(context, Integer.parseInt(String.valueOf(intentId)+1), alarmWeek, PendingIntent.FLAG_UPDATE_CURRENT);
 //日時と発行するIntentをAlarmManagerにセットします
             AlarmManager manager = (AlarmManager)context.getSystemService(context.ALARM_SERVICE);
 
@@ -280,12 +302,14 @@ public class Notifier extends BroadcastReceiver {
             //yestText = (name) + "さんの誕生日まで残り１日です";
             //設定した日時で発行するIntentを生成
             Intent alarmYest= new Intent(context, Notifier.class);
-            alarmYest.putExtra("intentId",3);
+            alarmYest.setData(makeUri(Integer.parseInt(String.valueOf(intentId)+3)));
+
+            alarmYest.putExtra("intentId",Integer.parseInt(String.valueOf(intentId)+3));
             alarmYest.putExtra("intentString",(name) + "さんの誕生日まで残り１日です");
 
 
 
-            PendingIntent sender = PendingIntent.getBroadcast(context, 2, alarmYest, PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent sender = PendingIntent.getBroadcast(context, Integer.parseInt(String.valueOf(intentId)+2), alarmYest, PendingIntent.FLAG_UPDATE_CURRENT);
 //日時と発行するIntentをAlarmManagerにセットします
             AlarmManager manager = (AlarmManager)context.getSystemService(context.ALARM_SERVICE);
             //Androidのバージョンが6.0以上(Dozeモードがあるバージョン)以上なら設定時間より15分遅れるかも
@@ -308,10 +332,11 @@ public class Notifier extends BroadcastReceiver {
             //todayText = "今日は" + (name) + "さんの誕生日です!";
             //設定した日時で発行するIntentを生成
             Intent alarmToday = new Intent(context, Notifier.class);
-            alarmToday.putExtra("intentId",4);
+            alarmToday.setData(makeUri(Integer.parseInt(String.valueOf(intentId)+4)));
+            alarmToday.putExtra("intentId",Integer.parseInt(String.valueOf(intentId)+4));
             alarmToday.putExtra("intentString","今日は" + (name) + "さんの誕生日です!");
 
-            PendingIntent sender = PendingIntent.getBroadcast(context, 3, alarmToday, PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent sender = PendingIntent.getBroadcast(context, Integer.parseInt(String.valueOf(intentId)+3), alarmToday, PendingIntent.FLAG_UPDATE_CURRENT);
 //日時と発行するIntentをAlarmManagerにセットします
             AlarmManager manager = (AlarmManager)context.getSystemService(context.ALARM_SERVICE);
             //Androidのバージョンが6.0以上(Dozeモードがあるバージョン)以上なら設定時間より15分遅れるかも
@@ -340,10 +365,11 @@ public class Notifier extends BroadcastReceiver {
             //custumText =String.valueOf(birthmonth)+"/"+String.valueOf(birthday)+"は"+(name)+"さんの誕生日です";
             //設定した日時で発行するIntentを生成
             Intent alarmCus1 = new Intent(context, Notifier.class);
-            alarmCus1.putExtra("intentId",5);
+            alarmCus1.setData(makeUri(Integer.parseInt(String.valueOf(intentId)+5)));
+            alarmCus1.putExtra("intentId",Integer.parseInt(String.valueOf(intentId)+5));
             alarmCus1.putExtra("intentString",String.valueOf(birthmonth)+"/"+String.valueOf(birthday)+"は"+(name)+"さんの誕生日です");
 
-            PendingIntent sender = PendingIntent.getBroadcast(context, 4, alarmCus1, PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent sender = PendingIntent.getBroadcast(context, Integer.parseInt(String.valueOf(intentId)+4), alarmCus1, PendingIntent.FLAG_UPDATE_CURRENT);
 
             //日時と発行するIntentをAlarmManagerにセットします
             AlarmManager manager = (AlarmManager)context.getSystemService(context.ALARM_SERVICE);
@@ -373,10 +399,11 @@ public class Notifier extends BroadcastReceiver {
             //custumText =String.valueOf(birthmonth)+"/"+String.valueOf(birthday)+"は"+(name)+"さんの誕生日です";
             //設定した日時で発行するIntentを生成
             Intent alarmCus2 = new Intent(context, Notifier.class);
-            alarmCus2.putExtra("intentId",5);
+            alarmCus2.putExtra("intentId",Integer.parseInt(String.valueOf(intentId)+6));
+            alarmCus2.setData(makeUri(Integer.parseInt(String.valueOf(intentId)+6)));
             alarmCus2.putExtra("intentString",String.valueOf(birthmonth)+"/"+String.valueOf(birthday)+"は"+(name)+"さんの誕生日です");
 
-            PendingIntent sender = PendingIntent.getBroadcast(context, 5, alarmCus2, PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent sender = PendingIntent.getBroadcast(context, Integer.parseInt(String.valueOf(intentId)+5), alarmCus2, PendingIntent.FLAG_UPDATE_CURRENT);
 
             //日時と発行するIntentをAlarmManagerにセットします
             AlarmManager manager = (AlarmManager)context.getSystemService(context.ALARM_SERVICE);
@@ -406,11 +433,12 @@ public class Notifier extends BroadcastReceiver {
             //custumText =String.valueOf(birthmonth)+"/"+String.valueOf(birthday)+"は"+(name)+"さんの誕生日です";
             //設定した日時で発行するIntentを生成
             Intent alarmCus3 = new Intent(context, Notifier.class);
-            alarmCus3.putExtra("intentId",5);
+            alarmCus3.setData(makeUri(Integer.parseInt(String.valueOf(intentId)+7)));
+            alarmCus3.putExtra("intentId",Integer.parseInt(String.valueOf(intentId)+7));
             alarmCus3.putExtra("intentString",String.valueOf(birthmonth)+"/"+String.valueOf(birthday)+"は"+(name)+"さんの誕生日です");
 
 
-            PendingIntent sender = PendingIntent.getBroadcast(context, 6, alarmCus3, PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent sender = PendingIntent.getBroadcast(context, Integer.parseInt(String.valueOf(intentId)+6), alarmCus3, PendingIntent.FLAG_UPDATE_CURRENT);
 
             //日時と発行するIntentをAlarmManagerにセットします
             AlarmManager manager = (AlarmManager)context.getSystemService(context.ALARM_SERVICE);
@@ -425,6 +453,28 @@ public class Notifier extends BroadcastReceiver {
             //manager.set(AlarmManager.RTC_WAKEUP, triggerTime.getTimeInMillis(), sender);
         }
 
+    }
+    static int makeOriginalId(int id){
+        int makeId;
+        makeId = Integer.parseInt(id +"9999");
+        Log.d("makeInt",String.valueOf(makeId));
+        return makeId;
+    }
+    static int originalIdToId(int makeId){
+        int id;
+        String temp = String.valueOf(makeId);
+        id = Integer.parseInt(temp.substring(temp.length()-1,temp.length()));
+        return id;
+    }
+    static Uri makeUri(int originalId) {
+        StringBuffer buffer = new StringBuffer();
+        long nowElapsedRealtime = SystemClock.elapsedRealtime();
+        buffer.append("SCHEME" + "://")
+                .append("HOSTNAME" + "/")
+                .append(originalId)
+                .append(Long.toString(nowElapsedRealtime));
+        Uri uri = Uri.parse(buffer.toString());
+        return uri;
     }
 
 
