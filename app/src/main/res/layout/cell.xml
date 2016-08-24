@@ -13,7 +13,6 @@
         android:orientation="vertical"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:background="@drawable/waooooooon"
         android:gravity="center"
         android:id="@+id/liner1"
         android:onClick="cellClick"
