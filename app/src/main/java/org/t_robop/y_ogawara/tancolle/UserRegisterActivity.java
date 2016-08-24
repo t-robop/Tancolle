@@ -1,6 +1,7 @@
 package org.t_robop.y_ogawara.tancolle;
 
 import android.app.DatePickerDialog;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,6 +12,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
@@ -345,7 +347,8 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         if (resultCode != RESULT_OK) return;
 
         if (requestCode == 0) {
-            String[] columns = {MediaStore.MediaColumns.DATA};
+
+                String[] columns = {MediaStore.MediaColumns.DATA};
             Cursor cursor = getContentResolver().query(data.getData(), columns, null, null, null);
 
             if (cursor.moveToFirst()) {
@@ -356,25 +359,51 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
                 }
             }
         } else if (requestCode == 1) {
-            String id = null;
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-                id = DocumentsContract.getDocumentId(data.getData());
-            }
-            String selection = "_id=?";
-            String[] selectionArgs = new String[]{id.split(":")[1]};
 
-            Cursor cursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new String[]{MediaStore.MediaColumns.DATA}, selection, selectionArgs, null);
+            Uri uri = data.getData();
+            //ギャラリーの時
+            if ("com.android.providers.media.documents".equals(uri.getAuthority())) {
 
-            if (cursor.moveToFirst()) {
-                // fileから写真を読み込む
-                try {
-                    exifInterface = new ExifInterface(cursor.getString(0));
-                } catch (IOException e) {
-                    e.printStackTrace();
+                String id = null;
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+                    id = DocumentsContract.getDocumentId(data.getData());
                 }
+                String selection = "_id=?";
+                String[] selectionArgs = new String[]{id.split(":")[1]};
+
+                Cursor cursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new String[]{MediaStore.MediaColumns.DATA}, selection, selectionArgs, null);
+
+                if (cursor.moveToFirst()) {
+                    // fileから写真を読み込む
+                    try {
+                        exifInterface = new ExifInterface(cursor.getString(0));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                cursor.close();
             }
-            cursor.close();
-        }
+            //ダウンロードからの時
+            else if ("com.android.providers.downloads.documents".equals(uri.getAuthority())) {
+                String id = null;
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+                    id = DocumentsContract.getDocumentId(data.getData());
+                }
+                Uri docUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
+                Cursor cursor = getContentResolver().query(docUri, new String[]{MediaStore.MediaColumns.DATA}, null, null, null);
+
+                if (cursor.moveToFirst()) {
+                    // fileから写真を読み込む
+                    try {
+                        exifInterface = new ExifInterface(cursor.getString(0));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                cursor.close();
+            }
+
+            }
 
         try {
             //画像取得
@@ -551,12 +580,14 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         if (Build.VERSION.SDK_INT < 19) {
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
             intent.setType("image/jpeg");
-            startActivityForResult(Intent.createChooser(intent, "Pick a source"), 0);
+            //startActivityForResult(Intent.createChooser(intent, "選べよ"), 0);
+            startActivity(intent);
         } else {
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
             intent.addCategory(Intent.CATEGORY_OPENABLE);
             intent.setType("image/jpeg");
-            startActivityForResult(Intent.createChooser(intent, "Pick a source"), 1);
+            //startActivityForResult(Intent.createChooser(intent, "選べよ"), 1);
+            startActivity(intent);
         }
     }
 
