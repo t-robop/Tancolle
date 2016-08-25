@@ -257,7 +257,8 @@ public class ReUserDetailActivity extends AppCompatActivity {
         for(int i=0;i<3;i++){
             if(userNotifCus[i]!=0){
                 textCus[i].setText(
-                        UserRegisterActivity.OutCale(userNotifCus[i],"year") + "/" +
+                                 "・"+
+                                UserRegisterActivity.OutCale(userNotifCus[i],"year") + "/" +
                                 UserRegisterActivity.OutCale(userNotifCus[i],"month")+"/" +
                                 UserRegisterActivity.OutCale(userNotifCus[i],"day"));
                 textCus[i].setTextColor(Color.BLACK);

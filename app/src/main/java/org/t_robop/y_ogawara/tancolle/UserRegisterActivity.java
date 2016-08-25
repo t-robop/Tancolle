@@ -5,6 +5,7 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -21,6 +22,9 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
@@ -164,6 +168,9 @@ public class UserRegisterActivity extends AppCompatActivity  {
 
         //関連付け
         Association();
+
+        //ひらがな制限
+        filterEdit(editTwitter);
 
         //編集済かどうかの初期設定
         registJudge=false;
@@ -1388,6 +1395,18 @@ public class UserRegisterActivity extends AppCompatActivity  {
         /********************/
     }
 
+    public void filterEdit(EditText editText){
+        editText.setFilters(new InputFilter[]{
+                (source, sourceStart, sourceEnd, destination, destinationStart, destinationEnd) -> {
+                    if (source.toString().matches("^[a-zA-Z0-9_]+$")) {
+                        return source;
+                    } else {
+                        return "";
+                    }
+                }
+        });
+    }
+
     //編集するかしないかの最終確認ダイアログ
     public void finishRegstDialog(){
         //このアクティビティに表示する削除確認ダイアログの宣言
@@ -1406,6 +1425,16 @@ public class UserRegisterActivity extends AppCompatActivity  {
                     cautionDialog();
                 }
                 else {
+                    //preferenceの宣言
+                    SharedPreferences prefType;
+                    //preference"intent"をプライベートモードで開く
+                    prefType = getSharedPreferences("intent", MODE_PRIVATE);
+                    //編集用editorを展開
+                    SharedPreferences.Editor editor = prefType.edit();
+                    //"setPage"の値をboolean型変数drawTypeに
+                    editor.putInt("setPage", userBirthMonth);
+                    //editor終了
+                    editor.apply();
                     //保存
                     AllRegist();
                     //Activity終了
@@ -1595,6 +1624,27 @@ public class UserRegisterActivity extends AppCompatActivity  {
         //Activity消す
         finish();
 
+        ALLLOG();
         }
 
+    //Log
+    public void ALLLOG() {
+        Log.d("ALLLOG",String.valueOf(id));
+        Log.d("ALLLOG", editName.getText().toString());
+        Log.d("ALLLOG", editPho.getText().toString());
+        Log.d("ALLLOG",String.valueOf(userBirthYear)+String.valueOf(userBirthMonth)+String.valueOf(userBirthDay));
+        Log.d("ALLLOG", userCategory);
+        Log.d("ALLLOG", editTwitter.getText().toString());
+        Log.d("ALLLOG", editMemo.getText().toString());
+        Log.d("ALLLOG", userImage +".jpg");
+        Log.d("ALLLOG", userImage +".jpg");
+        Log.d("ALLLOG",String.valueOf(flagTamura));
+        Log.d("ALLLOG",String.valueOf(flagNotifMonth));
+        Log.d("ALLLOG",String.valueOf(flagNotifWeek));
+        Log.d("ALLLOG",String.valueOf(flagNotifYesterday));
+        Log.d("ALLLOG",String.valueOf(flagNotifToday));
+        Log.d("ALLLOG",String.valueOf(userNotifCus[0]));
+        Log.d("ALLLOG",String.valueOf(userNotifCus[1]));
+        Log.d("ALLLOG",String.valueOf(userNotifCus[2]));
+    }
 }
