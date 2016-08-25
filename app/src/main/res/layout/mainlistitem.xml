@@ -37,12 +37,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:textSize="40dp"
+                android:textColor="#663333"
                 android:gravity="center"/>
 
             <org.t_robop.y_ogawara.tancolle.AutoshrinkTextView
                 android:id="@+id/name1"
                 android:layout_width="match_parent"
                 android:layout_height="20dp"
+                android:textColor="#663333"
                 android:gravity="center"/>
         </LinearLayout>
 
@@ -81,12 +83,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:textSize="40dp"
+                android:textColor="#663333"
                 android:gravity="center"/>
 
             <org.t_robop.y_ogawara.tancolle.AutoshrinkTextView
                 android:id="@+id/name2"
                 android:layout_width="match_parent"
                 android:layout_height="20dp"
+                android:textColor="#663333"
                 android:gravity="center"/>
         </LinearLayout>
 
@@ -125,12 +129,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:textSize="40dp"
+                android:textColor="#663333"
                 android:gravity="center"/>
 
             <org.t_robop.y_ogawara.tancolle.AutoshrinkTextView
                 android:id="@+id/name3"
                 android:layout_width="match_parent"
                 android:layout_height="20dp"
+                android:textColor="#663333"
                 android:gravity="center"/>
         </LinearLayout>
 
