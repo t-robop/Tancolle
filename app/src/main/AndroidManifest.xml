@@ -48,9 +48,6 @@
             android:name=".SettingActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ViewFlipperTestActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".SettingCategoryActivity"
             android:screenOrientation="portrait" />
         <activity
