@@ -35,8 +35,6 @@ public class Notifier extends BroadcastReceiver {
                 int custum1,custum2,custum3;
                 int year, month, day; //現在の年月日
                 int birthmonth,birthday; //誕生日の年月日
-                int cat,dog; //月日を４桁にするやつ（現在の日付と誕生日）
-                int ms = 1000*60*60*24; //１日をミリ秒にしたやつ
 
 
                 calendar = Calendar.getInstance(); //今日の年月日
@@ -63,10 +61,6 @@ public class Notifier extends BroadcastReceiver {
                 }
 
             }
-//            alarmData alarmData = new alarmData();
-//            alarmData.setDay(111);
-//            notifierDbAssist.insertData(alarmData,content);
-//            ArrayList<alarmData> alarmDatas =  notifierDbAssist.allSelect(content);
 
             //絶対にかぶらないID 通知の種類込み　ユーザーID + 9999 + notifId;
             int OriginalId = intent.getIntExtra("intentId", 99990);
@@ -171,7 +165,6 @@ public class Notifier extends BroadcastReceiver {
 
         }
     public static void alarm(int id, String name, int year, int month,int day,int birthmonth,int birthday,int Mnotif,int Wnotif,int Ynotif,int Tnotif,int custum1,int custum2,int custum3,Context context){
-        Calendar calendar;
         int intentId;
         //IDを動的に生成する
         intentId = makeOriginalId(id);

@@ -54,18 +54,30 @@ public class MainListAdapter extends ArrayAdapter<MainAdapterData> {
         liner2.setTag(mainListData.getId(1));
         LinearLayout liner3 = (LinearLayout) convertView.findViewById(R.id.liner3);
         liner3.setTag(mainListData.getId(2));
+        liner1.setBackgroundResource(R.drawable.waooooooon1);
+        liner2.setBackgroundResource(R.drawable.waooooooon1);
+        liner3.setBackgroundResource(R.drawable.waooooooon1);
 
         //ListView用のTextView1(左端)の宣言
         //一つ目（左端）は桁が表示されれば絶対表示されるので固定
         TextView nameText1 = ((TextView) convertView.findViewById(R.id.name1));
+        TextView birthText1 = ((TextView) convertView.findViewById(R.id.birth1));
 
         //（左）に表示する名前をセット
-        nameText1.setText(setNullName(mainListData.getName(0)));
+        //nameText1.setText(setNullName(mainListData.getName(0)));
 
-        ((TextView) convertView.findViewById(R.id.birth1)).setText(remainingDay(mainListData.getBirthMonth(0),mainListData.getBirthDay(0)));
+//        ((TextView) convertView.findViewById(R.id.birth1)).setText(remainingDay(mainListData.getBirthMonth(0),mainListData.getBirthDay(0)));
+//        if (mainListData.getPresentFlag(0)==1) {
+//            liner1.setBackgroundResource(R.drawable.ribbon_tra);
+//        }
+
+        //（右）にセットする名前をセット
+        nameText1.setText(setNullName(mainListData.getName(0)));
+        birthText1.setText(remainingDay(mainListData.getBirthMonth(0),mainListData.getBirthDay(0)));
         if (mainListData.getPresentFlag(0)==1) {
             liner1.setBackgroundResource(R.drawable.ribbon_tra);
         }
+
         //ListView用のTextView2(中央)の宣言
         TextView nameText2 = ((TextView) convertView.findViewById(R.id.name2));
         TextView birthText2 = ((TextView) convertView.findViewById(R.id.birth2));
