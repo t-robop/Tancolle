@@ -44,7 +44,7 @@ public class UserDetailActivity extends AppCompatActivity {
     int year, month, day; //現在の日付
     int age;//年齢の計算結果を入れる箱
     ImageView image;
-    int imagecount; //プレゼントボタンの判定
+    int imageCount; //プレゼントボタンの判定
     int yukarin;
     String memo;
     String TwitterID;
@@ -169,7 +169,7 @@ public class UserDetailActivity extends AppCompatActivity {
         String category = data.getCategory();
         TwitterID = data.getTwitterID();
         memo = data.getMemo();
-        imagecount = data.isPresentFlag();
+        imageCount = data.isPresentFlag();
         yukarin = data.isYukarin();
         //TODO 通知のカスタム
         flagNotifMonth =data.getNotif_month();
@@ -177,13 +177,13 @@ public class UserDetailActivity extends AppCompatActivity {
         flagNotifYesterday = data.isNotif_yest();
         flagNotifToday = data.isNotif_today();
 
-        if (imagecount == Integer.MIN_VALUE) {
-            imagecount = 0;
+        if (imageCount == Integer.MIN_VALUE) {
+            imageCount = 0;
         }
 
         //データを読みだして、その値でセットする画像を変える
 
-        if(imagecount==0){
+        if(imageCount ==0){
             image.setImageResource(R.drawable.ao);
         }else{
             image.setImageResource(R.drawable.ribon);
@@ -449,14 +449,14 @@ public class UserDetailActivity extends AppCompatActivity {
 
     public void presentClick(View view) { //プレゼントボタンをおした時
         Data updateData =new Data();
-        if (imagecount == 0) {
-            imagecount = 1;
-            updateData.setPresentFlag(imagecount);
+        if (imageCount == 0) {
+            imageCount = 1;
+            updateData.setPresentFlag(imageCount);
             dbAssist.updateData(intentId,updateData,this);
             image.setImageResource(R.drawable.ribon);
         }else{
-            imagecount = 0;
-            updateData.setPresentFlag(imagecount);
+            imageCount = 0;
+            updateData.setPresentFlag(imageCount);
             dbAssist.updateData(intentId,updateData,this);
             image.setImageResource(R.drawable.ao);
         }

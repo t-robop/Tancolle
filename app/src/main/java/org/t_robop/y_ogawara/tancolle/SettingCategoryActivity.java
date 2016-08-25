@@ -1,6 +1,5 @@
 package org.t_robop.y_ogawara.tancolle;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
@@ -11,7 +10,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -29,7 +27,7 @@ public class SettingCategoryActivity extends AppCompatActivity {
     //カテゴリを格納するアダプターの宣言
     ArrayAdapter<String> categoryAdapter;
     //カテゴリ保存用のリスト
-    ArrayList<String> categorylist;
+    ArrayList<String> categoryList;
     //カテゴリ追加ダイアログ
     AlertDialog addCategoryDialog;
     //カテゴリ数
@@ -74,7 +72,7 @@ public class SettingCategoryActivity extends AppCompatActivity {
         //カテゴリ一覧用リストの関連付け
         listCategory=(ListView)findViewById(R.id.list_category);
         //カテゴリを保存するリストの初期設定
-        categorylist=new ArrayList<>();
+        categoryList =new ArrayList<>();
         //カテゴリを格納するアダプターの初期設定
         categoryAdapter= new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice);
         /*****DiaLog用のxmlとの連携の関連付け*****/
@@ -161,7 +159,7 @@ public class SettingCategoryActivity extends AppCompatActivity {
                                     //チェック入ってる時
                                     if (listCheck) {
                                         //選択されたカテゴリ名の要素を保存用リストから取り除く
-                                        categorylist.remove(itemName);
+                                        categoryList.remove(itemName);
                                         //選択されたカテゴリ名の要素をセット用アダプターから取り除く
                                         categoryAdapter.remove(itemName);
                                         //ズレを直す
@@ -177,11 +175,11 @@ public class SettingCategoryActivity extends AppCompatActivity {
                                     listCategory.setAdapter(categoryAdapter);
                                 }
                                 //プレファレンスに保存用カテゴリを保存
-                                PM.saveArray(categorylist, "StringItem", SettingCategoryActivity.this);
+                                PM.saveArray(categoryList, "StringItem", SettingCategoryActivity.this);
                                 //セット用アダプターに格納されている要素を全て消す
                                 categoryAdapter.clear();
                                 //保存用リストに格納されている要素を全て消す
-                                categorylist.clear();
+                                categoryList.clear();
                                 //preference読み込んでアダプターにセット
                                 loadPreference();
                                 //追加ボタンセットとlistセット
@@ -238,7 +236,7 @@ public class SettingCategoryActivity extends AppCompatActivity {
                 //list表示用adaptorにカテゴリを追加
                 categoryAdapter.add(categoryItem[n]);
                 //preference保存用adaptorにカテゴリを追加
-                categorylist.add(categoryItem[n]);
+                categoryList.add(categoryItem[n]);
             }
         }
         else{
@@ -268,7 +266,7 @@ public class SettingCategoryActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int which) {
                                 //セット用アダプター・保存用リストに格納されている要素を全て消す
                                     categoryAdapter.clear();
-                                    categorylist.clear();
+                                    categoryList.clear();
                                 //preference読み込んでアダプターにセット
                                 loadPreference();
                                 //入力されたカテゴリ名を取得する変数
@@ -292,7 +290,7 @@ public class SettingCategoryActivity extends AppCompatActivity {
                                         //セット用adaptorに入力された物を追加
                                         categoryAdapter.add(addcategory);
                                         //保存用listに入力された物を追加
-                                        categorylist.add(addcategory);
+                                        categoryList.add(addcategory);
                                     }
                                     //追加不可であった(引数false)の時
                                     else{
@@ -308,7 +306,7 @@ public class SettingCategoryActivity extends AppCompatActivity {
                                 //追加ボタンセットとlistセット
                                 addBtnListSet();
                                 //プレファレンスにカテゴリの保存
-                                PM.saveArray(categorylist, "StringItem",SettingCategoryActivity.this);
+                                PM.saveArray(categoryList, "StringItem",SettingCategoryActivity.this);
                                 //追加した分を増加
                                 numCategory++;
                             }

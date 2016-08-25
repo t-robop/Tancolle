@@ -21,7 +21,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -49,7 +48,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class UserRegisterActivity extends AppCompatActivity  {
-    private static final int REQUEST_GALLERY = 0;//ギャラリー選択で必要な初期化
     EditText editName;
     EditText editPho;
     EditText editTwitter;
@@ -84,7 +82,7 @@ public class UserRegisterActivity extends AppCompatActivity  {
     //カテゴリ用arraylist&arrayadapter
     ArrayAdapter<String> categoryAdapter;
     //カテゴリのList
-    ArrayList<String> categorylist;
+    ArrayList<String> categoryList;
     //選択されたカテゴリ保管（後でsqlに飛ばすよ）
     String userCategory;
     //MostImportantDate（sqlからデータ読み込む時に使う大本用のデータ型変数）
@@ -137,7 +135,7 @@ public class UserRegisterActivity extends AppCompatActivity  {
         ExifInterface exifInterface;
         Matrix mat;
     /////
-    int monthSetting;//Todo 初期"月"設定テスト(修復時：消せ)
+    int monthSetting;
     //キーボードの有無確認
     boolean keyBoad=false;
     //ダイアログでok押された時のリスナー
@@ -182,7 +180,7 @@ public class UserRegisterActivity extends AppCompatActivity  {
         /////
         monthSetting=intent.getIntExtra("month",0);//Todo 初期"月"設定テスト(選択された月データを取得します。修復時：消せ)
         //カテゴリー用のリストを新規作成
-        categorylist = new ArrayList<>();
+        categoryList = new ArrayList<>();
         //Spinner設定
             sppinerCategorySet();//カテゴリスピナー設定
         /////
@@ -216,7 +214,7 @@ public class UserRegisterActivity extends AppCompatActivity  {
                     for (int n = 0; n < categoryItem.length; n++) {
                         //読み込んだカテゴリを追加
                             categoryAdapter.add(categoryItem[n]);
-                            categorylist.add(categoryItem[n]);
+                            categoryList.add(categoryItem[n]);
                         /////
                     }
                     /////
@@ -1021,7 +1019,7 @@ public class UserRegisterActivity extends AppCompatActivity  {
                                     //要素追加
                                     //リストとadaptorに入力値を入れる
                                     categoryAdapter.add(addcategory);
-                                    categorylist.add(addcategory);
+                                    categoryList.add(addcategory);
                                 }
                                 //追加不可であった(引数false)の時
                                 else{
@@ -1033,7 +1031,7 @@ public class UserRegisterActivity extends AppCompatActivity  {
                             //adapter更新
                             categoryAdapter.notifyDataSetChanged();
                             //カテゴリの保存
-                            PM.saveArray(categorylist, "StringItem",UserRegisterActivity.this);
+                            PM.saveArray(categoryList, "StringItem",UserRegisterActivity.this);
                             //editTextの初期化
                             editDialog.getEditableText().clear();
                             //追加したカテゴリをスピナーで選択させる

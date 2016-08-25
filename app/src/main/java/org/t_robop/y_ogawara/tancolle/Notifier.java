@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-//TODO マニフェストのレシーバーうまく設定されとらんで！！！！！！！！！！
 public class Notifier extends BroadcastReceiver {
 
         @Override
@@ -29,10 +28,10 @@ public class Notifier extends BroadcastReceiver {
                 Toast.makeText(content, "テスト", Toast.LENGTH_LONG).show();
                 Calendar calendar;
                 int id;
-                int Mnotif,Wnotif,Ynotif,Tnotif; //通知が１ヶ月前１週間前１日前当日のフラグ
-                int custum1,custum2,custum3;
+                int mNotif,wNotif,yNotif,tNotif; //通知が１ヶ月前１週間前１日前当日のフラグ
+                int custom1,custom2,custom3;
                 int year, month, day; //現在の年月日
-                int birthmonth,birthday; //誕生日の年月日
+                int birthMonth,birthday; //誕生日の年月日
 
 
                 calendar = Calendar.getInstance(); //今日の年月日
@@ -44,18 +43,18 @@ public class Notifier extends BroadcastReceiver {
                 for (int i = 0; i<datas.size();i++) {
                     Data data = datas.get(i); //データの取得
                     id  = data.getId();
-                    birthmonth = data.getMonth();
+                    birthMonth = data.getMonth();
                     birthday = data.getDay();
-                    Mnotif = data.getNotif_month();  //フラグ
-                    Wnotif = data.getNotif_week();
-                    Ynotif = data.isNotif_yest();
-                    Tnotif = data.isNotif_today();
-                    custum1 = data.getNotif_cus1();
-                    custum2 = data.getNotif_cus2();
-                    custum3 = data.getNotif_cus3();
+                    mNotif = data.getNotif_month();  //フラグ
+                    wNotif = data.getNotif_week();
+                    yNotif = data.isNotif_yest();
+                    tNotif = data.isNotif_today();
+                    custom1 = data.getNotif_cus1();
+                    custom2 = data.getNotif_cus2();
+                    custom3 = data.getNotif_cus3();
                     String name = data.getName();
                     //通知再セット
-                    alarm(id,name,year,month,day,birthmonth,birthday,Mnotif,Wnotif,Ynotif,Tnotif,custum1,custum2,custum3,content);
+                    alarm(id,name,year,month,day,birthMonth,birthday,mNotif,wNotif,yNotif,tNotif,custom1,custom2,custom3,content);
                 }
 
             }
@@ -71,7 +70,7 @@ public class Notifier extends BroadcastReceiver {
 
             PendingIntent sender = PendingIntent.getActivity(content, OriginalId, sendIntent, 0);
 
-            //:todo idでどの通知かflag判定してるよ
+            //idでどの通知かflag判定してるよ
             switch (id){
                 //もしもputされてない時 まぁ普通はない
                 case 0:
@@ -79,7 +78,7 @@ public class Notifier extends BroadcastReceiver {
                 break;
                 //１ヶ月前
                 case 1:
-                    Notification noti = new NotificationCompat.Builder(content)
+                    Notification notif = new NotificationCompat.Builder(content)
                             .setTicker(text)
                             .setContentTitle("たんこれ！")
                             .setContentText(text)
@@ -90,12 +89,12 @@ public class Notifier extends BroadcastReceiver {
                             .build();
 
                     NotificationManager manager = (NotificationManager) content.getSystemService(Context.NOTIFICATION_SERVICE);
-                    manager.notify(OriginalId, noti);
+                    manager.notify(OriginalId, notif);
 
                     break;
                 //1週間前
                 case 2:
-                    noti = new NotificationCompat.Builder(content)
+                    notif = new NotificationCompat.Builder(content)
                             .setTicker(text)
                             .setContentTitle("たんこれ！")
                             .setContentText(text)
@@ -106,11 +105,11 @@ public class Notifier extends BroadcastReceiver {
                             .build();
 
                     manager = (NotificationManager) content.getSystemService(Context.NOTIFICATION_SERVICE);
-                    manager.notify(OriginalId, noti);
+                    manager.notify(OriginalId, notif);
                     break;
                 //前日
                 case 3:
-                    noti = new NotificationCompat.Builder(content)
+                    notif = new NotificationCompat.Builder(content)
                             .setTicker(text)
                             .setContentTitle("たんこれ！")
                             .setContentText(text)
@@ -121,11 +120,11 @@ public class Notifier extends BroadcastReceiver {
                             .build();
 
                     manager = (NotificationManager) content.getSystemService(Context.NOTIFICATION_SERVICE);
-                    manager.notify(OriginalId, noti);
+                    manager.notify(OriginalId, notif);
                     break;
                 //当日
                 case 4:
-                    noti = new NotificationCompat.Builder(content)
+                    notif = new NotificationCompat.Builder(content)
                             .setTicker(text)
                             .setContentTitle("たんこれ！")
                             .setContentText(text)
@@ -136,14 +135,14 @@ public class Notifier extends BroadcastReceiver {
                             .build();
 
                     manager = (NotificationManager) content.getSystemService(Context.NOTIFICATION_SERVICE);
-                    manager.notify(OriginalId, noti);
+                    manager.notify(OriginalId, notif);
                     break;
                 //カスタム
                 case 5:
 
                 case 6:
                 case 7:
-                    noti = new NotificationCompat.Builder(content)
+                    notif = new NotificationCompat.Builder(content)
                             .setTicker(text)
                             .setContentTitle("たんこれ！")
                             .setContentText(text)
@@ -154,7 +153,7 @@ public class Notifier extends BroadcastReceiver {
                             .build();
 
                     manager = (NotificationManager) content.getSystemService(Context.NOTIFICATION_SERVICE);
-                    manager.notify(OriginalId, noti);
+                    manager.notify(OriginalId, notif);
                     break;
 
 
@@ -229,7 +228,6 @@ public class Notifier extends BroadcastReceiver {
             Calendar triggerTime = Calendar.getInstance();
             triggerTime.add(Calendar.DATE, Mday);	//
 
-            //monthText = (name) + "さんの誕生日まで残り１ヶ月です";
             //設定した日時で発行するIntentを生成
             Intent alarmMonth = new Intent(context, Notifier.class);
             alarmMonth.setData(makeUri(Integer.parseInt(String.valueOf(intentId)+1)));
@@ -246,7 +244,6 @@ public class Notifier extends BroadcastReceiver {
             }else{
                 manager.set(AlarmManager.RTC_WAKEUP, triggerTime.getTimeInMillis(), sender);
             }
-            //manager.set(AlarmManager.RTC_WAKEUP, triggerTime.getTimeInMillis(), sender);
         }
 
         if(Wnotif==1){ //一週間前のチェックがついていたら
@@ -369,7 +366,6 @@ public class Notifier extends BroadcastReceiver {
             }else{
                 manager.set(AlarmManager.RTC_WAKEUP, triggerTime.getTimeInMillis(), sender);
             }
-            //manager.set(AlarmManager.RTC_WAKEUP, triggerTime.getTimeInMillis(), sender);
         }
 
         if(custum2>0){
@@ -386,7 +382,6 @@ public class Notifier extends BroadcastReceiver {
             int custum2day=(int)cus2day;
             Calendar triggerTime = Calendar.getInstance();
             triggerTime.add(Calendar.DATE, custum2day);	//
-            //custumText =String.valueOf(birthmonth)+"/"+String.valueOf(birthday)+"は"+(name)+"さんの誕生日です";
             //設定した日時で発行するIntentを生成
             Intent alarmCus2 = new Intent(context, Notifier.class);
             alarmCus2.putExtra("intentId",Integer.parseInt(String.valueOf(intentId)+6));
@@ -403,7 +398,6 @@ public class Notifier extends BroadcastReceiver {
             }else{
                 manager.set(AlarmManager.RTC_WAKEUP, triggerTime.getTimeInMillis(), sender);
             }
-            //manager.set(AlarmManager.RTC_WAKEUP, triggerTime.getTimeInMillis(), sender);
         }
 
         if(custum3>0){
@@ -420,7 +414,6 @@ public class Notifier extends BroadcastReceiver {
             int custum3day=(int)cus3day;
             Calendar triggerTime = Calendar.getInstance();
             triggerTime.add(Calendar.DATE, custum3day);
-            //custumText =String.valueOf(birthmonth)+"/"+String.valueOf(birthday)+"は"+(name)+"さんの誕生日です";
             //設定した日時で発行するIntentを生成
             Intent alarmCus3 = new Intent(context, Notifier.class);
             alarmCus3.setData(makeUri(Integer.parseInt(String.valueOf(intentId)+7)));
@@ -440,7 +433,6 @@ public class Notifier extends BroadcastReceiver {
             }else{
                 manager.set(AlarmManager.RTC_WAKEUP, triggerTime.getTimeInMillis(), sender);
             }
-            //manager.set(AlarmManager.RTC_WAKEUP, triggerTime.getTimeInMillis(), sender);
         }
 
     }

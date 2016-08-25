@@ -1,6 +1,5 @@
 package org.t_robop.y_ogawara.tancolle;
 
-import android.app.DatePickerDialog;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -46,7 +45,6 @@ public class ReUserDetailActivity extends AppCompatActivity {
     Calendar calendar;
     int year, month, day; //現在の日付
     int age;//年齢の計算結果を入れる箱
-    ImageView image;
     int imagecount; //プレゼントボタンの判定
     int yukarin;
     String memo;
@@ -61,7 +59,6 @@ public class ReUserDetailActivity extends AppCompatActivity {
     TextView textNotifYesterday;
     TextView textNotifToday;
     TextView textCus[]=new TextView[3];
-    DatePickerDialog PickerDialog;
     //チェックフラグ
     int flagNotifMonth;
     int flagNotifWeek;
@@ -70,7 +67,6 @@ public class ReUserDetailActivity extends AppCompatActivity {
     //カスタム用の通知月日の保存
     int userNotifCus[]=new int[3];
 
-    DatePickerDialog.OnDateSetListener DateSetListener;
 
     //FloatingActionButtonの宣言
     FloatingActionButton floatingBoth1;
@@ -172,15 +168,6 @@ public class ReUserDetailActivity extends AppCompatActivity {
 
         photoImageView = (ImageView)findViewById(R.id.imageView);
 
-//        //textの初期設定
-//        textNotifMonth.setTextColor(Color.GRAY);
-//        textNotifWeek.setTextColor(Color.GRAY);
-//        textNotifYesterday.setTextColor(Color.GRAY);
-//        textNotifToday.setTextColor(Color.GRAY);
-//        for(int i=0;i<3;i++){
-//            textCus[i].setTextColor(Color.GRAY);
-//            textCus[i].setText("指定通知可能");
-//        }
 
         textNotifMonth.setVisibility(View.INVISIBLE);
         textNotifWeek.setVisibility(View.INVISIBLE);
@@ -192,44 +179,12 @@ public class ReUserDetailActivity extends AppCompatActivity {
 
         Data data = dbAssist.idSelect(intentId, this);
         String name = data.getName(); //SQliteからもってくる
-        String smallImage = data.getImage(); //TODO
+        String smallImage = data.getImage();
         String category = data.getCategory();
         TwitterID = data.getTwitterID();
         memo = data.getMemo();
         imagecount = data.isPresentFlag();
         yukarin = data.isYukarin();
-        //TODO 通知のカスタム
-
-//        //フラグついてたら黒色に
-//        flagNotifMonth =data.getNotif_month();
-//        if(flagNotifMonth==1){
-//            textNotifMonth.setTextColor(Color.BLACK);
-//        }
-//        flagNotifWeek =data.getNotif_week();
-//        if(flagNotifWeek==1){
-//            textNotifWeek.setTextColor(Color.BLACK);
-//        }
-//        flagNotifYesterday = data.isNotif_yest();
-//        if(flagNotifYesterday==1){
-//            textNotifYesterday.setTextColor(Color.BLACK);
-//        }
-//        flagNotifToday = data.isNotif_today();
-//        if(flagNotifToday==1){
-//            textNotifMonth.setTextColor(Color.BLACK);
-//        }
-//        userNotifCus[0]=data.getNotif_cus1();
-//        userNotifCus[1]=data.getNotif_cus2();
-//        userNotifCus[2]=data.getNotif_cus3();
-//        for(int i=0;i<3;i++){
-//            if(userNotifCus[i]!=0){
-//                textCus[i].setText(
-//                                        UserRegisterActivity.OutCale(userNotifCus[i],"year") + "/" +
-//                                        UserRegisterActivity.OutCale(userNotifCus[i],"month")+"/" +
-//                                        UserRegisterActivity.OutCale(userNotifCus[i],"day"));
-//                textCus[i].setTextColor(Color.BLACK);
-//            }
-//        }
-
         //フラグついてたら黒色に
         flagNotifMonth =data.getNotif_month();
         if(flagNotifMonth==1){
@@ -317,7 +272,7 @@ public class ReUserDetailActivity extends AppCompatActivity {
 
         // 日付を作成します。
         try {
-            //TODO ココらへんで今年の誕生日が過ぎていたら、来年の誕生日で計算させる
+            //今年の誕生日が過ぎていたら、来年の誕生日で計算させる
             dateFrom = sdf.parse(year + "/" + month + "/" + day); //現在の日付
             //指定フォーマットでデータを入力
             if (birthmonth * 100 + birthday < month * 100 + day) {  //誕生日より今日の日にちが大きかったら（もう誕生日がきていたら
@@ -478,16 +433,12 @@ public class ReUserDetailActivity extends AppCompatActivity {
         }else{
             //TODO IntentがAndroid5.0以上だとこれだけでいけるっぽいので確認してください
             TwChromeIntent();
-//            Intent intent = new Intent();
-//            intent.setAction( Intent.ACTION_VIEW );
-//            intent.setData( Uri.parse("twitter://user?screen_name="+TwitterID) ); // @skc1210 (アカウントを指定)
+
             try {
-                //startActivity(intent);
             } // Twitterが端末にインストールされていない場合はTwitterインストール画面へ
             catch( ActivityNotFoundException e ) {
                 try {
                     TwChromeIntent();
-                    //startActivity( new Intent( Intent.ACTION_VIEW, Uri.parse("market://details?id=com.twitter.android") ) );
                 } catch ( android.content.ActivityNotFoundException anfe ) {
                     startActivity( new Intent( Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.twitter.android") ) );
                 }
