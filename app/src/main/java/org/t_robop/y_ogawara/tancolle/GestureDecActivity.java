@@ -296,6 +296,7 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
                     //SharedPreferences pref = getSharedPreferences("Setting", MODE_PRIVATE);
 
                     if (Category.equals("すべて")) {
+                        monthTurnData = null;
                         monthTurnData = dbAssist.birthdaySelect(fullReturn + 1, getApplicationContext());//ArrayListに月検索したデータをぶち込む
                     }
                     else{
