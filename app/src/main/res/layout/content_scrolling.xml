@@ -191,7 +191,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="5"
-                    android:text="通知設定"
+                    android:text="通知"
                     android:textSize="20dp"
                     android:textColor="#808080"/>
 
@@ -213,12 +213,11 @@
                             android:layout_weight="1"
                             android:orientation="horizontal">
 
-                            <CheckBox
+                            <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:layout_weight="8"
-                                android:gravity="center_vertical"
-                                android:id="@+id/MonthCheck"/>
+                                android:layout_weight="10"/>
+
 
                             <TextView
                                 android:layout_width="match_parent"
@@ -243,12 +242,11 @@
                             android:layout_weight="1"
                             android:orientation="horizontal">
 
-                            <CheckBox
+                            <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:layout_weight="8"
-                                android:gravity="center_vertical"
-                                android:id="@+id/WeekCheck"/>
+                                android:layout_weight="10"/>
+
 
                             <TextView
                                 android:layout_width="match_parent"
@@ -273,12 +271,11 @@
                             android:layout_weight="1"
                             android:orientation="horizontal">
 
-                            <CheckBox
+                            <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:layout_weight="8.5"
-                                android:gravity="center_vertical"
-                                android:id="@+id/YesterdayCheck"/>
+                                android:layout_weight="10"/>
+
 
                             <TextView
                                 android:layout_width="match_parent"
@@ -303,12 +300,11 @@
                             android:layout_weight="1"
                             android:orientation="horizontal">
 
-                            <CheckBox
+                            <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:layout_weight="8.5"
-                                android:gravity="center_vertical"
-                                android:id="@+id/TodayCheck"/>
+                                android:layout_weight="10"/>
+
 
                             <TextView
                                 android:layout_width="match_parent"
@@ -340,13 +336,6 @@
                             android:layout_weight="1"
                             android:orientation="horizontal">
 
-                            <CheckBox
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_weight="8"
-                                android:gravity="center_vertical"
-                                android:id="@+id/CutomCheck1"/>
-
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
@@ -355,7 +344,6 @@
                                 android:textSize="20dp"
                                 android:gravity="center_vertical"
                                 android:textColor="#a0a0a0"
-                                android:onClick="cusText"
                                 android:tag="0"
                                 android:id="@+id/cusText1"/>
 
@@ -371,13 +359,6 @@
                             android:layout_weight="1"
                             android:orientation="horizontal">
 
-                            <CheckBox
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_weight="8"
-                                android:gravity="center_vertical"
-                                android:id="@+id/CutomCheck2"/>
-
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
@@ -386,7 +367,6 @@
                                 android:textSize="20dp"
                                 android:gravity="center_vertical"
                                 android:textColor="#a0a0a0"
-                                android:onClick="cusText"
                                 android:tag="1"
                                 android:id="@+id/cusText2"/>
 
@@ -402,13 +382,6 @@
                             android:layout_weight="1"
                             android:orientation="horizontal">
 
-                            <CheckBox
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_weight="8"
-                                android:gravity="center_vertical"
-                                android:id="@+id/CutomCheck3"/>
-
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
@@ -417,7 +390,6 @@
                                 android:textSize="20dp"
                                 android:gravity="center_vertical"
                                 android:textColor="#a0a0a0"
-                                android:onClick="cusText"
                                 android:tag="2"
                                 android:id="@+id/cusText3"/>
 

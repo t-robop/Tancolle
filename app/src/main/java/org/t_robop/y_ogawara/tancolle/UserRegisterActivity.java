@@ -1264,7 +1264,7 @@ public class UserRegisterActivity extends AppCompatActivity  {
     }
 
     //数値を年月日毎に出す
-    public int OutCale(int numDate,String wantType){
+    static int OutCale(int numDate,String wantType){
         int year;
         int month;
         int day;
