@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -84,17 +83,20 @@ public class ReUserDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_scrolling);
 
         //Toolbar関連
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        Drawable d = toolbar.getBackground();
-        d.setAlpha(0);
+        setTitle("新しいタイトル");
+        //setSupportActionBar(toolbar);
+        //Drawable d = toolbar.getBackground();
+        //d.setAlpha(0);
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-        actionBar.setTitle("title");
+        //TextView a =  (TextView) toolbar.getChildAt(0);
+        //a.setText("ワロタ");
+        //setSupportActionBar(toolbar);
+
+        //actionBar.setTitle("title");
 
 //        // 文字色(縮小時)
 //        toolbarLayout.setCollapsedTitleTextColor("");
@@ -132,6 +134,8 @@ public class ReUserDetailActivity extends AppCompatActivity {
             }
         }
     }
+
+
 
     @Override
     protected void onResume() {

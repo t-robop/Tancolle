@@ -413,7 +413,9 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
 
         displayWidth = display.getWidth();
         //TODO これしないとそもそも一番下までスクロールされない
-        displayHeight = display.getHeight()-(display.getHeight()/4);
+        //displayHeight = display.getHeight()-320;
+
+        displayHeight = display.getHeight()-(display.getHeight()/5);
 
         LinearLayout.LayoutParams layoutParam = new LinearLayout.LayoutParams(
                 displayWidth, displayHeight);
