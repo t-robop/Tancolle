@@ -76,7 +76,7 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
                 ListItem listItem = (ListItem) listView.getAdapter().getItem(position);
 
                 //Intentで飛ばす＆idをキーにする
-                Intent intent = new Intent(SearchActivity.this, UserDetailActivity.class);
+                Intent intent = new Intent(SearchActivity.this, ReUserDetailActivity.class);
                 intent.putExtra("id", listItem.getItemId());
                 startActivity(intent);
 
@@ -129,7 +129,7 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
                 ListItem listItem = (ListItem) listView.getAdapter().getItem(position);
 
                 //Intentで飛ばす＆idをキーにする
-                Intent intent = new Intent(SearchActivity.this, UserDetailActivity.class);
+                Intent intent = new Intent(SearchActivity.this, ReUserDetailActivity.class);
                 intent.putExtra("id", listItem.getItemId());
                 startActivity(intent);
 
