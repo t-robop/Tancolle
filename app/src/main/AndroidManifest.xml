@@ -9,7 +9,7 @@
         android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/tancole_icon"
-        android:label="Android楽しいな"
+        android:label="たんこれ！"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <receiver
