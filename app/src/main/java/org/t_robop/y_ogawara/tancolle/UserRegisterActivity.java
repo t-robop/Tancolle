@@ -190,6 +190,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         /////
         //EditTextの内容設定
             EditTextSet(editPho);
+            EditTextSet(editName);
             EditTextSet(editTwitter);
         /////
         //振り仮名自動入力のためのリスナー（謎）
@@ -1402,6 +1403,13 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         aldialogDeleCategory.setNegativeButton("いいえ", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                /***キーボードが表示されてるかどうか判定***/
+                //キーボードが表示されてる時
+                if (keyBoad == true) {
+                    //キーボード絶対堕とすマン
+                    inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                }
+                /*****************************************/
                 //Activity終了
                 finish();
             }
