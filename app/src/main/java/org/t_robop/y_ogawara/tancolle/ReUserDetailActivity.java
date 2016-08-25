@@ -126,6 +126,15 @@ public class ReUserDetailActivity extends AppCompatActivity {
             }
         }
 
+        floatingBoth1 = (FloatingActionButton) findViewById(R.id.floating_both1);
+
+        //データを読みだして、その値でセットする画像を変える
+        if(imagecount==0){
+            floatingBoth1.setImageResource(R.drawable.gift_48);
+        }else{
+            floatingBoth1.setImageResource(R.drawable.gift_checked);
+        }
+
     }
 
 
@@ -187,6 +196,8 @@ public class ReUserDetailActivity extends AppCompatActivity {
         if (imagecount == Integer.MIN_VALUE) {
             imagecount = 0;
         }
+
+        floatingBoth1 = (FloatingActionButton) findViewById(R.id.floating_both1);
 
         //データを読みだして、その値でセットする画像を変える
         if(imagecount==0){
@@ -443,18 +454,18 @@ public class ReUserDetailActivity extends AppCompatActivity {
     }
     public void tes(View v){
         Log.d("Android","楽しい");
-        floatingBoth1 = (FloatingActionButton) findViewById(R.id.floating_both1);
+
         Data updateData = new Data();
         if (imagecount == 0) {
             imagecount = 1;
             updateData.setPresentFlag(imagecount);
-            dbAssist.updateData(intentId, updateData, getApplicationContext());
-            floatingBoth1.setImageResource(R.drawable.gift_48);
+            dbAssist.updateData(intentId, updateData, this);
+            floatingBoth1.setImageResource(R.drawable.gift_checked);
         } else {
             imagecount = 0;
             updateData.setPresentFlag(imagecount);
-            dbAssist.updateData(intentId, updateData, getApplicationContext());
-            floatingBoth1.setImageResource(R.drawable.gift_checked);
+            dbAssist.updateData(intentId, updateData, this);
+            floatingBoth1.setImageResource(R.drawable.gift_48);
         }
 
     }
