@@ -1,11 +1,14 @@
 package org.t_robop.y_ogawara.tancolle;
 
 import android.app.DatePickerDialog;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +22,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -74,6 +78,10 @@ public class ReUserDetailActivity extends AppCompatActivity {
     DatePickerDialog.OnDateSetListener DateSetListener;
 
 
+    //FloatingActionButtonの宣言
+    FloatingActionButton floatingBoth1;
+
+
     //前のpage番号
     int page;
 
@@ -83,7 +91,7 @@ public class ReUserDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_scrolling);
 
         //Toolbar関連
-        setTitle("新しいタイトル");
+        //setTitle("新しいタイトル");
         //setSupportActionBar(toolbar);
         //Drawable d = toolbar.getBackground();
         //d.setAlpha(0);
@@ -133,6 +141,9 @@ public class ReUserDetailActivity extends AppCompatActivity {
                 dbAssist.updateData(intentId, updateData, this);
             }
         }
+
+        presentClick();
+
     }
 
 
@@ -273,6 +284,7 @@ public class ReUserDetailActivity extends AppCompatActivity {
         int remDay = (int) dayDiff;
 
 
+        setTitle("");
         nameTV.setText(name);
         kanaTV.setText(kana);
         if(category.equals("<未選択>")){
@@ -473,6 +485,66 @@ public class ReUserDetailActivity extends AppCompatActivity {
         }
     }
 
+    public void presentClick() { //プレゼントボタンをおした時
+
+
+
+        //FloatingActionButtonの宣言
+        floatingBoth1 = (FloatingActionButton) findViewById(R.id.floating_both1);
+        floatingBoth1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Data updateData = new Data();
+                if (imagecount == 0) {
+                    imagecount = 1;
+                    updateData.setPresentFlag(imagecount);
+                    dbAssist.updateData(intentId, updateData, getApplicationContext());
+                    floatingBoth1.setImageResource(R.drawable.ic_delete_white_48dp);
+                } else {
+                    imagecount = 0;
+                    updateData.setPresentFlag(imagecount);
+                    dbAssist.updateData(intentId, updateData, getApplicationContext());
+                    floatingBoth1.setImageResource(R.drawable.ao);
+                }
+            }
+        });
+    }
+
+    public void tweetClick(){ //ツイートボタンをおした時
+        if(TwitterID.equals("")){
+            Toast toast = Toast.makeText(ReUserDetailActivity.this, "TwitterIDが登録されていません", Toast.LENGTH_LONG);
+            toast.show();
+        }else{
+            //TODO IntentがAndroid5.0以上だとこれだけでいけるっぽいので確認してください
+            TwChromeIntent();
+//            Intent intent = new Intent();
+//            intent.setAction( Intent.ACTION_VIEW );
+//            intent.setData( Uri.parse("twitter://user?screen_name="+TwitterID) ); // @skc1210 (アカウントを指定)
+            try {
+                //startActivity(intent);
+            } // Twitterが端末にインストールされていない場合はTwitterインストール画面へ
+            catch( ActivityNotFoundException e ) {
+                try {
+                    TwChromeIntent();
+                    //startActivity( new Intent( Intent.ACTION_VIEW, Uri.parse("market://details?id=com.twitter.android") ) );
+                } catch ( android.content.ActivityNotFoundException anfe ) {
+                    startActivity( new Intent( Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.twitter.android") ) );
+                }
+            }
+
+        }
+
+    }
+
+    //twitterをChromeで開くメソッド
+    private void TwChromeIntent() {
+        String base = "https://twitter.com/"+TwitterID; //URLの文字列
+        Uri uri = Uri.parse(base);//URIにParse
+        Intent i = new Intent(Intent.ACTION_VIEW,uri);//インテントの作成
+        startActivity(i);//アクティビティの起動
+    }
+
+
     //ここでmenuを作る
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -486,10 +558,8 @@ public class ReUserDetailActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         switch (id) {
-            case R.id.action_settings:
-                // User chose the "Settings" item, show the app settings UI...
-                Intent intent_setting = new Intent(ReUserDetailActivity.this, SettingActivity.class);
-                startActivity(intent_setting);
+            case R.id.action_tweet:
+                tweetClick();
                 return true;
 
             case R.id.action_edits:
