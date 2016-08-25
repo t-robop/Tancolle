@@ -41,51 +41,36 @@
                     android:layout_weight="0.5"
                     android:orientation="vertical">
 
-
-
-                    <LinearLayout
+                    <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0.75"
-                        android:orientation="vertical">
-
-                        <org.t_robop.y_ogawara.tancolle.AutoshrinkTextView
-                            android:id="@+id/Kana"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="fill_vertical"
-                            android:gravity="bottom"
-                            android:text="とうかいたろう"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-                        <org.t_robop.y_ogawara.tancolle.AutoshrinkTextView
-                            android:id="@+id/Name"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="top"
-                            android:gravity="top"
-                            android:text="東海太郎"
-
-                            android:textAppearance="?android:attr/textAppearanceLarge"
-                            android:textSize="45dp" />
-                    </LinearLayout>
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top"
+                        android:gravity="top"
+                        android:layout_weight="1"
+                        android:text="カテゴリ"
+                        android:textColor="#808080"
+                        android:textSize="20dp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_gravity="bottom|center"
-                        android:layout_weight="0.25"
+                        android:layout_weight="1"
                         android:gravity="bottom"
                         android:orientation="horizontal">
 
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="4"/>
+
                         <org.t_robop.y_ogawara.tancolle.AutoshrinkTextView
                             android:id="@+id/category"
-                            android:layout_width="0dp"
+                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_gravity="bottom"
-                            android:layout_weight="3"
+                            android:layout_weight="1"
                             android:gravity="center_vertical"
-                            android:text="category"
+                            android:text="カテゴリ："
                             android:textAppearance="?android:attr/textAppearanceLarge" />
 
                     </LinearLayout>
@@ -118,7 +103,9 @@
                         android:id="@+id/day"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Birthday"
+                        android:text="誕生日"
+                        android:textColor="#808080"
+                        android:textSize="20dp"
                         android:textAppearance="?android:attr/textAppearanceLarge" />
 
                     <org.t_robop.y_ogawara.tancolle.AutoshrinkTextView
@@ -146,7 +133,9 @@
                         android:id="@+id/Current"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Current"
+                        android:text="年齢"
+                        android:textColor="#808080"
+                        android:textSize="20dp"
                         android:textAppearance="?android:attr/textAppearanceLarge" />
 
                     <org.t_robop.y_ogawara.tancolle.AutoshrinkTextView
@@ -163,7 +152,9 @@
                         android:id="@+id/Remaining"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Remaining"
+                        android:text="情報"
+                        android:textColor="#808080"
+                        android:textSize="20dp"
                         android:textAppearance="?android:attr/textAppearanceLarge" />
 
 
@@ -192,53 +183,148 @@
             app:cardUseCompatPadding="true">
 
             <LinearLayout
-                android:id="@+id/c"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="0.25"
-                android:orientation="horizontal">
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="5"
+                    android:text="通知設定"
+                    android:textSize="20dp"
+                    android:textColor="#808080"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:text="通知設定"
-                        android:textColor="#000000"
-                        android:textSize="25dp" />
-
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:orientation="horizontal">
+                        android:orientation="vertical">
 
-                        <CheckBox
-                            android:id="@+id/MonthCheck"
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_weight="6"
-                            android:gravity="center_vertical" />
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
 
-                        <TextView
+                            <CheckBox
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="8"
+                                android:gravity="center_vertical"
+                                android:id="@+id/MonthCheck"/>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:text="一ヶ月前"
+                                android:layout_weight="5"
+                                android:textSize="20dp"
+                                android:gravity="center_vertical"
+                                android:textColor="#000000"
+                                android:id="@+id/m_notif"/>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="7"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_weight="5"
-                            android:gravity="center_vertical"
-                            android:text="一ヶ月前"
-                            android:textColor="#000000"
-                            android:textSize="20dp" />
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
 
-                        <TextView
+                            <CheckBox
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="8"
+                                android:gravity="center_vertical"
+                                android:id="@+id/WeekCheck"/>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:text="一週間前"
+                                android:layout_weight="5"
+                                android:textSize="20dp"
+                                android:gravity="center_vertical"
+                                android:textColor="#000000"
+                                android:id="@+id/w_notif"/>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="7"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_weight="2" />
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <CheckBox
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="8.5"
+                                android:gravity="center_vertical"
+                                android:id="@+id/YesterdayCheck"/>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:text="前日"
+                                android:layout_weight="5.5"
+                                android:textSize="20dp"
+                                android:gravity="center_vertical"
+                                android:textColor="#000000"
+                                android:id="@+id/y_notif"/>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="7"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <CheckBox
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="8.5"
+                                android:gravity="center_vertical"
+                                android:id="@+id/TodayCheck"/>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:text="当日"
+                                android:layout_weight="5.5"
+                                android:textSize="20dp"
+                                android:gravity="center_vertical"
+                                android:textColor="#000000"
+                                android:id="@+id/t_notif"/>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="7"/>
+                        </LinearLayout>
 
                     </LinearLayout>
 
@@ -246,179 +332,101 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:orientation="horizontal">
+                        android:orientation="vertical">
 
-                        <CheckBox
-                            android:id="@+id/WeekCheck"
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_weight="6"
-                            android:gravity="center_vertical" />
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
 
-                        <TextView
+                            <CheckBox
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="8"
+                                android:gravity="center_vertical"
+                                android:id="@+id/CutomCheck1"/>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:text="通知日を追加"
+                                android:layout_weight="3"
+                                android:textSize="20dp"
+                                android:gravity="center_vertical"
+                                android:textColor="#a0a0a0"
+                                android:onClick="cusText"
+                                android:tag="0"
+                                android:id="@+id/cusText1"/>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="10"/>
+                        </LinearLayout>
+
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_weight="5"
-                            android:gravity="center_vertical"
-                            android:text="一週間前"
-                            android:textColor="#000000"
-                            android:textSize="20dp" />
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
 
-                        <TextView
+                            <CheckBox
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="8"
+                                android:gravity="center_vertical"
+                                android:id="@+id/CutomCheck2"/>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:text="通知日を追加"
+                                android:layout_weight="3"
+                                android:textSize="20dp"
+                                android:gravity="center_vertical"
+                                android:textColor="#a0a0a0"
+                                android:onClick="cusText"
+                                android:tag="1"
+                                android:id="@+id/cusText2"/>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="10"/>
+                        </LinearLayout>
+
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_weight="2" />
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
 
-                    </LinearLayout>
+                            <CheckBox
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="8"
+                                android:gravity="center_vertical"
+                                android:id="@+id/CutomCheck3"/>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:text="通知日を追加"
+                                android:layout_weight="3"
+                                android:textSize="20dp"
+                                android:gravity="center_vertical"
+                                android:textColor="#a0a0a0"
+                                android:onClick="cusText"
+                                android:tag="2"
+                                android:id="@+id/cusText3"/>
 
-                        <CheckBox
-                            android:id="@+id/YesterdayCheck"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="6"
-                            android:gravity="center_vertical" />
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="10"/>
+                        </LinearLayout>
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="5.5"
-                            android:gravity="center_vertical"
-                            android:text="前日"
-                            android:textColor="#000000"
-                            android:textSize="20dp" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="2" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:orientation="horizontal">
-
-                        <CheckBox
-                            android:id="@+id/TodayCheck"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="6"
-                            android:gravity="center_vertical" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="5.5"
-                            android:gravity="center_vertical"
-                            android:text="当日"
-                            android:textColor="#000000"
-                            android:textSize="20dp" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="2" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:orientation="horizontal">
-
-                        <CheckBox
-                            android:id="@+id/CutomCheck1"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="6"
-                            android:gravity="center_vertical" />
-
-                        <TextView
-                            android:id="@+id/cusText1"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="5"
-                            android:gravity="center_vertical"
-                            android:onClick="cusText"
-                            android:tag="0"
-                            android:text="通知日を追加"
-                            android:textColor="#a0a0a0"
-                            android:textSize="20dp" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="4" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:orientation="horizontal">
-
-                        <CheckBox
-                            android:id="@+id/CutomCheck2"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="6"
-                            android:gravity="center_vertical" />
-
-                        <TextView
-                            android:id="@+id/cusText2"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="5"
-                            android:gravity="center_vertical"
-                            android:onClick="cusText"
-                            android:tag="1"
-                            android:text="通知日を追加"
-                            android:textColor="#a0a0a0"
-                            android:textSize="20dp" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="4" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:orientation="horizontal">
-
-                        <CheckBox
-                            android:id="@+id/CutomCheck3"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="6"
-                            android:gravity="center_vertical" />
-
-                        <TextView
-                            android:id="@+id/cusText3"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="5"
-                            android:gravity="center_vertical"
-                            android:onClick="cusText"
-                            android:tag="2"
-                            android:text="通知日を追加"
-                            android:textColor="#a0a0a0"
-                            android:textSize="20dp" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="4" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -451,36 +459,20 @@
                         android:id="@+id/Memo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Memo"
+                        android:text="メモ"
+                        android:textSize="20dp"
+                        android:textColor="#808080"
                         android:textAppearance="?android:attr/textAppearanceLarge" />
 
-                    <LinearLayout
+                    <TextView
+                        android:id="@+id/chou"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.8"
-                        android:orientation="horizontal">
+                        android:layout_height="156dp"
+                        android:layout_weight="1"
+                        android:onClick="memoclick"
+                        android:text="あああああ"
+                        android:textAppearance="?android:attr/textAppearanceLarge" />
 
-                        <TextView
-                            android:id="@+id/chou"
-                            android:layout_width="match_parent"
-                            android:layout_height="156dp"
-                            android:layout_weight="1"
-                            android:onClick="memoclick"
-                            android:text="あああああ"
-                            android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                        <ImageButton
-                            android:id="@+id/present"
-                            android:layout_width="match_parent"
-                            android:layout_height="156dp"
-                            android:layout_weight="3"
-                            android:background="#00000000"
-                            android:onClick="presentClick"
-                            android:scaleType="fitXY"
-                            android:src="@drawable/ao" />
-
-
-                    </LinearLayout>
 
                 </LinearLayout>
 

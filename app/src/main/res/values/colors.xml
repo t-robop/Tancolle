@@ -10,5 +10,7 @@
 
     <color name="Black">#000</color>
     <color name="White">#FFF</color>
+
+    <color name="DarkBrown">#795548</color>
 </resources>
 

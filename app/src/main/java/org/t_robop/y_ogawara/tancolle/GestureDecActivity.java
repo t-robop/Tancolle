@@ -554,7 +554,8 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
         if (numData != 0) {
             //Intentで飛ばす＆idをキーにする
             pageSave();
-            Intent intent = new Intent(GestureDecActivity.this, UserDetailActivity.class);
+            //Re
+            Intent intent = new Intent(GestureDecActivity.this, ReUserDetailActivity.class);
             intent.putExtra("id", numData);
 
             startActivity(intent);
