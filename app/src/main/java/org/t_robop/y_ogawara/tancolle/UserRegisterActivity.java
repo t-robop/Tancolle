@@ -168,6 +168,7 @@ public class UserRegisterActivity extends AppCompatActivity  {
         //関連付け
         Association();
 
+        //TwitterIDのひらがな制限
         filterEnglish(editTwitter);
 
         //編集済かどうかの初期設定
