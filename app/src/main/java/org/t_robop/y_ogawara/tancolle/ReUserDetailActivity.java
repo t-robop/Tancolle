@@ -101,6 +101,11 @@ public class ReUserDetailActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+        //FloatingActionButtonの宣言
+        floatingBoth1 = (FloatingActionButton) findViewById(R.id.floating_both1);
+
+        presentClick();
+
         //TextView a =  (TextView) toolbar.getChildAt(0);
         //a.setText("ワロタ");
         //setSupportActionBar(toolbar);
@@ -142,8 +147,6 @@ public class ReUserDetailActivity extends AppCompatActivity {
                 dbAssist.updateData(intentId, updateData, this);
             }
         }
-
-        presentClick();
 
     }
 
@@ -503,29 +506,35 @@ public class ReUserDetailActivity extends AppCompatActivity {
 
     }
 
-    public void presentClick() { //プレゼントボタンをおした時
+    public void presentClick() {
 
+        if(floatingBoth1!=null) {
+            floatingBoth1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Data updateData = new Data();
+                    if (imagecount == 0) {
+                        imagecount = 1;
+                        updateData.setPresentFlag(imagecount);
+                        dbAssist.updateData(intentId, updateData, getApplicationContext());
+                        floatingBoth1.setImageResource(R.drawable.ic_delete_white_48dp);
 
+                        //トースト展開
+                        Toast toast = Toast.makeText(ReUserDetailActivity.this, "ごみ", Toast.LENGTH_LONG);
+                        toast.show();
+                    } else {
+                        imagecount = 0;
+                        updateData.setPresentFlag(imagecount);
+                        dbAssist.updateData(intentId, updateData, getApplicationContext());
+                        floatingBoth1.setImageResource(R.drawable.ao);
 
-        //FloatingActionButtonの宣言
-        floatingBoth1 = (FloatingActionButton) findViewById(R.id.floating_both1);
-        floatingBoth1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Data updateData = new Data();
-                if (imagecount == 0) {
-                    imagecount = 1;
-                    updateData.setPresentFlag(imagecount);
-                    dbAssist.updateData(intentId, updateData, getApplicationContext());
-                    floatingBoth1.setImageResource(R.drawable.ic_delete_white_48dp);
-                } else {
-                    imagecount = 0;
-                    updateData.setPresentFlag(imagecount);
-                    dbAssist.updateData(intentId, updateData, getApplicationContext());
-                    floatingBoth1.setImageResource(R.drawable.ao);
+                        //トースト展開
+                        Toast toast = Toast.makeText(ReUserDetailActivity.this, "あお", Toast.LENGTH_LONG);
+                        toast.show();
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     public void tweetClick(){ //ツイートボタンをおした時

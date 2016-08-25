@@ -17,6 +17,7 @@
             android:layout_height="20dp"
             android:textSize="18sp"
             android:gravity="center_horizontal"
+            android:textColor="#663333"
             android:text="rdtfhjghkk"
             android:layout_marginTop="2dp"
             android:layout_marginBottom="2dp"
@@ -24,7 +25,7 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="1dp"
-            android:background="@android:color/black">
+            android:background="#663333">
         </LinearLayout>
     </LinearLayout>
 
