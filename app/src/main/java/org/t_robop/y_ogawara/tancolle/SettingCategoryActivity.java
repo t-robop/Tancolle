@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -284,12 +285,21 @@ public class SettingCategoryActivity extends AppCompatActivity {
                                     //editTextのテキストを取得します
                                     addcategory = editDialog.getText().toString();
                                 }
-                                //入力された
+                                //取得したEditTextのTextがnullでない時
                                 if(addcategory!=null) {
-                                    //セット用adaptorに入力された物を追加
-                                    categoryAdapter.add(addcategory);
-                                    //保存用listに入力された物を追加
-                                    categorylist.add(addcategory);
+                                    //追加可能(引数true)の時
+                                    if(UserRegisterActivity.checkSameCategoryItem(addcategory, SettingCategoryActivity.this)) {
+                                        //セット用adaptorに入力された物を追加
+                                        categoryAdapter.add(addcategory);
+                                        //保存用listに入力された物を追加
+                                        categorylist.add(addcategory);
+                                    }
+                                    //追加不可であった(引数false)の時
+                                    else{
+                                        //トースト展開
+                                        Toast toast = Toast.makeText(SettingCategoryActivity.this, "そのカテゴリは存在しています", Toast.LENGTH_LONG);
+                                        toast.show();
+                                    }
                                 }
                                 //adapter更新
                                 categoryAdapter.notifyDataSetChanged();
