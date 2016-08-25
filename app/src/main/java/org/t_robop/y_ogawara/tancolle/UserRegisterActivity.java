@@ -21,8 +21,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
@@ -1597,27 +1595,6 @@ public class UserRegisterActivity extends AppCompatActivity  {
         //Activity消す
         finish();
 
-        ALLLOG();
         }
 
-    //Log
-    public void ALLLOG() {
-        Log.d("ALLLOG",String.valueOf(id));
-        Log.d("ALLLOG", editName.getText().toString());
-        Log.d("ALLLOG", editPho.getText().toString());
-        Log.d("ALLLOG",String.valueOf(userBirthYear)+String.valueOf(userBirthMonth)+String.valueOf(userBirthDay));
-        Log.d("ALLLOG", userCategory);
-        Log.d("ALLLOG", editTwitter.getText().toString());
-        Log.d("ALLLOG", editMemo.getText().toString());
-        Log.d("ALLLOG", userImage +".jpg");
-        Log.d("ALLLOG", userImage +".jpg");
-        Log.d("ALLLOG",String.valueOf(flagTamura));
-        Log.d("ALLLOG",String.valueOf(flagNotifMonth));
-        Log.d("ALLLOG",String.valueOf(flagNotifWeek));
-        Log.d("ALLLOG",String.valueOf(flagNotifYesterday));
-        Log.d("ALLLOG",String.valueOf(flagNotifToday));
-        Log.d("ALLLOG",String.valueOf(userNotifCus[0]));
-        Log.d("ALLLOG",String.valueOf(userNotifCus[1]));
-        Log.d("ALLLOG",String.valueOf(userNotifCus[2]));
-    }
 }

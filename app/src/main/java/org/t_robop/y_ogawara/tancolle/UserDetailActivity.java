@@ -287,7 +287,6 @@ public class UserDetailActivity extends AppCompatActivity {
 
 
 
-        //Log.d("bbbbbbb",String.valueOf(flagNotifMonth));
 
 
         //TODO カスタム通知の通知日をセット

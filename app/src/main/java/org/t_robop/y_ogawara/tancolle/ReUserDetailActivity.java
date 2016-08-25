@@ -14,7 +14,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -426,8 +425,6 @@ public class ReUserDetailActivity extends AppCompatActivity {
         }
     }
     public void tes(View v){
-        Log.d("Android","楽しい");
-
         Data updateData = new Data();
         if (imagecount == 0) {
             imagecount = 1;
