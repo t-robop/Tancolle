@@ -190,6 +190,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         /////
         //EditTextの内容設定
             EditTextSet(editPho);
+            EditTextSet(editName);
             EditTextSet(editTwitter);
         /////
         //振り仮名自動入力のためのリスナー（謎）
@@ -580,10 +581,13 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         switch (item.getItemId()) {
 
             case R.id.action_save:
-                if(editName.getText().toString().equals("")){
-                cautionDialog();
+                //名前が入力されてない時
+                if(editName.getText().toString().equals("")) {
+                    //警告ダイアログ表示
+                    cautionDialog();
                     break;
-            }else{
+                }
+                else{
                     //保存
                     AllRegist();
                     return true;
@@ -1392,16 +1396,31 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             //保存用ダイアログ内のokボタン押した時
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //保存
-                AllRegist();
-                //Activity終了
-                finish();
+
+                //名前が入力されてない時
+                if(editName.getText().toString().equals("")) {
+                    //警告ダイアログ表示
+                    cautionDialog();
+                }
+                else {
+                    //保存
+                    AllRegist();
+                    //Activity終了
+                    finish();
+                }
             }
         });
         //negativeボタン(今回はキャンセル)のリスナー登録
         aldialogDeleCategory.setNegativeButton("いいえ", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                /***キーボードが表示されてるかどうか判定***/
+                //キーボードが表示されてる時
+                if (keyBoad == true) {
+                    //キーボード絶対堕とすマン
+                    inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                }
+                /*****************************************/
                 //Activity終了
                 finish();
             }
