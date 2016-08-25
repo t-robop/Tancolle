@@ -1,8 +1,5 @@
 package org.t_robop.y_ogawara.tancolle;
 
-import android.content.Context;
-import android.widget.Toast;
-
 /**
  * Created by yuusuke on 16/06/10.
  */
@@ -225,11 +222,5 @@ public class Data {
         this.day = day;
     }
 
-
-
-    void error(Context context){
-        Toast.makeText(context, "0か1を入力させてね", Toast.LENGTH_LONG).show();
-
-    }
 
 }

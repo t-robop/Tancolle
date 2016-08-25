@@ -65,7 +65,7 @@
                             android:layout_weight="0.25"
                             android:gravity="bottom">
 
-                            <org.t_robop.y_ogawara.tancolle.AutoshrinkTextView
+                            <org.t_robop.y_ogawara.tancolle.autoShrinkTextView
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:textAppearance="?android:attr/textAppearanceLarge"
@@ -93,7 +93,7 @@
                             android:layout_height="0dp"
                             android:layout_weight="0.75">
 
-                            <org.t_robop.y_ogawara.tancolle.AutoshrinkTextView
+                            <org.t_robop.y_ogawara.tancolle.autoShrinkTextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:textAppearance="?android:attr/textAppearanceMedium"
@@ -102,7 +102,7 @@
                                 android:id="@+id/Kana"
                                 android:layout_gravity="fill_vertical" />
 
-                            <org.t_robop.y_ogawara.tancolle.AutoshrinkTextView
+                            <org.t_robop.y_ogawara.tancolle.autoShrinkTextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:textAppearance="?android:attr/textAppearanceLarge"
@@ -141,7 +141,7 @@
                         android:text="Birthday"
                         android:id="@+id/day" />
 
-                    <org.t_robop.y_ogawara.tancolle.AutoshrinkTextView
+                    <org.t_robop.y_ogawara.tancolle.autoShrinkTextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:textAppearance="?android:attr/textAppearanceLarge"
@@ -169,7 +169,7 @@
                         android:text="Current"
                         android:id="@+id/Current" />
 
-                    <org.t_robop.y_ogawara.tancolle.AutoshrinkTextView
+                    <org.t_robop.y_ogawara.tancolle.autoShrinkTextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:textAppearance="?android:attr/textAppearanceLarge"
@@ -190,7 +190,7 @@
 
 
 
-                    <org.t_robop.y_ogawara.tancolle.AutoshrinkTextView
+                    <org.t_robop.y_ogawara.tancolle.autoShrinkTextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:textAppearance="?android:attr/textAppearanceLarge"

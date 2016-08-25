@@ -10,7 +10,7 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.widget.TextView;
 
-public class AutoshrinkTextView extends TextView {
+public class autoShrinkTextView extends TextView {
 
     /** 最小のテキストサイズ。 */
     private static final float MIN_TEXT_SIZE = 6.0f;
@@ -24,7 +24,7 @@ public class AutoshrinkTextView extends TextView {
      * @param context
      * @param attrs
      */
-    public AutoshrinkTextView(Context context, AttributeSet attrs) {
+    public autoShrinkTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 

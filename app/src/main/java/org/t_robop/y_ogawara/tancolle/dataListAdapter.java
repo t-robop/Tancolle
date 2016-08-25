@@ -18,7 +18,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 
-//TODO クラスの中にクラスは作れません
 //独自Adapterつくる
 public class dataListAdapter extends BaseAdapter implements Filterable {
 
@@ -60,7 +59,6 @@ public class dataListAdapter extends BaseAdapter implements Filterable {
 
         convertView = null;
         if (convertView == null) {
-            //TODO ついでに画像も書いといた
             convertView = mInflater.inflate(R.layout.activity_search__item, null);
 
             TextView name_tv = (TextView) convertView.findViewById(R.id.name_text);
@@ -71,11 +69,6 @@ public class dataListAdapter extends BaseAdapter implements Filterable {
 
             name_tv.setText(listItem.getName());
             kana_tv.setText(listItem.getKana());
-            //TODO ここが画像
-            /*
-            実際は、キャッシュした上で、表示するからもうちょい複雑
-            キャッシュはできてないけど、画像の表示はできた
-             */
 
             //画像読み込み
             InputStream in;
@@ -117,11 +110,6 @@ public class dataListAdapter extends BaseAdapter implements Filterable {
 
                         ListItem listItem = mStringFilterList.get(i);
 
-                        //TODO ListItem型が取得したくて、mStringFilterListはListItem型の配列なんだから、とり方は上の書き方、下のは書き方おかしいよ
-//                        ListItem listItem = new ListItem(mStringFilterList.get(i)
-//                                .getName(), mStringFilterList.get(i)
-//                                .getKana());
-
                         filterList.add(listItem);
                     }
                 }
@@ -132,9 +120,7 @@ public class dataListAdapter extends BaseAdapter implements Filterable {
                 results.values = mStringFilterList;
             }
             return results;
-
         }
-
         @Override
         protected void publishResults(CharSequence constraint,
                                       FilterResults results) {

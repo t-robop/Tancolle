@@ -58,7 +58,7 @@
                             android:id="@+id/Kana"
                             android:layout_weight="1" />
 
-                        <org.t_robop.y_ogawara.tancolle.AutoshrinkTextView
+                        <org.t_robop.y_ogawara.tancolle.autoShrinkTextView
                             android:layout_width="match_parent"
                             android:layout_height="53dp"
                             android:textAppearance="?android:attr/textAppearanceLarge"

@@ -13,10 +13,10 @@ public class AlarmActivity extends AppCompatActivity {
 
         Calendar calendar;
         int intentId;
-        int Mnotif, Wnotif, Ynotif, Tnotif; //通知が１ヶ月前１週間前１日前当日のフラグ
-        int custum1, custum2, custum3;
+        int mNotif, wNotif, yNotif, tNotif; //通知が１ヶ月前１週間前１日前当日のフラグ
+        int custom1, custom2, custom3;
         int year, month, day; //現在の年月日
-        int birthmonth, birthday; //誕生日の年月日
+        int birthMonth, birthday; //誕生日の年月日
 
 
         super.onCreate(savedInstanceState);
@@ -32,19 +32,19 @@ public class AlarmActivity extends AppCompatActivity {
 
 
         Data data = dbAssist.idSelect(intentId, this); //データの取得
-        birthmonth = data.getMonth();
+        birthMonth = data.getMonth();
         birthday = data.getDay();
-        Mnotif = data.getNotif_month();  //フラグ
-        Wnotif = data.getNotif_week();
-        Ynotif = data.isNotif_yest();
-        Tnotif = data.isNotif_today();
-        custum1 = data.getNotif_cus1();
-        custum2 = data.getNotif_cus2();
-        custum3 = data.getNotif_cus3();
+        mNotif = data.getNotif_month();  //フラグ
+        wNotif = data.getNotif_week();
+        yNotif = data.isNotif_yest();
+        tNotif = data.isNotif_today();
+        custom1 = data.getNotif_cus1();
+        custom2 = data.getNotif_cus2();
+        custom3 = data.getNotif_cus3();
         String name = data.getName();
 
-        //
-        Notifier.alarm(intentId, name, year, month, day, birthmonth, birthday, Mnotif, Wnotif, Ynotif, Tnotif, custum1, custum2, custum3, this);
+        //通知を出す
+        Notifier.alarm(intentId, name, year, month, day, birthMonth, birthday, mNotif, wNotif, yNotif, tNotif, custom1, custom2, custom3, this);
 
     }
 }

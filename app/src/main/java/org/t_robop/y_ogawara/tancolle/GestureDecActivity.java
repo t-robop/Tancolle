@@ -90,7 +90,6 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
         //preferenceクラス宣言
         PM=new PreferenceMethod();
 
-        //progressLoad=(LinearLayout) findViewById(R.id.load_progress) ;
 
         //Permission確認 Android6.0以上
 
@@ -150,7 +149,6 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
     protected void onStart() {
         super.onStart();
 
-        //progressLoad.setVisibility(View.VISIBLE);
 
         MONTH =  Calendar.getInstance().get(Calendar.MONTH);
         //idの関連付け
@@ -237,11 +235,8 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
             for (int n = 0; n < spinnerItems.length; n++) {
                 //adaptorに読み込んだカテゴリを追加
                 adapter.add(spinnerItems[n]);
-                /////
             }
-            /////
         }
-        /////
         Spinner spinner = null;
         if (toolbar != null) {
             spinner = (Spinner) toolbar.getChildAt(0);
@@ -286,10 +281,6 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
 
                     ArrayList<Data> monthTurnData;//ArrayListの宣言
 
-                    //:TODO 中里見がspinnerを実装し終わっていないため未検証
-
-                    //prefの設定 細かいところはSettingDrawに準じているので不明
-                    //SharedPreferences pref = getSharedPreferences("Setting", MODE_PRIVATE);
 
                     if (Category.equals("すべて")) {
                         monthTurnData = null;
@@ -300,7 +291,6 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
                         monthTurnData = dbAssist.birthdayAndCategorySelect(fullReturn + 1,Category, getApplicationContext());
                     }
                     //誕生日表示(false)か残日表示(true)かを取得
-                    //boolean drawType = pref.getBoolean("drawType", false);
 
                     MainAdapterData Mad;//自分で作成したclassの宣言
 
@@ -333,7 +323,6 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
                             }
                         }
 
-                        //この辺に書き込み処理書いてくらさい。
                         Mad.setAllSize(num);
                         adapterData.add(Mad);//三人のデータの追加
                     }
@@ -409,7 +398,6 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
         Display display = wm.getDefaultDisplay();
 
         displayWidth = display.getWidth();
-        //TODO これしないとそもそも一番下までスクロールされない
         //displayHeight = display.getHeight()-320;
 
         displayHeight = display.getHeight()-(display.getHeight()/5);
@@ -430,23 +418,23 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
 
     // フリック入力の検出
     @Override
-    public boolean onFling(MotionEvent envent1, MotionEvent envent2,
+    public boolean onFling(MotionEvent event1, MotionEvent event2,
                            float velocityX, float velocityY) {
         return true;
     }
 
     // スライド入力検出
     @Override
-    public boolean onScroll(MotionEvent envent1, MotionEvent envent2,
+    public boolean onScroll(MotionEvent event1, MotionEvent event2,
                             float distanceX, float distanceY) {
         scrollFlg = true;
         int rangeX = 0;
         //envent1がnullの時(１月データの時に12月に行こうとするとでる)
-        if (envent1 == null) {
-            rangeX = (int) (0 - envent2.getRawX());
+        if (event1 == null) {
+            rangeX = (int) (0 - event2.getRawX());
         } else {
             // スライド距離の計算
-            rangeX = (int) (envent1.getRawX() - envent2.getRawX());
+            rangeX = (int) (event1.getRawX() - event2.getRawX());
         }
 
 
@@ -518,21 +506,21 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
      * * 今回未使用のOnGestureListener関連イベント
      *********************/
     @Override
-    public boolean onDown(MotionEvent envent) {
+    public boolean onDown(MotionEvent event) {
         return false;
     }
 
     @Override
-    public void onShowPress(MotionEvent envent) {
+    public void onShowPress(MotionEvent event) {
     }
 
     @Override
-    public boolean onSingleTapUp(MotionEvent envent) {
+    public boolean onSingleTapUp(MotionEvent event) {
         return false;
     }
 
     @Override
-    public void onLongPress(MotionEvent envent) {
+    public void onLongPress(MotionEvent event) {
     }
     /*******************************************************************/
     //リストをクリックした時のイベント
@@ -617,7 +605,6 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
 
     public void onPostResume(){
         super.onPostResume();
-        //progressLoad.setVisibility(View.GONE);
     }
 
     public void pageSave(){

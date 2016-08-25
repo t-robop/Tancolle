@@ -32,7 +32,7 @@
             android:layout_height="match_parent"
             android:layout_weight="4">
 
-            <org.t_robop.y_ogawara.tancolle.AutoshrinkTextView
+            <org.t_robop.y_ogawara.tancolle.autoShrinkTextView
                 android:id="@+id/birth1"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
@@ -40,7 +40,7 @@
                 android:textColor="#663333"
                 android:gravity="center"/>
 
-            <org.t_robop.y_ogawara.tancolle.AutoshrinkTextView
+            <org.t_robop.y_ogawara.tancolle.autoShrinkTextView
                 android:id="@+id/name1"
                 android:layout_width="match_parent"
                 android:layout_height="20dp"
@@ -78,7 +78,7 @@
             android:layout_height="match_parent"
             android:layout_weight="4">
 
-            <org.t_robop.y_ogawara.tancolle.AutoshrinkTextView
+            <org.t_robop.y_ogawara.tancolle.autoShrinkTextView
                 android:id="@+id/birth2"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
@@ -86,7 +86,7 @@
                 android:textColor="#663333"
                 android:gravity="center"/>
 
-            <org.t_robop.y_ogawara.tancolle.AutoshrinkTextView
+            <org.t_robop.y_ogawara.tancolle.autoShrinkTextView
                 android:id="@+id/name2"
                 android:layout_width="match_parent"
                 android:layout_height="20dp"
@@ -124,7 +124,7 @@
             android:layout_height="match_parent"
             android:layout_weight="4">
 
-            <org.t_robop.y_ogawara.tancolle.AutoshrinkTextView
+            <org.t_robop.y_ogawara.tancolle.autoShrinkTextView
                 android:id="@+id/birth3"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
@@ -132,7 +132,7 @@
                 android:textColor="#663333"
                 android:gravity="center"/>
 
-            <org.t_robop.y_ogawara.tancolle.AutoshrinkTextView
+            <org.t_robop.y_ogawara.tancolle.autoShrinkTextView
                 android:id="@+id/name3"
                 android:layout_width="match_parent"
                 android:layout_height="20dp"

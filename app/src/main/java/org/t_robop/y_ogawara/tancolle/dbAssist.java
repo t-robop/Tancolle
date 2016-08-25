@@ -10,7 +10,6 @@ import java.util.ArrayList;
 /**
  * Created by yuusuke on 16/06/14.
  */
-//TODO このclassは極力弄らないこと、弄る必要がある場合はメソッドを作り、その中で完結させること
 public class dbAssist {
     static SQLiteDatabase sqldb; //MySQLiteOpenHelperの変数
     static MySQLiteOpenHelper sqLiteOpenHelper;
