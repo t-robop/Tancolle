@@ -50,7 +50,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class UserRegisterActivity extends AppCompatActivity implements TextWatcher {
+public class UserRegisterActivity extends AppCompatActivity  {
     private static final int REQUEST_GALLERY = 0;//ギャラリー選択で必要な初期化
     EditText editName;
     EditText editPho;
@@ -194,7 +194,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             EditTextSet(editTwitter);
         /////
         //振り仮名自動入力のためのリスナー（謎）
-        editName.addTextChangedListener(this);
+        //editName.addTextChangedListener(this);
         //ImageViewの初期設定
         imageUser.setScaleType(ImageView.ScaleType.CENTER_CROP);//CENTER_CROPでViewに合わせて拡大し、画像のはみ出した部分は切り取って、中心にフォーカスする
         //全CheckBoxのリスナーを登録
@@ -514,50 +514,50 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         }
     }
 
-    //TextWatcher/////未完成/////
-    @Override
-    public void beforeTextChanged(final CharSequence s, int start, int count, int after) {
-        //操作前のEtidTextの状態を取得する
-        editPho.setText(s.toString());
-
-        //EditTextにリスナーをセット
-        editName.setOnKeyListener(new View.OnKeyListener() {
-
-            //コールバックとしてonKey()メソッドを定義
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                //イベントを取得するタイミングには、ボタンが押されてなおかつエンターキーだったときを指定
-                if((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)){
-
-                    //キーボードを閉じる
-                    inputMethodManager.hideSoftInputFromWindow(editName.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
-
-                    //フォーカスを外す
-                    editName.setFocusable(false);
-                    editName.setFocusableInTouchMode(false);
-                    editName.requestFocus();
-
-                    keyBoad=false;
-
-                    // エディットテキストのテキストを全選択します
-                    editName.selectAll();
-
-                    return true;
-                }
-                return false;
-            }
-        });
-    }
-
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-        //操作中のEtidTextの状態を取得する
-    }
-
-    @Override
-    public void afterTextChanged(Editable s) {
-        //操作後のEtidTextの状態を取得する
-    }
+//    //TextWatcher/////未完成/////
+//    @Override
+//    public void beforeTextChanged(final CharSequence s, int start, int count, int after) {
+//        //操作前のEtidTextの状態を取得する
+//        editPho.setText(s.toString());
+//
+//        //EditTextにリスナーをセット
+//        editName.setOnKeyListener(new View.OnKeyListener() {
+//
+//            //コールバックとしてonKey()メソッドを定義
+//            @Override
+//            public boolean onKey(View v, int keyCode, KeyEvent event) {
+//                //イベントを取得するタイミングには、ボタンが押されてなおかつエンターキーだったときを指定
+//                if((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)){
+//
+//                    //キーボードを閉じる
+//                    inputMethodManager.hideSoftInputFromWindow(editName.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
+//
+//                    //フォーカスを外す
+//                    editName.setFocusable(false);
+//                    editName.setFocusableInTouchMode(false);
+//                    editName.requestFocus();
+//
+//                    keyBoad=false;
+//
+//                    // エディットテキストのテキストを全選択します
+//                    editName.selectAll();
+//
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
+//    }
+//
+//    @Override
+//    public void onTextChanged(CharSequence s, int start, int before, int count) {
+//        //操作中のEtidTextの状態を取得する
+//    }
+//
+//    @Override
+//    public void afterTextChanged(Editable s) {
+//        //操作後のEtidTextの状態を取得する
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -673,14 +673,16 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
     public void UserView(View v) {
         if (Build.VERSION.SDK_INT < 19) {
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-            intent.setType("image/jpeg");
+            //どんな拡張子でも読み込めるように
+            intent.setType("image/*");
             //startActivityForResult(Intent.createChooser(intent, "選べよ"), 0);
             //startActivity(intent);
             startActivityForResult(intent, 0);
         } else {
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
             intent.addCategory(Intent.CATEGORY_OPENABLE);
-            intent.setType("image/jpeg");
+            //どんな拡張子でも読み込めるように
+            intent.setType("image/*");
             //startActivityForResult(Intent.createChooser(intent, "選べよ"), 1);
             //startActivity(intent);
             startActivityForResult(intent, 1);
@@ -1032,11 +1034,12 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
                             }
                             //adapter更新
                             categoryAdapter.notifyDataSetChanged();
-
-                            editDialog.getEditableText().clear();//editTextの初期化
-
+                            //カテゴリの保存
+                            PM.saveArray(categorylist, "StringItem",UserRegisterActivity.this);
+                            //editTextの初期化
+                            editDialog.getEditableText().clear();
+                            //追加したカテゴリをスピナーで選択させる
                             spinnerCategory.setSelection(categoryAdapter.getPosition(addcategory));
-
                             //編集済フラグ
                             registJudge=true;
                         }
@@ -1373,12 +1376,14 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         Boolean flagCanAddCategory = true;
         //保存されたカテゴリ一覧を取得
         String categoryItems[] = PM.getArray("StringItem", context);
-        //カテゴリ数だけループ
-        for (int i = 0; i < categoryItems.length; i++) {
-            //同じ名前の要素が確認された時
-            if (addcategory.equals(categoryItems[i])) {
-                //追加不可フラグ
-                flagCanAddCategory = false;
+        if(categoryItems!=null) {
+            //カテゴリ数だけループ
+            for (int i = 0; i < categoryItems.length; i++) {
+                //同じ名前の要素が確認された時
+                if (addcategory.equals(categoryItems[i])) {
+                    //追加不可フラグ
+                    flagCanAddCategory = false;
+                }
             }
         }
         return flagCanAddCategory;
@@ -1545,8 +1550,6 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
                 }
             /////
         /////
-        //プレファレンスにカテゴリの保存
-        PM.saveArray(categorylist, "StringItem",this);
 
         /*****通知セット*****/
         //何も無かったら「名前がありません」として保存
