@@ -580,9 +580,15 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         switch (item.getItemId()) {
 
             case R.id.action_save:
-                //保存
-                AllRegist();
-                return true;
+                if(editName.getText().toString().equals("")){
+                cautionDialog();
+                    break;
+            }else{
+                    //保存
+                    AllRegist();
+                    return true;
+                }
+
             case R.id.action_del:
                 //削除
                 Delete();
@@ -604,6 +610,8 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             default:
                 return super.onOptionsItemSelected(item);
         }
+        return super.onOptionsItemSelected(item);
+
     }
 
 
@@ -1369,6 +1377,21 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         });
         //設定したダイアログの表示
         aldialogDeleCategory.show();
+    }
+    public void cautionDialog(){
+        //このアクティビティに表示する削除確認ダイアログの宣言
+        AlertDialog.Builder caution=new AlertDialog.Builder(UserRegisterActivity.this);
+        //ダイアログタイトルの決定
+        caution.setTitle("名前が登録されてません");
+        //positiveボタン(今回はok)のリスナー登録
+        caution.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            //削除用ダイアログ内のokボタン押した時
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        //設定したダイアログの表示
+        caution.show();
     }
 
     //削除処理
