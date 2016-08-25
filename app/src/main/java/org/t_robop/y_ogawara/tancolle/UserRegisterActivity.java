@@ -22,6 +22,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Display;
@@ -166,6 +167,8 @@ public class UserRegisterActivity extends AppCompatActivity  {
 
         //関連付け
         Association();
+
+        filterEnglish(editTwitter);
 
         //編集済かどうかの初期設定
         registJudge=false;
@@ -1347,6 +1350,19 @@ public class UserRegisterActivity extends AppCompatActivity  {
                 mat.postTranslate(0, pctWidth*factor);
                 break;
         }
+    }
+
+    //editText英数字制限
+    public void filterEnglish(EditText editText){
+        editText.setFilters(new InputFilter[]{
+                (source, sourceStart, sourceEnd, destination, destinationStart, destinationEnd) -> {
+                    if (source.toString().matches("^[a-zA-Z0-9_]+$")) {
+                        return source;
+                    } else {
+                        return "";
+                    }
+                }
+        });
     }
 
     //spinnerの中から文字列を探してセットするメソッド
