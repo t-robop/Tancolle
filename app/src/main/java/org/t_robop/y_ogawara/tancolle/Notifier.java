@@ -27,7 +27,6 @@ public class Notifier extends BroadcastReceiver {
         @Override
         public void onReceive(Context content, Intent intent) {
             if(Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())){
-                Log.d("ファック","ふぁっきん！！！！！！！！！！！！！！！");
                 Toast.makeText(content, "テスト", Toast.LENGTH_LONG).show();
                 Calendar calendar;
                 int id;
