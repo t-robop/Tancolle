@@ -598,9 +598,14 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
         super.onResume();
         //onCreateから来たかどうか(false)
         if (!onCreateFlag){
-            page = pref.getInt("page",MONTH);
+            /*****preference展開*****/
+            //preference"Setting"をプライベートモードで開く
+            SharedPreferences pref = getSharedPreferences("intent", MODE_PRIVATE);
+            //表記変更の値を取得（未設定の場合は日付表示(false)）
+            page = pref.getInt("setPage", MONTH);
+            /********************/
         }else {
-            page = MONTH;
+            page=MONTH;
         }
         horizontalScrollView.post(new Runnable() {
             @Override
