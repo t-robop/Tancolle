@@ -27,6 +27,9 @@ public class SettingDrawActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting_draw);
 
+        //テーマ機能を非表示
+        findViewById(R.id.theme).setVisibility(View.GONE);
+
         /*****関連付け*****/
         //表記変更用スピナーの関連付け
         spinnerDraw=(Spinner)findViewById(R.id.draw_spinner);

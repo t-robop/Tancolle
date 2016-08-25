@@ -21,15 +21,15 @@ public class SettingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
         //全体通知設定用チェックボックスの関連付け
-        allNotif=(CheckBox)findViewById(R.id.allnotif);
+        //allNotif=(CheckBox)findViewById(R.id.allnotif);
         //チェックボックスのリスナー設定
-        checkBoxSet();
+        //checkBoxSet();
         //preferenceの「Setting」をプライベートモードで開く
         SharedPreferences pref = getSharedPreferences("Setting", MODE_PRIVATE);
-        //開いたpreferenceの中の「allNotifType」の値を取得（保存されてない時はtrueを取得）
-        allNotifType = pref.getBoolean("allNotifType", true);
-        //取得したBoolean型に応じてチェックを変更
-        allNotif.setChecked(allNotifType);
+//        //開いたpreferenceの中の「allNotifType」の値を取得（保存されてない時はtrueを取得）
+//        allNotifType = pref.getBoolean("allNotifType", true);
+//        //取得したBoolean型に応じてチェックを変更
+//        allNotif.setChecked(allNotifType);
 
         //ToolBar関連
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
