@@ -67,9 +67,6 @@
                 android:resource="@xml/widget_provider" />
         </receiver>
 
-        <activity
-            android:name=".ReUserRegisterActivity"
-            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
