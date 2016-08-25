@@ -248,8 +248,8 @@ public class ReUserDetailActivity extends AppCompatActivity {
         }
         flagNotifToday = data.isNotif_today();
         if(flagNotifToday==1){
-            textNotifMonth.setTextColor(Color.BLACK);
-            textNotifMonth.setVisibility(View.VISIBLE);
+            textNotifToday.setTextColor(Color.BLACK);
+            textNotifToday.setVisibility(View.VISIBLE);
         }
         userNotifCus[0]=data.getNotif_cus1();
         userNotifCus[1]=data.getNotif_cus2();
@@ -257,7 +257,6 @@ public class ReUserDetailActivity extends AppCompatActivity {
         for(int i=0;i<3;i++){
             if(userNotifCus[i]!=0){
                 textCus[i].setText(
-                                 "・"+
                                 UserRegisterActivity.OutCale(userNotifCus[i],"year") + "/" +
                                 UserRegisterActivity.OutCale(userNotifCus[i],"month")+"/" +
                                 UserRegisterActivity.OutCale(userNotifCus[i],"day"));
