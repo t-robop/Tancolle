@@ -222,7 +222,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:text="・一ヶ月前"
+                                android:text="一ヶ月前"
                                 android:layout_weight="5"
                                 android:textSize="20dp"
                                 android:gravity="center_vertical"
@@ -251,7 +251,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:text="・一週間前"
+                                android:text="一週間前"
                                 android:layout_weight="5"
                                 android:textSize="20dp"
                                 android:gravity="center_vertical"
@@ -280,7 +280,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:text="・前日"
+                                android:text="前日"
                                 android:layout_weight="5.5"
                                 android:textSize="20dp"
                                 android:gravity="center_vertical"
@@ -309,7 +309,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:text="・当日"
+                                android:text="当日"
                                 android:layout_weight="5.5"
                                 android:textSize="20dp"
                                 android:gravity="center_vertical"
