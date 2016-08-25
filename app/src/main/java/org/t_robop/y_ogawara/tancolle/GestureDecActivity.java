@@ -15,7 +15,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Display;
 import android.view.GestureDetector;
 import android.view.Menu;
@@ -85,8 +84,6 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
         setViewSize();
         permissionAcquisition();
 
-        //Log.d("OriginalId",String.valueOf(Notifier.makeOriginalId(1)));
-        //Log.d("id",String.valueOf(Notifier.originalIdToId(Notifier.makeOriginalId(1))));
         //originalIdToId
         onCreateFlag = true;
 
@@ -195,7 +192,6 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
                 for (int i = 0; i < 3; i++) {
                     Data getData;//monthTurnData取得用のデータ型
 
-                    Log.d("aaaa", String.valueOf(i + j));
 
                     if (i + j + 1 <= num)//iとnumを比較してiの方が低い時だけ（データ無いのに取得しようとして落ちるやつの修正）
                     {
@@ -324,7 +320,6 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
                         for (int i = 0; i < 3; i++) {
                             Data getData;//monthTurnData取得用のデータ型
 
-                            Log.d("aaaa", String.valueOf(i + j));
 
                             if (i + j + 1 <= num)//iとnumを比較してiの方が低い時だけ（データ無いのに取得しようとして落ちるやつの修正）
                             {
@@ -437,7 +432,6 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
     @Override
     public boolean onFling(MotionEvent envent1, MotionEvent envent2,
                            float velocityX, float velocityY) {
-        Log.d("onFling", "onFling");
         return true;
     }
 
@@ -445,7 +439,6 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
     @Override
     public boolean onScroll(MotionEvent envent1, MotionEvent envent2,
                             float distanceX, float distanceY) {
-        Log.d("onScroll", "onScroll");
         scrollFlg = true;
         int rangeX = 0;
         //envent1がnullの時(１月データの時に12月に行こうとするとでる)
@@ -526,29 +519,24 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
      *********************/
     @Override
     public boolean onDown(MotionEvent envent) {
-        Log.d("onDown", "onDown");
         return false;
     }
 
     @Override
     public void onShowPress(MotionEvent envent) {
-        Log.d("onShowPress", "onShowPress");
     }
 
     @Override
     public boolean onSingleTapUp(MotionEvent envent) {
-        Log.d("onSingleTapUp", "onSingleTapUp");
         return false;
     }
 
     @Override
     public void onLongPress(MotionEvent envent) {
-        Log.d("onLongPress", "onLongPress");
     }
     /*******************************************************************/
     //リストをクリックした時のイベント
     public void listClick(View view) {
-        Log.d("hello", String.valueOf(view.getTag()));
 
         int numData = (Integer) view.getTag();
 
@@ -568,20 +556,15 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
         if (ContextCompat.checkSelfPermission(
                 this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
             // 許可されている時の処理
-            Log.d("Accept", "Accept");
         } else {
             //拒否されている時の処理
-            Log.d("Deny", "Deny");
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
                 //拒否された時 Permissionが必要な理由を表示して再度許可を求めたり、機能を無効にしたりします。
-                Log.d("Alert", "Alert");
                 //AlertDialog
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-                //alertDialog.setTitle("");          //タイトル
                 alertDialog.setMessage("顔写真を追加する際にストレージへのアクセスが必要です。" + "\n" + "次の画面で許可を押してください。");      //内容
                 alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        Log.d("AlertDialog", "Positive which :" + which);
                         ActivityCompat.requestPermissions(GestureDecActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
                     }
                 });
@@ -591,7 +574,6 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
             } else {
                 //まだ許可を求める前の時、許可を求めるダイアログを表示します。
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
-                Log.d("else", "else");
             }
         }
     }

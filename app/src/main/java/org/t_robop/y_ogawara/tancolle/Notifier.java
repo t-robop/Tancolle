@@ -12,7 +12,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 import android.widget.Toast;
 
 import java.text.ParseException;
@@ -310,7 +309,6 @@ public class Notifier extends BroadcastReceiver {
             }else{
                 manager.set(AlarmManager.RTC_WAKEUP, triggerTime.getTimeInMillis(), sender);
             }
-            //manager.set(AlarmManager.RTC_WAKEUP, triggerTime.getTimeInMillis(), sender);
         }
 
         if(Tnotif==1){ //当日にチェックがついていたら
@@ -449,7 +447,6 @@ public class Notifier extends BroadcastReceiver {
     static int makeOriginalId(int id){
         int makeId;
         makeId = Integer.parseInt(id +"9999");
-        Log.d("makeInt",String.valueOf(makeId));
         return makeId;
     }
     static int originalIdToId(int makeId){

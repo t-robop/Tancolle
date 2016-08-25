@@ -1,6 +1,5 @@
 package org.t_robop.y_ogawara.tancolle;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -12,7 +11,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -51,8 +49,6 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
             item.setKana(dataList.get(i).getKana());
             item.setItemId(dataList.get(i).getId());
             item.setSmallImage(dataList.get(i).getSmallImage());
-            Log.d("aaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaa");
-            Log.d("search", dataList.get(i).getImage());
             name.add(item);
         }
 
@@ -105,8 +101,6 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
             item.setKana(dataList.get(i).getKana());
             item.setItemId(dataList.get(i).getId());
             item.setSmallImage(dataList.get(i).getSmallImage());
-            Log.d("aaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaa");
-            Log.d("search", dataList.get(i).getImage());
             name.add(item);
         }
         //adapterをセット
