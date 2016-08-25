@@ -13,6 +13,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -483,6 +484,23 @@ public class ReUserDetailActivity extends AppCompatActivity {
         else {
             Cb.setChecked(true);
         }
+    }
+    public void tes(View v){
+        Log.d("Android","楽しい");
+        floatingBoth1 = (FloatingActionButton) findViewById(R.id.floating_both1);
+        Data updateData = new Data();
+        if (imagecount == 0) {
+            imagecount = 1;
+            updateData.setPresentFlag(imagecount);
+            dbAssist.updateData(intentId, updateData, getApplicationContext());
+            floatingBoth1.setImageResource(R.drawable.gift_48);
+        } else {
+            imagecount = 0;
+            updateData.setPresentFlag(imagecount);
+            dbAssist.updateData(intentId, updateData, getApplicationContext());
+            floatingBoth1.setImageResource(R.drawable.gift_checked);
+        }
+
     }
 
     public void presentClick() { //プレゼントボタンをおした時
