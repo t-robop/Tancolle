@@ -14,6 +14,11 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <android.support.v4.widget.Space
+            android:layout_width="match_parent"
+            android:layout_height="15dp" />
+
+
         <android.support.v7.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -28,84 +33,62 @@
                 android:layout_weight="0.25"
                 android:orientation="vertical">
 
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
+                    android:layout_weight="0.5"
+                    android:orientation="vertical">
 
 
-                    <ImageView
-                        android:id="@+id/imageView"
-                        android:layout_width="match_parent"
-                        android:layout_height="144dp"
-                        android:layout_weight="0.5" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.5"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.75"
                         android:orientation="vertical">
 
-
-                        <LinearLayout
+                        <org.t_robop.y_ogawara.tancolle.AutoshrinkTextView
+                            android:id="@+id/Kana"
                             android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_gravity="bottom|center"
-                            android:layout_weight="0.25"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="fill_vertical"
                             android:gravity="bottom"
-                            android:orientation="horizontal">
+                            android:text="とうかいたろう"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
 
-                            <org.t_robop.y_ogawara.tancolle.AutoshrinkTextView
-                                android:id="@+id/category"
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_gravity="bottom"
-                                android:layout_weight="3"
-                                android:gravity="center_vertical"
-                                android:text="category"
-                                android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                            <ImageButton
-                                android:id="@+id/tweet"
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_gravity="bottom"
-                                android:layout_weight="1"
-                                android:background="#00000000"
-                                android:onClick="tweetClick"
-                                android:scaleType="fitCenter"
-                                android:src="@drawable/twitterlogo" />
-                        </LinearLayout>
-
-                        <LinearLayout
+                        <org.t_robop.y_ogawara.tancolle.AutoshrinkTextView
+                            android:id="@+id/Name"
                             android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="0.75"
-                            android:orientation="vertical">
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="top"
+                            android:gravity="top"
+                            android:text="東海太郎"
 
-                            <org.t_robop.y_ogawara.tancolle.AutoshrinkTextView
-                                android:id="@+id/Kana"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="fill_vertical"
-                                android:gravity="bottom"
-                                android:text="とうかいたろう"
-                                android:textAppearance="?android:attr/textAppearanceMedium" />
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:textSize="45dp" />
+                    </LinearLayout>
 
-                            <org.t_robop.y_ogawara.tancolle.AutoshrinkTextView
-                                android:id="@+id/Name"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="top"
-                                android:gravity="top"
-                                android:text="東海太郎"
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_gravity="bottom|center"
+                        android:layout_weight="0.25"
+                        android:gravity="bottom"
+                        android:orientation="horizontal">
 
-                                android:textAppearance="?android:attr/textAppearanceLarge"
-                                android:textSize="45dp" />
-                        </LinearLayout>
+                        <org.t_robop.y_ogawara.tancolle.AutoshrinkTextView
+                            android:id="@+id/category"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="bottom"
+                            android:layout_weight="3"
+                            android:gravity="center_vertical"
+                            android:text="category"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
 
                     </LinearLayout>
+
                 </LinearLayout>
             </LinearLayout>
         </android.support.v7.widget.CardView>
