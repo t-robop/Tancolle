@@ -37,10 +37,7 @@ import java.util.Date;
  */
 public class ReUserDetailActivity extends AppCompatActivity {
 
-
     int intentId;
-    TextView nameTV;
-    TextView kanaTV;
     TextView birthTV;
     TextView ageTV;
     TextView remaTV;
@@ -78,10 +75,8 @@ public class ReUserDetailActivity extends AppCompatActivity {
 
     DatePickerDialog.OnDateSetListener DateSetListener;
 
-
     //FloatingActionButtonの宣言
     FloatingActionButton floatingBoth1;
-
 
     //前のpage番号
     int page;
@@ -91,12 +86,6 @@ public class ReUserDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scrolling);
 
-        //Toolbar関連
-        //setTitle("新しいタイトル");
-        //setSupportActionBar(toolbar);
-        //Drawable d = toolbar.getBackground();
-        //d.setAlpha(0);
-
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -105,17 +94,6 @@ public class ReUserDetailActivity extends AppCompatActivity {
         floatingBoth1 = (FloatingActionButton) findViewById(R.id.floating_both1);
 
         presentClick();
-
-        //TextView a =  (TextView) toolbar.getChildAt(0);
-        //a.setText("ワロタ");
-        //setSupportActionBar(toolbar);
-
-        //actionBar.setTitle("title");
-
-//        // 文字色(縮小時)
-//        toolbarLayout.setCollapsedTitleTextColor("");
-//        // 文字色(展開時)
-//        toolbarLayout.setExpandedTitleColor(文字色(展開時));
 
         Intent intent = getIntent();
         intentId = intent.getIntExtra("id", 1);
@@ -166,8 +144,6 @@ public class ReUserDetailActivity extends AppCompatActivity {
         Intent intent = getIntent();
         intentId = intent.getIntExtra("id", 1);
         page = intent.getIntExtra("page",0);
-        nameTV = (TextView) findViewById(R.id.Name);
-        kanaTV = (TextView) findViewById(R.id.Kana);
         birthTV = (TextView) findViewById(R.id.Birthay);
         ageTV = (TextView) findViewById(R.id.age);
         remaTV = (TextView) findViewById(R.id.nokori);
@@ -193,13 +169,9 @@ public class ReUserDetailActivity extends AppCompatActivity {
         day = calendar.get(Calendar.DAY_OF_MONTH);
 
         photoImageView = (ImageView)findViewById(R.id.imageView);
-        image = (ImageView) this.findViewById(R.id.present);
-
-
 
         Data data = dbAssist.idSelect(intentId, this);
         String name = data.getName(); //SQliteからもってくる
-        String kana = data.getKana();
         String smallImage = data.getImage(); //TODO
         String category = data.getCategory();
         TwitterID = data.getTwitterID();
@@ -217,13 +189,14 @@ public class ReUserDetailActivity extends AppCompatActivity {
         }
 
         //データを読みだして、その値でセットする画像を変える
-
         if(imagecount==0){
-            image.setImageResource(R.drawable.ao);
+            floatingBoth1.setImageResource(R.drawable.gift_48);
         }else{
-            image.setImageResource(R.drawable.ribon);
+            floatingBoth1.setImageResource(R.drawable.gift_checked);
         }
 
+        //タイトル指定
+        setTitle(name);
 
 //画像読み込み
         if(smallImage.equals("null.jpg")){
@@ -287,28 +260,26 @@ public class ReUserDetailActivity extends AppCompatActivity {
         //int型に変換
         int remDay = (int) dayDiff;
 
-
-        setTitle("");
-        nameTV.setText(name);
-        kanaTV.setText(kana);
         if(category.equals("<未選択>")){
-            cateTV.setText("#"+category);
+            cateTV.setText("未選択");
         }else{
-            cateTV.setText("#<"+category+">");
-
+            cateTV.setText(category);
         }
         birthTV.setText(String.valueOf(birthmonth) + "/" + String.valueOf(birthday));
-        remaTV.setText("残り" + String.valueOf(remDay) + "日");
+        if(remDay!=0) {
+            remaTV.setText("残り" + String.valueOf(remDay) + "日");
+        }
+        else{
+            remaTV.setText("今日");
+        }
         memoTV.setText(memo);
-        if(yukarin==0){
+        if(yukarin==0&&age>=0){
             ageTV.setText(String.valueOf(age) + "才");
-        }else{
-            ageTV.setText("XX才");
+        }
+        else{
+            ageTV.setText("不明");
         }
 
-        /*for(int i=0;i<3;i++){
-            CheckJudge(checkCus[i],i);
-        }*/
         CheckJudge(checkNotifMonth,4);
         CheckJudge(checkNotifWeek,5);
         CheckJudge(checkNotifYesterday,6);
@@ -317,24 +288,10 @@ public class ReUserDetailActivity extends AppCompatActivity {
         CheckBoxChange(checkNotifWeek, flagNotifWeek);
         CheckBoxChange(checkNotifYesterday, flagNotifYesterday);
         CheckBoxChange(checkToday, flagNotifToday);
-        /*for(int i=0;i<3;i++){
-            CheckBoxChange(checkCus[i], flagNotifCus[i]);
-        }*/
-
-
-
-        //Log.d("bbbbbbb",String.valueOf(flagNotifMonth));
-
-
-        //TODO カスタム通知の通知日をセット
-        /*data.setNotif_cus1(userNotifCus[0]);
-        data.setNotif_cus2(userNotifCus[1]);
-        Data.setNotif_cus3(userNotifCus[2]);*/
 
     }
 
     public void memoclick(View view) {
-
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = LayoutInflater.from(this);
@@ -367,9 +324,6 @@ public class ReUserDetailActivity extends AppCompatActivity {
                                 memo = data.getMemo(); //SQLiteからもってくる
                                 memoTV.setText(memo);
 
-
-
-                                //Log.d("sssss",string);
                             }
                         })
                 .setNegativeButton("キャンセル", new DialogInterface.OnClickListener() {
@@ -384,7 +338,6 @@ public class ReUserDetailActivity extends AppCompatActivity {
         //ダイアログ画面外をタッチされても消えないようにする。
         myDialog.show();
         //ダイアログ表示
-
     }
 
     public void CheckJudge(final CheckBox check, final int flag) {
