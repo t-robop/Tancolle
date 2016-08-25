@@ -580,9 +580,15 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         switch (item.getItemId()) {
 
             case R.id.action_save:
-                //保存
-                AllRegist();
-                return true;
+                if(editName.getText().toString().equals("")){
+                cautionDialog();
+                    break;
+            }else{
+                    //保存
+                    AllRegist();
+                    return true;
+                }
+
             case R.id.action_del:
                 //削除
                 Delete();
@@ -604,6 +610,8 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
             default:
                 return super.onOptionsItemSelected(item);
         }
+        return super.onOptionsItemSelected(item);
+
     }
 
 
@@ -1001,12 +1009,22 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
                                 // エディットテキストのテキストを取得します
                                 addcategory = editDialog.getText().toString();
                             }
-                            //要素追加
-                            //リストとadaptorに入力値を入れる
-                            if(addcategory!=null) {
-                                categoryAdapter.add(addcategory);
 
-                                categorylist.add(addcategory);
+                            //取得したEditTextのTextがnullでない時
+                            if(addcategory!=null) {
+                                //追加可能(引数true)の時
+                                if (checkSameCategoryItem(addcategory, UserRegisterActivity.this)) {
+                                    //要素追加
+                                    //リストとadaptorに入力値を入れる
+                                    categoryAdapter.add(addcategory);
+                                    categorylist.add(addcategory);
+                                }
+                                //追加不可であった(引数false)の時
+                                else{
+                                    //トースト展開
+                                    Toast toast = Toast.makeText(UserRegisterActivity.this, "そのカテゴリは存在しています", Toast.LENGTH_LONG);
+                                    toast.show();
+                                }
                             }
                             //adapter更新
                             categoryAdapter.notifyDataSetChanged();
@@ -1342,6 +1360,27 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         spinner.setSelection(index);
     }
 
+    //同じ名前のカテゴリがないか確認し、なければtrue、あればfalseを飛ばすメソッド
+    static  boolean checkSameCategoryItem(String addcategory,Context context){
+        /*****同じ名前の要素が存在するかどうか*****/
+        //preference用クラス
+        PreferenceMethod PM=new PreferenceMethod();
+        //カテゴリを追加するかどうかのフラグ(追加可能ならtrue)
+        Boolean flagCanAddCategory = true;
+        //保存されたカテゴリ一覧を取得
+        String categoryItems[] = PM.getArray("StringItem", context);
+        //カテゴリ数だけループ
+        for (int i = 0; i < categoryItems.length; i++) {
+            //同じ名前の要素が確認された時
+            if (addcategory.equals(categoryItems[i])) {
+                //追加不可フラグ
+                flagCanAddCategory = false;
+            }
+        }
+        return flagCanAddCategory;
+        /********************/
+    }
+
     //編集するかしないかの最終確認ダイアログ
     public void finishRegstDialog(){
         //このアクティビティに表示する削除確認ダイアログの宣言
@@ -1350,7 +1389,7 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         aldialogDeleCategory.setTitle("編集内容を保存しますか");
         //positiveボタン(今回はok)のリスナー登録
         aldialogDeleCategory.setPositiveButton("はい", new DialogInterface.OnClickListener() {
-            //削除用ダイアログ内のokボタン押した時
+            //保存用ダイアログ内のokボタン押した時
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //保存
@@ -1369,6 +1408,21 @@ public class UserRegisterActivity extends AppCompatActivity implements TextWatch
         });
         //設定したダイアログの表示
         aldialogDeleCategory.show();
+    }
+    public void cautionDialog(){
+        //このアクティビティに表示する削除確認ダイアログの宣言
+        AlertDialog.Builder caution=new AlertDialog.Builder(UserRegisterActivity.this);
+        //ダイアログタイトルの決定
+        caution.setTitle("名前が登録されてません");
+        //positiveボタン(今回はok)のリスナー登録
+        caution.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            //削除用ダイアログ内のokボタン押した時
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        //設定したダイアログの表示
+        caution.show();
     }
 
     //削除処理
