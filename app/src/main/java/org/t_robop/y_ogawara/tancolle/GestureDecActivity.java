@@ -228,7 +228,7 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
         setSupportActionBar(toolbar);
         /********spinnerの設定関連**********/
         String spinnerItems[];
-        ArrayAdapter<String> adapter= new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
+        ArrayAdapter<String> adapter= new ArrayAdapter<String>(this, R.layout.simple_listitem_1);
         //adaptor全てふっとばす
         adapter.clear();
         //まず"すべて"を追加
@@ -249,6 +249,7 @@ public class GestureDecActivity extends AppCompatActivity implements GestureDete
         Spinner spinner = null;
         if (toolbar != null) {
             spinner = (Spinner) toolbar.getChildAt(0);
+
         }
         spinner.setAdapter(adapter);
         /*****選択されてたカテゴリの読み込みとセット*****/
