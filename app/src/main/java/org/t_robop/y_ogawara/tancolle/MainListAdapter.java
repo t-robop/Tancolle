@@ -92,6 +92,9 @@ public class MainListAdapter extends ArrayAdapter<MainAdapterData> {
               liner1.setBackgroundResource(R.drawable.waooooooon1);
               liner2.setBackgroundResource(R.drawable.waooooooon1);
               liner3.setBackgroundResource(R.drawable.waooooooon1);
+              if (mainListData.getPresentFlag(0)==1) {
+                  liner1.setBackgroundResource(R.drawable.ribbon_tra);
+              }
               //いくつ余ってるかの分岐
                 switch (mainListData.getAllSize()%3) {
                     case 2://一つ無いとき

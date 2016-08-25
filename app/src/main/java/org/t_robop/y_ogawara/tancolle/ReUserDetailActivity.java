@@ -211,7 +211,7 @@ public class ReUserDetailActivity extends AppCompatActivity {
 
 //画像読み込み
         if(smallImage.equals("null.jpg")){
-            photoImageView.setImageResource(R.drawable.noimagedetail);
+            //photoImageView.setImageResource(R.drawable.noimagedetail);
         }else {
             InputStream in;
             try {
@@ -315,7 +315,7 @@ public class ReUserDetailActivity extends AppCompatActivity {
 
         //レイアウト、題名、OKボタンとキャンセルボタンをつけてダイアログ作成
         builder.setView(dialog_view)
-                .setTitle("Memo")
+                .setTitle("メモ")
                 //ここで値をセットする
                 .setView(editText)
                 .setPositiveButton("OK",
