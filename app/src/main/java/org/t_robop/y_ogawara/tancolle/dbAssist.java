@@ -297,6 +297,8 @@ public class dbAssist {
         sqLiteOpenHelper = new MySQLiteOpenHelper(context);
         sqldb = sqLiteOpenHelper.getWritableDatabase();
         sqldb.delete(TABLE_NAME, "id = " + id, null);
+        sqldb.close();
+
     }
 
     //行のデータを更新したい時のメソッド
@@ -370,5 +372,7 @@ public class dbAssist {
         }
 
         sqldb.update(TABLE_NAME, cv, "id = "+id, null);
+        sqldb.close();
+
     }
 }
