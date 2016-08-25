@@ -27,7 +27,6 @@ public class Notifier extends BroadcastReceiver {
         @Override
         public void onReceive(Context content, Intent intent) {
             if(Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())){
-                Log.d("ファック","ふぁっきん！！！！！！！！！！！！！！！");
                 Toast.makeText(content, "テスト", Toast.LENGTH_LONG).show();
                 Calendar calendar;
                 int id;
@@ -229,7 +228,7 @@ public class Notifier extends BroadcastReceiver {
             long Mmsday = (dateTimeBeforeMonth-dateTimeFrom)/(ms);
             int Mday=(int)Mmsday;
             Calendar triggerTime = Calendar.getInstance();
-            triggerTime.add(Calendar.MINUTE, Mday);	//
+            triggerTime.add(Calendar.DATE, Mday);	//
 
             //monthText = (name) + "さんの誕生日まで残り１ヶ月です";
             //設定した日時で発行するIntentを生成
@@ -259,7 +258,7 @@ public class Notifier extends BroadcastReceiver {
             //呼び出す日時を設定する
             Calendar triggerTime = Calendar.getInstance();
             //Calendar.SECONDで秒なのかdayなのか月なのか年なのか wDayがその変数
-            triggerTime.add(Calendar.SECOND, Wday);	//
+            triggerTime.add(Calendar.DATE, Wday);	//
             //weekText = (name) + "さんの誕生日まで残り１週間です";
             //設定した日時で発行するIntentを生成
             Intent alarmWeek = new Intent(context, Notifier.class);
@@ -291,7 +290,7 @@ public class Notifier extends BroadcastReceiver {
             int Yday = (int) Ymsday;
             //呼び出す日時を設定する
             Calendar triggerTime = Calendar.getInstance();
-            triggerTime.add(Calendar.SECOND, Yday);	//
+            triggerTime.add(Calendar.DATE, Yday);	//
             //yestText = (name) + "さんの誕生日まで残り１日です";
             //設定した日時で発行するIntentを生成
             Intent alarmYest= new Intent(context, Notifier.class);
@@ -321,7 +320,7 @@ public class Notifier extends BroadcastReceiver {
             int Tday = (int) Tmsday;
             //呼び出す日時を設定する
             Calendar triggerTime = Calendar.getInstance();
-            triggerTime.add(Calendar.SECOND, Tday);	//
+            triggerTime.add(Calendar.DATE, Tday);	//
             //todayText = "今日は" + (name) + "さんの誕生日です!";
             //設定した日時で発行するIntentを生成
             Intent alarmToday = new Intent(context, Notifier.class);
@@ -354,7 +353,7 @@ public class Notifier extends BroadcastReceiver {
             long cus1day = (dateTimeCus1-dateTimeFrom)/(ms);
             int custum1day=(int)cus1day;
             Calendar triggerTime = Calendar.getInstance();
-            triggerTime.add(Calendar.MINUTE, custum1day);	//
+            triggerTime.add(Calendar.DATE, custum1day);	//
             //custumText =String.valueOf(birthmonth)+"/"+String.valueOf(birthday)+"は"+(name)+"さんの誕生日です";
             //設定した日時で発行するIntentを生成
             Intent alarmCus1 = new Intent(context, Notifier.class);
@@ -388,7 +387,7 @@ public class Notifier extends BroadcastReceiver {
             long cus2day = (dateTimeCus2-dateTimeFrom)/(ms);
             int custum2day=(int)cus2day;
             Calendar triggerTime = Calendar.getInstance();
-            triggerTime.add(Calendar.MINUTE, custum2day);	//
+            triggerTime.add(Calendar.DATE, custum2day);	//
             //custumText =String.valueOf(birthmonth)+"/"+String.valueOf(birthday)+"は"+(name)+"さんの誕生日です";
             //設定した日時で発行するIntentを生成
             Intent alarmCus2 = new Intent(context, Notifier.class);
@@ -422,7 +421,7 @@ public class Notifier extends BroadcastReceiver {
             long cus3day = (dateTimeCus3-dateTimeFrom)/(ms);
             int custum3day=(int)cus3day;
             Calendar triggerTime = Calendar.getInstance();
-            triggerTime.add(Calendar.MINUTE, custum3day);
+            triggerTime.add(Calendar.DATE, custum3day);
             //custumText =String.valueOf(birthmonth)+"/"+String.valueOf(birthday)+"は"+(name)+"さんの誕生日です";
             //設定した日時で発行するIntentを生成
             Intent alarmCus3 = new Intent(context, Notifier.class);
