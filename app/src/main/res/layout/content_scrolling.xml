@@ -441,7 +441,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="156dp"
                         android:layout_weight="1"
-                        android:onClick="memoclick"
+                        android:onClick="memoClick"
                         android:text="あああああ"
                         android:textAppearance="?android:attr/textAppearanceLarge" />
 

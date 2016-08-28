@@ -471,7 +471,7 @@
                             android:text="あああああ"
                             android:id="@+id/chou"
                             android:layout_weight="1"
-                            android:onClick="memoclick"/>
+                            android:onClick="memoClick"/>
 
                         <ImageButton
                             android:layout_width="match_parent"

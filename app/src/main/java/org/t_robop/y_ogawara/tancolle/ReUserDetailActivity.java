@@ -1,6 +1,5 @@
 package org.t_robop.y_ogawara.tancolle;
 
-import android.app.DatePickerDialog;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -47,7 +46,7 @@ public class ReUserDetailActivity extends AppCompatActivity {
     int year, month, day; //現在の日付
     int age;//年齢の計算結果を入れる箱
     ImageView image;
-    int imagecount; //プレゼントボタンの判定
+    int imageCount; //プレゼントボタンの判定
     int yukarin;
     String memo;
     String TwitterID;
@@ -60,17 +59,16 @@ public class ReUserDetailActivity extends AppCompatActivity {
     TextView textNotifWeek;
     TextView textNotifYesterday;
     TextView textNotifToday;
-    TextView textCus[]=new TextView[3];
-    DatePickerDialog PickerDialog;
+    TextView textCus[] = new TextView[3];
+
     //チェックフラグ
     int flagNotifMonth;
     int flagNotifWeek;
     int flagNotifYesterday;
     int flagNotifToday;
-    //カスタム用の通知月日の保存
-    int userNotifCus[]=new int[3];
 
-    DatePickerDialog.OnDateSetListener DateSetListener;
+    //カスタム用の通知月日の保存
+    int userNotifCus[] = new int[3];
 
     //FloatingActionButtonの宣言
     FloatingActionButton floatingBoth1;
@@ -90,24 +88,24 @@ public class ReUserDetailActivity extends AppCompatActivity {
         //FloatingActionButtonの宣言
         floatingBoth1 = (FloatingActionButton) findViewById(R.id.floating_both1);
 
-        presentClick();
 
         Intent intent = getIntent();
         intentId = intent.getIntExtra("id", 1);
         Data data = dbAssist.idSelect(intentId, this);
         String category = data.getCategory();
+
         //初期設定
         PreferenceMethod PM;
-        PM=new PreferenceMethod();
+        PM = new PreferenceMethod();
         //配列を読み込み (保存のkey,場所)
-        String[] categoryItem = PM.getArray("StringItem",this);
+        String[] categoryItem = PM.getArray("StringItem", this);
         int count = 0;
-        if(categoryItem!=null){
-            for(int i = 0; i<categoryItem.length; i++) { //0からカテゴリリストの最大値まで繰り返す
+        if (categoryItem != null) {
+            for (int i = 0; i < categoryItem.length; i++) { //0からカテゴリリストの最大値まで繰り返す
                 if (!(categoryItem[i].equals(category))) { //もしもカテゴリリストのi個目と今読み込んだカテゴリの名前が一致しなかったら
                     count++; //カウントを足していく
                 }
-                if(count==categoryItem.length) { //もし一致しなかった数＝カテゴリの最大値だったら（一個も一致しない 存在しなかったら）
+                if (count == categoryItem.length) { //もし一致しなかった数＝カテゴリの最大値だったら（一個も一致しない 存在しなかったら）
                     Data updateData = new Data(); //そのカテゴリは存在しないのでSQLに未選択で書き換える
                     updateData.setCategory("<未選択>");
                     dbAssist.updateData(intentId, updateData, this);
@@ -115,25 +113,22 @@ public class ReUserDetailActivity extends AppCompatActivity {
             }
 
 
-        }else{
-            if(!category.equals("<未選択>")){
+        } else {
+            if (!category.equals("<未選択>")) {
                 Data updateData = new Data(); //そのカテゴリは存在しないのでSQLに未選択で書き換える
                 updateData.setCategory("<未選択>");
                 dbAssist.updateData(intentId, updateData, this);
             }
         }
 
-        floatingBoth1 = (FloatingActionButton) findViewById(R.id.floating_both1);
-
         //データを読みだして、その値でセットする画像を変える
-        if(imagecount==0){
+        if (imageCount == 0) {
             floatingBoth1.setImageResource(R.drawable.gift_48);
-        }else{
+        } else {
             floatingBoth1.setImageResource(R.drawable.gift_checked);
         }
 
     }
-
 
 
     @Override
@@ -149,7 +144,7 @@ public class ReUserDetailActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         intentId = intent.getIntExtra("id", 1);
-        page = intent.getIntExtra("page",0);
+        page = intent.getIntExtra("page", 0);
         birthTV = (TextView) findViewById(R.id.Birthay);
         ageTV = (TextView) findViewById(R.id.age);
         remaTV = (TextView) findViewById(R.id.nokori);
@@ -161,16 +156,16 @@ public class ReUserDetailActivity extends AppCompatActivity {
         textNotifYesterday = (TextView) findViewById(R.id.y_notif);
         textNotifToday = (TextView) findViewById(R.id.t_notif);
         //カスタム通知の日時表示用のテキストの関連付け
-        textCus[0]=(TextView)findViewById(R.id.cusText1);
-        textCus[1]=(TextView)findViewById(R.id.cusText2);
-        textCus[2]=(TextView)findViewById(R.id.cusText3);
+        textCus[0] = (TextView) findViewById(R.id.cusText1);
+        textCus[1] = (TextView) findViewById(R.id.cusText2);
+        textCus[2] = (TextView) findViewById(R.id.cusText3);
 
         calendar = Calendar.getInstance();
         year = calendar.get(Calendar.YEAR);
         month = calendar.get(Calendar.MONTH) + 1; //0から11までしかないから１個足す
         day = calendar.get(Calendar.DAY_OF_MONTH);
 
-        photoImageView = (ImageView)findViewById(R.id.imageView);
+        photoImageView = (ImageView) findViewById(R.id.imageView);
 
 //        //textの初期設定
 //        textNotifMonth.setTextColor(Color.GRAY);
@@ -186,7 +181,7 @@ public class ReUserDetailActivity extends AppCompatActivity {
         textNotifWeek.setVisibility(View.INVISIBLE);
         textNotifYesterday.setVisibility(View.INVISIBLE);
         textNotifToday.setVisibility(View.INVISIBLE);
-        for(int i=0;i<3;i++){
+        for (int i = 0; i < 3; i++) {
             textCus[i].setVisibility(View.INVISIBLE);
         }
 
@@ -196,7 +191,7 @@ public class ReUserDetailActivity extends AppCompatActivity {
         String category = data.getCategory();
         TwitterID = data.getTwitterID();
         memo = data.getMemo();
-        imagecount = data.isPresentFlag();
+        imageCount = data.isPresentFlag();
         yukarin = data.isYukarin();
         //TODO 通知のカスタム
 
@@ -231,51 +226,51 @@ public class ReUserDetailActivity extends AppCompatActivity {
 //        }
 
         //フラグついてたら黒色に
-        flagNotifMonth =data.getNotif_month();
-        if(flagNotifMonth==1){
+        flagNotifMonth = data.getNotif_month();
+        if (flagNotifMonth == 1) {
             textNotifMonth.setTextColor(Color.BLACK);
             textNotifMonth.setVisibility(View.VISIBLE);
         }
-        flagNotifWeek =data.getNotif_week();
-        if(flagNotifWeek==1){
+        flagNotifWeek = data.getNotif_week();
+        if (flagNotifWeek == 1) {
             textNotifWeek.setTextColor(Color.BLACK);
             textNotifWeek.setVisibility(View.VISIBLE);
         }
         flagNotifYesterday = data.isNotif_yest();
-        if(flagNotifYesterday==1){
+        if (flagNotifYesterday == 1) {
             textNotifYesterday.setTextColor(Color.BLACK);
             textNotifYesterday.setVisibility(View.VISIBLE);
         }
         flagNotifToday = data.isNotif_today();
-        if(flagNotifToday==1){
+        if (flagNotifToday == 1) {
             textNotifToday.setTextColor(Color.BLACK);
             textNotifToday.setVisibility(View.VISIBLE);
         }
-        userNotifCus[0]=data.getNotif_cus1();
-        userNotifCus[1]=data.getNotif_cus2();
-        userNotifCus[2]=data.getNotif_cus3();
-        for(int i=0;i<3;i++){
-            if(userNotifCus[i]!=0){
+        userNotifCus[0] = data.getNotif_cus1();
+        userNotifCus[1] = data.getNotif_cus2();
+        userNotifCus[2] = data.getNotif_cus3();
+        for (int i = 0; i < 3; i++) {
+            if (userNotifCus[i] != 0) {
                 textCus[i].setText(
-                                UserRegisterActivity.OutCale(userNotifCus[i],"year") + "/" +
-                                UserRegisterActivity.OutCale(userNotifCus[i],"month")+"/" +
-                                UserRegisterActivity.OutCale(userNotifCus[i],"day"));
+                        UserRegisterActivity.OutCale(userNotifCus[i], "year") + "/" +
+                                UserRegisterActivity.OutCale(userNotifCus[i], "month") + "/" +
+                                UserRegisterActivity.OutCale(userNotifCus[i], "day"));
                 textCus[i].setTextColor(Color.BLACK);
                 textCus[i].setVisibility(View.VISIBLE);
             }
         }
 
 
-        if (imagecount == Integer.MIN_VALUE) {
-            imagecount = 0;
+        if (imageCount == Integer.MIN_VALUE) {
+            imageCount = 0;
         }
 
         floatingBoth1 = (FloatingActionButton) findViewById(R.id.floating_both1);
 
         //データを読みだして、その値でセットする画像を変える
-        if(imagecount==0){
+        if (imageCount == 0) {
             floatingBoth1.setImageResource(R.drawable.gift_48);
-        }else{
+        } else {
             floatingBoth1.setImageResource(R.drawable.gift_checked);
         }
 
@@ -283,9 +278,9 @@ public class ReUserDetailActivity extends AppCompatActivity {
         setTitle(name);
 
 //画像読み込み
-        if(smallImage.equals("null.jpg")){
+        if (smallImage.equals("null.jpg")) {
             //photoImageView.setImageResource(R.drawable.noimagedetail);
-        }else {
+        } else {
             InputStream in;
             try {
                 in = openFileInput(smallImage);//画像の名前からファイル開いて読み込み
@@ -344,29 +339,27 @@ public class ReUserDetailActivity extends AppCompatActivity {
         //int型に変換
         int remDay = (int) dayDiff;
 
-        if(category.equals("<未選択>")){
+        if (category.equals("<未選択>")) {
             cateTV.setText("未選択");
-        }else{
+        } else {
             cateTV.setText(category);
         }
         birthTV.setText(String.valueOf(birthmonth) + "/" + String.valueOf(birthday));
-        if(remDay!=0) {
+        if (remDay != 0) {
             remaTV.setText("残り" + String.valueOf(remDay) + "日");
-        }
-        else{
+        } else {
             remaTV.setText("今日");
         }
         memoTV.setText(memo);
-        if(yukarin==0&&age>=0){
+        if (yukarin == 0 && age >= 0) {
             ageTV.setText(String.valueOf(age) + "才");
-        }
-        else{
+        } else {
             ageTV.setText("不明");
         }
 
     }
 
-    public void memoclick(View view) {
+    public void memoClick(View view) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = LayoutInflater.from(this);
@@ -389,10 +382,10 @@ public class ReUserDetailActivity extends AppCompatActivity {
                     /*OKのときの処理内容*/
 
                                 String string = editText.getText().toString();
-                                Data updateData =new Data();
+                                Data updateData = new Data();
                                 updateData.setMemo(string);
                                 //引数はid,data,場所
-                                dbAssist.updateData(intentId,updateData,ReUserDetailActivity.this);
+                                dbAssist.updateData(intentId, updateData, ReUserDetailActivity.this);
 
                                 //memo画面の更新
                                 Data data = dbAssist.idSelect(intentId, ReUserDetailActivity.this);
@@ -415,81 +408,42 @@ public class ReUserDetailActivity extends AppCompatActivity {
         //ダイアログ表示
     }
 
-    //checkboxの中身を判断してtruefalse変更///
-    public void CheckBoxChange(CheckBox Cb,int check) {
-        if(check==0) {
-            Cb.setChecked(false);
-        }
-        else {
-            Cb.setChecked(true);
-        }
-    }
-    public void tes(View v){
+
+    public void presentFlag(View v) {
         Data updateData = new Data();
-        if (imagecount == 0) {
-            imagecount = 1;
-            updateData.setPresentFlag(imagecount);
+        if (imageCount == 0) {
+            imageCount = 1;
+            updateData.setPresentFlag(imageCount);
             dbAssist.updateData(intentId, updateData, this);
             floatingBoth1.setImageResource(R.drawable.gift_checked);
         } else {
-            imagecount = 0;
-            updateData.setPresentFlag(imagecount);
+            imageCount = 0;
+            updateData.setPresentFlag(imageCount);
             dbAssist.updateData(intentId, updateData, this);
             floatingBoth1.setImageResource(R.drawable.gift_48);
         }
 
     }
 
-    public void presentClick() {
-
-        if(floatingBoth1!=null) {
-            floatingBoth1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Data updateData = new Data();
-                    if (imagecount == 0) {
-                        imagecount = 1;
-                        updateData.setPresentFlag(imagecount);
-                        dbAssist.updateData(intentId, updateData, getApplicationContext());
-                        floatingBoth1.setImageResource(R.drawable.ic_delete_white_48dp);
-
-                        //トースト展開
-                        Toast toast = Toast.makeText(ReUserDetailActivity.this, "ごみ", Toast.LENGTH_LONG);
-                        toast.show();
-                    } else {
-                        imagecount = 0;
-                        updateData.setPresentFlag(imagecount);
-                        dbAssist.updateData(intentId, updateData, getApplicationContext());
-                        floatingBoth1.setImageResource(R.drawable.ao);
-
-                        //トースト展開
-                        Toast toast = Toast.makeText(ReUserDetailActivity.this, "あお", Toast.LENGTH_LONG);
-                        toast.show();
-                    }
-                }
-            });
-        }
-    }
-
-    public void tweetClick(){ //ツイートボタンをおした時
-        if(TwitterID.equals("")){
+    public void tweetClick() { //ツイートボタンをおした時
+        if (TwitterID.equals("")) {
             Toast toast = Toast.makeText(ReUserDetailActivity.this, "TwitterIDが登録されていません", Toast.LENGTH_LONG);
             toast.show();
-        }else{
+        } else {
             //TODO IntentがAndroid5.0以上だとこれだけでいけるっぽいので確認してください
-            TwChromeIntent();
+            twChromeIntent();
 //            Intent intent = new Intent();
 //            intent.setAction( Intent.ACTION_VIEW );
 //            intent.setData( Uri.parse("twitter://user?screen_name="+TwitterID) ); // @skc1210 (アカウントを指定)
             try {
                 //startActivity(intent);
             } // Twitterが端末にインストールされていない場合はTwitterインストール画面へ
-            catch( ActivityNotFoundException e ) {
+            catch (ActivityNotFoundException e) {
                 try {
-                    TwChromeIntent();
+                    twChromeIntent();
                     //startActivity( new Intent( Intent.ACTION_VIEW, Uri.parse("market://details?id=com.twitter.android") ) );
-                } catch ( android.content.ActivityNotFoundException anfe ) {
-                    startActivity( new Intent( Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.twitter.android") ) );
+                } catch (android.content.ActivityNotFoundException anfe) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.twitter.android")));
                 }
             }
 
@@ -498,10 +452,10 @@ public class ReUserDetailActivity extends AppCompatActivity {
     }
 
     //twitterをChromeで開くメソッド
-    private void TwChromeIntent() {
-        String base = "https://twitter.com/"+TwitterID; //URLの文字列
+    private void twChromeIntent() {
+        String base = "https://twitter.com/" + TwitterID; //URLの文字列
         Uri uri = Uri.parse(base);//URIにParse
-        Intent i = new Intent(Intent.ACTION_VIEW,uri);//インテントの作成
+        Intent i = new Intent(Intent.ACTION_VIEW, uri);//インテントの作成
         startActivity(i);//アクティビティの起動
     }
 
@@ -513,6 +467,7 @@ public class ReUserDetailActivity extends AppCompatActivity {
         inflater.inflate(R.menu.re_user_detail_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
+
     //MenuItem(戻るボタン)の選択
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -525,9 +480,10 @@ public class ReUserDetailActivity extends AppCompatActivity {
 
             case R.id.action_edits:
                 Intent intent = new Intent(ReUserDetailActivity.this, UserRegisterActivity.class);
-                intent.putExtra("IdNum",intentId);
+                intent.putExtra("IdNum", intentId);
                 startActivity(intent);
                 return true;
+
             case android.R.id.home:
                 finish();
                 return true;

@@ -57,7 +57,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_gravity="bottom|end"
-        android:onClick="tes"
+        android:onClick="presentFlag"
         android:layout_margin="@dimen/fab_margin"
         app:backgroundTint="@color/DarkBrown"
         android:src="@drawable/gift_48"/>
