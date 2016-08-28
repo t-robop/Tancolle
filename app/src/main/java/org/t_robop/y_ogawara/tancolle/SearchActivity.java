@@ -25,7 +25,6 @@ public class SearchActivity extends AppCompatActivity {
     private SearchView searchView;
     View view;
 
-    //ArrayList<ListItem> items;
     dataListAdapter adapter;
 
     @Override
@@ -34,19 +33,29 @@ public class SearchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.inflateMenu(R.menu.search);
         setSupportActionBar(toolbar);
         final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowTitleEnabled(false);
         }
+        setListView();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setListView();
+    }
+
+    public void setListView() {
+        //ListView関連の処理
 
 
         listView = (ListView) findViewById(R.id.listView);
 
+        //dbからデータ持ってきてArrayListにぶち込む
         ArrayList<Data> dataList = dbAssist.allSelect(this);
-
 
         ArrayList<ListItem> name = new ArrayList<>();
         for (int i = 0; dataList.size() > i; i++) {
@@ -82,39 +91,29 @@ public class SearchActivity extends AppCompatActivity {
 
             }
         });
-
     }
 
-
-    //アクションバー処理
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // アクションバーアイテム上の押下を処理します。
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.search, menu);
 
+        //SearchViewをMenuItemとして呼ぶ
+        //menuをつくるときにSearchViewも突っ込む
         MenuItem searchItem = menu.findItem(R.id.searchView);
 
         searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
 
         searchView = (SearchView) toolbar.getMenu().findItem(R.id.searchView).getActionView();
 
+        //searchAutoCompleteを呼んでおくことで色の変更が可能になる
         SearchView.SearchAutoComplete searchAutoComplete =
                 (SearchView.SearchAutoComplete) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
-        //searchAutoCompleteを呼んでおくことで色の変更が可能になる
+        //これ以上やりたかったらSearchViewをextendしたほうが早そう
         searchAutoComplete.setTextColor(Color.BLACK);
         searchAutoComplete.setHintTextColor(Color.WHITE);
+
+        //SearchViewにデフォルトで施せる各種設定
         searchView.setIconified(false);
         searchView.setQueryHint("名前を入力");
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -131,11 +130,22 @@ public class SearchActivity extends AppCompatActivity {
                 return false;
             }
         });
-
-
         return true;
     }
 
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // アクションバーアイテム上の押下を処理
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
 }
 
